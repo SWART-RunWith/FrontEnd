@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Loading from '@/components/Loading';
 import Colors from '@/constants/Colors';
+import resetOnboarding from '@/scripts/resetOnboarding';
 
 type RootStackParamList = {
   onboarding: undefined;
@@ -19,8 +20,9 @@ const IndexScreen = () => {
 
   useEffect(() => {
     const checkOnboardingStatus = async () => {
+      await resetOnboarding();
       const hasSeenOnboarding = await AsyncStorage.getItem('hasSeenOnboarding');
-      if (hasSeenOnboarding) {
+      if (hasSeenOnboarding === 'true') {
         navigation.replace('home');
       } else {
         navigation.replace('onboarding');
