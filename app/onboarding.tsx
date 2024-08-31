@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
-import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
@@ -18,14 +19,20 @@ type RootStackParamList = {
 type OnboardingScreenNavigationProp =
   StackNavigationProp<RootStackParamList, 'onboarding'>;
 
-type Props = {
-  navigation: OnboardingScreenNavigationProp;
-};
+const OnboardingScreen: React.FC = () => {
+  const navigation = useNavigation<OnboardingScreenNavigationProp>();
 
-const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
   const handleOnboardingFinish = async () => {
     await AsyncStorage.setItem('hasSeenOnboarding', 'true');
     navigation.replace('home');
+  };
+
+  const handleLoginPress = () => {
+    handleOnboardingFinish();
+  };
+
+  const handleSignupPress = () => {
+    handleOnboardingFinish();
   };
 
   const Dot = ({ selected }: { selected: boolean }) => {
@@ -52,6 +59,7 @@ const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
       showNext={false}
       showSkip={false}
       showDone={false}
+      onDone={() => handleOnboardingFinish()}
       DotComponent={Dot}
       bottomBarColor={Colors.background}
       containerStyles={styles.container}
@@ -113,6 +121,27 @@ const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
           ),
           subtitle: '',
         },
+        {
+          backgroundColor: Colors.background,
+          image: <></>,
+          title: (
+            <View style={styles.finalTextContainer}>
+              <Text style={styles.logo}>RUNWITH</Text>
+              <Text style={styles.text1}>이제 뛰어볼까요?</Text>
+              <Text style={styles.text2}>런윗과 함께 뛰어볼 차례입니다!</Text>
+            </View>
+          ),
+          subtitle: (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={handleLoginPress} style={styles.loginButton}>
+                <Text style={styles.loginButtonText}>로그인</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleSignupPress} style={styles.signupButton}>
+                <Text style={styles.signupButtonText}>회원가입</Text>
+              </TouchableOpacity>
+            </View>
+          )
+        }
       ]}
     />
   );
@@ -154,6 +183,57 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Regular',
     color: '#FFFFFF',
     marginTop: Sizes.formMargin,
+  },
+  finalTextContainer: {
+    position: 'absolute',
+    top: getSize(223),
+    alignItems: 'center',
+    textAlign: 'center',
+  },
+  logo: {
+    fontSize: 40,
+    fontFamily: 'Hanson',
+    color: Colors.main,
+  },
+  text1: {
+    fontSize: 30,
+    fontFamily: 'Pretendard-SemiBold',
+    color: Colors.main,
+    marginTop: getSize(165),
+  },
+  text2: {
+    fontSize: 16,
+    fontFamily: 'Pretendard-Regular',
+    color: 'white',
+    marginTop: getSize(14),
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: getSize(50),
+    alignItems: 'center',
+  },
+  loginButton: {
+    backgroundColor: Colors.main,
+    borderRadius: getSize(10),
+    paddingVertical: getSize(11),
+    paddingHorizontal: getSize(68),
+    marginBottom: getSize(20),
+  },
+  loginButtonText: {
+    color: 'black',
+    fontSize: 16,
+    fontFamily: 'Pretendard-SemiBold',
+  },
+  signupButton: {
+    backgroundColor: Colors.grayBox,
+    borderRadius: getSize(10),
+    paddingVertical: getSize(11),
+    paddingHorizontal: getSize(61),
+  },
+  signupButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Pretendard-SemiBold',
   },
 });
 
