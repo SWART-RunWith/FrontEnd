@@ -2,18 +2,16 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
+import { useEffect, useCallback } from 'react';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
+
+  const [fontsLoaded] = useFonts({
     'Hanson': require('@/assets/fonts/Hanson-Bold.ttf'),
-    'Pretendard-Black': require('@/assets/fonts/Pretendard-Black.ttf'),
     'Pretendard-Bold': require('@/assets/fonts/Pretendard-Bold.ttf'),
     'Pretendard-ExtraBold': require('@/assets/fonts/Pretendard-ExtraBold.ttf'),
     'Pretendard-ExtraLight': require('@/assets/fonts/Pretendard-ExtraLight.ttf'),
@@ -24,13 +22,17 @@ export default function RootLayout() {
     'Pretendard-Thin': require('@/assets/fonts/Pretendard-Thin.ttf'),
   });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+  const hideSplashScreen = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [fontsLoaded]);
 
-  if (!loaded) {
+  useEffect(() => {
+    hideSplashScreen();
+  }, [hideSplashScreen]);
+
+  if (!fontsLoaded) {
     return null;
   }
 
