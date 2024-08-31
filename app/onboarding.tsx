@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Colors from '@/constants/Colors';
+import Sizes from '@/constants/Sizes';
+import getSize from '@/scripts/getSize';
 
 const { width, height } = Dimensions.get('window');
 
@@ -13,7 +15,8 @@ type RootStackParamList = {
   home: undefined;
 };
 
-type OnboardingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'onboarding'>;
+type OnboardingScreenNavigationProp =
+  StackNavigationProp<RootStackParamList, 'onboarding'>;
 
 type Props = {
   navigation: OnboardingScreenNavigationProp;
@@ -25,8 +28,32 @@ const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
     navigation.replace('home');
   };
 
+  const Dot = ({ selected }: { selected: boolean }) => {
+    let backgroundColor;
+
+    backgroundColor = selected ? 'white' : '#4A4A4A';
+
+    return (
+      <View
+        style={{
+          width: 7,
+          height: 7,
+          marginHorizontal: 7,
+          backgroundColor,
+          borderRadius: 3,
+          bottom: getSize(50),
+        }}
+      />
+    );
+  };
+
   return (
     <Onboarding
+      showNext={false}
+      showSkip={false}
+      showDone={false}
+      DotComponent={Dot}
+      bottomBarColor={Colors.background}
       containerStyles={styles.container}
       pages={[
         {
@@ -34,48 +61,57 @@ const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
           image: (
             <Image
               source={require('@/assets/images/onboarding1.png')}
-              style={styles.image}
+              style={styles.image1}
             />
           ),
-          title: <Text style={styles.title}>같이 그리는 코스, Runwith</Text>,
-          subtitle: (
-            <Text style={styles.subtitle}>
-              직접 뛰며 나만의 러닝 코스를 그려보세요.{"\n"}
-              내가 그린 코스를 저장하고 언제든 뛰어보세요.
-            </Text>
+          title: (
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>같이 그리는 코스, Runwith</Text>
+              <Text style={styles.subtitle}>
+                직접 뛰며 나만의 러닝 코스를 그려보세요.{"\n"}
+                내가 그린 코스를 저장하고 언제든 뛰어보세요.
+              </Text>
+            </View>
           ),
+          subtitle: '',
         },
         {
           backgroundColor: Colors.background,
           image: (
             <Image
               source={require('@/assets/images/onboarding2.png')}
-              style={[styles.image, { width: width * 0.6, height: height * 0.4 }]}
+              style={styles.image2}
             />
           ),
-          title: <Text style={styles.title}>나만의 코스를 공유하고 싶다면</Text>,
-          subtitle: (
-            <Text style={styles.subtitle}>
-              숨겨진 근처 러닝 코스를 공유해보세요.{"\n"}
-              다른 러너들의 코스 정보도 알 수 있어요.
-            </Text>
+          title: (
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>나만의 코스를 공유하고 싶다면</Text>
+              <Text style={styles.subtitle}>
+                숨겨진 근처 러닝 코스를 공유해보세요.{"\n"}
+                다른 러너들의 코스 정보도 알 수 있어요.
+              </Text>
+            </View>
           ),
+          subtitle: '',
         },
         {
           backgroundColor: Colors.background,
           image: (
             <Image
               source={require('@/assets/images/onboarding3.png')}
-              style={[styles.image, { width: width * 0.6, height: height * 0.4 }]}
+              style={styles.image3}
             />
           ),
-          title: <Text style={styles.title}>크루와 더욱 즐겁게</Text>,
-          subtitle: (
-            <Text style={styles.subtitle}>
-              러닝 크루와의 소통으로 동기부여를 받아보세요.{"\n"}
-              크루 멤버와 즐거운 비대면 러닝도 즐길 수 있어요.
-            </Text>
+          title: (
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>크루와 더욱 즐겁게</Text>
+              <Text style={styles.subtitle}>
+                러닝 크루와의 소통으로 동기부여를 받아보세요.{"\n"}
+                크루 멤버와 즐거운 비대면 러닝도 즐길 수 있어요.
+              </Text>
+            </View>
           ),
+          subtitle: '',
         },
       ]}
     />
@@ -85,26 +121,39 @@ const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    backgroundColor: Colors.background
+    backgroundColor: Colors.background,
   },
-  image: {
-    width: width * 0.8,
-    height: height * 0.5,
+  image1: {
+    width: width,
     resizeMode: 'contain',
-    marginBottom: 30,
+    marginTop: getSize(325),
+  },
+  image2: {
+    width: width,
+    resizeMode: 'contain',
+    marginTop: getSize(78),
+  },
+  image3: {
+    width: width,
+    resizeMode: 'contain',
+    marginTop: getSize(345),
+  },
+  textContainer: {
+    position: 'absolute',
+    top: getSize(128),
+    left: Sizes.formMargin,
+    textAlign: 'left',
   },
   title: {
-    fontSize: 24,
+    fontSize: Sizes.pageTitle,
     fontFamily: 'Pretendard-ExtraBold',
     color: Colors.main,
-    textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
     fontFamily: 'Pretendard-Regular',
     color: '#FFFFFF',
-    textAlign: 'center',
-    marginTop: 10,
+    marginTop: Sizes.formMargin,
   },
 });
 
