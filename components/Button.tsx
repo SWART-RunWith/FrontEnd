@@ -4,6 +4,7 @@ import Svg, { Path, Rect } from 'react-native-svg';
 
 import Colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
+import Sizes from '@/constants/Sizes';
 
 interface RunningButtonProps {
   onPress: () => void;
@@ -112,4 +113,80 @@ export {
   PlayButton,
   EndButton,
   PauseButton,
+};
+
+interface DefaultButtonProps {
+  onPress: () => void;
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontColor?: string;
+  style?: object;
+  width?: number;
+  height?: number;
+  radius?: number;
+  gap?: number;
+  isGary?: boolean;
+  disabled?: boolean;
+}
+
+const DefaultButton = ({
+  onPress,
+  text = '',
+  fontSize = getSize(Sizes.boxTitle),
+  fontFamily = 'Pretendard-SemiBold',
+  fontColor = '#000',
+  style = {},
+  width = 179,
+  height = 40,
+  radius = 10,
+  gap = 10,
+  isGary = false,
+  disabled = false,
+}: DefaultButtonProps) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+      style={{
+        width: getSize(width),
+        height: getSize(height),
+        borderRadius: getSize(radius),
+        marginHorizontal: getSize(gap) / 2, // 버튼 간의 간격을 반으로 줄여 좌우에 동일한 간격 부여
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: isGary ? Colors.grayBox : Colors.main,
+        ...style,
+      }}
+    >
+      <Text style={{
+        fontSize: fontSize,
+        fontFamily,
+        color: isGary ? 'white' : 'black',
+      }}
+      >
+        {text}
+      </Text>
+    </TouchableOpacity>
+  );
+};
+
+const LoginButton = ({
+  text = '로그인',
+  ...props
+}: DefaultButtonProps) => {
+  return <DefaultButton {...props} text={text} />;
+};
+
+const SignUpButton = ({
+  text = '회원가입',
+  ...props
+}: DefaultButtonProps) => {
+  return <DefaultButton {...props} text={text} />;
+};
+
+export {
+  DefaultButton,
+  LoginButton,
+  SignUpButton
 };
