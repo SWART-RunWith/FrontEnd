@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   dot: {
     width: getSize(7),
     height: getSize(7),
-    borderRadius: 5,
+    borderRadius: 100,
     backgroundColor: '#505050',
     marginHorizontal: getSize(7),
   },

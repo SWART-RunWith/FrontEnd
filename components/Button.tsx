@@ -32,7 +32,7 @@ const RunningButton = ({
   color = Colors.main,
   width = 80,
   height = 80,
-  radius = 50,
+  radius = 100,
   isEnd = false,
   disabled = false,
   svg
@@ -133,7 +133,7 @@ interface DefaultButtonProps {
 const DefaultButton = ({
   onPress,
   text = '',
-  fontSize = getSize(Sizes.boxTitle),
+  fontSize = getSize(Sizes.boxText),
   fontFamily = 'Pretendard-SemiBold',
   fontColor = '#000',
   style = {},
