@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import Bar from '@/components/Bar';
+import { Bar, EmailBar, PasswordBar } from '@/components/Bar';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
@@ -20,21 +20,13 @@ const LoginScreen: React.FC = () => {
       <Text style={styles.title}>로그인</Text>
 
       <View style={styles.barContainer}>
-        <Bar
-          label="이메일"
-          placeholder="이메일을 입력해주세요"
+        <EmailBar
           value={email}
           onChangeText={setEmail}
-          isSecure={false}
-          showIcon={false}
         />
-        <Bar
-          label="비밀번호"
-          placeholder="비밀번호를 입력해주세요"
+        <PasswordBar
           value={password}
           onChangeText={setPassword}
-          isSecure={false}
-          showIcon={false}
         />
       </View>
 
@@ -91,13 +83,13 @@ const styles = StyleSheet.create({
     marginTop: getSize(26),
   },
   linkText: {
-    fontSize: 14,
+    fontSize: getSize(14),
     fontFamily: 'Pretendard-Medium',
     color: 'rgba(255, 255, 255, 0.6)',
     marginHorizontal: getSize(5),
   },
   separator: {
-    fontSize: 14,
+    fontSize: getSize(14),
     fontFamily: 'Pretendard-Medium',
     color: 'rgba(255, 255, 255, 0.6)',
   },
@@ -108,12 +100,13 @@ const styles = StyleSheet.create({
     marginTop: getSize(251),
   },
   signUpText: {
-    fontSize: 14,
+    fontSize: getSize(14),
     fontFamily: 'Pretendard-Medium',
     color: 'rgba(255, 255, 255, 0.4)',
   },
   highlight: {
     color: Colors.main,
+    textDecorationLine: 'underline',
   },
 });
 
