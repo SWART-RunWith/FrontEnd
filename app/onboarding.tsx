@@ -86,7 +86,7 @@ const OnboardingScreen: React.FC = () => {
         {/* 온보딩 마지막 페이지 */}
         <View style={styles.page}>
           <View style={styles.finalTextContainer}>
-            <Runwith />
+            <Text style={styles.logo}>RUNWITH</Text>
             <Text style={styles.text1}>이제 뛰어볼까요?</Text>
             <Text style={styles.text2}>런윗과 함께 뛰어볼 차례입니다!</Text>
           </View>
@@ -175,6 +175,11 @@ const styles = StyleSheet.create({
     top: getSize(223),
     alignItems: 'center',
     textAlign: 'center',
+  },
+  logo: {
+    fontSize: getSize(40),
+    fontFamily: 'Hanson',
+    color: Colors.main,
   },
   text1: {
     fontSize: getSize(30),

@@ -42,7 +42,7 @@ const LoginScreen: React.FC = () => {
 
       <View style={styles.linkContainer}>
         <TouchableOpacity onPress={() => console.log('아이디 찾기')}>
-          <Text style={styles.linkText}>아이디 찾기</Text>
+          <Text style={styles.linkText}>  아이디 찾기</Text>
         </TouchableOpacity>
         <Text style={styles.separator}> / </Text>
         <TouchableOpacity onPress={() => console.log('비밀번호 찾기')}>
@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
   },
   linkContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
     marginTop: getSize(26),
   },
   linkText: {

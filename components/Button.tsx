@@ -134,12 +134,10 @@ const DefaultButton = ({
   text = '',
   fontSize = getSize(Sizes.boxText),
   fontFamily = 'Pretendard-SemiBold',
-  fontColor = '#000',
   style = {},
   width = 179,
   height = 40,
   radius = 10,
-  gap = 10,
   isGary = false,
   disabled = false,
 }: DefaultButtonProps) => {
@@ -151,7 +149,6 @@ const DefaultButton = ({
         width: getSize(width),
         height: getSize(height),
         borderRadius: getSize(radius),
-        marginHorizontal: getSize(gap) / 2, // 버튼 간의 간격을 반으로 줄여 좌우에 동일한 간격 부여
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: isGary ? Colors.grayBox : Colors.main,
