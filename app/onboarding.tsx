@@ -4,18 +4,19 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Colors from '@/constants/Colors';
+import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
 import Runwith from '@/components/Runwith';
 import { LoginButton, SignUpButton } from '@/components/Button';
 
 // navigation
-import { HomeScreenNavigationProp } from '@/scripts/navigation';
+import { LoginScreenNavigationProp } from '@/scripts/navigation';
 
 const { width, height } = Dimensions.get('window');
 
 const OnboardingScreen: React.FC = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation<LoginScreenNavigationProp>();
   const [currentPage, setCurrentPage] = useState(0);
 
   const handleOnboardingFinish = async () => {
@@ -29,7 +30,7 @@ const OnboardingScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={Styles.container}>
       <ScrollView
         horizontal
         pagingEnabled
@@ -93,13 +94,15 @@ const OnboardingScreen: React.FC = () => {
             <LoginButton
               onPress={() => {
                 console.log('login button pressed');
-                navigation.replace('home');
+                handleOnboardingFinish();
+                navigation.replace('login');
               }}
               style={{ marginBottom: getSize(20) }}
             />
             <SignUpButton
               onPress={() => {
                 console.log('sign up button pressed');
+                handleOnboardingFinish();
                 navigation.replace('home');
               }}
               isGary={true}
@@ -126,10 +129,6 @@ const OnboardingScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
   page: {
     width: width,
     justifyContent: 'center',

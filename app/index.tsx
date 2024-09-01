@@ -4,7 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Runwith from '@/components/Runwith';
-import Colors from '@/constants/Colors';
+import Styles from '@/constants/Styles';
+
 import resetOnboarding from '@/scripts/resetOnboarding';
 
 // navigation
@@ -32,19 +33,10 @@ const IndexScreen: React.FC = () => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
+    <View style={Styles.container}>
       <Runwith />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.background,
-  },
-});
 
 export default IndexScreen;

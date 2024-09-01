@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
+import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
 import { StartButton } from '@/components/Button';
 
@@ -28,7 +29,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={Styles.container}>
       <Text style={styles.title}>RUNWITH</Text>
       <StartButton
         style={styles.button}
@@ -40,12 +41,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.background,
-  },
   title: {
     fontSize: Sizes.headerTitle,
     fontFamily: 'Hanson',
