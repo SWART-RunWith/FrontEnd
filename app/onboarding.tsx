@@ -92,18 +92,20 @@ const OnboardingScreen: React.FC = () => {
             <Text style={styles.text2}>런윗과 함께 뛰어볼 차례입니다!</Text>
           </View>
           <View style={styles.buttonContainer}>
-            {/* <LoginButton
+            <LoginButton
               onPress={() => {
                 console.log('login button pressed');
                 navigation.replace('home');
               }}
+              style={{ marginBottom: getSize(20) }}
             />
             <SignUpButton
               onPress={() => {
                 console.log('sign up button pressed');
                 navigation.replace('home');
               }}
-            /> */}
+              isGary={true}
+            />
           </View>
         </View>
       </ScrollView>
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
   textContainer: {
     position: 'absolute',
     top: getSize(128),
-    left: Sizes.formMargin,
+    left: getSize(Sizes.formMargin),
     textAlign: 'left',
   },
   title: {
@@ -188,8 +190,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: getSize(50),
+    bottom: getSize(107),
     alignItems: 'center',
+
   },
   dotsContainer: {
     flexDirection: 'row',
@@ -200,7 +203,7 @@ const styles = StyleSheet.create({
   dot: {
     width: getSize(7),
     height: getSize(7),
-    borderRadius: 3.5,
+    borderRadius: 5,
     backgroundColor: '#505050',
     marginHorizontal: getSize(7),
   },
@@ -208,7 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D9D9D9',
   },
   hiddenDot: {
-    backgroundColor: Colors.background,
+    opacity: 0,
   },
 });
 
