@@ -68,8 +68,7 @@ const RunningButton = ({
 const StartButton = ({
   text = 'START',
   ...props
-}
-  : RunningButtonProps) => {
+}: RunningButtonProps) => {
   return <RunningButton {...props} text={text} />;
 };
 
