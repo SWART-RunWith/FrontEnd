@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Loading from '@/components/Loading';
+import Runwith from '@/components/Runwith';
 import Colors from '@/constants/Colors';
 import resetOnboarding from '@/scripts/resetOnboarding';
 
@@ -38,7 +38,7 @@ const IndexScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Loading />
+      <Runwith />
     </View>
   );
 };

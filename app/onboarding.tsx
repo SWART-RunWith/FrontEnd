@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
+import Runwith from '@/components/Runwith';
 import { LoginButton, SignUpButton } from '@/components/Button';
 
 const { width } = Dimensions.get('window');
@@ -86,7 +87,7 @@ const OnboardingScreen: React.FC = () => {
 
         <View style={styles.page}>
           <View style={styles.finalTextContainer}>
-            <Text style={styles.logo}>RUNWITH</Text>
+            <Runwith />
             <Text style={styles.text1}>이제 뛰어볼까요?</Text>
             <Text style={styles.text2}>런윗과 함께 뛰어볼 차례입니다!</Text>
           </View>
@@ -172,11 +173,6 @@ const styles = StyleSheet.create({
     top: getSize(223),
     alignItems: 'center',
     textAlign: 'center',
-  },
-  logo: {
-    fontSize: getSize(40),
-    fontFamily: 'Hanson',
-    color: Colors.main,
   },
   text1: {
     fontSize: getSize(30),
