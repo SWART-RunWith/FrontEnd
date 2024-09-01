@@ -10,7 +10,7 @@ import getSize from '@/scripts/getSize';
 import Runwith from '@/components/Runwith';
 import { LoginButton, SignUpButton } from '@/components/Button';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 type RootStackParamList = {
   onboarding: undefined;
@@ -43,6 +43,7 @@ const OnboardingScreen: React.FC = () => {
         onScroll={handleScroll}
         scrollEventThrottle={16}
       >
+        {/* 온보딩 1번째 페이지 */}
         <View style={styles.page}>
           <Image
             source={require('@/assets/images/onboarding1.png')}
@@ -57,6 +58,7 @@ const OnboardingScreen: React.FC = () => {
           </View>
         </View>
 
+        {/* 온보딩 2번째 페이지 */}
         <View style={styles.page}>
           <Image
             source={require('@/assets/images/onboarding2.png')}
@@ -71,6 +73,7 @@ const OnboardingScreen: React.FC = () => {
           </View>
         </View>
 
+        {/* 온보딩 3번째 페이지 */}
         <View style={styles.page}>
           <Image
             source={require('@/assets/images/onboarding3.png')}
@@ -85,6 +88,7 @@ const OnboardingScreen: React.FC = () => {
           </View>
         </View>
 
+        {/* 온보딩 마지막 페이지 */}
         <View style={styles.page}>
           <View style={styles.finalTextContainer}>
             <Runwith />
@@ -140,16 +144,19 @@ const styles = StyleSheet.create({
   },
   image1: {
     width: width,
+    height: height,
     resizeMode: 'contain',
     marginTop: getSize(165),
   },
   image2: {
     width: width,
+    height: height,
     resizeMode: 'contain',
     marginBottom: getSize(75),
   },
   image3: {
     width: width,
+    height: height,
     resizeMode: 'contain',
     marginTop: getSize(177),
   },
