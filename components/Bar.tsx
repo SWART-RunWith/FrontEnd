@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -6,7 +6,7 @@ import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 interface BarProps {
   label?: string;
@@ -17,9 +17,11 @@ interface BarProps {
   isSecure?: boolean;
   showIcon?: boolean;
   buttonText?: string;
-  onButtonPress?: () => void;
+  onButtonPressIn?: () => void;
+  onButtonPressOut?: () => void;
   errorText?: string;
   unit?: string;
+  svgIcon?: React.ReactNode;
 }
 
 const Bar = ({
@@ -31,20 +33,24 @@ const Bar = ({
   isSecure = false,
   showIcon = false,
   buttonText = '',
-  onButtonPress,
+  onButtonPressIn,
+  onButtonPressOut,
   errorText = '',
   unit = '',
+  svgIcon = null,
 }: BarProps) => {
   return (
     <View style={styles.container}>
       {/* 라벨 */}
       <View style={styles.labelContainer}>
         <Text style={styles.label}>{label}</Text>
-        {showIcon && <Ionicons
-          name="checkmark-circle"
-          size={getSize(14)}
-          color={Colors.main}
-        />}
+        {showIcon && (
+          <Ionicons
+            name="checkmark-circle"
+            size={getSize(14)}
+            color={Colors.main}
+          />
+        )}
       </View>
 
       {/* 입력 창 */}
@@ -58,15 +64,22 @@ const Bar = ({
           secureTextEntry={isSecure}
         />
 
-        {buttonText && (
-          <TouchableOpacity style={styles.button} onPress={onButtonPress}>
+        {buttonText ? (
+          <TouchableOpacity style={styles.button} onPress={onButtonPressIn}>
             <Text style={styles.buttonText}>{buttonText}</Text>
           </TouchableOpacity>
-        )}
-
-        {unit && (
+        ) : unit ? (
           <Text style={styles.unitText}>{unit}</Text>
-        )}
+        ) : svgIcon ? (
+          <TouchableOpacity
+            onPressIn={onButtonPressIn}
+            onPressOut={onButtonPressOut}
+          >
+            <View style={styles.svgIconContainer}>
+              {svgIcon}
+            </View>
+          </TouchableOpacity>
+        ) : null}
       </View>
 
       {errorText && <Text style={styles.errorText}>{errorText}</Text>}
@@ -123,6 +136,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Regular',
     marginLeft: getSize(10),
   },
+  svgIconContainer: {
+    marginLeft: getSize(10),
+  },
   errorText: {
     fontSize: getSize(12),
     color: 'red',
@@ -136,25 +152,38 @@ const EmailBar = ({
   placeholder = "이메일을 입력해주세요",
   ...props
 }: BarProps) => {
-  return <Bar
-    label={label}
-    placeholder={placeholder}
-    {...props}
-  />;
+  return (
+    <Bar
+      label={label}
+      placeholder={placeholder}
+      svgIcon={null}
+      {...props}
+    />
+  );
 };
 
 const PasswordBar = ({
   label = "비밀번호",
   placeholder = "비밀번호를 입력해주세요",
-  isSecure = true,
   ...props
 }: BarProps) => {
-  return <Bar
-    label={label}
-    placeholder={placeholder}
-    isSecure={isSecure}
-    {...props}
-  />;
+  const [secureText, setSecureText] = useState(true);
+
+  return (
+    <Bar
+      label={label}
+      placeholder={placeholder}
+      isSecure={secureText}
+      svgIcon={<Ionicons
+        name={secureText ? 'eye-off' : 'eye'}
+        size={20}
+        color="rgba(255, 255, 255, 0.6)"
+      />}
+      onButtonPressIn={() => setSecureText(false)}
+      onButtonPressOut={() => setSecureText(true)}
+      {...props}
+    />
+  );
 };
 
 export {
