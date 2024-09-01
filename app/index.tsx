@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -8,15 +7,11 @@ import Runwith from '@/components/Runwith';
 import Colors from '@/constants/Colors';
 import resetOnboarding from '@/scripts/resetOnboarding';
 
-type RootStackParamList = {
-  onboarding: undefined;
-  home: undefined;
-};
+// navigation
+import { OnboardingScreenNavigationProp } from '@/scripts/navigation';
 
-type LoadingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'onboarding'>;
-
-const IndexScreen = () => {
-  const navigation = useNavigation<LoadingScreenNavigationProp>();
+const IndexScreen: React.FC = () => {
+  const navigation = useNavigation<OnboardingScreenNavigationProp>();
 
   useEffect(() => {
     const checkOnboardingStatus = async () => {

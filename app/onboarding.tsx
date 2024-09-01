@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
@@ -10,18 +9,13 @@ import getSize from '@/scripts/getSize';
 import Runwith from '@/components/Runwith';
 import { LoginButton, SignUpButton } from '@/components/Button';
 
+// navigation
+import { HomeScreenNavigationProp } from '@/scripts/navigation';
+
 const { width, height } = Dimensions.get('window');
 
-type RootStackParamList = {
-  onboarding: undefined;
-  home: undefined;
-};
-
-type OnboardingScreenNavigationProp
-  = StackNavigationProp<RootStackParamList, 'onboarding'>;
-
 const OnboardingScreen: React.FC = () => {
-  const navigation = useNavigation<OnboardingScreenNavigationProp>();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const [currentPage, setCurrentPage] = useState(0);
 
   const handleOnboardingFinish = async () => {
