@@ -33,7 +33,7 @@ const IndexScreen: React.FC = () => {
   }, [navigation]);
 
   return (
-    <View style={Styles.container}>
+    <View style={Styles.loading}>
       <Runwith />
     </View>
   );
