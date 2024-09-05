@@ -3,13 +3,13 @@ import { View, Text, TouchableOpacity, StyleSheet, Keyboard, TouchableWithoutFee
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
 
-import { Bar, EmailBar, PasswordBar } from '@/components/Bar';
+import { EmailBar, PasswordBar } from '@/components/Bar';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
+import { HomeScreenNavigationProp } from '@/scripts/navigation';
 import { LoginButton } from '@/components/Button';
 import { LoginHeader } from '@/components/Header';
-import { HomeScreenNavigationProp } from '@/scripts/navigation';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -54,7 +54,7 @@ const LoginScreen: React.FC = () => {
 
         <View style={styles.signUpContainer}>
           <Text style={styles.signUpText}>아직 회원이 아니신가요? </Text>
-          <TouchableOpacity onPress={() => navigation.replace('home')}>
+          <TouchableOpacity onPress={() => navigation.replace('signup')}>
             <Text style={[styles.signUpText, styles.highlight]}>회원가입</Text>
           </TouchableOpacity>
         </View>

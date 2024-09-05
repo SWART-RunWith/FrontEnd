@@ -7,10 +7,8 @@ import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
-import { LoginButton, SignUpButton } from '@/components/Button';
-
-// navigation
 import { LoginScreenNavigationProp } from '@/scripts/navigation';
+import { LoginButton, SignUpButton } from '@/components/Button';
 
 const { width, height } = Dimensions.get('window');
 
@@ -179,7 +177,7 @@ const OnboardingScreen: React.FC = () => {
             <SignUpButton
               onPress={() => {
                 handleOnboardingFinish();
-                navigation.replace('home');
+                navigation.replace('signup');
               }}
               isGary={true}
             />
