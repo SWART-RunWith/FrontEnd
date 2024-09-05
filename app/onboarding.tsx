@@ -7,7 +7,6 @@ import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
-import Runwith from '@/components/Runwith';
 import { LoginButton, SignUpButton } from '@/components/Button';
 
 // navigation
@@ -15,147 +14,20 @@ import { LoginScreenNavigationProp } from '@/scripts/navigation';
 
 const { width, height } = Dimensions.get('window');
 
-const OnboardingScreen: React.FC = () => {
-  const navigation = useNavigation<LoginScreenNavigationProp>();
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const handleOnboardingFinish = async () => {
-    await AsyncStorage.setItem('hasSeenOnboarding', 'true');
-  };
-
-  const handleScroll = (event: any) => {
-    const scrollPosition = event.nativeEvent.contentOffset.x;
-    const currentPageIndex = Math.round(scrollPosition / width);
-    setCurrentPage(currentPageIndex);
-  };
-
-  return (
-    <View style={Styles.container}>
-      <ScrollView
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-      >
-        {/* 온보딩 1번째 페이지 */}
-        <View style={styles.page}>
-          <Image
-            source={require('@/assets/images/onboarding1.png')}
-            style={styles.image1}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>같이 그리는 코스, Runwith</Text>
-            <Text style={styles.subtitle}>
-              직접 뛰며 나만의 러닝 코스를 그려보세요.{"\n"}
-              내가 그린 코스를 저장하고 언제든 뛰어보세요.
-            </Text>
-          </View>
-        </View>
-
-        {/* 온보딩 2번째 페이지 */}
-        <View style={styles.page}>
-          <Image
-            source={require('@/assets/images/onboarding2.png')}
-            style={styles.image2}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>나만의 코스를 공유하고 싶다면</Text>
-            <Text style={styles.subtitle}>
-              숨겨진 근처 러닝 코스를 공유해보세요.{"\n"}
-              다른 러너들의 코스 정보도 알 수 있어요.
-            </Text>
-          </View>
-        </View>
-
-        {/* 온보딩 3번째 페이지 */}
-        <View style={styles.page}>
-          <Image
-            source={require('@/assets/images/onboarding3.png')}
-            style={styles.image3}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>크루와 더욱 즐겁게</Text>
-            <Text style={styles.subtitle}>
-              러닝 크루와의 소통으로 동기부여를 받아보세요.{"\n"}
-              크루 멤버와 즐거운 비대면 러닝도 즐길 수 있어요.
-            </Text>
-          </View>
-        </View>
-
-        {/* 온보딩 마지막 페이지 */}
-        <View style={styles.page}>
-          <View style={styles.finalTextContainer}>
-            <Text style={styles.logo}>RUNWITH</Text>
-            <Text style={styles.text1}>이제 뛰어볼까요?</Text>
-            <Text style={styles.text2}>런윗과 함께 뛰어볼 차례입니다!</Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <LoginButton
-              onPress={() => {
-                console.log('login button pressed');
-                handleOnboardingFinish();
-                navigation.replace('login');
-              }}
-              style={{ marginBottom: getSize(20) }}
-            />
-            <SignUpButton
-              onPress={() => {
-                console.log('sign up button pressed');
-                handleOnboardingFinish();
-                navigation.replace('home');
-              }}
-              isGary={true}
-            />
-          </View>
-        </View>
-      </ScrollView>
-
-      {/* Dots */}
-      <View style={styles.dotsContainer}>
-        {[0, 1, 2].map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.dot,
-              currentPage === index ? styles.activeDot : null,
-              currentPage === 3 ? styles.hiddenDot : null,
-            ]}
-          />
-        ))}
-      </View>
-    </View>
-  );
-};
-
+// styles
 const styles = StyleSheet.create({
   page: {
     width: width,
-    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
-  image1: {
+  onboardingContainer: {
+    flex: 1,
     width: width,
     height: height,
-    resizeMode: 'contain',
-    marginTop: getSize(165),
-  },
-  image2: {
-    width: width,
-    height: height,
-    resizeMode: 'contain',
-    marginBottom: getSize(75),
-  },
-  image3: {
-    width: width,
-    height: height,
-    resizeMode: 'contain',
-    marginTop: getSize(177),
+    flexDirection: 'column',
+    top: getSize(128),
   },
   textContainer: {
-    position: 'absolute',
-    top: getSize(128),
     left: getSize(Sizes.formMargin),
     textAlign: 'left',
   },
@@ -170,9 +42,23 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginTop: Sizes.formMargin,
   },
+  image1: {
+    width: width,
+    resizeMode: 'contain',
+    marginTop: getSize(27),
+  },
+  image2: {
+    width: width,
+    resizeMode: 'contain',
+    marginTop: getSize(16),
+  },
+  image3: {
+    width: width,
+    resizeMode: 'contain',
+    marginTop: getSize(9),
+  },
   finalTextContainer: {
-    position: 'absolute',
-    top: getSize(223),
+    marginTop: getSize(223),
     alignItems: 'center',
     textAlign: 'center',
   },
@@ -197,7 +83,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: getSize(107),
     alignItems: 'center',
-
   },
   dotsContainer: {
     flexDirection: 'row',
@@ -219,5 +104,104 @@ const styles = StyleSheet.create({
     opacity: 0,
   },
 });
+
+const onboardingData = [
+  {
+    image: require('@/assets/images/onboarding1.png'),
+    title: '같이 그리는 코스, Runwith',
+    subtitle: '직접 뛰며 나만의 러닝 코스를 그려보세요.\n내가 그린 코스를 저장하고 언제든 뛰어보세요.',
+    imageStyle: styles.image1,
+  },
+  {
+    image: require('@/assets/images/onboarding2.png'),
+    title: '나만의 코스를 공유하고 싶다면',
+    subtitle: '숨겨진 근처 러닝 코스를 공유해보세요.\n다른 러너들의 코스 정보도 알 수 있어요.',
+    imageStyle: styles.image2,
+  },
+  {
+    image: require('@/assets/images/onboarding3.png'),
+    title: '크루와 더욱 즐겁게',
+    subtitle: '러닝 크루와의 소통으로 동기부여를 받아보세요.\n크루 멤버와 즐거운 비대면 러닝도 즐길 수 있어요.',
+    imageStyle: styles.image3,
+  },
+];
+
+const OnboardingScreen: React.FC = () => {
+  const navigation = useNavigation<LoginScreenNavigationProp>();
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handleOnboardingFinish = async () => {
+    await AsyncStorage.setItem('hasSeenOnboarding', 'true');
+  };
+
+  const handleScroll = (event: any) => {
+    const scrollPosition = event.nativeEvent.contentOffset.x;
+    const currentPageIndex = Math.round(scrollPosition / width);
+    setCurrentPage(currentPageIndex);
+  };
+
+  return (
+    <View style={Styles.container}>
+      <ScrollView
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+      >
+        {onboardingData.map((page, index) => (
+          <View key={index} style={styles.page}>
+            <View style={styles.onboardingContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.title}>{page.title}</Text>
+                <Text style={styles.subtitle}>{page.subtitle}</Text>
+              </View>
+              <Image source={page.image} style={page.imageStyle} />
+            </View>
+          </View>
+        ))}
+
+        {/* 마지막 페이지 */}
+        <View style={styles.page}>
+          <View style={styles.finalTextContainer}>
+            <Text style={styles.logo}>RUNWITH</Text>
+            <Text style={styles.text1}>이제 뛰어볼까요?</Text>
+            <Text style={styles.text2}>런윗과 함께 뛰어볼 차례입니다!</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <LoginButton
+              onPress={() => {
+                handleOnboardingFinish();
+                navigation.replace('login');
+              }}
+              style={{ marginBottom: getSize(20) }}
+            />
+            <SignUpButton
+              onPress={() => {
+                handleOnboardingFinish();
+                navigation.replace('home');
+              }}
+              isGary={true}
+            />
+          </View>
+        </View>
+      </ScrollView>
+
+      {/* Dots */}
+      <View style={styles.dotsContainer}>
+        {onboardingData.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.dot,
+              currentPage === index ? styles.activeDot : null,
+              currentPage === onboardingData.length ? styles.hiddenDot : null,
+            ]}
+          />
+        ))}
+      </View>
+    </View>
+  );
+};
 
 export default OnboardingScreen;
