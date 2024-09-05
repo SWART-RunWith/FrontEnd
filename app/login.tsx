@@ -7,6 +7,7 @@ import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
 import { LoginButton } from '@/components/Button';
+import { LoginHeader } from '@/components/Header';
 import { HomeScreenNavigationProp } from '@/scripts/navigation';
 
 const LoginScreen: React.FC = () => {
@@ -17,7 +18,7 @@ const LoginScreen: React.FC = () => {
 
   return (
     <View style={Styles.container}>
-      <Text style={styles.title}>로그인</Text>
+      <LoginHeader />
 
       <View style={styles.barContainer}>
         <EmailBar
@@ -61,20 +62,12 @@ const LoginScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontFamily: 'Pretendard-Bold',
-    color: Colors.main,
-    textAlign: 'center',
-    marginTop: getSize(57),
-  },
   barContainer: {
-    marginTop: getSize(165),
+    marginTop: getSize(140),
     gap: getSize(24),
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
     marginTop: getSize(33),
   },
   linkContainer: {
@@ -94,9 +87,8 @@ const styles = StyleSheet.create({
   },
   signUpContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-
-    marginTop: getSize(251),
+    position: 'absolute',
+    bottom: getSize(48)
   },
   signUpText: {
     fontSize: getSize(14),
