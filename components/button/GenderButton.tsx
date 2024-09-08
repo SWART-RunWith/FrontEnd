@@ -1,7 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
+import Sizes from '@/constants/Sizes';
+
+const { width } = Dimensions.get('window');
 
 interface GenderButtonProps {
   text: string;
@@ -9,7 +12,11 @@ interface GenderButtonProps {
   onPress: () => void;
 }
 
-const GenderButton: React.FC<GenderButtonProps> = ({ text, isSelected, onPress }) => {
+const GenderButton: React.FC<GenderButtonProps> = ({
+  text,
+  isSelected,
+  onPress,
+}) => {
   return (
     <TouchableOpacity
       style={[
@@ -32,7 +39,7 @@ const GenderButton: React.FC<GenderButtonProps> = ({ text, isSelected, onPress }
 
 const styles = StyleSheet.create({
   genderButton: {
-    width: getSize(175),
+    width: (width - getSize(Sizes.formMargin)) / 2 - (getSize(8) * 2),
     height: getSize(56),
     borderRadius: getSize(10),
     justifyContent: 'center',

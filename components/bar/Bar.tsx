@@ -102,37 +102,9 @@ const DefaultBar = ({
   );
 };
 
-interface NoInputBarProps {
-  label?: string;
-  isRequired?: boolean;
-}
-
-// 기본 Bar 컴포넌트
-const NoInputDefaultBar = ({
-  label = '',
-  isRequired = true,
-}: NoInputBarProps) => {
-  return (
-    <View style={styles.container}>
-      {/* 라벨 */}
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>{label}</Text>
-        {isRequired && (
-          <Ionicons
-            name="checkmark-circle"
-            size={getSize(14)}
-            color={Colors.main} // 필수 입력 시 체크 아이콘 색상
-          />
-        )}
-      </View>
-    </View>
-  );
-};
-
 export {
   BarProps,
   DefaultBar,
-  NoInputDefaultBar,
 }
 
 // 스타일 정의

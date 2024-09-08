@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Text, Alert, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import {
   BarProps,
   DefaultBar,
-  NoInputDefaultBar,
 } from '@/components/bar/Bar';
 import GenderButton from '@/components/button/GenderButton';
 import getSize from '@/scripts/getSize';
+import Sizes from '@/constants/Sizes';
+import Colors from '@/constants/Colors';
+
+const { width } = Dimensions.get('window');
 
 // 회원가입 Bar 컴포넌트
 const SignUpBar = ({
@@ -161,17 +164,31 @@ const SignUpWeightBar = ({
 };
 
 interface SignUpGenderBarProps {
+  label?: string;
+  isRequired?: boolean;
   onSelectGender: (gender: '남성' | '여성') => void; // 성별 선택 시 호출할 콜백
   selectedGender: '남성' | '여성' | null; // 현재 선택된 성별
 }
 
 const SignUpGenderBar: React.FC<SignUpGenderBarProps> = ({
+  label = '성별',
+  isRequired = true,
   onSelectGender,
   selectedGender,
 }) => {
   return (
-    <View>
-      <NoInputDefaultBar label="성별" />
+    <View style={styles.container}>
+      {/* 라벨 */}
+      <View style={styles.labelContainer}>
+        <Text style={styles.label}>{label}</Text>
+        {isRequired && (
+          <Ionicons
+            name="checkmark-circle"
+            size={getSize(14)}
+            color={Colors.main}
+          />
+        )}
+      </View>
       <View style={styles.genderButtonContainer}>
         {/* 남성 버튼 */}
         <GenderButton
@@ -191,11 +208,25 @@ const SignUpGenderBar: React.FC<SignUpGenderBarProps> = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: getSize(Sizes.formMargin),
+    height: getSize(81),
+  },
+  labelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: getSize(8),
+  },
+  label: {
+    fontSize: getSize(14),
+    fontFamily: 'Pretendard-Medium',
+    color: 'white',
+    marginRight: getSize(10),
+  },
   genderButtonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between', // 좌우 끝에 배치
-    width: getSize(358),
-    height: getSize(81),
+    justifyContent: 'space-between',
+    width: width - getSize(Sizes.formMargin) * 2,
   },
 });
 
