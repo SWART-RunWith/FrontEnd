@@ -143,6 +143,15 @@ const SignUpHeader: React.FC<BackHeaderProps> = ({
   return <BackHeader {...props} text={text} fontFamily={fontFamily} fontSize={getSize(fontSize)} />;
 };
 
+const TermsAgreeHeader: React.FC<BackHeaderProps> = ({
+  text = '약관 동의',
+  fontFamily = 'Pretendard-SemiBold',
+  fontSize = Sizes.pageTitle,
+  ...props
+}) => {
+  return <BackHeader {...props} text={text} fontFamily={fontFamily} fontSize={getSize(fontSize)} />;
+};
+
 // 스타일 정의
 const styles = StyleSheet.create({
   container: {
@@ -175,4 +184,5 @@ export {
   BackHeader,
   LoginHeader,
   SignUpHeader,
+  TermsAgreeHeader,
 };
