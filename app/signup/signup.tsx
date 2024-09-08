@@ -34,7 +34,6 @@ const { width } = Dimensions.get('window');
 const SignUpScreen: React.FC = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
-  // 현재 화면의 단계를 관리하는 상태
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
