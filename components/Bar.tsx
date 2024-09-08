@@ -8,6 +8,7 @@ import Sizes from '@/constants/Sizes';
 
 const { width } = Dimensions.get('window');
 
+// 기본 Bar 컴포넌트
 interface BarProps {
   label?: string;
   placeholder?: string;
@@ -15,7 +16,7 @@ interface BarProps {
   value?: string;
   onChangeText?: (text: string) => void;
   isSecure?: boolean;
-  showIcon?: boolean;
+  isRequired?: boolean;
   buttonText?: string;
   onButtonPressIn?: () => void;
   onButtonPressOut?: () => void;
@@ -24,14 +25,15 @@ interface BarProps {
   svgIcon?: React.ReactNode;
 }
 
-const Bar = ({
+// 기본 Bar 컴포넌트
+const DefaultBar = ({
   label = '',
   placeholder = '',
   placeholderTextColor = "rgba(255, 255, 255, 0.22)",
   value = '',
   onChangeText,
   isSecure = false,
-  showIcon = false,
+  isRequired = false,
   buttonText = '',
   onButtonPressIn,
   onButtonPressOut,
@@ -44,7 +46,7 @@ const Bar = ({
       {/* 라벨 */}
       <View style={styles.labelContainer}>
         <Text style={styles.label}>{label}</Text>
-        {showIcon && (
+        {isRequired && (
           <Ionicons
             name="checkmark-circle"
             size={getSize(14)}
