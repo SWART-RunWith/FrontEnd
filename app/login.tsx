@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Keyboard, TouchableWithoutFee
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
 
-import { EmailBar, PasswordBar } from '@/components/Bar';
+import { LoginEmailBar, LoginPasswordBar } from '@/components/Bar';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
@@ -23,11 +23,11 @@ const LoginScreen: React.FC = () => {
         <LoginHeader />
 
         <View style={styles.barContainer}>
-          <EmailBar
+          <LoginEmailBar
             value={email}
             onChangeText={setEmail}
           />
-          <PasswordBar
+          <LoginPasswordBar
             value={password}
             onChangeText={setPassword}
           />
