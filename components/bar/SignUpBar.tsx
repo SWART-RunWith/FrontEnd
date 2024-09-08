@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { BarProps, DefaultBar } from '@/components/bar/Bar';
+import {
+  BarProps,
+  DefaultBar,
+  NoInputDefaultBar,
+} from '@/components/bar/Bar';
+import GenderButton from '@/components/button/GenderButton';
+import getSize from '@/scripts/getSize';
 
 // 회원가입 Bar 컴포넌트
 const SignUpBar = ({
@@ -137,7 +143,6 @@ const validateWeight = (weight: string) => {
   return true;
 }
 
-
 const SignUpWeightBar = ({
   label = "체중",
   placeholder = "체중을 입력해주세요",
@@ -155,6 +160,45 @@ const SignUpWeightBar = ({
   );
 };
 
+interface SignUpGenderBarProps {
+  onSelectGender: (gender: '남성' | '여성') => void; // 성별 선택 시 호출할 콜백
+  selectedGender: '남성' | '여성' | null; // 현재 선택된 성별
+}
+
+const SignUpGenderBar: React.FC<SignUpGenderBarProps> = ({
+  onSelectGender,
+  selectedGender,
+}) => {
+  return (
+    <View>
+      <NoInputDefaultBar label="성별" />
+      <View style={styles.genderButtonContainer}>
+        {/* 남성 버튼 */}
+        <GenderButton
+          text="남성"
+          isSelected={selectedGender === '남성'}
+          onPress={() => onSelectGender('남성')}
+        />
+        {/* 여성 버튼 */}
+        <GenderButton
+          text="여성"
+          isSelected={selectedGender === '여성'}
+          onPress={() => onSelectGender('여성')}
+        />
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  genderButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between', // 좌우 끝에 배치
+    width: getSize(358),
+    height: getSize(81),
+  },
+});
+
 export {
   SignUpBar,
   SignUpNameBar,
@@ -164,4 +208,5 @@ export {
   SignUpBirthBar,
   SignUpHeightBar,
   SignUpWeightBar,
+  SignUpGenderBar,
 }
