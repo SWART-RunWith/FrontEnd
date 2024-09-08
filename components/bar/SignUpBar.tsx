@@ -90,7 +90,7 @@ const SignUpPhoneBar = ({
   );
 };
 
-const SignUpBirthBar = ({
+const SignUpDateOfBirthBar = ({
   label = "생년월일",
   placeholder = "생년월일을 입력해주세요",
   ...props
@@ -205,7 +205,7 @@ export {
   SignUpEmailBar,
   SignUpPasswordBar,
   SignUpPhoneBar,
-  SignUpBirthBar,
+  SignUpDateOfBirthBar,
   SignUpHeightBar,
   SignUpWeightBar,
   SignUpGenderBar,

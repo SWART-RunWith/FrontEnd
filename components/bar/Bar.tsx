@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.grayBox,
     height: getSize(56),
-    width: width - 32,
+    width: width - getSize(Sizes.formMargin) * 2,
     borderRadius: 10,
     paddingHorizontal: getSize(Sizes.formMargin),
   },
