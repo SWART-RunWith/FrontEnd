@@ -125,14 +125,8 @@ const SignUpDateOfBirthBar = ({
         label={label}
         placeholder={placeholder}
         value={selectedDate || ''}
-        calendarIcon={
-          <Ionicons
-            name='calendar-outline'
-            size={20}
-            color='white'
-            onPress={showDatePicker}
-          />
-        }
+        isCalendar={true}
+        onButtonPressIn={showDatePicker}
         {...props}
       />
 

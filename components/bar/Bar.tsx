@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
+import CalendarIcon from '@/assets/icons/calendar.svg';
 
 const { width } = Dimensions.get('window');
 
@@ -31,7 +32,7 @@ interface BarProps {
   errorText?: string;
   unit?: string;
   eyeIcon?: React.ReactNode;
-  calendarIcon?: React.ReactNode;
+  isCalendar?: boolean;
   onBlur?: () => void;
 }
 
@@ -51,7 +52,7 @@ const DefaultBar = ({
   errorText = '',
   unit = '',
   eyeIcon = null,
-  calendarIcon = null,
+  isCalendar = false,
   onBlur,
 }: BarProps) => {
   return (
@@ -96,14 +97,14 @@ const DefaultBar = ({
               {eyeIcon}
             </View>
           </TouchableOpacity>
-        ) : calendarIcon ?
+        ) : isCalendar ? (
           <TouchableOpacity
             onPress={onButtonPressIn}
           >
             <View style={styles.svgIconContainer} >
-              {calendarIcon}
+              <CalendarIcon width={getSize(22)} height={getSize(24)} fill='white' />
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity>)
           : null}
       </View>
 
