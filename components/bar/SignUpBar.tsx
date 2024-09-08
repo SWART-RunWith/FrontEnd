@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Alert, Dimensions } from 'react-native';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from '@expo/vector-icons';
 
 import {
@@ -65,7 +66,7 @@ const SignUpPasswordBar = ({
       label={label}
       placeholder={placeholder}
       isSecure={secureText}
-      svgIcon={<Ionicons
+      eyeIcon={<Ionicons
         name={secureText ? 'eye-off' : 'eye'}
         size={20}
         color="rgba(255, 255, 255, 0.6)"
@@ -96,14 +97,53 @@ const SignUpPhoneBar = ({
 const SignUpDateOfBirthBar = ({
   label = "생년월일",
   placeholder = "생년월일을 입력해주세요",
+  value,
+  onChangeText,
   ...props
 }: BarProps) => {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(value || '');
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: Date) => {
+    const formattedDate = date.toLocaleDateString();
+    setSelectedDate(formattedDate);
+    onChangeText && onChangeText(formattedDate);
+    hideDatePicker();
+  };
+
   return (
-    <SignUpBar
-      label={label}
-      placeholder={placeholder}
-      {...props}
-    />
+    <>
+      <SignUpBar
+        label={label}
+        placeholder={placeholder}
+        value={selectedDate || ''}
+        calendarIcon={
+          <Ionicons
+            name='calendar-outline'
+            size={20}
+            color='white'
+            onPress={showDatePicker}
+          />
+        }
+        {...props}
+      />
+
+      {/* 모달로 달력 표시 */}
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
+    </>
   );
 };
 

@@ -30,7 +30,8 @@ interface BarProps {
   onButtonPressOut?: () => void;
   errorText?: string;
   unit?: string;
-  svgIcon?: React.ReactNode;
+  eyeIcon?: React.ReactNode;
+  calendarIcon?: React.ReactNode;
   onBlur?: () => void;
 }
 
@@ -49,7 +50,8 @@ const DefaultBar = ({
   onButtonPressOut,
   errorText = '',
   unit = '',
-  svgIcon = null,
+  eyeIcon = null,
+  calendarIcon = null,
   onBlur,
 }: BarProps) => {
   return (
@@ -85,16 +87,24 @@ const DefaultBar = ({
           </TouchableOpacity>
         ) : unit ? (
           <Text style={styles.unitText}>{unit}</Text>
-        ) : svgIcon ? (
+        ) : eyeIcon ? (
           <TouchableOpacity
             onPressIn={onButtonPressIn}
             onPressOut={onButtonPressOut}
           >
             <View style={styles.svgIconContainer}>
-              {svgIcon}
+              {eyeIcon}
             </View>
           </TouchableOpacity>
-        ) : null}
+        ) : calendarIcon ?
+          <TouchableOpacity
+            onPress={onButtonPressIn}
+          >
+            <View style={styles.svgIconContainer} >
+              {calendarIcon}
+            </View>
+          </TouchableOpacity>
+          : null}
       </View>
 
       {errorText && <Text style={styles.errorText}>{errorText}</Text>}
