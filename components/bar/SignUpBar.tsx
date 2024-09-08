@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { BarProps, DefaultBar } from '@/components/bar/Bar';
@@ -8,7 +9,9 @@ const SignUpBar = ({
   isRequired = true,
   ...props
 }: BarProps) => {
-  return <DefaultBar isRequired={isRequired} {...props} />;
+  return <DefaultBar
+    isRequired={isRequired}
+    {...props} />;
 };
 
 const SignUpNameBar = ({
@@ -95,6 +98,17 @@ const SignUpBirthBar = ({
   );
 };
 
+const validateHeight = (height: string) => {
+  const heightValue = parseFloat(height)
+
+  if (heightValue > 250) {
+    Alert.alert("키 입력 오류", "키가 너무 큽니다. 250 이하의 값을 입력해 주세요.");
+    return false;
+  }
+
+  return true;
+}
+
 const SignUpHeightBar = ({
   label = "키",
   placeholder = "키를 입력해주세요",
@@ -106,10 +120,23 @@ const SignUpHeightBar = ({
       label={label}
       placeholder={placeholder}
       keyboardType={keyboardType}
+      onBlur={() => validateHeight(props.value ?? '160')}
       {...props}
     />
   );
 };
+
+const validateWeight = (weight: string) => {
+  const weightValue = parseFloat(weight)
+
+  if (weightValue > 250) {
+    Alert.alert("체중 입력 오류", "체중이 너무 큽니다. 250 이하의 값을 입력해 주세요.");
+    return false;
+  }
+
+  return true;
+}
+
 
 const SignUpWeightBar = ({
   label = "체중",
@@ -122,6 +149,7 @@ const SignUpWeightBar = ({
       label={label}
       placeholder={placeholder}
       keyboardType={keyboardType}
+      onBlur={() => validateWeight(props.value ?? '70')}
       {...props}
     />
   );

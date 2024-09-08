@@ -31,6 +31,7 @@ interface BarProps {
   errorText?: string;
   unit?: string;
   svgIcon?: React.ReactNode;
+  onBlur?: () => void;
 }
 
 // 기본 Bar 컴포넌트
@@ -49,6 +50,7 @@ const DefaultBar = ({
   errorText = '',
   unit = '',
   svgIcon = null,
+  onBlur,
 }: BarProps) => {
   return (
     <View style={styles.container}>
@@ -67,6 +69,7 @@ const DefaultBar = ({
       {/* 입력 창 */}
       <View style={styles.inputContainer}>
         <TextInput
+          onBlur={onBlur}
           style={styles.keyboard}
           keyboardType={keyboardType}
           placeholder={placeholder}
