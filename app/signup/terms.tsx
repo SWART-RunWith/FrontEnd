@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '@/constants/Colors';
+
 import getSize from '@/scripts/getSize';
+import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
+import Styles from '@/constants/Styles';
+import { TermsAgreeHeader } from '@/components/Header';
+import RightArrowIcon from '@/assets/icons/rightArrow.svg';
+import { DefaultButton } from '@/components/button/Button'; // DefaultButton을 사용
+import { SignUpScreenNavigationProp } from '@/scripts/navigation';
 
 const { width } = Dimensions.get('window');
 
@@ -16,10 +23,11 @@ const termsData = [
 ];
 
 const TermsScreen: React.FC = () => {
-  const [allChecked, setAllChecked] = useState(false); // 전체 선택 상태
-  const [checkedItems, setCheckedItems] = useState<string[]>([]); // 선택된 항목 ID 리스트
+  const navigation = useNavigation<SignUpScreenNavigationProp>();
 
-  // 전체 동의 상태 변경
+  const [allChecked, setAllChecked] = useState(false);
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+
   const toggleAllChecked = () => {
     if (allChecked) {
       setCheckedItems([]);
@@ -27,9 +35,10 @@ const TermsScreen: React.FC = () => {
       setCheckedItems(termsData.map((item) => item.id));
     }
     setAllChecked(!allChecked);
+    console.log('allChecked:', !allChecked);
   };
 
-  // 개별 항목 선택 상태 변경
+
   const toggleItemChecked = (id: string) => {
     setCheckedItems((prevCheckedItems) =>
       prevCheckedItems.includes(id)
@@ -39,101 +48,148 @@ const TermsScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>약관 동의</Text>
-      <Text style={styles.subText}>필수항목 및 선택항목 약관에 동의해 주세요.</Text>
+    <View style={Styles.container}>
+      <TermsAgreeHeader />
+      <View style={styles.textContainer}>
+        <Text style={styles.headerText}>약관 동의</Text>
+        <Text style={styles.subText}>필수항목 및 선택항목 약관에 동의해 주세요.</Text>
+      </View>
 
-      {/* 전체 동의 */}
-      <TouchableOpacity
-        style={styles.termItem}
-        onPress={toggleAllChecked}
-      >
-        <Ionicons
-          name={allChecked ? 'checkmark-circle' : 'ellipse-outline'}
-          size={24}
-          color={allChecked ? Colors.main : 'white'}
+      <View style={styles.termContainer}>
+        {/* 전체 동의 */}
+        <TouchableOpacity
+          style={styles.termAllAgree}
+          onPress={toggleAllChecked}
+        >
+          <Ionicons
+            name={allChecked ? 'checkmark-circle' : 'checkmark-circle-outline'}
+            size={getSize(20)}
+            color={allChecked ? Colors.main : '#AFAFAF'}
+          />
+          <Text style={styles.allAgreeText}>전체 동의</Text>
+        </TouchableOpacity>
+
+        {/* 개별 약관 항목 */}
+        <FlatList
+          data={termsData}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.termItem}
+              onPress={() => toggleItemChecked(item.id)}
+            >
+              <View style={styles.termItemContainer}>
+                <Ionicons
+                  name={checkedItems.includes(item.id) ? 'checkmark-circle' : 'checkmark-circle-outline'}
+                  size={getSize(20)}
+                  color={checkedItems.includes(item.id) ? Colors.main : '#AFAFAF'}
+                />
+                {item.required && (
+                  <View style={styles.requiredBox}>
+                    <Text style={styles.requiredTag}>필수</Text>
+                  </View>
+                )}
+                <Text style={styles.termText}>{item.title}</Text>
+              </View>
+
+              <View style={styles.rightIcon}>
+                <RightArrowIcon width={getSize(10)} height={getSize(18)} color={'white'} />
+              </View>
+            </TouchableOpacity>
+          )}
         />
-        <Text style={styles.allAgreeText}>전체 동의</Text>
-      </TouchableOpacity>
-
-      {/* 개별 약관 항목 */}
-      <FlatList
-        data={termsData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.termItem}
-            onPress={() => toggleItemChecked(item.id)}
-          >
-            <View style={styles.leftSection}>
-              <Ionicons
-                name={checkedItems.includes(item.id) ? 'checkmark-circle' : 'ellipse-outline'}
-                size={24}
-                color={checkedItems.includes(item.id) ? Colors.main : 'white'}
-              />
-              {item.required && (
-                <Text style={styles.requiredTag}>필수</Text>
-              )}
-              <Text style={styles.termText}>{item.title}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={24} color="white" />
-          </TouchableOpacity>
-        )}
-      />
+      </View>
+      {/* 전체 동의 -> 버튼 */}
+      {allChecked && (
+        <View style={styles.buttonContainer}>
+          <DefaultButton
+            text="시작하기"
+            onPress={() => navigation.replace('signup/signup')}
+          />
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1C1C1E',
+  textContainer: {
+    width: width,
     paddingHorizontal: getSize(Sizes.formMargin),
   },
   headerText: {
-    fontSize: getSize(24),
-    fontFamily: 'Pretendard-Bold',
+    fontSize: getSize(30),
+    fontFamily: 'Pretendard-ExtraBold',
     color: Colors.main,
-    marginTop: getSize(32),
-    marginBottom: getSize(12),
+    marginTop: getSize(31),
   },
   subText: {
-    fontSize: getSize(14),
-    fontFamily: 'Pretendard-Regular',
+    fontSize: getSize(12),
+    fontFamily: 'Pretendard-Medium',
     color: 'rgba(255, 255, 255, 0.6)',
-    marginBottom: getSize(24),
+    marginTop: getSize(10),
   },
-  termItem: {
+  termContainer: {
+    marginTop: getSize(30),
+    height: getSize(260),
+  },
+  termAllAgree: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: Colors.grayBox,
     borderRadius: getSize(10),
-    paddingHorizontal: getSize(18),
-    paddingVertical: getSize(16),
+    width: width - getSize(Sizes.formMargin * 2),
+    height: getSize(56),
+    paddingHorizontal: getSize(20),
     marginBottom: getSize(12),
   },
-  leftSection: {
+  termItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: getSize(10),
+    width: width - getSize(Sizes.formMargin * 2),
+    paddingHorizontal: getSize(20),
+    paddingVertical: getSize(12),
+  },
+  termItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: width - getSize(70),
+  },
+  requiredBox: {
+    width: getSize(39),
+    height: getSize(24),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderRadius: getSize(20),
+    borderStyle: 'solid',
+    borderColor: Colors.grayBox,
+    marginLeft: getSize(13),
   },
   requiredTag: {
     fontSize: getSize(12),
-    fontFamily: 'Pretendard-SemiBold',
-    color: Colors.main,
-    marginLeft: getSize(10),
-    marginRight: getSize(10),
+    fontFamily: 'Pretendard-Medium',
+    color: 'white'
   },
   termText: {
     fontSize: getSize(16),
     fontFamily: 'Pretendard-Medium',
     color: 'white',
+    marginLeft: getSize(8),
   },
   allAgreeText: {
     fontSize: getSize(16),
-    fontFamily: 'Pretendard-SemiBold',
+    fontFamily: 'Pretendard-Bold',
     color: 'white',
     marginLeft: getSize(10),
+  },
+  rightIcon: {
+    right: getSize(34 - 16),
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: getSize(149),
   },
 });
 
