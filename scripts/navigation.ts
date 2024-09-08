@@ -22,3 +22,8 @@ export type OnboardingScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "onboarding"
 >;
+
+export type SignUpScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "signup/signup"
+>;
