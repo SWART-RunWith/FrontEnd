@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Keyboard, TouchableWithoutFee
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
 
-import { LoginEmailBar, LoginPasswordBar } from '@/components/Bar';
+import { LoginEmailBar, LoginPasswordBar } from '@/components/bar/LoginBar';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
