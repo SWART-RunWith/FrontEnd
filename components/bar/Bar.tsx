@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     height: getSize(56),
     width: width - getSize(Sizes.formMargin) * 2,
     borderRadius: 10,
-    paddingHorizontal: getSize(Sizes.formMargin),
+    paddingHorizontal: getSize(18),
   },
   keyboard: {
     flex: 1,
@@ -151,10 +151,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Bold',
   },
   unitText: {
-    fontSize: getSize(14),
+    fontSize: getSize(20),
     color: 'white',
-    fontFamily: 'Pretendard-Regular',
-    marginLeft: getSize(10),
+    fontFamily: 'Pretendard-SemiBold',
   },
   svgIconContainer: {
     marginLeft: getSize(10),
