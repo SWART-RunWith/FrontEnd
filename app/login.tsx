@@ -55,7 +55,7 @@ const LoginScreen: React.FC = () => {
 
           <View style={styles.signUpContainer}>
             <Text style={styles.signUpText}>아직 회원이 아니신가요? </Text>
-            <TouchableOpacity onPress={() => navigation.replace('signup')}>
+            <TouchableOpacity onPress={() => navigation.replace('signup/signup')}>
               <Text style={[styles.signUpText, styles.highlight]}>회원가입</Text>
             </TouchableOpacity>
           </View>

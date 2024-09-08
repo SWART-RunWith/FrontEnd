@@ -3,6 +3,7 @@ import {
   View,
   StyleSheet,
   Text,
+  Dimensions,
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
@@ -14,8 +15,9 @@ import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
 import { LoginScreenNavigationProp } from '@/scripts/navigation';
 import {
-  SignUpBirthBar,
+  SignUpDateOfBirthBar,
   SignUpEmailBar,
+  SignUpGenderBar,
   SignUpHeightBar,
   SignUpNameBar,
   SignUpPasswordBar,
@@ -25,6 +27,9 @@ import {
 import { SignUpHeader } from '@/components/Header';
 import { DefaultButton, SignUpButton } from '@/components/button/Button';
 import Colors from '@/constants/Colors';
+import Sizes from '@/constants/Sizes';
+
+const { width } = Dimensions.get('window');
 
 const SignUpScreen: React.FC = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
@@ -38,6 +43,7 @@ const SignUpScreen: React.FC = () => {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
+  const [selectedGender, setSelectedGender] = useState<'남성' | '여성' | null>(null);
 
   return (
     <View style={Styles.container}>
@@ -85,8 +91,11 @@ const SignUpScreen: React.FC = () => {
           {/* 회원가입 2 */}
           {step === 2 && (
             <View style={styles.barContainer}>
-              <SignUpNameBar />
-              <SignUpBirthBar
+              <SignUpGenderBar
+                selectedGender={selectedGender}
+                onSelectGender={setSelectedGender}
+              />
+              <SignUpDateOfBirthBar
                 value={dateOfBirth}
                 onChangeText={setDateOfBirth}
               />
@@ -127,6 +136,35 @@ const styles = StyleSheet.create({
   ButtonContainer: {
     marginTop: getSize(90),
   },
+  genderButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: width - getSize(Sizes.formMargin) * 2,
+    height: getSize(81),
+  },
+  genderButton: {
+    width: getSize(175),
+    height: getSize(56),
+    borderRadius: getSize(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activeButton: {
+    backgroundColor: Colors.main,
+  },
+  inactiveButton: {
+    backgroundColor: Colors.grayBox,
+  },
+  text: {
+    fontSize: getSize(16),
+    fontFamily: 'Pretendard-SemiBold',
+  },
+  activeText: {
+    color: 'black',
+  },
+  inactiveText: {
+    color: 'rgba(255, 255, 255, 0.22)'
+  },
   textContainer: {
     flexDirection: 'row',
     marginTop: getSize(59),
@@ -141,5 +179,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 });
+
+
 
 export default SignUpScreen;
