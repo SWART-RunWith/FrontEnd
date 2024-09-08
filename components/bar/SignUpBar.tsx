@@ -122,6 +122,7 @@ const SignUpHeightBar = ({
   label = "키",
   placeholder = "키를 입력해주세요",
   keyboardType = 'decimal-pad',
+  unit = 'CM',
   ...props
 }: BarProps) => {
   return (
@@ -129,6 +130,7 @@ const SignUpHeightBar = ({
       label={label}
       placeholder={placeholder}
       keyboardType={keyboardType}
+      unit={unit}
       onBlur={() => validateHeight(props.value ?? '160')}
       {...props}
     />
@@ -150,6 +152,7 @@ const SignUpWeightBar = ({
   label = "체중",
   placeholder = "체중을 입력해주세요",
   keyboardType = 'decimal-pad',
+  unit = 'KG',
   ...props
 }: BarProps) => {
   return (
@@ -157,6 +160,7 @@ const SignUpWeightBar = ({
       label={label}
       placeholder={placeholder}
       keyboardType={keyboardType}
+      unit={unit}
       onBlur={() => validateWeight(props.value ?? '70')}
       {...props}
     />
