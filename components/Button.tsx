@@ -74,7 +74,7 @@ const StartButton = ({
 
 const PlayButton = ({
   svg = (
-    <Svg width={24} height={28} viewBox="0 0 22 28" fill="none">
+    <Svg width={getSize(24)} height={getSize(28)} viewBox="0 0 22 28" fill="none">
       <Path d="M0 0V28L22 14L0 0Z" fill="black" />
     </Svg>
   ),
@@ -86,8 +86,8 @@ const PlayButton = ({
 const EndButton = ({
   isEnd = true,
   svg = (
-    <Svg width={20} height={20} viewBox="0 0 28 28" fill="none">
-      <Rect width={28} height={28} fill={Colors.main} />
+    <Svg width={getSize(20)} height={getSize(20)} viewBox="0 0 28 28" fill="none">
+      <Rect width={getSize(28)} height={getSize(28)} fill={Colors.main} />
     </Svg>
   ),
   ...props
@@ -97,7 +97,7 @@ const EndButton = ({
 
 const PauseButton = ({
   svg = (
-    <Svg width={24} height={28} viewBox="0 0 24 28" fill="none">
+    <Svg width={getSize(24)} height={getSize(28)} viewBox="0 0 24 28" fill="none">
       <Path d="M0 28H8V0H0V28ZM16 0V28H24V0H16Z" fill="black" />
     </Svg>
   ),
