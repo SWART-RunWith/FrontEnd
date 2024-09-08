@@ -44,6 +44,7 @@ export default function RootLayout() {
         <Stack.Screen name="login" />
         <Stack.Screen name="home" />
         <Stack.Screen name="signup/signup" />
+        <Stack.Screen name='signup/terms' />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>

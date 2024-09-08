@@ -55,7 +55,7 @@ const SignUpScreen: React.FC = () => {
           <SignUpHeader
             onPress={() => {
               step === 1
-                ? navigation.goBack()
+                ? navigation.replace('signup/terms')
                 : setStep(prevStep => prevStep - 1)
             }} />
 
