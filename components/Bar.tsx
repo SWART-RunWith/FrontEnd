@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Dimensions,
+  KeyboardTypeOptions,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import getSize from '@/scripts/getSize';
@@ -13,6 +21,7 @@ interface BarProps {
   label?: string;
   placeholder?: string;
   placeholderTextColor?: string;
+  keyboardType?: KeyboardTypeOptions;
   value?: string;
   onChangeText?: (text: string) => void;
   isSecure?: boolean;
@@ -30,6 +39,7 @@ const DefaultBar = ({
   label = '',
   placeholder = '',
   placeholderTextColor = "rgba(255, 255, 255, 0.22)",
+  keyboardType = 'default',
   value = '',
   onChangeText,
   isSecure = false,
@@ -58,7 +68,8 @@ const DefaultBar = ({
       {/* 입력 창 */}
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.textInput}
+          style={styles.keyboard}
+          keyboardType={keyboardType}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
           value={value}
@@ -114,6 +125,7 @@ const SignUpNameBar = ({
 const SignUpEmailBar = ({
   label = "이메일",
   placeholder = "이메일을 입력해주세요",
+  keyboardType = 'email-address',
   ...props
 }: BarProps) => {
   return (
@@ -152,6 +164,7 @@ const SignUpPasswordBar = ({
 const SignUpPhoneBar = ({
   label = "전화번호",
   placeholder = "전화번호를 입력해주세요",
+  keyboardType = 'phone-pad',
   ...props
 }: BarProps) => {
   return (
@@ -180,6 +193,7 @@ const SignUpBirthBar = ({
 const SignUpHeightBar = ({
   label = "키",
   placeholder = "키를 입력해주세요",
+  keyboardType = 'decimal-pad',
   ...props
 }: BarProps) => {
   return (
@@ -194,6 +208,7 @@ const SignUpHeightBar = ({
 const SignUpWeightBar = ({
   label = "체중",
   placeholder = "체중을 입력해주세요",
+  keyboardType = 'decimal-pad',
   ...props
 }: BarProps) => {
   return (
@@ -287,7 +302,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: getSize(Sizes.formMargin),
   },
-  textInput: {
+  keyboard: {
     flex: 1,
     paddingVertical: getSize(10),
     fontSize: getSize(Sizes.boxText),
