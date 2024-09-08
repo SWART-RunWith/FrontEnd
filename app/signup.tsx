@@ -23,7 +23,7 @@ import {
   SignUpWeightBar
 } from '@/components/bar/SignUpBar';
 import { SignUpHeader } from '@/components/Header';
-import { DefaultButton, SignUpButton } from '@/components/Button';
+import { DefaultButton, SignUpButton } from '@/components/button/Button';
 import Colors from '@/constants/Colors';
 
 const SignUpScreen: React.FC = () => {

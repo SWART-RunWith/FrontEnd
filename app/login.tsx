@@ -8,7 +8,7 @@ import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
 import { HomeScreenNavigationProp } from '@/scripts/navigation';
-import { LoginButton } from '@/components/Button';
+import { LoginButton } from '@/components/button/Button';
 import { LoginHeader } from '@/components/Header';
 
 const LoginScreen: React.FC = () => {

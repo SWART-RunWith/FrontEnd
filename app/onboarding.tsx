@@ -8,7 +8,7 @@ import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
 import { LoginScreenNavigationProp } from '@/scripts/navigation';
-import { LoginButton, SignUpButton } from '@/components/Button';
+import { LoginButton, SignUpButton } from '@/components/button/Button';
 
 const { width, height } = Dimensions.get('window');
 

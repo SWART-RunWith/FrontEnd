@@ -6,7 +6,7 @@ import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
-import { StartButton } from '@/components/Button';
+import { StartButton } from '@/components/button/Button';
 
 const { width, height } = Dimensions.get('window');
 
