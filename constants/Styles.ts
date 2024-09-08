@@ -20,6 +20,12 @@ const styles = StyleSheet.create({
     height: height,
     alignItems: "center",
   },
+  keyboardScroll: {
+    backgroundColor: Colors.background,
+    width: width,
+    height: height,
+    alignItems: "center",
+  },
 });
 
 export default styles;

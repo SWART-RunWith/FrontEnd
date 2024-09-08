@@ -31,12 +31,7 @@ const SignUpScreen: React.FC = () => {
   return (
     <View style={Styles.container}>
       <KeyboardAwareScrollView
-        contentContainerStyle={{
-          backgroundColor: Colors.background,
-          width: width,
-          height: height,
-          alignItems: "center",
-        }}
+        contentContainerStyle={Styles.keyboardScroll}
         extraScrollHeight={getSize(20)}
       >
         <SignUpHeader

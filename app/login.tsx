@@ -18,48 +18,50 @@ const LoginScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAwareScrollView contentContainerStyle={Styles.container}>
-        <LoginHeader />
+    <View style={Styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <KeyboardAwareScrollView contentContainerStyle={Styles.keyboardScroll}>
+          <LoginHeader />
 
-        <View style={styles.barContainer}>
-          <LoginEmailBar
-            value={email}
-            onChangeText={setEmail}
-          />
-          <LoginPasswordBar
-            value={password}
-            onChangeText={setPassword}
-          />
-        </View>
+          <View style={styles.barContainer}>
+            <LoginEmailBar
+              value={email}
+              onChangeText={setEmail}
+            />
+            <LoginPasswordBar
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
 
-        <View style={styles.buttonContainer}>
-          <LoginButton
-            onPress={() => {
-              console.log('로그인 버튼 클릭');
-            }}
-            text="로그인"
-          />
-        </View>
+          <View style={styles.buttonContainer}>
+            <LoginButton
+              onPress={() => {
+                console.log('로그인 버튼 클릭');
+              }}
+              text="로그인"
+            />
+          </View>
 
-        <View style={styles.linkContainer}>
-          <TouchableOpacity onPress={() => console.log('아이디 찾기')}>
-            <Text style={styles.linkText}>아이디 찾기</Text>
-          </TouchableOpacity>
-          <Text style={styles.separator}> / </Text>
-          <TouchableOpacity onPress={() => console.log('비밀번호 찾기')}>
-            <Text style={styles.linkText}>비밀번호 찾기</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.linkContainer}>
+            <TouchableOpacity onPress={() => console.log('아이디 찾기')}>
+              <Text style={styles.linkText}>아이디 찾기</Text>
+            </TouchableOpacity>
+            <Text style={styles.separator}> / </Text>
+            <TouchableOpacity onPress={() => console.log('비밀번호 찾기')}>
+              <Text style={styles.linkText}>비밀번호 찾기</Text>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.signUpContainer}>
-          <Text style={styles.signUpText}>아직 회원이 아니신가요? </Text>
-          <TouchableOpacity onPress={() => navigation.replace('signup')}>
-            <Text style={[styles.signUpText, styles.highlight]}>회원가입</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAwareScrollView>
-    </TouchableWithoutFeedback>
+          <View style={styles.signUpContainer}>
+            <Text style={styles.signUpText}>아직 회원이 아니신가요? </Text>
+            <TouchableOpacity onPress={() => navigation.replace('signup')}>
+              <Text style={[styles.signUpText, styles.highlight]}>회원가입</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAwareScrollView>
+      </TouchableWithoutFeedback>
+    </View>
   );
 };
 
