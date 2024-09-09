@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -35,9 +35,7 @@ const TermsScreen: React.FC = () => {
       setCheckedItems(termsData.map((item) => item.id));
     }
     setAllChecked(!allChecked);
-    console.log('allChecked:', !allChecked);
   };
-
 
   const toggleItemChecked = (id: string) => {
     setCheckedItems((prevCheckedItems) =>
@@ -46,6 +44,14 @@ const TermsScreen: React.FC = () => {
         : [...prevCheckedItems, id]
     );
   };
+
+  useEffect(() => {
+    if (checkedItems.length === termsData.length) {
+      setAllChecked(true);
+    } else {
+      setAllChecked(false);
+    }
+  }, [checkedItems]);
 
   return (
     <View style={Styles.container}>
