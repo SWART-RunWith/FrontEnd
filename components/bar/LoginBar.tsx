@@ -20,6 +20,7 @@ const LoginEmailBar = ({
     <LoginBar
       label={label}
       placeholder={placeholder}
+      keyboardType='email-address'
       {...props}
     />
   );
@@ -37,7 +38,7 @@ const LoginPasswordBar = ({
       label={label}
       placeholder={placeholder}
       isSecure={secureText}
-      svgIcon={<Ionicons
+      eyeIcon={<Ionicons
         name={secureText ? 'eye-off' : 'eye'}
         size={20}
         color="rgba(255, 255, 255, 0.6)"
