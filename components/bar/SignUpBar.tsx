@@ -248,7 +248,6 @@ const SignUpGenderBar: React.FC<SignUpGenderBarProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: getSize(Sizes.formMargin),
-    height: getSize(81),
   },
   labelContainer: {
     flexDirection: 'row',
