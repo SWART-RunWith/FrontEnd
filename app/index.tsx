@@ -19,6 +19,7 @@ const IndexScreen: React.FC = () => {
       await resetOnboarding();
       const hasSeenOnboarding = await AsyncStorage.getItem('hasSeenOnboarding');
       if (hasSeenOnboarding === 'true') {
+        navigation.replace('login');
       } else {
         navigation.replace('onboarding');
       }
