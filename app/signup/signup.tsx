@@ -135,35 +135,6 @@ const styles = StyleSheet.create({
   ButtonContainer: {
     marginTop: getSize(90),
   },
-  genderButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: width - getSize(Sizes.formMargin) * 2,
-    height: getSize(81),
-  },
-  genderButton: {
-    width: getSize(175),
-    height: getSize(56),
-    borderRadius: getSize(10),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  activeButton: {
-    backgroundColor: Colors.main,
-  },
-  inactiveButton: {
-    backgroundColor: Colors.grayBox,
-  },
-  text: {
-    fontSize: getSize(16),
-    fontFamily: 'Pretendard-SemiBold',
-  },
-  activeText: {
-    color: 'black',
-  },
-  inactiveText: {
-    color: 'rgba(255, 255, 255, 0.22)'
-  },
   textContainer: {
     flexDirection: 'row',
     marginTop: getSize(59),
