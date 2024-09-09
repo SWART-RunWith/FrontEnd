@@ -129,7 +129,7 @@ const SignUpScreen: React.FC = () => {
 const styles = StyleSheet.create({
   barContainer: {
     marginTop: getSize(58),
-    gap: getSize(30),
+    gap: getSize(32),
     alignItems: 'center',
   },
   ButtonContainer: {
