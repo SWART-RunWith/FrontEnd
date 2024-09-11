@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -25,13 +25,21 @@ interface ProfileModalProps {
   isVisible: boolean;
   onCancel: () => void;
   onConfirm: () => void;
-  title: string;
+  title?: string;
   value: string;
   onChangeText: (text: string) => void;
-  placeholder: string;
+  placeholder?: string;
 }
 
-const ProfileUpdateModal: React.FC<ProfileModalProps> = ({ isVisible, onCancel, onConfirm, title, value, onChangeText, placeholder }) => (
+const ProfileUpdateModal: React.FC<ProfileModalProps> = ({
+  isVisible,
+  onCancel,
+  onConfirm,
+  value,
+  onChangeText,
+  title = "정보 수정",
+  placeholder = "내용을 입력해주세요",
+}) => (
   <RNModal
     isVisible={isVisible}
     onBackdropPress={onCancel}
@@ -76,6 +84,48 @@ const ProfileUpdateModal: React.FC<ProfileModalProps> = ({ isVisible, onCancel, 
     </TouchableWithoutFeedback>
   </RNModal>
 );
+
+const NameUpdateModal: React.FC<ProfileModalProps> = ({
+  title = "이름 수정",
+  placeholder = "이름을 입력해주세요",
+  ...props
+}) => {
+  return (
+    <ProfileUpdateModal
+      title={title}
+      placeholder={placeholder}
+      {...props}
+    />
+  );
+};
+
+const LocationUpdateModal: React.FC<ProfileModalProps> = ({
+  title = "위치 수정",
+  placeholder = "위치를 입력해주세요",
+  ...props
+}) => {
+  return (
+    <ProfileUpdateModal
+      title={title}
+      placeholder={placeholder}
+      {...props}
+    />
+  );
+};
+
+const DescriptionUpdateModal: React.FC<ProfileModalProps> = ({
+  title = "소개 수정",
+  placeholder = "소개를 입력해주세요",
+  ...props
+}) => {
+  return (
+    <ProfileUpdateModal
+      title={title}
+      placeholder={placeholder}
+      {...props}
+    />
+  );
+};
 
 const styles = StyleSheet.create({
   bottomModal: {
@@ -147,5 +197,8 @@ const styles = StyleSheet.create({
 });
 
 export {
-  ProfileUpdateModal
+  ProfileUpdateModal,
+  NameUpdateModal,
+  LocationUpdateModal,
+  DescriptionUpdateModal,
 };
