@@ -30,7 +30,7 @@ import { DefaultButton } from '@/components/button/Button';
 const DefaultImage = require('@/assets/images/default.png');
 const { width } = Dimensions.get('window');
 
-const ProfileScreen = () => {
+const SignUpProfileScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -244,4 +244,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default SignUpProfileScreen;
