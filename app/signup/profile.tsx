@@ -22,13 +22,13 @@ import { LoginScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
 import CameraIcon from '@/assets/icons/camera.svg';
 import LocationIcon from '@/assets/icons/location.svg';
-import DefaultImage from '@/assets/images/default.png';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import Styles from '@/constants/Styles';
 import { DefaultButton } from '@/components/button/Button';
 
-const { width, height } = Dimensions.get('window');
+const DefaultImage = require('@/assets/images/default.png');
+const { width } = Dimensions.get('window');
 
 const ProfileScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
@@ -56,7 +56,6 @@ const ProfileScreen = () => {
     requestPermission();
   }, []);
 
-  // 프로필 이미지 선택 후 설정
   const handleImageSelect = (uri: string) => {
     setProfileImage(uri);
   };
@@ -65,15 +64,14 @@ const ProfileScreen = () => {
     <View style={Styles.container}>
       <ProfileHeader onPress={() => navigation.replace('signup/terms')} />
 
-      {/* 프로필 이미지가 있는지 여부에 따라 처리 */}
       <ImageBackground
         source={profileImage ? { uri: profileImage } : DefaultImage}
         style={styles.profileContainer}
         imageStyle={styles.imageStyle}
       >
-        {/* 그라데이션 레이어 */}
+        {/* 그라데이션 */}
         <LinearGradient
-          colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
+          colors={['transparent', 'black']}
           style={styles.gradientOverlay}
         />
 
@@ -81,13 +79,15 @@ const ProfileScreen = () => {
         <View style={styles.cameraContainer}>
           {!profileImage && (
             <TouchableOpacity
+              style={{
+                marginTop: getSize(232),
+              }}
               onPress={() => setCameraModalVisible(true)}>
               <CameraIcon width={getSize(77.14)} height={getSize(57.19)} />
             </TouchableOpacity>
           )}
         </View>
 
-        {/* 텍스트와 버튼들 */}
         <View style={styles.textContainer}>
           <TouchableOpacity
             onPress={() => {
@@ -130,7 +130,6 @@ const ProfileScreen = () => {
           />
         </View>
 
-        {/* 하단 바 */}
         <View style={styles.bar} />
       </ImageBackground>
 
@@ -190,18 +189,17 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     opacity: 1,
-    zIndex: 1, // 이미지가 가장 뒤에 위치
+    zIndex: 1,
   },
   cameraContainer: {
-    marginTop: getSize(232),
+    height: getSize(440),
     alignItems: 'center',
-    zIndex: 3, // 카메라 아이콘이 그라데이션과 이미지 위에 위치
+    zIndex: 3,
   },
   textContainer: {
-    marginTop: getSize(151),
     paddingHorizontal: getSize(Sizes.formMargin),
     width: width,
-    zIndex: 3, // 텍스트가 그라데이션과 이미지 위에 위치
+    zIndex: 3,
   },
   locationContainer: {
     flexDirection: 'row',
@@ -228,20 +226,21 @@ const styles = StyleSheet.create({
     marginTop: getSize(97),
     height: getSize(3),
     width: width - getSize(Sizes.formMargin) * 2,
-    zIndex: 3, // 바가 그라데이션 위에 위치
+    zIndex: 3,
   },
   buttonContainer: {
     position: 'absolute',
     bottom: getSize(92),
-    zIndex: 3, // 버튼이 그라데이션 위에 위치
+    zIndex: 3,
   },
   gradientOverlay: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
-    height: getSize(200),
-    zIndex: 2, // 그라데이션이 이미지 위, 다른 요소 아래에 위치
+    width: width,
+    height: getSize(479),
+    zIndex: 2,
   },
 });
 
