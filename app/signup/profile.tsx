@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions, ImageBackground } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ProfileHeader } from '@/components/Header';
-import { ProfileUpdateModal } from '@/components/modal/ProfileModal';
+import {
+  NameUpdateModal,
+  LocationUpdateModal,
+  DescriptionUpdateModal,
+} from '@/components/modal/ProfileModal';
+import { CameraModal } from '@/components/modal/CameraModal';
 import { LoginScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
 import CameraIcon from '@/assets/icons/camera.svg';
 import LocationIcon from '@/assets/icons/location.svg';
+import DefaultImage from '@/assets/images/default.png';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import Styles from '@/constants/Styles';
+import { DefaultButton } from '@/components/button/Button';
 
 const { width, height } = Dimensions.get('window');
 
@@ -20,6 +34,7 @@ const ProfileScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isCameraModalVisible, setCameraModalVisible] = useState(false);
   const [name, setName] = useState('홍여준');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
@@ -41,172 +56,127 @@ const ProfileScreen = () => {
     requestPermission();
   }, []);
 
-  // 프로필 이미지 선택 핸들러
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled && result.assets && result.assets.length > 0) {
-      setProfileImage(result.assets[0].uri);
-    }
+  // 프로필 이미지 선택 후 설정
+  const handleImageSelect = (uri: string) => {
+    setProfileImage(uri);
   };
 
   return (
     <View style={Styles.container}>
       <ProfileHeader onPress={() => navigation.replace('signup/terms')} />
 
-      {/* 프로필 컨테이너 */}
-      {profileImage ? (
-        <ImageBackground
-          source={{ uri: profileImage }}
-          style={styles.profileContainer}
-        >
-          <TouchableOpacity
-            style={styles.cameraContainer}
-            onPress={() => setCameraModalVisible(true)}
-          >
-            <Image
-              source={{ uri: profileImage }}
-              style={styles.profileImage}
-            />
-          </TouchableOpacity>
-          <View style={styles.textContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                setTempValue(location);
-                setLocationModalVisible(true);
-              }}
-              style={styles.locationContainer}
-            >
-              <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
-              <Text style={styles.locationText}>
-                {location
-                  ? location
-                  : '나의 위치를 추가해보세요'
-                }</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setTempValue(name);
-                setNameModalVisible(true);
-              }}>
-              <Text style={styles.nameInput}>{name}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setTempValue(description);
-                setDescriptionModalVisible(true);
-              }}>
-              <Text style={styles.descriptionInput}>
-                {description
-                  ? description
-                  : '소개를 입력해주세요'}
-              </Text>
-            </TouchableOpacity>
-          </View>
+      {/* 프로필 이미지가 있는지 여부에 따라 처리 */}
+      <ImageBackground
+        source={profileImage ? { uri: profileImage } : DefaultImage}
+        style={styles.profileContainer}
+        imageStyle={styles.imageStyle}
+      >
+        {/* 그라데이션 레이어 */}
+        <LinearGradient
+          colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
+          style={styles.gradientOverlay}
+        />
 
-          <TouchableOpacity style={styles.button} onPress={() => alert('프로필 설정 완료')}>
-            <Text style={styles.buttonText}>RUNWITH!</Text>
-          </TouchableOpacity>
-        </ImageBackground>
-      ) : (
-        <LinearGradient colors={['rgba(255, 255, 255, 0.2)', 'rgba(0, 0, 0, 0.8)']} style={styles.profileContainer}>
-          {/* 이미지 없을 때 */}
-          <View style={styles.cameraContainer}>
-            <TouchableOpacity onPress={pickImage}>
+        {/* 카메라 아이콘 */}
+        <View style={styles.cameraContainer}>
+          {!profileImage && (
+            <TouchableOpacity
+              onPress={() => setCameraModalVisible(true)}>
               <CameraIcon width={getSize(77.14)} height={getSize(57.19)} />
             </TouchableOpacity>
-          </View>
+          )}
+        </View>
 
-          <View style={styles.textContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                setTempValue(location);
-                setLocationModalVisible(true);
-              }}
-              style={styles.locationContainer}
-            >
-              <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
-              <Text style={styles.locationText}>
-                {location
-                  ? location
-                  : '나의 위치를 추가해보세요'
-                }</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setTempValue(name);
-                setNameModalVisible(true);
-              }}>
-              <Text style={styles.nameInput}>{name}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setTempValue(description);
-                setDescriptionModalVisible(true);
-              }}>
-              <Text style={styles.descriptionInput}>
-                {description
-                  ? description
-                  : '소개를 입력해주세요'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity style={styles.button}
-            onPress={() => alert('프로필 설정 완료')}
+        {/* 텍스트와 버튼들 */}
+        <View style={styles.textContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              setTempValue(location);
+              setLocationModalVisible(true);
+            }}
+            style={styles.locationContainer}
           >
-            <Text style={styles.buttonText}>RUNWITH!</Text>
+            <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
+            <Text style={styles.locationText}>
+              {location ? location : '나의 위치를 추가해보세요'}
+            </Text>
           </TouchableOpacity>
-        </LinearGradient>
-      )}
+
+          <TouchableOpacity
+            onPress={() => {
+              setTempValue(name);
+              setNameModalVisible(true);
+            }}>
+            <Text style={styles.nameInput}>{name}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              setTempValue(description);
+              setDescriptionModalVisible(true);
+            }}>
+            <Text style={styles.descriptionInput}>
+              {description ? description : '소개를 입력해주세요'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* 버튼 */}
+        <View style={styles.buttonContainer}>
+          <DefaultButton
+            onPress={() => navigation.replace('home')}
+            text='RUNWITH!'
+            fontFamily='Hanson'
+          />
+        </View>
+
+        {/* 하단 바 */}
+        <View style={styles.bar} />
+      </ImageBackground>
+
+      {/* 카메라 모달 */}
+      <CameraModal
+        isVisible={isCameraModalVisible}
+        onCancel={() => setCameraModalVisible(false)}
+        onImageSelect={handleImageSelect}
+      />
 
       {/* 이름 변경 모달 */}
-      <ProfileUpdateModal
+      <NameUpdateModal
         isVisible={isNameModalVisible}
         onCancel={() => setNameModalVisible(false)}
         onConfirm={() => {
           setName(tempValue);
           setNameModalVisible(false);
         }}
-        title="이름 수정"
         value={tempValue}
         onChangeText={setTempValue}
-        placeholder="이름을 입력해주세요"
       />
 
       {/* 위치 변경 모달 */}
-      <ProfileUpdateModal
+      <LocationUpdateModal
         isVisible={isLocationModalVisible}
         onCancel={() => setLocationModalVisible(false)}
         onConfirm={() => {
           setLocation(tempValue);
           setLocationModalVisible(false);
         }}
-        title="위치 수정"
         value={tempValue}
         onChangeText={setTempValue}
-        placeholder="위치를 입력해주세요"
       />
 
       {/* 소개 변경 모달 */}
-      <ProfileUpdateModal
+      <DescriptionUpdateModal
         isVisible={isDescriptionModalVisible}
         onCancel={() => setDescriptionModalVisible(false)}
         onConfirm={() => {
           setDescription(tempValue);
           setDescriptionModalVisible(false);
         }}
-        title="소개 수정"
         value={tempValue}
         onChangeText={setTempValue}
-        placeholder="소개를 입력해주세요"
       />
-    </View>
+    </View >
   );
 };
 
@@ -215,19 +185,23 @@ const styles = StyleSheet.create({
     marginTop: getSize(20),
     width: width,
     height: getSize(752),
+    alignItems: 'center',
+    backgroundColor: Colors.grayBox,
   },
-  profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+  imageStyle: {
+    opacity: 1,
+    zIndex: 1, // 이미지가 가장 뒤에 위치
   },
   cameraContainer: {
     marginTop: getSize(232),
     alignItems: 'center',
+    zIndex: 3, // 카메라 아이콘이 그라데이션과 이미지 위에 위치
   },
   textContainer: {
     marginTop: getSize(151),
     paddingHorizontal: getSize(Sizes.formMargin),
+    width: width,
+    zIndex: 3, // 텍스트가 그라데이션과 이미지 위에 위치
   },
   locationContainer: {
     flexDirection: 'row',
@@ -249,17 +223,25 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: getSize(28),
   },
-  button: {
-    marginTop: getSize(40),
-    backgroundColor: '#ADFF2F',
-    paddingVertical: getSize(15),
-    paddingHorizontal: getSize(80),
-    borderRadius: getSize(10),
+  bar: {
+    backgroundColor: Colors.main,
+    marginTop: getSize(97),
+    height: getSize(3),
+    width: width - getSize(Sizes.formMargin) * 2,
+    zIndex: 3, // 바가 그라데이션 위에 위치
   },
-  buttonText: {
-    color: 'black',
-    fontSize: getSize(18),
-    fontWeight: 'bold',
+  buttonContainer: {
+    position: 'absolute',
+    bottom: getSize(92),
+    zIndex: 3, // 버튼이 그라데이션 위에 위치
+  },
+  gradientOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: getSize(200),
+    zIndex: 2, // 그라데이션이 이미지 위, 다른 요소 아래에 위치
   },
 });
 
