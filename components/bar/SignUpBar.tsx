@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Alert, Dimensions } from 'react-native';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Alert,
+  Dimensions,
+  Platform,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 
 import {
   BarProps,
   DefaultBar,
 } from '@/components/bar/Bar';
-import GenderButton from '@/components/button/GenderButton';
 import getSize from '@/scripts/getSize';
 import Sizes from '@/constants/Sizes';
 import Colors from '@/constants/Colors';
+import GenderButton from '../button/GenderButton';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 // 회원가입 Bar 컴포넌트
 const SignUpBar = ({
@@ -112,11 +121,15 @@ const SignUpDateOfBirthBar = ({
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date: Date) => {
-    const formattedDate = date.toLocaleDateString();
-    setSelectedDate(formattedDate);
-    onChangeText && onChangeText(formattedDate);
-    hideDatePicker();
+  const handleConfirm = (event: any, date?: Date) => {
+    if (Platform.OS !== 'ios') {
+      hideDatePicker();
+    }
+    if (date) {
+      const formattedDate = date.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+      setSelectedDate(formattedDate);
+      onChangeText && onChangeText(formattedDate);
+    }
   };
 
   return (
@@ -130,13 +143,74 @@ const SignUpDateOfBirthBar = ({
         {...props}
       />
 
-      {/* 모달로 달력 표시 */}
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
+      {/* DateTimePicker 표시 */}
+      {isDatePickerVisible && (
+        Platform.OS === 'ios' ? (
+          <Modal
+            transparent={true}
+            animationType="fade"
+            visible={isDatePickerVisible}
+            onRequestClose={hideDatePicker}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>생년월일</Text>
+
+                <View style={styles.modalBar} />
+
+                {/* iOS용 DateTimePicker */}
+                <DateTimePicker
+                  locale="ko-KR"
+                  value={selectedDate ? new Date(selectedDate) : new Date()}
+                  mode="date"
+                  display="spinner"
+                  onChange={handleConfirm}
+                  textColor="white"
+                  style={{
+                    height: height * 0.5 * 0.8,
+                    width: width * 0.8,
+                    borderTopWidth: 3,
+                    borderTopColor: 'black',
+                  }}
+                />
+
+                <View style={styles.modalBar} />
+
+                {/* 하단 버튼 (취소/확인) */}
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity
+                    onPress={hideDatePicker}
+                    style={styles.button}
+                  >
+                    <Text style={styles.buttonText}>취소</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={hideDatePicker}
+                    style={[styles.button, styles.confirmButton]}
+                  >
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        styles.confirmButtonText,
+                      ]}
+                    >
+                      확인
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        ) : (
+          // Android용 DateTimePicker
+          <DateTimePicker
+            value={selectedDate ? new Date(selectedDate) : new Date()}
+            mode="date"
+            display="default"
+            onChange={handleConfirm}
+          />
+        )
+      )}
     </>
   );
 };
@@ -248,6 +322,7 @@ const SignUpGenderBar: React.FC<SignUpGenderBarProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: getSize(Sizes.formMargin),
+    height: getSize(81),
   },
   labelContainer: {
     flexDirection: 'row',
@@ -264,6 +339,49 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: width - getSize(Sizes.formMargin) * 2,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: Colors.grayBox,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    alignItems: 'center',
+  },
+  modalBar: {
+    backgroundColor: Colors.lightGrayBox,
+    height: getSize(1),
+    width: width,
+  },
+  modalTitle: {
+    fontSize: getSize(18),
+    fontFamily: 'Pretendard-Bold',
+    color: 'white',
+    paddingVertical: getSize(15),
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 'auto',
+  },
+  button: {
+    flex: 1,
+    paddingVertical: getSize(15),
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: getSize(16),
+    color: 'white',
+  },
+  confirmButton: {
+    backgroundColor: Colors.main,
+  },
+  confirmButtonText: {
+    color: 'black',
   },
 });
 
