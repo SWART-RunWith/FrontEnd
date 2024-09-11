@@ -124,32 +124,43 @@ const BackHeader: React.FC<BackHeaderProps> = ({
   );
 };
 
-// LoginHeader와 SignUpHeader는 BackHeader를 사용
-const LoginHeader: React.FC<BackHeaderProps> = ({
-  text = '로그인',
+const KoBackHeader: React.FC<BackHeaderProps> = ({
   fontFamily = 'Pretendard-SemiBold',
   fontSize = Sizes.pageTitle,
   ...props
 }) => {
-  return <BackHeader {...props} text={text} fontFamily={fontFamily} fontSize={getSize(fontSize)} />;
+  return <BackHeader {...props} fontFamily={fontFamily} fontSize={fontSize} />;
+};
+
+// LoginHeader와 SignUpHeader는 BackHeader를 사용
+const LoginHeader: React.FC<BackHeaderProps> = ({
+  text = '로그인',
+  ...props
+}) => {
+  return <KoBackHeader {...props} text={text} />;
 };
 
 const SignUpHeader: React.FC<BackHeaderProps> = ({
   text = '회원가입',
-  fontFamily = 'Pretendard-SemiBold',
-  fontSize = Sizes.pageTitle,
   ...props
 }) => {
-  return <BackHeader {...props} text={text} fontFamily={fontFamily} fontSize={getSize(fontSize)} />;
+  return <KoBackHeader {...props} text={text} />;
+
 };
 
 const TermsAgreeHeader: React.FC<BackHeaderProps> = ({
   text = '약관 동의',
-  fontFamily = 'Pretendard-SemiBold',
-  fontSize = Sizes.pageTitle,
   ...props
 }) => {
-  return <BackHeader {...props} text={text} fontFamily={fontFamily} fontSize={getSize(fontSize)} />;
+  return <KoBackHeader {...props} text={text} />;
+
+};
+
+const ProfileHeader: React.FC<BackHeaderProps> = ({
+  text = '프로필 설정',
+  ...props
+}) => {
+  return <KoBackHeader {...props} text={text} />;
 };
 
 // 스타일 정의
@@ -185,4 +196,5 @@ export {
   LoginHeader,
   SignUpHeader,
   TermsAgreeHeader,
+  ProfileHeader,
 };
