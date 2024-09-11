@@ -61,28 +61,54 @@ const ProfileScreen = () => {
 
       {/* 프로필 컨테이너 */}
       {profileImage ? (
-        <ImageBackground source={{ uri: profileImage }} style={styles.profileContainer}>
-          <TouchableOpacity style={styles.cameraContainer} onPress={pickImage}>
-            <Image source={{ uri: profileImage }} style={styles.profileImage} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => { setTempValue(location); setLocationModalVisible(true); }} style={styles.locationContainer}>
-            <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
-            <Text style={styles.locationText}>나의 위치를 추가해보세요</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => { setTempValue(name); setNameModalVisible(true); }}>
-            <TextInput
-              value={name}
-              style={styles.nameInput}
-              editable={false} // 수정 불가능하게 만들어 클릭하여 모달에서 변경
+        <ImageBackground
+          source={{ uri: profileImage }}
+          style={styles.profileContainer}
+        >
+          <TouchableOpacity
+            style={styles.cameraContainer}
+            onPress={() => setCameraModalVisible(true)}
+          >
+            <Image
+              source={{ uri: profileImage }}
+              style={styles.profileImage}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { setTempValue(description); setDescriptionModalVisible(true); }}>
-            <TextInput
-              value={description}
-              style={styles.descriptionInput}
-              editable={false} // 수정 불가능하게 만들어 클릭하여 모달에서 변경
-            />
-          </TouchableOpacity>
+          <View style={styles.textContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                setTempValue(location);
+                setLocationModalVisible(true);
+              }}
+              style={styles.locationContainer}
+            >
+              <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
+              <Text style={styles.locationText}>
+                {location
+                  ? location
+                  : '나의 위치를 추가해보세요'
+                }</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setTempValue(name);
+                setNameModalVisible(true);
+              }}>
+              <Text style={styles.nameInput}>{name}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setTempValue(description);
+                setDescriptionModalVisible(true);
+              }}>
+              <Text style={styles.descriptionInput}>
+                {description
+                  ? description
+                  : '소개를 입력해주세요'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           <TouchableOpacity style={styles.button} onPress={() => alert('프로필 설정 완료')}>
             <Text style={styles.buttonText}>RUNWITH!</Text>
           </TouchableOpacity>
@@ -101,31 +127,39 @@ const ProfileScreen = () => {
               onPress={() => {
                 setTempValue(location);
                 setLocationModalVisible(true);
-              }} style={styles.locationContainer}>
+              }}
+              style={styles.locationContainer}
+            >
               <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
-              <Text style={styles.locationText}>나의 위치를 추가해보세요</Text>
+              <Text style={styles.locationText}>
+                {location
+                  ? location
+                  : '나의 위치를 추가해보세요'
+                }</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 setTempValue(name);
                 setNameModalVisible(true);
               }}>
-              <TextInput
-                value={name}
-                style={styles.nameInput}
-                editable={false} // 수정 불가능하게 만들어 클릭하여 모달에서 변경
-              />
+              <Text style={styles.nameInput}>{name}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setTempValue(description); setDescriptionModalVisible(true); }}>
-              <TextInput
-                value={description}
-                style={styles.descriptionInput}
-                editable={false} // 수정 불가능하게 만들어 클릭하여 모달에서 변경
-              />
+            <TouchableOpacity
+              onPress={() => {
+                setTempValue(description);
+                setDescriptionModalVisible(true);
+              }}>
+              <Text style={styles.descriptionInput}>
+                {description
+                  ? description
+                  : '소개를 입력해주세요'}
+              </Text>
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={() => alert('프로필 설정 완료')}>
+          <TouchableOpacity style={styles.button}
+            onPress={() => alert('프로필 설정 완료')}
+          >
             <Text style={styles.buttonText}>RUNWITH!</Text>
           </TouchableOpacity>
         </LinearGradient>
@@ -135,7 +169,10 @@ const ProfileScreen = () => {
       <ProfileUpdateModal
         isVisible={isNameModalVisible}
         onCancel={() => setNameModalVisible(false)}
-        onConfirm={() => { setName(tempValue); setNameModalVisible(false); }}
+        onConfirm={() => {
+          setName(tempValue);
+          setNameModalVisible(false);
+        }}
         title="이름 수정"
         value={tempValue}
         onChangeText={setTempValue}
@@ -146,7 +183,10 @@ const ProfileScreen = () => {
       <ProfileUpdateModal
         isVisible={isLocationModalVisible}
         onCancel={() => setLocationModalVisible(false)}
-        onConfirm={() => { setLocation(tempValue); setLocationModalVisible(false); }}
+        onConfirm={() => {
+          setLocation(tempValue);
+          setLocationModalVisible(false);
+        }}
         title="위치 수정"
         value={tempValue}
         onChangeText={setTempValue}
@@ -157,7 +197,10 @@ const ProfileScreen = () => {
       <ProfileUpdateModal
         isVisible={isDescriptionModalVisible}
         onCancel={() => setDescriptionModalVisible(false)}
-        onConfirm={() => { setDescription(tempValue); setDescriptionModalVisible(false); }}
+        onConfirm={() => {
+          setDescription(tempValue);
+          setDescriptionModalVisible(false);
+        }}
         title="소개 수정"
         value={tempValue}
         onChangeText={setTempValue}
