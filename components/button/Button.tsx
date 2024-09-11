@@ -132,7 +132,7 @@ interface DefaultButtonProps {
 const DefaultButton = ({
   onPress,
   text = '',
-  fontSize = getSize(Sizes.boxText),
+  fontSize = Sizes.boxText,
   fontFamily = 'Pretendard-SemiBold',
   style = {},
   width = 179,
@@ -148,7 +148,7 @@ const DefaultButton = ({
       style={{
         width: getSize(width),
         height: getSize(height),
-        borderRadius: getSize(radius),
+        borderRadius: radius,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: isGary ? Colors.grayBox : Colors.main,
@@ -156,9 +156,10 @@ const DefaultButton = ({
       }}
     >
       <Text style={{
-        fontSize: fontSize,
+        fontSize: getSize(fontSize),
         fontFamily,
         color: isGary ? 'white' : 'black',
+        textAlign: 'center',
       }}
       >
         {text}
