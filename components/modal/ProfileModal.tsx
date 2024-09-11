@@ -12,11 +12,12 @@ import {
   Platform,
 } from 'react-native';
 import RNModal from 'react-native-modal';
-import { Ionicons } from '@expo/vector-icons'; // 아이콘 사용을 위해
 
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
+
+import CancelIcon from '@/assets/icons/cancel.svg';
 
 const { width } = Dimensions.get('window');
 
@@ -51,9 +52,13 @@ const ProfileUpdateModal: React.FC<ProfileModalProps> = ({ isVisible, onCancel, 
           <View style={styles.modalInputContainer}>
             <View style={styles.inputHeader}>
               <Text style={styles.modalInputTitle}>{title.slice(0, 2)}</Text>
-              {/* x 버튼 */}
-              <TouchableOpacity onPress={() => onChangeText('')}>
-                <Ionicons name="close-circle" size={24} color="white" />
+              <TouchableOpacity
+                style={{
+                  marginTop: getSize(11),
+                  marginRight: getSize(10),
+                }}
+                onPress={() => onChangeText('')}>
+                <CancelIcon width={getSize(20)} height={getSize(20)} fill={Colors.gray} />
               </TouchableOpacity>
             </View>
             <TextInput
@@ -62,6 +67,8 @@ const ProfileUpdateModal: React.FC<ProfileModalProps> = ({ isVisible, onCancel, 
               style={styles.modalInput}
               placeholder={placeholder}
               placeholderTextColor="rgba(255, 255, 255, 0.7)"
+              multiline={true}
+              maxLength={200}
             />
           </View>
         </View>
@@ -82,7 +89,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.grayBox,
     width: width,
     height: getSize(400),
-    padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     alignItems: 'center',
@@ -112,7 +118,7 @@ const styles = StyleSheet.create({
     color: Colors.main,
   },
   modalInputContainer: {
-    paddingHorizontal: getSize(18),
+    paddingLeft: getSize(18),
     width: width - getSize(Sizes.formMargin) * 2,
     height: getSize(140),
     marginTop: getSize(24),
@@ -123,8 +129,6 @@ const styles = StyleSheet.create({
   inputHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: getSize(10),
   },
   modalInputTitle: {
     fontSize: getSize(14),
@@ -133,6 +137,8 @@ const styles = StyleSheet.create({
     marginTop: getSize(18),
   },
   modalInput: {
+    marginRight: getSize(55),
+    marginBottom: getSize(25),
     fontSize: getSize(14),
     color: 'white',
     fontFamily: 'Pretendard-Light',
