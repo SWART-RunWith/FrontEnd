@@ -110,7 +110,7 @@ const SignUpScreen: React.FC = () => {
               />
               <View style={styles.ButtonContainer}>
                 {/* to do : 회원가입 api 연동 */}
-                <SignUpButton onPress={() => { navigation.replace('home') }} />
+                <SignUpButton onPress={() => { navigation.replace('signup/profile') }} />
               </View>
             </View>)}
 
