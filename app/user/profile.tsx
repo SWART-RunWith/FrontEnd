@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   cameraContainer: {
-    height: getSize(522),
+    height: getSize(609),
     alignItems: 'center',
     zIndex: 3,
   },
@@ -269,10 +269,11 @@ const styles = StyleSheet.create({
     fontSize: getSize(16),
     color: 'white',
     marginTop: getSize(28),
+    height: getSize(39),
   },
   bar: {
     backgroundColor: Colors.main,
-    marginTop: getSize(97),
+    marginTop: getSize(12),
     height: getSize(3),
     width: width - getSize(Sizes.formMargin) * 2,
     zIndex: 3,
