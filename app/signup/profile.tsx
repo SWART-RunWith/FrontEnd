@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { ProfileHeader } from '@/components/Header';
+import { ProfileSettingHeader } from '@/components/header/IconHeader';
 import {
   NameUpdateModal,
   LocationUpdateModal,
@@ -62,7 +62,7 @@ const SignUpProfileScreen = () => {
 
   return (
     <View style={Styles.container}>
-      <ProfileHeader onPress={() => navigation.replace('signup/terms')} />
+      <ProfileSettingHeader onPressBack={() => navigation.replace('signup/terms')} />
 
       <ImageBackground
         source={profileImage ? { uri: profileImage } : DefaultImage}

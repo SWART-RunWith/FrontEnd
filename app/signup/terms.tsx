@@ -7,7 +7,7 @@ import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import Styles from '@/constants/Styles';
-import { TermsAgreeHeader } from '@/components/Header';
+import { TermsAgreeHeader } from '@/components/header/IconHeader';
 import RightArrowIcon from '@/assets/icons/rightArrow.svg';
 import { DefaultButton } from '@/components/button/Button'; // DefaultButton을 사용
 import { SignUpScreenNavigationProp } from '@/scripts/navigation';
@@ -49,7 +49,8 @@ const TermsScreen: React.FC = () => {
 
   return (
     <View style={Styles.container}>
-      <TermsAgreeHeader />
+      <TermsAgreeHeader onPressBack={() => { navigation.replace('login') }} />
+
       <View style={styles.textContainer}>
         <Text style={styles.headerText}>약관 동의</Text>
         <Text style={styles.subText}>필수항목 및 선택항목 약관에 동의해 주세요.</Text>
