@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
   Dimensions,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  Platform,
 } from 'react-native';
 import RNModal from 'react-native-modal';
 

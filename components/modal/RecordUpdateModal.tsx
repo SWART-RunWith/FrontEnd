@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
   Dimensions,
   TouchableWithoutFeedback,
@@ -11,7 +8,6 @@ import {
 } from 'react-native';
 import RNModal from 'react-native-modal';
 import Colors from '@/constants/Colors';
-import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
 import {
   ModalHeader,
