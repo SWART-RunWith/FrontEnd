@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -25,6 +25,10 @@ import {
   PaceBox,
   TimeBox,
 } from '@/components/box/ProfileBox';
+import {
+  ProfileSaveButton,
+  ProfileUpdateButton,
+} from '@/components/button/Button';
 import { LoginScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
 import CameraIcon from '@/assets/icons/camera.svg';
@@ -32,11 +36,15 @@ import LocationIcon from '@/assets/icons/location.svg';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 
+
 const DefaultImage = require('@/assets/images/default.png');
+
 const { width } = Dimensions.get('window');
 
 const ProfileScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
+
+  const scrollRef = useRef<ScrollView>(null);
 
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -70,12 +78,26 @@ const ProfileScreen = () => {
     setProfileImage(uri);
   };
 
+  const saveProfile = () => {
+    // to do : 프로필 update api 연결
+    setIsEditMode(false);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  }
+
+  const updateProfile = () => {
+    setIsEditMode(true);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  }
+
   return (
-    <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+    <ScrollView
+      contentContainerStyle={styles.contentContainerStyle}
+      ref={scrollRef}
+    >
       <ProfileHeader
         showBackIcon={isEditMode}
-        backProps={{ onPress: () => setIsEditMode(false) }}
-        editProps={{ onPress: () => setIsEditMode(true) }}
+        backProps={{ onPress: () => saveProfile() }}
+        editProps={{ onPress: () => updateProfile() }}
       />
 
       <ImageBackground
@@ -175,9 +197,17 @@ const ProfileScreen = () => {
             />
           </View>
         </View>
+
+        {isEditMode
+          ? <ProfileSaveButton
+            style={{ marginTop: getSize(133) }}
+            onPress={() => { saveProfile() }} />
+          : <ProfileUpdateButton
+            style={{ marginTop: getSize(90) }}
+            onPress={() => { updateProfile() }} />
+        }
+
       </ImageBackground>
-
-
 
       {/* 모달창 */}
       <CameraModal
@@ -313,6 +343,9 @@ const styles = StyleSheet.create({
   shoesBoxContainer: {
     marginTop: getSize(16),
   },
+  buttonContainer: {
+    marginTop: getSize(10),
+  }
 });
 
 export default ProfileScreen;
