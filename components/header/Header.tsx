@@ -9,6 +9,7 @@ import getSize from '@/scripts/getSize';
 import BackSvgIcon from '@/assets/icons/back.svg';
 import EditSvgIcon from '@/assets/icons/edit.svg';
 import SettingSvgIcon from '@/assets/icons/setting.svg';
+import OptionSvgIcon from '@/assets/icons/option.svg';
 
 const { width } = Dimensions.get('window');
 
@@ -30,7 +31,6 @@ const BackIcon: React.FC<IconProps> = ({ onPress }) => {
   );
 };
 
-// EditProps 정의
 const EditIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity
     onPress={onPress}
@@ -40,13 +40,23 @@ const EditIcon: React.FC<IconProps> = ({ onPress }) => (
   </TouchableOpacity>
 );
 
-// SettingProps 정의
 const SettingIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity
+    // to do : setting 화면으로 넘어가기
     onPress={onPress}
     style={styles.iconButton}
   >
     <SettingSvgIcon width={getSize(24)} height={getSize(23)} />
+  </TouchableOpacity>
+);
+
+const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
+  <TouchableOpacity
+    // to do : option 모달 띄우기
+    onPress={onPress}
+    style={styles.iconButton}
+  >
+    <OptionSvgIcon width={getSize(5.33)} height={getSize(24)} />
   </TouchableOpacity>
 );
 
@@ -60,8 +70,8 @@ interface TextProps {
 
 const HeaderText: React.FC<TextProps> = ({
   text = 'RUNWITH',
-  fontSize = 20,
-  fontFamily = 'Hanson',
+  fontSize = Sizes.pageTitle,
+  fontFamily = 'Pretendard-SemiBold',
   fontColor = Colors.main,
 }) => (
   <Text style={{
@@ -74,23 +84,27 @@ const HeaderText: React.FC<TextProps> = ({
 );
 
 interface CombinedHeaderProps {
+  showBackIcon?: boolean;
   backProps?: IconProps;
   editProps?: IconProps;
   settingProps?: IconProps;
+  optionProps?: IconProps;
   textProps?: TextProps;
   containerStyle?: ViewStyle;
 }
 
 const CombinedHeader: React.FC<CombinedHeaderProps> = ({
+  showBackIcon = true,
   backProps,
   editProps,
   settingProps,
+  optionProps,
   textProps,
   containerStyle = {},
 }) => (
   <View style={[styles.container, containerStyle]}>
     {/* Back Icon */}
-    {backProps && (
+    {showBackIcon && backProps && (
       <View style={styles.leftIcons}>
         <BackIcon {...backProps} />
       </View>
@@ -114,6 +128,13 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
         <SettingIcon {...settingProps} />
       </View>
     )}
+
+    {/* Option Icon */}
+    {optionProps && (
+      <View style={styles.rightIcons}>
+        <OptionIcon {...optionProps} />
+      </View>
+    )}
   </View>
 );
 
@@ -121,22 +142,17 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginTop: getSize(57),
-    marginHorizontal: getSize(Sizes.formMargin),
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     width: width,
     height: getSize(29),
     zIndex: 10,
   },
   leftIcons: {
-    position: 'absolute',
-    left: 0,
+
   },
   rightIcons: {
-    flexDirection: 'row',
-    position: 'absolute',
-    right: getSize(15),
   },
   iconButton: {
     marginHorizontal: getSize(10),
@@ -148,9 +164,12 @@ const styles = StyleSheet.create({
 });
 
 export {
-  CombinedHeader,
   BackIcon,
   EditIcon,
   SettingIcon,
-  HeaderText
+  OptionIcon,
+  TextProps,
+  HeaderText,
+  CombinedHeader,
+  CombinedHeaderProps,
 };
