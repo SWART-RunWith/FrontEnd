@@ -115,26 +115,28 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
       <HeaderText {...textProps} />
     </View>
 
-    {/* Edit Icon */}
-    {editProps && (
-      <View style={styles.rightIcons}>
-        <EditIcon {...editProps} />
-      </View>
-    )}
+    <View style={styles.rightIconContainer}>
+      {/* Edit Icon */}
+      {editProps && (
+        <View style={styles.rightIcons}>
+          <EditIcon {...editProps} />
+        </View>
+      )}
 
-    {/* Settings Icon */}
-    {settingProps && (
-      <View style={styles.rightIcons}>
-        <SettingIcon {...settingProps} />
-      </View>
-    )}
+      {/* Settings Icon */}
+      {settingProps && (
+        <View style={styles.rightIcons}>
+          <SettingIcon {...settingProps} />
+        </View>
+      )}
 
-    {/* Option Icon */}
-    {optionProps && (
-      <View style={styles.rightIcons}>
-        <OptionIcon {...optionProps} />
-      </View>
-    )}
+      {/* Option Icon */}
+      {optionProps && (
+        <View style={styles.rightIcons}>
+          <OptionIcon {...optionProps} />
+        </View>
+      )}
+    </View>
   </View>
 );
 
@@ -145,17 +147,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: getSize(Sizes.formMargin),
     width: width,
     height: getSize(29),
     zIndex: 10,
   },
   leftIcons: {
-
+  },
+  rightIconContainer: {
+    flexDirection: 'row',
+    gap: getSize(24),
+    right: 0,
   },
   rightIcons: {
   },
   iconButton: {
-    marginHorizontal: getSize(10),
   },
   centerText: {
     justifyContent: 'center',
