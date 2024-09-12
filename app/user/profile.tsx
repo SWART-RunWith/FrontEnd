@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -25,10 +26,13 @@ import LocationIcon from '@/assets/icons/location.svg';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import Styles from '@/constants/Styles';
-import { DefaultButton } from '@/components/button/Button';
+import {
+  MyBestBox,
+  RunningShoesBox,
+} from '@/components/box/profile/ProfileBox';
 
 const DefaultImage = require('@/assets/images/default.png');
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const ProfileScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
@@ -61,7 +65,9 @@ const ProfileScreen = () => {
   };
 
   return (
-    <View style={Styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.contentContainerStyle}
+    >
       <ProfileHeader onPress={() => navigation.replace('signup/terms')} />
 
       <ImageBackground
@@ -80,7 +86,7 @@ const ProfileScreen = () => {
           {!profileImage && (
             <TouchableOpacity
               style={{
-                marginTop: getSize(232),
+                marginTop: getSize(348),
               }}
               onPress={() => setCameraModalVisible(true)}>
               <CameraIcon width={getSize(77.14)} height={getSize(57.19)} />
@@ -120,17 +126,48 @@ const ProfileScreen = () => {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.bar} />
 
-        {/* 버튼 */}
-        <View style={styles.buttonContainer}>
-          <DefaultButton
-            onPress={() => navigation.replace('home')}
-            text='RUNWITH!'
-            fontFamily='Hanson'
-          />
+        <View style={styles.myBestContainer}>
+          <Text style={{
+            fontSize: getSize(Sizes.boxText),
+            color: 'white',
+            fontFamily: 'Pretendard-SemiBold',
+          }}>MY BEST</Text>
+          <View style={styles.CardContainer}>
+            <MyBestBox
+              title="최장 거리"
+              value="42.40KM"
+              description="Adidas Adizero Adios Pro"
+              additionalInfo="동아마라톤 2024 Edition"
+            />
+            <MyBestBox
+              title="최고 페이스"
+              value="4'07"
+              description="Adidas Adizero Takumi Sen 10"
+              additionalInfo="Green Spark / Aurora Met. / Lucid Lemon"
+            />
+            <MyBestBox
+              title="최장 시간"
+              value="03:46:29"
+              description="Asics Metaspeed Sky"
+              additionalInfo="Paris Edition"
+            />
+          </View>
         </View>
 
-        <View style={styles.bar} />
+        <View style={styles.runningShoesContainer}>
+          <Text style={{
+            fontSize: getSize(Sizes.boxText),
+            color: 'white',
+            fontFamily: 'Pretendard-SemiBold',
+          }}>러닝화</Text>
+          <RunningShoesBox
+            brand="Adidas"
+            model="Adizero Adios Pro 3"
+            edition="동아마라톤 2024 Edition"
+          />
+        </View>
       </ImageBackground>
 
       {/* 카메라 모달 */}
@@ -175,24 +212,31 @@ const ProfileScreen = () => {
         value={tempValue}
         onChangeText={setTempValue}
       />
-    </View >
+    </ScrollView >
   );
 };
 
 const styles = StyleSheet.create({
-  profileContainer: {
-    marginTop: getSize(20),
+  contentContainerStyle: {
+    backgroundColor: 'black',
     width: width,
-    height: getSize(752),
+    height: getSize(2086),
+    alignItems: 'center',
+  },
+  profileContainer: {
+    position: 'absolute',
+    width: width,
+    height: getSize(760),
     alignItems: 'center',
     backgroundColor: Colors.grayBox,
+    zIndex: 2,
   },
   imageStyle: {
     opacity: 1,
     zIndex: 1,
   },
   cameraContainer: {
-    height: getSize(440),
+    height: getSize(522),
     alignItems: 'center',
     zIndex: 3,
   },
@@ -241,6 +285,19 @@ const styles = StyleSheet.create({
     width: width,
     height: getSize(479),
     zIndex: 2,
+  },
+  myBestContainer: {
+    width: width - getSize(Sizes.formMargin) * 2,
+    marginTop: getSize(171),
+  },
+  CardContainer: {
+    width: '100%',
+    marginTop: getSize(9.53),
+    gap: getSize(24),
+  },
+  runningShoesContainer: {
+    width: width - getSize(Sizes.formMargin) * 2,
+    marginTop: getSize(48),
   },
 });
 
