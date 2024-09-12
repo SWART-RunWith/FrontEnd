@@ -68,6 +68,7 @@ const ProfileSettingHeader: React.FC<BackIconProps> = ({
 
 const ProfileHeader: React.FC<CombinedHeaderProps> = ({
   backProps,
+  editProps,
   showBackIcon,
 }) => {
   return (
@@ -79,7 +80,8 @@ const ProfileHeader: React.FC<CombinedHeaderProps> = ({
       textProps={{
         text: '',
       }}
-      settingProps={{ onPress: () => console.log('설정 버튼 클릭') }} // 설정 아이콘 추가
+      editProps={{ onPress: editProps?.onPress }}
+      settingProps={{ onPress: () => console.log('설정 버튼 클릭') }}
     />
   );
 };

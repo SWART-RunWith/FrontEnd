@@ -31,7 +31,6 @@ import CameraIcon from '@/assets/icons/camera.svg';
 import LocationIcon from '@/assets/icons/location.svg';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
-import Styles from '@/constants/Styles';
 
 const DefaultImage = require('@/assets/images/default.png');
 const { width, height } = Dimensions.get('window');
@@ -84,6 +83,9 @@ const ProfileScreen = () => {
         showBackIcon={isEditMode}
         backProps={{
           onPress: () => navigation.replace('signup/terms')
+        }}
+        editProps={{
+          onPress: () => setIsEditMode(true),
         }}
       />
 
