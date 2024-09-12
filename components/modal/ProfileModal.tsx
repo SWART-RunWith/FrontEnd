@@ -44,9 +44,10 @@ const ProfileUpdateModal: React.FC<ProfileModalProps> = ({
     isVisible={isVisible}
     onBackdropPress={onCancel}
     style={styles.bottomModal}
+    avoidKeyboard={false}
   >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView style={styles.modalContainer}>
+      <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <View style={styles.modalTitleContainer}>
             <Text style={styles.modalCancel} onPress={onCancel}>취소</Text>
@@ -77,7 +78,7 @@ const ProfileUpdateModal: React.FC<ProfileModalProps> = ({
             />
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </TouchableWithoutFeedback>
   </RNModal>
 );
