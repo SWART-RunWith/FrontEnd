@@ -28,6 +28,7 @@ interface MyBestBoxProps {
   additionalInfo?: string;
   onEditPress?: () => void;
   isEditMode?: boolean;
+  onConfirm?: (newValue: string) => void;
 }
 
 const MyBestBox: React.FC<MyBestBoxProps> = ({
@@ -63,6 +64,7 @@ const MyBestBox: React.FC<MyBestBoxProps> = ({
 
 const DistanceBox: React.FC<MyBestBoxProps> = ({
   title = '최장 거리',
+  onConfirm,
   ...props
 }) => {
   const [isDistanceModalVisible, setDistanceModalVisible] = useState(false);
@@ -76,11 +78,14 @@ const DistanceBox: React.FC<MyBestBoxProps> = ({
         onEditPress={() => setDistanceModalVisible(true)}
         {...props}
       />
-
       <DistanceUpdateModal
         isVisible={isDistanceModalVisible}
         onCancel={() => setDistanceModalVisible(false)}
-        onConfirm={() => setDistanceModalVisible(false)}
+        onConfirm={(newDistance) => {
+          setDistance(newDistance);
+          onConfirm?.(newDistance);
+          setDistanceModalVisible(false);
+        }}
         value={distance}
         onChangeText={setDistance}
       />
@@ -88,8 +93,10 @@ const DistanceBox: React.FC<MyBestBoxProps> = ({
   );
 };
 
+
 const PaceBox: React.FC<MyBestBoxProps> = ({
   title = '최고 페이스',
+  onConfirm,
   ...props
 }) => {
   const [isPaceModalVisible, setPaceModalVisible] = useState(false);
@@ -107,7 +114,11 @@ const PaceBox: React.FC<MyBestBoxProps> = ({
       <PaceUpdateModal
         isVisible={isPaceModalVisible}
         onCancel={() => setPaceModalVisible(false)}
-        onConfirm={() => setPaceModalVisible(false)}
+        onConfirm={(newPace) => {
+          setPace(newPace);
+          onConfirm?.(newPace);
+          setPaceModalVisible(false);
+        }}
         value={pace}
         onChangeText={setPace}
       />
@@ -117,6 +128,7 @@ const PaceBox: React.FC<MyBestBoxProps> = ({
 
 const TimeBox: React.FC<MyBestBoxProps> = ({
   title = '최장 시간',
+  onConfirm,
   ...props
 }) => {
   const [isTimeModalVisible, setTimeModalVisible] = useState(false);
@@ -134,7 +146,11 @@ const TimeBox: React.FC<MyBestBoxProps> = ({
       <TimeUpdateModal
         isVisible={isTimeModalVisible}
         onCancel={() => setTimeModalVisible(false)}
-        onConfirm={() => setTimeModalVisible(false)}
+        onConfirm={(newTime) => {
+          setTime(newTime);
+          onConfirm?.(newTime);
+          setTimeModalVisible(false);
+        }}
         value={time}
         onChangeText={setTime}
       />

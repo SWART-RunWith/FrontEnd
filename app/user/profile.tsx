@@ -171,24 +171,26 @@ const ProfileScreen = () => {
             MY BEST
           </Text>
           <View style={styles.CardContainer}>
-            {/* Best 기록을 보여주는 컴포넌트 */}
             <DistanceBox
               isEditMode={isEditMode}
               value={distance}
               description="Adidas Adizero Adios Pro"
               additionalInfo="동아마라톤 2024 Edition"
+              onConfirm={setDistance}  // 값 저장 후 Box에 반영
             />
             <PaceBox
               isEditMode={isEditMode}
               value={pace}
               description="Adidas Adizero Takumi Sen 10"
               additionalInfo="Green Spark / Aurora Met. / Lucid Lemon"
+              onConfirm={setPace}  // 값 저장 후 Box에 반영
             />
             <TimeBox
               isEditMode={isEditMode}
               value={time}
               description="Asics Metaspeed Sky"
               additionalInfo="Paris Edition"
+              onConfirm={setTime}  // 값 저장 후 Box에 반영
             />
           </View>
         </View>
@@ -215,44 +217,43 @@ const ProfileScreen = () => {
         </View>
       </ImageBackground>
 
-      {/* 카메라 모달 */}
       <CameraModal
         isVisible={isCameraModalVisible}
         onCancel={() => setCameraModalVisible(false)}
         onImageSelect={handleImageSelect}
       />
 
-      {/* 이름 변경 모달 */}
       <NameUpdateModal
         isVisible={isNameModalVisible}
         onCancel={() => setNameModalVisible(false)}
-        onConfirm={() => {
+        onConfirm={(tempValue) => {
           setName(tempValue);
           setNameModalVisible(false);
         }}
-        value={tempValue}
+        value={name}
+        onChangeText={setName}
       />
 
-      {/* 위치 변경 모달 */}
       <LocationUpdateModal
         isVisible={isLocationModalVisible}
         onCancel={() => setLocationModalVisible(false)}
-        onConfirm={() => {
+        onConfirm={(tempValue) => {
           setLocation(tempValue);
           setLocationModalVisible(false);
         }}
-        value={tempValue}
+        value={location}
+        onChangeText={setLocation}
       />
 
-      {/* 소개 변경 모달 */}
       <DescriptionUpdateModal
         isVisible={isDescriptionModalVisible}
         onCancel={() => setDescriptionModalVisible(false)}
-        onConfirm={() => {
+        onConfirm={(tempValue) => {
           setDescription(tempValue);
           setDescriptionModalVisible(false);
         }}
-        value={tempValue}
+        value={description}
+        onChangeText={setDescription}
       />
     </ScrollView>
   );

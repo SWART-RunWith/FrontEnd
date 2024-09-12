@@ -133,44 +133,43 @@ const SignUpProfileScreen = () => {
         <View style={styles.bar} />
       </ImageBackground>
 
-      {/* 카메라 모달 */}
       <CameraModal
         isVisible={isCameraModalVisible}
         onCancel={() => setCameraModalVisible(false)}
         onImageSelect={handleImageSelect}
       />
 
-      {/* 이름 변경 모달 */}
       <NameUpdateModal
         isVisible={isNameModalVisible}
         onCancel={() => setNameModalVisible(false)}
-        onConfirm={() => {
+        onConfirm={(tempValue) => {
           setName(tempValue);
           setNameModalVisible(false);
         }}
-        value={tempValue}
+        value={name}
+        onChangeText={setName}
       />
 
-      {/* 위치 변경 모달 */}
       <LocationUpdateModal
         isVisible={isLocationModalVisible}
         onCancel={() => setLocationModalVisible(false)}
-        onConfirm={() => {
+        onConfirm={(tempValue) => {
           setLocation(tempValue);
           setLocationModalVisible(false);
         }}
-        value={tempValue}
+        value={location}
+        onChangeText={setLocation}
       />
 
-      {/* 소개 변경 모달 */}
       <DescriptionUpdateModal
         isVisible={isDescriptionModalVisible}
         onCancel={() => setDescriptionModalVisible(false)}
-        onConfirm={() => {
+        onConfirm={(tempValue) => {
           setDescription(tempValue);
           setDescriptionModalVisible(false);
         }}
-        value={tempValue}
+        value={description}
+        onChangeText={setDescription}
       />
     </View >
   );
