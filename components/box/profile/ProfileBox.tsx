@@ -13,10 +13,10 @@ import Colors from '@/constants/Colors';
 const { width } = Dimensions.get('window');
 
 interface MyBestBoxProps {
-  title: string;
-  value: string;
-  description: string;
-  additionalInfo: string;
+  title?: string;
+  value?: string;
+  description?: string;
+  additionalInfo?: string;
 }
 
 const MyBestBox: React.FC<MyBestBoxProps> = ({
@@ -37,8 +37,37 @@ const MyBestBox: React.FC<MyBestBoxProps> = ({
   );
 };
 
+const DistanceBox: React.FC<MyBestBoxProps> = ({
+  title = '최장 거리',
+  ...props
+}) => {
+  return (
+    <MyBestBox title={title} {...props} />
+  );
+};
+
+const PaceBox: React.FC<MyBestBoxProps> = ({
+  title = '최고 페이스',
+  ...props
+}) => {
+  return (
+    <MyBestBox title={title} {...props} />
+  );
+};
+
+const TimeBox: React.FC<MyBestBoxProps> = ({
+  title = '최장 시간',
+  ...props
+}) => {
+  return (
+    <MyBestBox title={title} {...props} />
+  );
+};
+
 export {
-  MyBestBox
+  DistanceBox,
+  PaceBox,
+  TimeBox,
 };
 
 const ShoesImage = require('@/assets/images/shoes.png'); // 이미지 경로를 실제 경로로 변경하세요

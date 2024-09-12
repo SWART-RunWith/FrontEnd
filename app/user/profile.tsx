@@ -19,6 +19,12 @@ import {
   DescriptionUpdateModal,
 } from '@/components/modal/ProfileModal';
 import { CameraModal } from '@/components/modal/CameraModal';
+import {
+  DistanceBox,
+  RunningShoesBox,
+  PaceBox,
+  TimeBox,
+} from '@/components/box/profile/ProfileBox';
 import { LoginScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
 import CameraIcon from '@/assets/icons/camera.svg';
@@ -26,10 +32,6 @@ import LocationIcon from '@/assets/icons/location.svg';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import Styles from '@/constants/Styles';
-import {
-  MyBestBox,
-  RunningShoesBox,
-} from '@/components/box/profile/ProfileBox';
 
 const DefaultImage = require('@/assets/images/default.png');
 const { width, height } = Dimensions.get('window');
@@ -135,20 +137,18 @@ const ProfileScreen = () => {
             fontFamily: 'Pretendard-SemiBold',
           }}>MY BEST</Text>
           <View style={styles.CardContainer}>
-            <MyBestBox
-              title="최장 거리"
+            {/* to do : best 기록 조회 api 연동 */}
+            <DistanceBox
               value="42.40KM"
               description="Adidas Adizero Adios Pro"
               additionalInfo="동아마라톤 2024 Edition"
             />
-            <MyBestBox
-              title="최고 페이스"
+            <PaceBox
               value="4'07"
               description="Adidas Adizero Takumi Sen 10"
               additionalInfo="Green Spark / Aurora Met. / Lucid Lemon"
             />
-            <MyBestBox
-              title="최장 시간"
+            <TimeBox
               value="03:46:29"
               description="Asics Metaspeed Sky"
               additionalInfo="Paris Edition"
