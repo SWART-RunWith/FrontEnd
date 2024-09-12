@@ -12,6 +12,12 @@ import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import EditIcon from '@/assets/icons/edit.svg';
+import {
+  DistanceUpdateModal,
+  TimeUpdateModal,
+  PaceUpdateModal,
+  ShoesUpdateModal,
+} from '@/components/modal/ProfileModal';
 
 const { width } = Dimensions.get('window');
 
@@ -39,7 +45,10 @@ const MyBestBox: React.FC<MyBestBoxProps> = ({
         <EditIcon width={getSize(22.95)} height={getSize(23.06)} />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.value}>{value}</Text>
+      <Text
+        style={styles.value}
+        numberOfLines={1}
+      >{value}</Text>
       <View style={styles.descriptionContainer}>
         <Text style={styles.description}>{description}</Text>
         <Text style={styles.additionalInfo}>{additionalInfo}</Text>
@@ -50,47 +59,118 @@ const MyBestBox: React.FC<MyBestBoxProps> = ({
 
 const DistanceBox: React.FC<MyBestBoxProps> = ({
   title = '최장 거리',
-  ...props
+  value,
+  description,
+  additionalInfo,
 }) => {
-  return <MyBestBox title={title} {...props} />;
+  const [isDistanceModalVisible, setDistanceModalVisible] = useState(false);
+  const [distance, setDistance] = useState(value);
+
+  return (
+    <View>
+      <MyBestBox
+        title={title}
+        value={distance + 'KM'}
+        description={description}
+        additionalInfo={additionalInfo}
+        onEditPress={() => setDistanceModalVisible(true)}
+      />
+
+      <DistanceUpdateModal
+        isVisible={isDistanceModalVisible}
+        onCancel={() => setDistanceModalVisible(false)}
+        onConfirm={() => setDistanceModalVisible(false)}
+        value={distance}
+        onChangeText={setDistance}
+      />
+    </View>
+  );
 };
 
 const PaceBox: React.FC<MyBestBoxProps> = ({
   title = '최고 페이스',
-  ...props
+  value,
+  description,
+  additionalInfo,
 }) => {
-  return <MyBestBox title={title} {...props} />;
+  const [isPaceModalVisible, setPaceModalVisible] = useState(false);
+  const [pace, setPace] = useState(value);
+
+  return (
+    <View>
+      <MyBestBox
+        title={title}
+        value={pace}
+        description={description}
+        additionalInfo={additionalInfo}
+        onEditPress={() => setPaceModalVisible(true)}
+      />
+
+      <PaceUpdateModal
+        isVisible={isPaceModalVisible}
+        onCancel={() => setPaceModalVisible(false)}
+        onConfirm={() => setPaceModalVisible(false)}
+        value={pace}
+        onChangeText={setPace}
+      />
+    </View>
+  );
 };
 
 const TimeBox: React.FC<MyBestBoxProps> = ({
   title = '최장 시간',
-  ...props
+  value,
+  description,
+  additionalInfo,
 }) => {
-  return <MyBestBox title={title} {...props} />;
+  const [isTimeModalVisible, setTimeModalVisible] = useState(false);
+  const [time, setTime] = useState(value);
+
+  return (
+    <View>
+      <MyBestBox
+        title={title}
+        value={time}
+        description={description}
+        additionalInfo={additionalInfo}
+        onEditPress={() => setTimeModalVisible(true)}
+      />
+
+      <TimeUpdateModal
+        isVisible={isTimeModalVisible}
+        onCancel={() => setTimeModalVisible(false)}
+        onConfirm={() => setTimeModalVisible(false)}
+        value={time}
+        onChangeText={setTime}
+      />
+    </View>
+  );
 };
 
 export { DistanceBox, PaceBox, TimeBox };
 
-const ShoesImage = require('@/assets/images/shoes.png'); // 이미지 경로를 실제 경로로 변경하세요
+const ShoesImage = require('@/assets/images/shoes.png');
 
 interface RunningShoesBoxProps {
   brand: string;
   model: string;
   edition: string;
-  onEditPress?: () => void; // 수정 버튼을 눌렀을 때 실행할 함수
+  onEditPress?: () => void;
 }
 
 const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
   brand,
   model,
   edition,
-  onEditPress,
 }) => {
+  const [isShoeModalVisible, setShoeModalVisible] = useState(false);
+  const [shoeInfo, setShoeInfo] = useState(`${brand} ${model}`);
+
   return (
     <View style={styles.shoesContainer}>
       <TouchableOpacity
         style={styles.shoesEditIcon}
-        onPress={onEditPress}
+        onPress={() => setShoeModalVisible(true)}
       >
         <EditIcon width={getSize(22.95)} height={getSize(23.06)} />
       </TouchableOpacity>
@@ -100,6 +180,14 @@ const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
         <Text style={styles.model}>{model}</Text>
         <Text style={styles.edition}>{edition}</Text>
       </View>
+
+      <ShoesUpdateModal
+        isVisible={isShoeModalVisible}
+        onCancel={() => setShoeModalVisible(false)}
+        onConfirm={() => setShoeModalVisible(false)}
+        value={shoeInfo}
+        onChangeText={setShoeInfo}
+      />
     </View>
   );
 };
@@ -115,6 +203,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: getSize(20),
     top: getSize(20),
+    zIndex: 10,
+    width: getSize(40),
+    height: getSize(40),
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
   },
   title: {
     fontSize: getSize(20),
@@ -129,6 +222,7 @@ const styles = StyleSheet.create({
     color: Colors.main,
     fontFamily: 'Pretendard-ExtraBold',
     marginTop: getSize(8),
+    width: getSize(291),
   },
   description: {
     fontSize: getSize(16),
@@ -150,7 +244,7 @@ const styles = StyleSheet.create({
     paddingRight: getSize(21),
     paddingBottom: getSize(27),
     width: width - getSize(Sizes.formMargin) * 2,
-    position: 'relative', // 수정 아이콘 위치를 위해 추가
+    position: 'relative',
   },
   shoesImage: {
     width: getSize(220),

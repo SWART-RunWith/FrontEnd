@@ -22,11 +22,11 @@ import CancelIcon from '@/assets/icons/cancel.svg';
 const { width, height } = Dimensions.get('window');
 
 interface ProfileModalProps {
-  isVisible: boolean;
-  onCancel: () => void;
-  onConfirm: () => void;
+  isVisible?: boolean;
+  onCancel?: () => void;
+  onConfirm?: () => void;
   title?: string;
-  value: string;
+  value?: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
 }
@@ -125,6 +125,141 @@ const DescriptionUpdateModal: React.FC<ProfileModalProps> = ({
   );
 };
 
+interface RecordUpdateModalProps extends ProfileModalProps {
+  isVisible?: boolean;
+  onCancel?: () => void;
+  onConfirm?: () => void;
+  title?: string;
+  value?: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  label?: string,
+}
+
+
+const RecordUpdateModal: React.FC<RecordUpdateModalProps> = ({
+  isVisible,
+  onCancel,
+  onConfirm,
+  title,
+  value,
+  label,
+  placeholder,
+  onChangeText
+}) => (
+  <RNModal
+    isVisible={isVisible}
+    onBackdropPress={onCancel}
+    style={styles.bottomModal}
+  >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <View style={styles.modalTitleContainer}>
+            <Text style={styles.modalCancel} onPress={onCancel}>취소</Text>
+            <Text style={styles.modalTitle}>{title}</Text>
+            <Text style={styles.modalConfirm} onPress={onConfirm}>완료</Text>
+          </View>
+          <View style={styles.modalInputContainer}>
+            <View style={styles.inputHeader}>
+              <Text style={styles.modalInputTitle}>{label}</Text>
+            </View>
+            <TextInput
+              value={value}
+              onChangeText={onChangeText}
+              style={styles.modalInput}
+              placeholder={placeholder}
+              placeholderTextColor="rgba(255, 255, 255, 0.7)"
+              multiline={true}
+              maxLength={200}
+            />
+          </View>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
+  </RNModal>
+);
+
+const DistanceUpdateModal: React.FC<RecordUpdateModalProps> = ({
+  isVisible,
+  onCancel,
+  onConfirm,
+  value,
+  onChangeText,
+  ...props
+}) => (
+  <RecordUpdateModal
+    isVisible={isVisible}
+    onCancel={onCancel}
+    onConfirm={onConfirm}
+    title="최장 거리 수정"
+    value={value}
+    label="거리"
+    placeholder="최장 거리를 입력해주세요"
+    onChangeText={onChangeText}
+  />
+);
+
+// 시간 수정 모달
+const TimeUpdateModal: React.FC<RecordUpdateModalProps> = ({
+  isVisible,
+  onCancel,
+  onConfirm,
+  value,
+  onChangeText,
+}) => (
+  <RecordUpdateModal
+    isVisible={isVisible}
+    onCancel={onCancel}
+    onConfirm={onConfirm}
+    title="최장 시간 수정"
+    value={value}
+    label="시간"
+    placeholder="최장 시간을 입력해주세요"
+    onChangeText={onChangeText}
+  />
+);
+
+// 페이스 수정 모달
+const PaceUpdateModal: React.FC<RecordUpdateModalProps> = ({
+  isVisible,
+  onCancel,
+  onConfirm,
+  value,
+  onChangeText,
+}) => (
+  <RecordUpdateModal
+    isVisible={isVisible}
+    onCancel={onCancel}
+    onConfirm={onConfirm}
+    title="최고 페이스 수정"
+    value={value}
+    label="페이스"
+    placeholder="최고 페이스를 입력해주세요"
+    onChangeText={onChangeText}
+  />
+);
+
+// 신발 정보 수정 모달
+const ShoesUpdateModal: React.FC<RecordUpdateModalProps> = ({
+  isVisible,
+  onCancel,
+  onConfirm,
+  value,
+  onChangeText,
+}) => (
+  <RecordUpdateModal
+    isVisible={isVisible}
+    onCancel={onCancel}
+    onConfirm={onConfirm}
+    title="신발 정보 수정"
+    value={value}
+    label="신발"
+    placeholder="신발 정보를 입력해주세요"
+    onChangeText={onChangeText}
+  />
+);
+
 const styles = StyleSheet.create({
   bottomModal: {
     justifyContent: 'flex-end',
@@ -199,4 +334,8 @@ export {
   NameUpdateModal,
   LocationUpdateModal,
   DescriptionUpdateModal,
+  DistanceUpdateModal,
+  PaceUpdateModal,
+  TimeUpdateModal,
+  ShoesUpdateModal,
 };
