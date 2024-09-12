@@ -24,7 +24,7 @@ import {
   RunningShoesBox,
   PaceBox,
   TimeBox,
-} from '@/components/box/profile/ProfileBox';
+} from '@/components/box/ProfileBox';
 import { LoginScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
 import CameraIcon from '@/assets/icons/camera.svg';
