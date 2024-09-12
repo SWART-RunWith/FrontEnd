@@ -27,6 +27,7 @@ interface MyBestBoxProps {
   description?: string;
   additionalInfo?: string;
   onEditPress?: () => void;
+  isEditMode?: boolean;
 }
 
 const MyBestBox: React.FC<MyBestBoxProps> = ({
@@ -35,15 +36,18 @@ const MyBestBox: React.FC<MyBestBoxProps> = ({
   description,
   additionalInfo,
   onEditPress,
+  isEditMode = false,
 }) => {
   return (
     <View style={styles.recordBoxContainer}>
-      <TouchableOpacity
-        style={styles.recordEditIcon}
-        onPress={onEditPress}
-      >
-        <EditIcon width={getSize(22.95)} height={getSize(23.06)} />
-      </TouchableOpacity>
+      {isEditMode && (
+        <TouchableOpacity
+          style={styles.recordEditIcon}
+          onPress={onEditPress}
+        >
+          <EditIcon width={getSize(22.95)} height={getSize(23.06)} />
+        </TouchableOpacity>
+      )}
       <Text style={styles.title}>{title}</Text>
       <Text
         style={styles.value}
@@ -59,21 +63,18 @@ const MyBestBox: React.FC<MyBestBoxProps> = ({
 
 const DistanceBox: React.FC<MyBestBoxProps> = ({
   title = '최장 거리',
-  value,
-  description,
-  additionalInfo,
+  ...props
 }) => {
   const [isDistanceModalVisible, setDistanceModalVisible] = useState(false);
-  const [distance, setDistance] = useState(value);
+  const [distance, setDistance] = useState(props.value);
 
   return (
     <View>
       <MyBestBox
         title={title}
         value={distance + 'KM'}
-        description={description}
-        additionalInfo={additionalInfo}
         onEditPress={() => setDistanceModalVisible(true)}
+        {...props}
       />
 
       <DistanceUpdateModal
@@ -89,21 +90,18 @@ const DistanceBox: React.FC<MyBestBoxProps> = ({
 
 const PaceBox: React.FC<MyBestBoxProps> = ({
   title = '최고 페이스',
-  value,
-  description,
-  additionalInfo,
+  ...props
 }) => {
   const [isPaceModalVisible, setPaceModalVisible] = useState(false);
-  const [pace, setPace] = useState(value);
+  const [pace, setPace] = useState(props.value);
 
   return (
     <View>
       <MyBestBox
         title={title}
         value={pace}
-        description={description}
-        additionalInfo={additionalInfo}
         onEditPress={() => setPaceModalVisible(true)}
+        {...props}
       />
 
       <PaceUpdateModal
@@ -119,21 +117,18 @@ const PaceBox: React.FC<MyBestBoxProps> = ({
 
 const TimeBox: React.FC<MyBestBoxProps> = ({
   title = '최장 시간',
-  value,
-  description,
-  additionalInfo,
+  ...props
 }) => {
   const [isTimeModalVisible, setTimeModalVisible] = useState(false);
-  const [time, setTime] = useState(value);
+  const [time, setTime] = useState(props.value);
 
   return (
     <View>
       <MyBestBox
         title={title}
         value={time}
-        description={description}
-        additionalInfo={additionalInfo}
         onEditPress={() => setTimeModalVisible(true)}
+        {...props}
       />
 
       <TimeUpdateModal
@@ -156,24 +151,28 @@ interface RunningShoesBoxProps {
   model: string;
   edition: string;
   onEditPress?: () => void;
+  isEditMode?: boolean;
 }
 
 const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
   brand,
   model,
   edition,
+  isEditMode = false
 }) => {
   const [isShoeModalVisible, setShoeModalVisible] = useState(false);
   const [shoeInfo, setShoeInfo] = useState(`${brand} ${model}`);
 
   return (
     <View style={styles.shoesContainer}>
-      <TouchableOpacity
-        style={styles.shoesEditIcon}
-        onPress={() => setShoeModalVisible(true)}
-      >
-        <EditIcon width={getSize(22.95)} height={getSize(23.06)} />
-      </TouchableOpacity>
+      {isEditMode && (
+        <TouchableOpacity
+          style={styles.shoesEditIcon}
+          onPress={() => setShoeModalVisible(true)}
+        >
+          <EditIcon width={getSize(22.95)} height={getSize(23.06)} />
+        </TouchableOpacity>
+      )}
       <Image source={ShoesImage} style={styles.shoesImage} resizeMode="contain" />
       <View style={styles.textContainer}>
         <Text style={styles.brand}>{brand}</Text>

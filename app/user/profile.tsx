@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { ProfileHeader } from '@/components/Header';
+import { SignUpProfileHeader } from '@/components/Header';
 import {
   NameUpdateModal,
   LocationUpdateModal,
@@ -39,13 +39,17 @@ const { width, height } = Dimensions.get('window');
 const ProfileScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
+  // 수정 모드
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  // 프로필 기본 정보
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isCameraModalVisible, setCameraModalVisible] = useState(false);
   const [name, setName] = useState('홍여준');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
 
-  // 모달을 제어할 상태 변수
+  // 모달 상태 변수
   const [isNameModalVisible, setNameModalVisible] = useState(false);
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
   const [isDescriptionModalVisible, setDescriptionModalVisible] = useState(false);
@@ -76,7 +80,7 @@ const ProfileScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-      <ProfileHeader onPress={() => navigation.replace('signup/terms')} />
+      <SignUpProfileHeader onBackPress={() => navigation.replace('signup/terms')} />
 
       <ImageBackground
         source={profileImage ? { uri: profileImage } : DefaultImage}
@@ -91,7 +95,7 @@ const ProfileScreen = () => {
 
         {/* 카메라 아이콘 */}
         <View style={styles.cameraContainer}>
-          {!profileImage && (
+          {isEditMode && (
             <TouchableOpacity
               style={{
                 marginTop: getSize(348),
