@@ -33,34 +33,27 @@ import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 
 const DefaultImage = require('@/assets/images/default.png');
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const ProfileScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
-  // 수정 모드
   const [isEditMode, setIsEditMode] = useState(false);
 
-  // 프로필 기본 정보
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isCameraModalVisible, setCameraModalVisible] = useState(false);
   const [name, setName] = useState('홍여준');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
 
-  // 모달 상태 변수
   const [isNameModalVisible, setNameModalVisible] = useState(false);
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
   const [isDescriptionModalVisible, setDescriptionModalVisible] = useState(false);
-  const [tempValue, setTempValue] = useState('');
 
-  // Best 기록 상태 관리
   const [distance, setDistance] = useState('42.40KM');
   const [pace, setPace] = useState("4'07\"");
   const [time, setTime] = useState('03:46:29');
-  const [shoeInfo, setShoeInfo] = useState('Adidas Adizero Adios Pro 3');
 
-  // 권한 요청
   const requestPermission = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
@@ -81,12 +74,8 @@ const ProfileScreen = () => {
     <ScrollView contentContainerStyle={styles.contentContainerStyle}>
       <ProfileHeader
         showBackIcon={isEditMode}
-        backProps={{
-          onPress: () => setIsEditMode(false)
-        }}
-        editProps={{
-          onPress: () => setIsEditMode(true),
-        }}
+        backProps={{ onPress: () => setIsEditMode(false) }}
+        editProps={{ onPress: () => setIsEditMode(true) }}
       />
 
       <ImageBackground
@@ -114,14 +103,10 @@ const ProfileScreen = () => {
           )}
         </View>
 
+        {/* 프로필 정보 */}
         <View style={styles.textContainer}>
           <TouchableOpacity
-            onPress={() => {
-              if (isEditMode) {
-                setTempValue(location);
-                setLocationModalVisible(true);
-              }
-            }}
+            onPress={() => isEditMode && setLocationModalVisible(true)}
             style={styles.locationContainer}
             disabled={!isEditMode}
           >
@@ -132,24 +117,14 @@ const ProfileScreen = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => {
-              if (isEditMode) {
-                setTempValue(name);
-                setNameModalVisible(true);
-              }
-            }}
+            onPress={() => isEditMode && setNameModalVisible(true)}
             disabled={!isEditMode}
           >
             <Text style={styles.nameInput}>{name}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => {
-              if (isEditMode) {
-                setTempValue(description);
-                setDescriptionModalVisible(true);
-              }
-            }}
+            onPress={() => isEditMode && setDescriptionModalVisible(true)}
             disabled={!isEditMode}
           >
             <Text style={styles.descriptionInput}>
@@ -160,52 +135,37 @@ const ProfileScreen = () => {
 
         <View style={styles.bar} />
 
+        {/* 최고 기록 */}
         <View style={styles.myBestContainer}>
-          <Text
-            style={{
-              fontSize: getSize(Sizes.boxText),
-              color: 'white',
-              fontFamily: 'Pretendard-SemiBold',
-            }}
-          >
-            MY BEST
-          </Text>
-          <View style={styles.CardContainer}>
+          <Text style={styles.myBestText}>MY BEST</Text>
+          <View style={styles.cardContainer}>
             <DistanceBox
               isEditMode={isEditMode}
               value={distance}
               description="Adidas Adizero Adios Pro"
               additionalInfo="동아마라톤 2024 Edition"
-              onConfirm={setDistance}  // 값 저장 후 Box에 반영
+              onConfirm={setDistance}
             />
             <PaceBox
               isEditMode={isEditMode}
               value={pace}
               description="Adidas Adizero Takumi Sen 10"
               additionalInfo="Green Spark / Aurora Met. / Lucid Lemon"
-              onConfirm={setPace}  // 값 저장 후 Box에 반영
+              onConfirm={setPace}
             />
             <TimeBox
               isEditMode={isEditMode}
               value={time}
               description="Asics Metaspeed Sky"
               additionalInfo="Paris Edition"
-              onConfirm={setTime}  // 값 저장 후 Box에 반영
+              onConfirm={setTime}
             />
           </View>
         </View>
 
-        <View style={styles.runningShoesContainer}>
-          <Text
-            style={{
-              fontSize: getSize(Sizes.boxText),
-              color: 'white',
-              fontFamily: 'Pretendard-SemiBold',
-            }}
-          >
-            러닝화
-          </Text>
-          <View style={styles.runningShoesBoxContainer}>
+        <View style={styles.shoesContainer}>
+          <Text style={styles.shoesText}>러닝화</Text>
+          <View style={styles.shoesBoxContainer}>
             {/* RunningShoesBox 컴포넌트 */}
             <RunningShoesBox
               isEditMode={isEditMode}
@@ -217,6 +177,9 @@ const ProfileScreen = () => {
         </View>
       </ImageBackground>
 
+
+
+      {/* 모달창 */}
       <CameraModal
         isVisible={isCameraModalVisible}
         onCancel={() => setCameraModalVisible(false)}
@@ -226,8 +189,8 @@ const ProfileScreen = () => {
       <NameUpdateModal
         isVisible={isNameModalVisible}
         onCancel={() => setNameModalVisible(false)}
-        onConfirm={(tempValue) => {
-          setName(tempValue);
+        onConfirm={(newName) => {
+          setName(newName);
           setNameModalVisible(false);
         }}
         value={name}
@@ -237,8 +200,8 @@ const ProfileScreen = () => {
       <LocationUpdateModal
         isVisible={isLocationModalVisible}
         onCancel={() => setLocationModalVisible(false)}
-        onConfirm={(tempValue) => {
-          setLocation(tempValue);
+        onConfirm={(newLocation) => {
+          setLocation(newLocation);
           setLocationModalVisible(false);
         }}
         value={location}
@@ -248,8 +211,8 @@ const ProfileScreen = () => {
       <DescriptionUpdateModal
         isVisible={isDescriptionModalVisible}
         onCancel={() => setDescriptionModalVisible(false)}
-        onConfirm={(tempValue) => {
-          setDescription(tempValue);
+        onConfirm={(newDescription) => {
+          setDescription(newDescription);
           setDescriptionModalVisible(false);
         }}
         value={description}
@@ -325,19 +288,31 @@ const styles = StyleSheet.create({
     height: getSize(479),
     zIndex: 2,
   },
+  myBestText: {
+    fontSize: getSize(Sizes.boxText),
+    color: 'white',
+    fontFamily: 'Pretendard-SemiBold',
+  },
   myBestContainer: {
     width: width - getSize(Sizes.formMargin) * 2,
     marginTop: getSize(171),
   },
-  CardContainer: {
+  cardContainer: {
     width: '100%',
     marginTop: getSize(9.53),
     gap: getSize(24),
   },
-  runningShoesContainer: {
+  shoesContainer: {
     marginTop: getSize(48),
   },
-  runningShoesBoxContainer: {},
+  shoesText: {
+    fontSize: getSize(Sizes.boxText),
+    color: 'white',
+    fontFamily: 'Pretendard-SemiBold',
+  },
+  shoesBoxContainer: {
+    marginTop: getSize(16),
+  },
 });
 
 export default ProfileScreen;
