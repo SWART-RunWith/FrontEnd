@@ -16,8 +16,8 @@ import {
   DistanceUpdateModal,
   TimeUpdateModal,
   PaceUpdateModal,
-  ShoesUpdateModal,
-} from '@/components/modal/ProfileModal';
+} from '@/components/modal/RecordUpdateModal';
+import { ShoesUpdateModal } from '@/components/modal/ShoesUpdateModal';
 
 const { width } = Dimensions.get('window');
 

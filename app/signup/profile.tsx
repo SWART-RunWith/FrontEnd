@@ -16,7 +16,7 @@ import {
   NameUpdateModal,
   LocationUpdateModal,
   DescriptionUpdateModal,
-} from '@/components/modal/ProfileModal';
+} from '@/components/modal/ProfileUpdateDataModal';
 import { CameraModal } from '@/components/modal/CameraModal';
 import { LoginScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
@@ -149,7 +149,6 @@ const SignUpProfileScreen = () => {
           setNameModalVisible(false);
         }}
         value={tempValue}
-        onChangeText={setTempValue}
       />
 
       {/* 위치 변경 모달 */}
@@ -161,7 +160,6 @@ const SignUpProfileScreen = () => {
           setLocationModalVisible(false);
         }}
         value={tempValue}
-        onChangeText={setTempValue}
       />
 
       {/* 소개 변경 모달 */}
@@ -173,7 +171,6 @@ const SignUpProfileScreen = () => {
           setDescriptionModalVisible(false);
         }}
         value={tempValue}
-        onChangeText={setTempValue}
       />
     </View >
   );

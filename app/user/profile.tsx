@@ -17,7 +17,7 @@ import {
   NameUpdateModal,
   LocationUpdateModal,
   DescriptionUpdateModal,
-} from '@/components/modal/ProfileModal';
+} from '@/components/modal/ProfileUpdateDataModal';
 import { CameraModal } from '@/components/modal/CameraModal';
 import {
   DistanceBox,
@@ -231,7 +231,6 @@ const ProfileScreen = () => {
           setNameModalVisible(false);
         }}
         value={tempValue}
-        onChangeText={setTempValue}
       />
 
       {/* 위치 변경 모달 */}
@@ -243,7 +242,6 @@ const ProfileScreen = () => {
           setLocationModalVisible(false);
         }}
         value={tempValue}
-        onChangeText={setTempValue}
       />
 
       {/* 소개 변경 모달 */}
@@ -255,7 +253,6 @@ const ProfileScreen = () => {
           setDescriptionModalVisible(false);
         }}
         value={tempValue}
-        onChangeText={setTempValue}
       />
     </ScrollView>
   );
