@@ -182,8 +182,24 @@ const SignUpButton = ({
   return <DefaultButton {...props} text={text} />;
 };
 
+const ProfileUpdateButton = ({
+  text = '프로필 수정',
+  ...props
+}: DefaultButtonProps) => {
+  return <DefaultButton {...props} text={text} />
+}
+
+const ProfileSaveButton = ({
+  text = '프로필 저장',
+  ...props
+}: DefaultButtonProps) => {
+  return <DefaultButton {...props} text={text} />
+}
+
 export {
   DefaultButton,
   LoginButton,
-  SignUpButton
+  SignUpButton,
+  ProfileUpdateButton,
+  ProfileSaveButton,
 };
