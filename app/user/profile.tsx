@@ -82,7 +82,7 @@ const ProfileScreen = () => {
       <ProfileHeader
         showBackIcon={isEditMode}
         backProps={{
-          onPress: () => navigation.replace('signup/terms')
+          onPress: () => setIsEditMode(false)
         }}
         editProps={{
           onPress: () => setIsEditMode(true),
@@ -117,10 +117,13 @@ const ProfileScreen = () => {
         <View style={styles.textContainer}>
           <TouchableOpacity
             onPress={() => {
-              setTempValue(location);
-              setLocationModalVisible(true);
+              if (isEditMode) {
+                setTempValue(location);
+                setLocationModalVisible(true);
+              }
             }}
             style={styles.locationContainer}
+            disabled={!isEditMode}
           >
             <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
             <Text style={styles.locationText}>
@@ -130,18 +133,24 @@ const ProfileScreen = () => {
 
           <TouchableOpacity
             onPress={() => {
-              setTempValue(name);
-              setNameModalVisible(true);
+              if (isEditMode) {
+                setTempValue(name);
+                setNameModalVisible(true);
+              }
             }}
+            disabled={!isEditMode}
           >
             <Text style={styles.nameInput}>{name}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => {
-              setTempValue(description);
-              setDescriptionModalVisible(true);
+              if (isEditMode) {
+                setTempValue(description);
+                setDescriptionModalVisible(true);
+              }
             }}
+            disabled={!isEditMode}
           >
             <Text style={styles.descriptionInput}>
               {description ? description : '소개를 입력해주세요'}
@@ -164,16 +173,19 @@ const ProfileScreen = () => {
           <View style={styles.CardContainer}>
             {/* Best 기록을 보여주는 컴포넌트 */}
             <DistanceBox
+              isEditMode={isEditMode}
               value={distance}
               description="Adidas Adizero Adios Pro"
               additionalInfo="동아마라톤 2024 Edition"
             />
             <PaceBox
+              isEditMode={isEditMode}
               value={pace}
               description="Adidas Adizero Takumi Sen 10"
               additionalInfo="Green Spark / Aurora Met. / Lucid Lemon"
             />
             <TimeBox
+              isEditMode={isEditMode}
               value={time}
               description="Asics Metaspeed Sky"
               additionalInfo="Paris Edition"
@@ -194,6 +206,7 @@ const ProfileScreen = () => {
           <View style={styles.runningShoesBoxContainer}>
             {/* RunningShoesBox 컴포넌트 */}
             <RunningShoesBox
+              isEditMode={isEditMode}
               brand="Adidas"
               model="Adizero Adios Pro 3"
               edition="동아마라톤 2024 Edition"
