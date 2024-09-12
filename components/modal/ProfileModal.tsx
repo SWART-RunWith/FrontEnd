@@ -19,7 +19,7 @@ import getSize from '@/scripts/getSize';
 
 import CancelIcon from '@/assets/icons/cancel.svg';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 interface ProfileModalProps {
   isVisible: boolean;
@@ -46,10 +46,7 @@ const ProfileUpdateModal: React.FC<ProfileModalProps> = ({
     style={styles.bottomModal}
   >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView
-        style={styles.modalContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
+      <KeyboardAvoidingView style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <View style={styles.modalTitleContainer}>
             <Text style={styles.modalCancel} onPress={onCancel}>취소</Text>
@@ -138,7 +135,7 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: Colors.grayBox,
     width: width,
-    height: getSize(400),
+    height: getSize(800),
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     alignItems: 'center',
