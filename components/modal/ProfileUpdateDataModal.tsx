@@ -2,183 +2,179 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
-  Modal,
   StyleSheet,
-  TextInput
+  Dimensions,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
 } from 'react-native';
+import RNModal from 'react-native-modal';
+
 import Colors from '@/constants/Colors';
+import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
 
-interface ProfileUpdateDataModalProps {
-  title: string;
-  placeholder: string;
-  value: string;
-  onConfirm: (newValue: string) => void;
-  isVisible: boolean;
-  onCancel: () => void;
-}
+import {
+  ModalHeader,
+  ModalInput,
+  ModalProps,
+} from '@/components/modal/UpdateModal';
 
-const ProfileUpdateDataModal: React.FC<ProfileUpdateDataModalProps> = ({
-  title,
-  placeholder,
-  value,
-  onConfirm,
+const { width, height } = Dimensions.get('window');
+
+const ProfileUpdateModal: React.FC<ModalProps & { title: string }> = ({
   isVisible,
   onCancel,
-}) => {
-  const [tempValue, setTempValue] = useState(value);
-
-  return (
-    <Modal visible={isVisible} animationType="slide" transparent={true}>
+  onConfirm,
+  value,
+  onChangeText,
+  label,
+  placeholder,
+  title,
+}) => (
+  <RNModal
+    isVisible={isVisible}
+    onBackdropPress={onCancel}
+    style={styles.bottomModal}
+    avoidKeyboard={false}
+  >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{title}</Text>
-          <TextInput
-            style={styles.input}
-            placeholder={placeholder}
-            value={tempValue}
-            onChangeText={setTempValue}
+          <ModalHeader
+            title={title}
+            onCancel={onCancel}
+            onConfirm={() => {
+              if (onConfirm && value) {
+                onConfirm(value);
+              }
+            }}
           />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => {
-                onConfirm(tempValue);
-                onCancel();
-              }}
-            >
-              <Text style={styles.confirmButtonText}>확인</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={onCancel}
-            >
-              <Text style={styles.cancelButtonText}>취소</Text>
-            </TouchableOpacity>
-          </View>
+
+          <ModalInput
+            label={label || ''}
+            value={value || ''}
+            onChangeText={onChangeText}
+            placeholder={placeholder || ''}
+          />
         </View>
       </View>
-    </Modal>
-  );
-};
+    </TouchableWithoutFeedback>
+  </RNModal>
+);
 
-// NameUpdateModal 정의
-interface UpdateModalProps {
-  isVisible: boolean;
-  onCancel: () => void;
-  value: string;
-  onConfirm: (newValue: string) => void;
-}
-
-const NameUpdateModal: React.FC<UpdateModalProps> = ({
-  isVisible,
-  onCancel,
-  value,
-  onConfirm
+const NameUpdateModal: React.FC<ModalProps> = ({
+  ...props
 }) => {
   return (
-    <ProfileUpdateDataModal
-      title="이름 수정"
-      placeholder="이름을 입력해주세요"
-      value={value}
-      onConfirm={onConfirm}
-      isVisible={isVisible}
-      onCancel={onCancel}
+    <ProfileUpdateModal
+      title='이름 수정'
+      label='이름'
+      placeholder='이름을 입력해주세요'
+      {...props}
     />
   );
 };
 
-// LocationUpdateModal 정의
-const LocationUpdateModal: React.FC<UpdateModalProps> = ({
-  isVisible,
-  onCancel,
-  value,
-  onConfirm
+const LocationUpdateModal: React.FC<ModalProps> = ({
+  ...props
 }) => {
   return (
-    <ProfileUpdateDataModal
-      title="위치 수정"
-      placeholder="위치를 입력해주세요"
-      value={value}
-      onConfirm={onConfirm}
-      isVisible={isVisible}
-      onCancel={onCancel}
+    <ProfileUpdateModal
+      title='위치 수정'
+      label='위치'
+      placeholder='위치를 입력해주세요'
+      {...props}
     />
   );
 };
 
-// DescriptionUpdateModal 정의
-const DescriptionUpdateModal: React.FC<UpdateModalProps> = ({
-  isVisible,
-  onCancel,
-  value,
-  onConfirm
+const DescriptionUpdateModal: React.FC<ModalProps> = ({
+  ...props
 }) => {
   return (
-    <ProfileUpdateDataModal
-      title="소개 수정"
-      placeholder="소개를 입력해주세요"
-      value={value}
-      onConfirm={onConfirm}
-      isVisible={isVisible}
-      onCancel={onCancel}
+    <ProfileUpdateModal
+      title='소개 수정'
+      label='소개'
+      placeholder='소개를 입력해주세요'
+      {...props}
     />
   );
 };
 
-// 스타일 정의
 const styles = StyleSheet.create({
-  text: {
-    color: 'white',
-    fontSize: getSize(18),
+  bottomModal: {
+    justifyContent: 'flex-end',
+    margin: 0,
   },
   modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    marginHorizontal: 20,
-    borderRadius: 10,
+    backgroundColor: Colors.grayBox,
+    width: width,
+    height: getSize(800),
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    alignItems: 'center',
+  },
+  modalTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: width,
+    height: getSize(29),
+    paddingHorizontal: getSize(24),
+    marginTop: getSize(13),
+  },
+  modalCancel: {
+    fontSize: getSize(16),
+    fontFamily: 'Pretendard-SemiBold',
+    color: 'white',
   },
   modalTitle: {
-    fontSize: getSize(20),
-    marginBottom: 20,
+    fontSize: getSize(Sizes.pageTitle),
+    fontFamily: 'Pretendard-SemiBold',
+    color: 'white',
   },
-  input: {
-    borderWidth: 1,
-    borderColor: Colors.main,
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 20,
+  modalConfirm: {
+    fontSize: getSize(16),
+    fontFamily: 'Pretendard-SemiBold',
+    color: Colors.main,
   },
-  buttonContainer: {
+  modalInputContainer: {
+    paddingLeft: getSize(18),
+    width: width - getSize(Sizes.formMargin) * 2,
+    height: getSize(140),
+    marginTop: getSize(24),
+    borderColor: 'white',
+    borderWidth: getSize(1),
+    borderRadius: 20,
+  },
+  inputHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  confirmButton: {
-    backgroundColor: Colors.main,
-    padding: 10,
-    borderRadius: 10,
-  },
-  cancelButton: {
-    backgroundColor: Colors.grayBox,
-    padding: 10,
-    borderRadius: 10,
-  },
-  confirmButtonText: {
+  modalInputTitle: {
+    fontSize: getSize(14),
     color: 'white',
+    fontFamily: 'Pretendard-SemiBold',
+    marginTop: getSize(18),
   },
-  cancelButtonText: {
+  modalInput: {
+    marginRight: getSize(55),
+    marginBottom: getSize(25),
+    fontSize: getSize(14),
     color: 'white',
+    fontFamily: 'Pretendard-Light',
+    marginTop: getSize(10),
   },
 });
 
 export {
-  ProfileUpdateDataModal,
   NameUpdateModal,
   LocationUpdateModal,
   DescriptionUpdateModal,
