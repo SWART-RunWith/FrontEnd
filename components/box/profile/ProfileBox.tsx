@@ -84,7 +84,7 @@ const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
   edition
 }) => {
   return (
-    <View style={styles.boxContainer}>
+    <View style={styles.shoesContainer}>
       <Image
         source={ShoesImage}
         style={styles.shoesImage}
@@ -130,6 +130,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Pretendard-Light',
     marginTop: getSize(4),
+  },
+  shoesContainer: {
+    backgroundColor: Colors.grayBox,
+    borderRadius: 10,
+    alignItems: 'center',
+    paddingTop: getSize(15),
+    paddingLeft: getSize(18),
+    paddingRight: getSize(21),
+    paddingBottom: getSize(27),
   },
   shoesImage: {
     width: getSize(220),
