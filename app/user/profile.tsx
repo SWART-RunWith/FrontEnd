@@ -128,6 +128,7 @@ const ProfileScreen = () => {
             </Text>
           </TouchableOpacity>
         </View>
+
         <View style={styles.bar} />
 
         <View style={styles.myBestContainer}>
@@ -162,11 +163,15 @@ const ProfileScreen = () => {
             color: 'white',
             fontFamily: 'Pretendard-SemiBold',
           }}>러닝화</Text>
-          <RunningShoesBox
-            brand="Adidas"
-            model="Adizero Adios Pro 3"
-            edition="동아마라톤 2024 Edition"
-          />
+          <View style={styles.runningShoesBoxContainer}>
+            {/* to do : 좌우 스크롤 삽입 */}
+            {/* to do : 러닝화 데이터 가져오기 */}
+            <RunningShoesBox
+              brand="Adidas"
+              model="Adizero Adios Pro 3"
+              edition="동아마라톤 2024 Edition"
+            />
+          </View>
         </View>
       </ImageBackground>
 
@@ -296,8 +301,10 @@ const styles = StyleSheet.create({
     gap: getSize(24),
   },
   runningShoesContainer: {
-    width: width - getSize(Sizes.formMargin) * 2,
     marginTop: getSize(48),
+  },
+  runningShoesBoxContainer: {
+
   },
 });
 

@@ -9,6 +9,7 @@ import {
 
 import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
+import Sizes from '@/constants/Sizes';
 
 const { width } = Dimensions.get('window');
 
@@ -139,6 +140,7 @@ const styles = StyleSheet.create({
     paddingLeft: getSize(18),
     paddingRight: getSize(21),
     paddingBottom: getSize(27),
+    width: width - getSize(Sizes.formMargin) * 2,
   },
   shoesImage: {
     width: getSize(220),
