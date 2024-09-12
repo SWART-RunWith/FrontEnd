@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: width,
     height: getSize(29),
+    zIndex: 10,
   },
   leftIcons: {
     position: 'absolute',
