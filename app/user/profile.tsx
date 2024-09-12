@@ -44,10 +44,18 @@ const ProfileScreen = () => {
   const [name, setName] = useState('홍여준');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
+
+  // 모달을 제어할 상태 변수
   const [isNameModalVisible, setNameModalVisible] = useState(false);
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
   const [isDescriptionModalVisible, setDescriptionModalVisible] = useState(false);
   const [tempValue, setTempValue] = useState('');
+
+  // Best 기록 상태 관리
+  const [distance, setDistance] = useState('42.40KM');
+  const [pace, setPace] = useState("4'07\"");
+  const [time, setTime] = useState('03:46:29');
+  const [shoeInfo, setShoeInfo] = useState('Adidas Adizero Adios Pro 3');
 
   // 권한 요청
   const requestPermission = async () => {
@@ -67,9 +75,7 @@ const ProfileScreen = () => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.contentContainerStyle}
-    >
+    <ScrollView contentContainerStyle={styles.contentContainerStyle}>
       <ProfileHeader onPress={() => navigation.replace('signup/terms')} />
 
       <ImageBackground
@@ -90,7 +96,8 @@ const ProfileScreen = () => {
               style={{
                 marginTop: getSize(348),
               }}
-              onPress={() => setCameraModalVisible(true)}>
+              onPress={() => setCameraModalVisible(true)}
+            >
               <CameraIcon width={getSize(77.14)} height={getSize(57.19)} />
             </TouchableOpacity>
           )}
@@ -114,7 +121,8 @@ const ProfileScreen = () => {
             onPress={() => {
               setTempValue(name);
               setNameModalVisible(true);
-            }}>
+            }}
+          >
             <Text style={styles.nameInput}>{name}</Text>
           </TouchableOpacity>
 
@@ -122,7 +130,8 @@ const ProfileScreen = () => {
             onPress={() => {
               setTempValue(description);
               setDescriptionModalVisible(true);
-            }}>
+            }}
+          >
             <Text style={styles.descriptionInput}>
               {description ? description : '소개를 입력해주세요'}
             </Text>
@@ -132,25 +141,29 @@ const ProfileScreen = () => {
         <View style={styles.bar} />
 
         <View style={styles.myBestContainer}>
-          <Text style={{
-            fontSize: getSize(Sizes.boxText),
-            color: 'white',
-            fontFamily: 'Pretendard-SemiBold',
-          }}>MY BEST</Text>
+          <Text
+            style={{
+              fontSize: getSize(Sizes.boxText),
+              color: 'white',
+              fontFamily: 'Pretendard-SemiBold',
+            }}
+          >
+            MY BEST
+          </Text>
           <View style={styles.CardContainer}>
-            {/* to do : best 기록 조회 api 연동 */}
+            {/* Best 기록을 보여주는 컴포넌트 */}
             <DistanceBox
-              value="42.40KM"
+              value={distance}
               description="Adidas Adizero Adios Pro"
               additionalInfo="동아마라톤 2024 Edition"
             />
             <PaceBox
-              value="4'07"
+              value={pace}
               description="Adidas Adizero Takumi Sen 10"
               additionalInfo="Green Spark / Aurora Met. / Lucid Lemon"
             />
             <TimeBox
-              value="03:46:29"
+              value={time}
               description="Asics Metaspeed Sky"
               additionalInfo="Paris Edition"
             />
@@ -158,14 +171,17 @@ const ProfileScreen = () => {
         </View>
 
         <View style={styles.runningShoesContainer}>
-          <Text style={{
-            fontSize: getSize(Sizes.boxText),
-            color: 'white',
-            fontFamily: 'Pretendard-SemiBold',
-          }}>러닝화</Text>
+          <Text
+            style={{
+              fontSize: getSize(Sizes.boxText),
+              color: 'white',
+              fontFamily: 'Pretendard-SemiBold',
+            }}
+          >
+            러닝화
+          </Text>
           <View style={styles.runningShoesBoxContainer}>
-            {/* to do : 좌우 스크롤 삽입 */}
-            {/* to do : 러닝화 데이터 가져오기 */}
+            {/* RunningShoesBox 컴포넌트 */}
             <RunningShoesBox
               brand="Adidas"
               model="Adizero Adios Pro 3"
@@ -217,7 +233,7 @@ const ProfileScreen = () => {
         value={tempValue}
         onChangeText={setTempValue}
       />
-    </ScrollView >
+    </ScrollView>
   );
 };
 
@@ -278,11 +294,6 @@ const styles = StyleSheet.create({
     width: width - getSize(Sizes.formMargin) * 2,
     zIndex: 3,
   },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: getSize(92),
-    zIndex: 3,
-  },
   gradientOverlay: {
     position: 'absolute',
     left: 0,
@@ -304,9 +315,7 @@ const styles = StyleSheet.create({
   runningShoesContainer: {
     marginTop: getSize(48),
   },
-  runningShoesBoxContainer: {
-
-  },
+  runningShoesBoxContainer: {},
 });
 
 export default ProfileScreen;
