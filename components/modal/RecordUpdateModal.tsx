@@ -11,21 +11,47 @@ import Colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import {
   ModalHeader,
-  ModalInput,
-  ModalProps,
+  ModalRecordInput,
 } from '@/components/modal/UpdateModal';
 
 const { width } = Dimensions.get('window');
 
-const RecordUpdateModal: React.FC<ModalProps & { title: string }> = ({
+
+interface ModalProps {
+  label: string;
+  placeholder: string;
+  title: string;
+}
+
+interface UpdateValueProps {
+  isVisible?: boolean;
+  value?: string;
+  shoesValue?: string;
+  memoValue?: string;
+  onChangeText: (text: string) => void;
+  onChangeShoes: (text: string) => void;
+  onChangeMemo: (text: string) => void;
+  onCancel?: () => void;
+  onConfirm?: (
+    newValue: string,
+    newShoes: string,
+    newMemo: string
+  ) => void;
+}
+
+const RecordUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
   isVisible,
+  value = '',
+  shoesValue = '',
+  memoValue = '',
+  onChangeText,
+  onChangeShoes,
+  onChangeMemo,
   onCancel,
   onConfirm,
-  value,
-  onChangeText,
-  label,
-  placeholder,
-  title,
+  label = '',
+  placeholder = '값을 입력해주세요',
+  title = '수정',
 }) => (
   <RNModal
     isVisible={isVisible}
@@ -39,52 +65,65 @@ const RecordUpdateModal: React.FC<ModalProps & { title: string }> = ({
             title={title}
             onCancel={onCancel}
             onConfirm={() => {
-              if (onConfirm && value) {
-                onConfirm(value);
+              if (onConfirm) {
+                onConfirm(
+                  value === '' ? '' : value,
+                  shoesValue === '' ? '' : shoesValue,
+                  memoValue === '' ? '' : memoValue
+                );
               }
             }}
           />
-          <ModalInput
-            label={label || ''}
-            value={value || ''}
-            onChangeText={onChangeText}
-            placeholder={placeholder || ''}
-          />
+
+          <View>
+            <ModalRecordInput
+              label={label}
+              value={value}
+              onChangeText={onChangeText}
+              placeholder={placeholder}
+            />
+            <ModalRecordInput
+              label='신발 정보'
+              value={shoesValue}
+              onChangeText={onChangeShoes}
+              placeholder='신발 정보를 입력해주세요'
+            />
+            <ModalRecordInput
+              label='메모'
+              value={memoValue}
+              onChangeText={onChangeMemo}
+              placeholder='메모를 입력해주세요'
+            />
+          </View>
         </View>
       </View>
     </TouchableWithoutFeedback>
   </RNModal>
 );
 
-const DistanceUpdateModal: React.FC<ModalProps> = (
-  props
-) => (
+const DistanceUpdateModal: React.FC<UpdateValueProps> = (props) => (
   <RecordUpdateModal
     {...props}
     title="최장 거리 수정"
-    label="거리"
+    label="KM"
     placeholder="최장 거리를 입력해주세요"
   />
 );
 
-const TimeUpdateModal: React.FC<ModalProps> = (
-  props
-) => (
+const TimeUpdateModal: React.FC<UpdateValueProps> = (props) => (
   <RecordUpdateModal
     {...props}
     title="최장 시간 수정"
-    label="시간"
+    label="TIME"
     placeholder="최장 시간을 입력해주세요"
   />
 );
 
-const PaceUpdateModal: React.FC<ModalProps> = (
-  props
-) => (
+const PaceUpdateModal: React.FC<UpdateValueProps> = (props) => (
   <RecordUpdateModal
     {...props}
     title="최고 페이스 수정"
-    label="페이스"
+    label="TIME"
     placeholder="최고 페이스를 입력해주세요"
   />
 );
