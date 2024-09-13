@@ -136,7 +136,7 @@ const SignUpDateOfBirthBar = ({
   };
 
   return (
-    <>
+    <View>
       <SignUpBar
         label={label}
         placeholder={placeholder}
@@ -214,7 +214,7 @@ const SignUpDateOfBirthBar = ({
           />
         )
       )}
-    </>
+    </View>
   );
 };
 
@@ -342,6 +342,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: width - getSize(Sizes.formMargin) * 2,
+    height: getSize(56),
   },
   modalContainer: {
     flex: 1,
