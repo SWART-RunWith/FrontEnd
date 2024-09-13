@@ -231,9 +231,10 @@ const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
       <ShoesUpdateModal
         isVisible={isShoeModalVisible}
         onCancel={() => setShoeModalVisible(false)}
-        onConfirm={(newBrand, newShoeInfo, newMemo) => {
+        onConfirm={(newBrand, newModel, newEdition, newMemo) => {
           setBrand(newBrand);
-          setShoeInfo(newShoeInfo);
+          setModel(newModel);
+          setEdition(newEdition);
           setMemo(newMemo);
           setShoeModalVisible(false);
         }}
