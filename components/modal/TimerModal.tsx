@@ -37,12 +37,18 @@ const TimerModal: React.FC<TimerModalProps> = ({
 
   const handleConfirm = () => {
     if (type === 'distance') {
-      onConfirm(`${km}.${m} KM`);
+      onConfirm(`${km}.${formatNumber(m)} KM`);
     } else if (type === 'pace') {
-      onConfirm(`${minutes}'${seconds}''`);
+      onConfirm(`${minutes}'${formatNumber(seconds)}''`);
     } else if (type === 'time') {
-      onConfirm(`${hours}:${minutes}:${seconds}`);
+      onConfirm(`${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}`);
     }
+  };
+
+  const formatNumber = (value: string) => {
+    return value.length === 1
+      ? `0${value}`
+      : `${value}`;
   };
 
   const renderPickerContent = () => {
