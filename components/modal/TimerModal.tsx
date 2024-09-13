@@ -29,17 +29,18 @@ const TimerModal: React.FC<TimerModalProps> = ({
   type,
 }) => {
   const [km, setKm] = useState('0');
+  const [m, setM] = useState('0');
   const [minutes, setMinutes] = useState('0');
   const [seconds, setSeconds] = useState('0');
   const [hours, setHours] = useState('0');
 
   const handleConfirm = () => {
     if (type === 'distance') {
-      onConfirm(`${km}.${seconds} KM`);
+      onConfirm(`${km}.${m} KM`);
     } else if (type === 'pace') {
-      onConfirm(`${minutes}:${seconds} 분/킬로미터`);
+      onConfirm(`${minutes}'${seconds}''`);
     } else if (type === 'time') {
-      onConfirm(`${hours}:${minutes}:${seconds} 시간`);
+      onConfirm(`${hours}:${minutes}:${seconds}`);
     }
   };
 
@@ -52,6 +53,16 @@ const TimerModal: React.FC<TimerModalProps> = ({
               selectedValue={km}
               style={styles.picker}
               onValueChange={(itemValue) => setKm(itemValue)}
+            >
+              {Array.from({ length: 100 }, (_, i) => (
+                <Picker.Item key={i} label={`${i}`} value={`${i}`} />
+              ))}
+            </Picker>
+            <Text style={styles.pickerLabel}>.</Text>
+            <Picker
+              selectedValue={m}
+              style={styles.picker}
+              onValueChange={(itemValue) => setM(itemValue)}
             >
               {Array.from({ length: 100 }, (_, i) => (
                 <Picker.Item key={i} label={`${i}`} value={`${i}`} />
@@ -72,7 +83,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
                 <Picker.Item key={i} label={`${i}`} value={`${i}`} />
               ))}
             </Picker>
-            <Text style={styles.pickerLabel}>분</Text>
+            <Text style={styles.pickerLabel}>'</Text>
             <Picker
               selectedValue={seconds}
               style={styles.picker}
@@ -82,7 +93,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
                 <Picker.Item key={i} label={`${i}`} value={`${i}`} />
               ))}
             </Picker>
-            <Text style={styles.pickerLabel}>초</Text>
+            <Text style={styles.pickerLabel}>''</Text>
           </View>
         );
       case 'time':
@@ -97,7 +108,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
                 <Picker.Item key={i} label={`${i}`} value={`${i}`} />
               ))}
             </Picker>
-            <Text style={styles.pickerLabel}>시간</Text>
+            <Text style={styles.pickerLabel}>:</Text>
             <Picker
               selectedValue={minutes}
               style={styles.picker}
@@ -107,7 +118,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
                 <Picker.Item key={i} label={`${i}`} value={`${i}`} />
               ))}
             </Picker>
-            <Text style={styles.pickerLabel}>분</Text>
+            <Text style={styles.pickerLabel}>:</Text>
             <Picker
               selectedValue={seconds}
               style={styles.picker}
@@ -117,7 +128,6 @@ const TimerModal: React.FC<TimerModalProps> = ({
                 <Picker.Item key={i} label={`${i}`} value={`${i}`} />
               ))}
             </Picker>
-            <Text style={styles.pickerLabel}>초</Text>
           </View>
         );
       default:
@@ -147,7 +157,10 @@ const TimerModal: React.FC<TimerModalProps> = ({
 
             {/* Buttons */}
             <View style={styles.buttonRow}>
-              <TouchableOpacity onPress={onCancel} style={styles.button}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={onCancel}
+              >
                 <Text style={styles.buttonText}>취소</Text>
               </TouchableOpacity>
               <TouchableOpacity
