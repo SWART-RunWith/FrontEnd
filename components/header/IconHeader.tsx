@@ -61,7 +61,6 @@ const ProfileSettingHeader: React.FC<BackIconProps> = ({
       textProps={{
         text: '프로필 설정',
       }}
-      settingProps={{ onPress: () => console.log('설정 버튼 클릭') }} // 설정 아이콘 추가
     />
   );
 };
@@ -86,6 +85,19 @@ const ProfileHeader: React.FC<CombinedHeaderProps> = ({
   );
 };
 
+const SettingHeader: React.FC<CombinedHeaderProps> = ({
+  backProps,
+}) => {
+  return (
+    <CombinedHeader
+      backProps={{}}
+      textProps={{
+        text: '설정',
+      }}
+    />
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -99,4 +111,5 @@ export {
   MyFolderHeader,
   ProfileSettingHeader,
   ProfileHeader,
+  SettingHeader,
 };
