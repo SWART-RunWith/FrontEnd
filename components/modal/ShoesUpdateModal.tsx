@@ -252,15 +252,36 @@ const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
   modelValue = '',
   editionValue = '',
   memoValue = '',
-  onChangeBrand,
-  onChangeModel,
-  onChangeEdition,
-  onChangeMemo,
   onCancel,
   onConfirm,
-  label = '신발 정보',
   title = '신발 정보 수정',
 }) => {
+  const [tempBrand, setTempBrand] = useState(brandValue);
+  const [tempModel, setTempModel] = useState(modelValue);
+  const [tempEdition, setTempEdition] = useState(editionValue);
+  const [tempMemo, setTempMemo] = useState(memoValue);
+
+  useEffect(() => {
+    if (isVisible) {
+      setTempBrand(brandValue);
+      setTempModel(modelValue);
+      setTempEdition(editionValue);
+      setTempMemo(memoValue);
+    }
+  }, [isVisible, brandValue, modelValue, editionValue, memoValue]);
+
+  const handleConfirm = () => {
+    onConfirm(
+      tempBrand,
+      tempModel,
+      tempEdition,
+      tempMemo
+    );
+  };
+
+  const handleCancel = () => {
+    onCancel?.();
+  };
 
   return (
     <RNModal
@@ -274,38 +295,29 @@ const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
           <View style={styles.modalContent}>
             <ModalHeader
               title={title}
-              onCancel={onCancel}
-              onConfirm={() => {
-                if (onConfirm) {
-                  onConfirm(
-                    brandValue,
-                    modelValue,
-                    editionValue,
-                    memoValue,
-                  );
-                }
-              }}
+              onCancel={handleCancel}
+              onConfirm={handleConfirm}
             />
 
             <View style={styles.modalInputContainers}>
               <ShoesInput
-                brandValue={brandValue}
-                modelValue={modelValue}
-                editionValue={editionValue}
-                onChangeBrand={onChangeBrand}
-                onChangeModel={onChangeModel}
-                onChangeEdition={onChangeEdition}
+                brandValue={tempBrand}
+                modelValue={tempModel}
+                editionValue={tempEdition}
+                onChangeBrand={setTempBrand}
+                onChangeModel={setTempModel}
+                onChangeEdition={setTempEdition}
                 onClear={() => {
-                  onChangeBrand('');
-                  onChangeModel('');
-                  onChangeEdition('');
+                  setTempBrand('');
+                  setTempModel('');
+                  setTempEdition('');
                 }}
               />
 
               <ModalRecordInput
                 label='메모'
-                value={memoValue}
-                onChangeText={onChangeMemo}
+                value={tempMemo}
+                onChangeText={setTempMemo}
                 placeholder='메모를 입력해주세요'
               />
             </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -58,38 +58,62 @@ const RecordUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
   modelValue = '',
   editionValue = '',
   memoValue = '',
-  onChangeText,
-  onChangeBrand,
-  onChangeModel,
-  onChangeEdition,
-  onChangeMemo,
   onCancel,
   onConfirm,
   label = '',
   title = '수정',
   type = 'distance',
 }) => {
+  const [tempValue, setTempValue] = useState(value);
+  const [tempBrand, setTempBrand] = useState(brandValue);
+  const [tempModel, setTempModel] = useState(modelValue);
+  const [tempEdition, setTempEdition] = useState(editionValue);
+  const [tempMemo, setTempMemo] = useState(memoValue);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('');
 
-  const showModal = () => {
-    setModalVisible(true);
+  useEffect(() => {
+    if (isVisible) {
+      setTempValue(value);
+      setTempBrand(brandValue);
+      setTempModel(modelValue);
+      setTempEdition(editionValue);
+      setTempMemo(memoValue);
+    }
+  }, [
+    isVisible,
+    value,
+    brandValue,
+    modelValue,
+    editionValue,
+    memoValue
+  ]);
+
+  const handleConfirm = () => {
+    onConfirm?.(
+      tempValue,
+      tempBrand,
+      tempModel,
+      tempEdition,
+      tempMemo
+    );
   };
 
   const handleCancel = () => {
-    setModalVisible(false);
+    onCancel?.();
   };
 
-  const handleConfirm = (selected: string) => {
-    setSelectedValue(selected);
+  const handleShowModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
     setModalVisible(false);
-    onChangeText(selected);
   };
 
   return (
     <RNModal
       isVisible={isVisible}
-      onBackdropPress={onCancel}
+      onBackdropPress={handleCancel}
       style={styles.bottomModal}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -97,23 +121,13 @@ const RecordUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
           <View style={styles.modalContent}>
             <ModalHeader
               title={title}
-              onCancel={onCancel}
-              onConfirm={() => {
-                if (onConfirm) {
-                  onConfirm(
-                    value === '' ? '0' : value,
-                    brandValue,
-                    modelValue,
-                    editionValue,
-                    memoValue
-                  );
-                }
-              }}
+              onCancel={handleCancel}
+              onConfirm={handleConfirm}
             />
 
             <View style={styles.modalInputContainers}>
               <TouchableWithoutFeedback
-                onPress={() => showModal()}>
+                onPress={() => handleShowModal()}>
                 <View style={styles.modalInputContainer}>
                   <View style={styles.inputHeader}>
                     <Text style={styles.modalInputTitle}>{label}</Text>
@@ -122,41 +136,49 @@ const RecordUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
                         marginTop: getSize(11),
                         marginRight: getSize(10),
                       }}
-                      onPress={() => onChangeText('')}>
-                      <CancelIcon width={getSize(20)} height={getSize(20)} fill={Colors.gray} />
+                      onPress={() => setTempValue('')}
+                    >
+                      <CancelIcon
+                        width={getSize(20)}
+                        height={getSize(20)}
+                        fill={Colors.gray}
+                      />
                     </TouchableOpacity>
                   </View>
-                  <Text style={styles.modalInput}>{value}</Text>
+                  <Text style={styles.modalInput}>{tempValue}</Text>
                 </View>
               </TouchableWithoutFeedback>
 
               <ShoesInput
-                brandValue={brandValue}
-                modelValue={modelValue}
-                editionValue={editionValue}
-                onChangeBrand={onChangeBrand}
-                onChangeModel={onChangeModel}
-                onChangeEdition={onChangeEdition}
+                brandValue={tempBrand}
+                modelValue={tempModel}
+                editionValue={tempEdition}
+                onChangeBrand={setTempBrand}
+                onChangeModel={setTempModel}
+                onChangeEdition={setTempEdition}
                 onClear={() => {
-                  onChangeBrand('');
-                  onChangeModel('');
-                  onChangeEdition('');
+                  setTempBrand('');
+                  setTempModel('');
+                  setTempEdition('');
                 }}
               />
 
               <ModalRecordInput
-                label='메모'
-                value={memoValue}
-                onChangeText={onChangeMemo}
-                placeholder='메모를 입력해주세요'
+                label="메모"
+                value={tempMemo}
+                onChangeText={setTempMemo}
+                placeholder="메모를 입력해주세요"
               />
             </View>
 
             <TimerModal
               isVisible={isModalVisible}
               type={type}
-              onCancel={handleCancel}
-              onConfirm={handleConfirm}
+              onCancel={handleCloseModal}
+              onConfirm={(selected: string) => {
+                setTempValue(selected);
+                handleCloseModal();
+              }}
             />
           </View>
         </View>
