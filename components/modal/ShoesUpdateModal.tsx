@@ -35,39 +35,56 @@ const ShoesUpdateModal: React.FC<ShoesUpdateModalProps> = ({
   label,
   placeholder,
   onChangeText
+const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
+  isVisible = false,
+  brandValue = '',
+  shoesInfoValue = '',
+  memoValue = '',
+  onChangeBrand,
+  onChangeShoesInfo,
+  onChangeMemo,
+  onCancel,
+  onConfirm,
+  label = '',
+  title = '신발 정보 수정',
 }) => {
-  const [tempValue, setTempValue] = useState(value);
 
   return (
     <RNModal
       isVisible={isVisible}
       onBackdropPress={onCancel}
       style={styles.bottomModal}
+      avoidKeyboard={false}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <ModalHeader
-              title="신발 정보 수정"
+              title={title}
               onCancel={onCancel}
-              onConfirm={() => onConfirm && onConfirm(tempValue || '')}
+              onConfirm={() => {
+                if (onConfirm) {
+                  onConfirm(
+                    brandValue === '' ? '' : brandValue,
+                    shoesInfoValue === '' ? '' : shoesInfoValue,
+                    memoValue === '' ? '' : memoValue
+                  );
+                }
+              }}
             />
 
-            <View style={styles.modalInputContainer}>
-              <View style={styles.inputHeader}>
-                <Text style={styles.modalInputTitle}>{label}</Text>
-              </View>
-              <TextInput
-                value={tempValue}
-                onChangeText={(text) => {
-                  setTempValue(text);
-                  onChangeText(text);
-                }}
-                style={styles.modalInput}
-                placeholder={placeholder}
-                placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                multiline={true}
-                maxLength={200}
+            <View style={styles.modalInputContainers}>
+              <ModalRecordInput
+                label='신발 정보'
+                value={shoesInfoValue}
+                onChangeText={onChangeShoesInfo}
+                placeholder='신발 정보를 입력해주세요'
+              />
+              <ModalRecordInput
+                label='메모'
+                value={memoValue}
+                onChangeText={onChangeMemo}
+                placeholder='메모를 입력해주세요'
               />
             </View>
           </View>

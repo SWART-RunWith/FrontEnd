@@ -189,18 +189,25 @@ interface RunningShoesBoxProps {
   brand: string;
   model: string;
   edition: string;
+  memo?: string;
   onEditPress?: () => void;
   isEditMode?: boolean;
+  onConfirm?: (
+    newBrand: string,
+    newModel: string,
+    newEdition: string,
+    newMemo: string,
+  ) => void;
 }
 
 const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
-  brand,
-  model,
-  edition,
-  isEditMode = false
+  isEditMode = false,
+  ...props
 }) => {
   const [isShoeModalVisible, setShoeModalVisible] = useState(false);
-  const [shoeInfo, setShoeInfo] = useState(`${brand} ${model}`);
+  const [brand, setBrand] = useState(props.brand || '');
+  const [shoeInfo, setShoeInfo] = useState(`${props.model} ${props.edition}` || '');
+  const [memo, setMemo] = useState(props.memo || '');
 
   return (
     <View style={styles.shoesContainer}>
@@ -215,16 +222,23 @@ const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
       <Image source={ShoesImage} style={styles.shoesImage} resizeMode="contain" />
       <View style={styles.textContainer}>
         <Text style={styles.brand}>{brand}</Text>
-        <Text style={styles.model}>{model}</Text>
-        <Text style={styles.edition}>{edition}</Text>
+        <Text style={styles.model}>{shoeInfo}</Text>
+        <Text style={styles.edition}>{memo}</Text>
       </View>
 
       <ShoesUpdateModal
         isVisible={isShoeModalVisible}
         onCancel={() => setShoeModalVisible(false)}
-        onConfirm={() => setShoeModalVisible(false)}
-        value={shoeInfo}
-        onChangeText={setShoeInfo}
+        onConfirm={(newBrand, newShoeInfo, newMemo) => {
+          setBrand(newBrand);
+          setShoeInfo(newShoeInfo);
+          setMemo(newMemo);
+          setShoeModalVisible(false);
+        }}
+        memoValue={memo}
+        onChangeBrand={setBrand}
+        onChangeShoesInfo={setShoeInfo}
+        onChangeMemo={setMemo}
       />
     </View>
   );
