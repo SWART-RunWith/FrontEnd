@@ -14,7 +14,7 @@ import getSize from '@/scripts/getSize';
 
 import {
   ModalHeader,
-  ModalInput,
+  ModalProfileInput,
   ModalProps,
 } from '@/components/modal/UpdateModal';
 
@@ -49,7 +49,7 @@ const ProfileUpdateModal: React.FC<ModalProps & { title: string }> = ({
             }}
           />
 
-          <ModalInput
+          <ModalProfileInput
             label={label || ''}
             value={value || ''}
             onChangeText={onChangeText}
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-SemiBold',
     color: Colors.main,
   },
-  modalInputContainer: {
+  ModalProfileInputContainer: {
     paddingLeft: getSize(18),
     width: width - getSize(Sizes.formMargin) * 2,
     height: getSize(140),
@@ -153,13 +153,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  modalInputTitle: {
+  ModalProfileInputTitle: {
     fontSize: getSize(14),
     color: 'white',
     fontFamily: 'Pretendard-SemiBold',
     marginTop: getSize(18),
   },
-  modalInput: {
+  ModalProfileInput: {
     marginRight: getSize(55),
     marginBottom: getSize(25),
     fontSize: getSize(14),
