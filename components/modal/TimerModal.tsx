@@ -11,9 +11,10 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-const { width } = Dimensions.get('window');
 import Colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
+
+const { width, height } = Dimensions.get('window');
 
 interface TimerModalProps {
   isVisible: boolean;
@@ -52,6 +53,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
             <Picker
               selectedValue={km}
               style={styles.picker}
+              itemStyle={styles.pickerItem}
               onValueChange={(itemValue) => setKm(itemValue)}
             >
               {Array.from({ length: 100 }, (_, i) => (
@@ -62,6 +64,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
             <Picker
               selectedValue={m}
               style={styles.picker}
+              itemStyle={styles.pickerItem}
               onValueChange={(itemValue) => setM(itemValue)}
             >
               {Array.from({ length: 100 }, (_, i) => (
@@ -77,6 +80,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
             <Picker
               selectedValue={minutes}
               style={styles.picker}
+              itemStyle={styles.pickerItem}
               onValueChange={(itemValue) => setMinutes(itemValue)}
             >
               {Array.from({ length: 60 }, (_, i) => (
@@ -87,6 +91,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
             <Picker
               selectedValue={seconds}
               style={styles.picker}
+              itemStyle={styles.pickerItem}
               onValueChange={(itemValue) => setSeconds(itemValue)}
             >
               {Array.from({ length: 60 }, (_, i) => (
@@ -102,6 +107,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
             <Picker
               selectedValue={hours}
               style={styles.picker}
+              itemStyle={styles.pickerItem}
               onValueChange={(itemValue) => setHours(itemValue)}
             >
               {Array.from({ length: 24 }, (_, i) => (
@@ -112,6 +118,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
             <Picker
               selectedValue={minutes}
               style={styles.picker}
+              itemStyle={styles.pickerItem}
               onValueChange={(itemValue) => setMinutes(itemValue)}
             >
               {Array.from({ length: 60 }, (_, i) => (
@@ -122,6 +129,7 @@ const TimerModal: React.FC<TimerModalProps> = ({
             <Picker
               selectedValue={seconds}
               style={styles.picker}
+              itemStyle={styles.pickerItem}
               onValueChange={(itemValue) => setSeconds(itemValue)}
             >
               {Array.from({ length: 60 }, (_, i) => (
@@ -145,9 +153,11 @@ const TimerModal: React.FC<TimerModalProps> = ({
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>
-              {type === 'distance' ? '거리 설정' : type === 'pace' ? '페이스 설정' : '시간 설정'}
-            </Text>
+            <View style={styles.modalTitleContainer}>
+              <Text style={styles.modalTitle}>
+                {type === 'distance' ? '거리 설정' : type === 'pace' ? '페이스 설정' : '시간 설정'}
+              </Text>
+            </View>
 
             <View style={styles.modalBar} />
 
@@ -236,39 +246,49 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     backgroundColor: Colors.grayBox,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderRadius: 10,
+    width: width * 0.8,
     alignItems: 'center',
-    paddingBottom: 20,
   },
   modalBar: {
     backgroundColor: Colors.lightGrayBox,
     height: getSize(1),
-    width: width,
+    width: '100%',
+  },
+  modalTitleContainer: {
+    height: getSize(60),
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   modalTitle: {
     fontSize: getSize(18),
     fontFamily: 'Pretendard-Bold',
     color: 'white',
-    paddingVertical: getSize(15),
   },
   pickerContainer: {
+    width: '90%',
+    height: getSize(250),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: getSize(5)
   },
   picker: {
-    width: 100,
+    width: getSize(100),
+  },
+  pickerItem: {
+    fontSize: getSize(16),
+    color: 'white',
   },
   pickerLabel: {
     color: 'white',
-    fontSize: 16,
-    marginLeft: 10,
+    fontSize: getSize(16),
   },
   buttonRow: {
     flexDirection: 'row',
@@ -277,8 +297,9 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    paddingVertical: getSize(15),
+    height: getSize(60),
     alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     fontSize: getSize(16),
@@ -286,6 +307,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     backgroundColor: Colors.main,
+    borderBottomRightRadius: 10,
   },
   confirmButtonText: {
     color: 'black',
