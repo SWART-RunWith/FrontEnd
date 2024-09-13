@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -75,10 +75,26 @@ const ShoesInfoModal: React.FC<ShoesInfoProps & ModalProps> = ({
   onChangeEdition,
   ...props
 }) => {
+  const [tempBrand, setTempBrand] = useState(brand);
+  const [tempModel, setTempModel] = useState(model);
+  const [tempEdition, setTempEdition] = useState(edition);
+
+  useEffect(() => {
+    if (isVisible) {
+      setTempBrand(brand);
+      setTempModel(model);
+      setTempEdition(edition);
+    }
+  }, [isVisible, brand, model, edition]);
+
+  const handleConfirm = () => {
+    onConfirm(tempBrand, tempModel, tempEdition);
+  };
+
   return (
     <Modal
       transparent
-      animationType='slide'
+      animationType="slide"
       visible={isVisible}
       onRequestClose={onCancel}
     >
@@ -96,22 +112,22 @@ const ShoesInfoModal: React.FC<ShoesInfoProps & ModalProps> = ({
 
             <View style={shoesInfoModalStyles.modalInputContainers}>
               <ModalRecordInput
-                label='브랜드'
-                value={brand}
-                onChangeText={onChangeBrand}
-                placeholder='브랜드를 입력해주세요'
+                label="브랜드"
+                value={tempBrand}
+                onChangeText={setTempBrand}
+                placeholder="브랜드를 입력해주세요"
               />
               <ModalRecordInput
-                label='모델'
-                value={model}
-                onChangeText={onChangeModel}
-                placeholder='모델을 입력해주세요'
+                label="모델"
+                value={tempModel}
+                onChangeText={setTempModel}
+                placeholder="모델을 입력해주세요"
               />
               <ModalRecordInput
-                label='에디션'
-                value={edition}
-                onChangeText={onChangeEdition}
-                placeholder='에디션을 입력해주세요'
+                label="에디션"
+                value={tempEdition}
+                onChangeText={setTempEdition}
+                placeholder="에디션을 입력해주세요"
               />
             </View>
 
@@ -125,16 +141,18 @@ const ShoesInfoModal: React.FC<ShoesInfoProps & ModalProps> = ({
                 <Text style={shoesInfoModalStyles.buttonText}>취소</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => onConfirm(brand, model, edition)}
+                onPress={handleConfirm}
                 style={[
                   shoesInfoModalStyles.button,
-                  shoesInfoModalStyles.confirmButton
+                  shoesInfoModalStyles.confirmButton,
                 ]}
               >
-                <Text style={[
-                  shoesInfoModalStyles.buttonText,
-                  shoesInfoModalStyles.confirmButtonText
-                ]}>
+                <Text
+                  style={[
+                    shoesInfoModalStyles.buttonText,
+                    shoesInfoModalStyles.confirmButtonText,
+                  ]}
+                >
                   확인
                 </Text>
               </TouchableOpacity>
@@ -145,6 +163,7 @@ const ShoesInfoModal: React.FC<ShoesInfoProps & ModalProps> = ({
     </Modal>
   );
 };
+
 
 interface ShoesInputProps {
   brandValue: string;
@@ -180,10 +199,10 @@ const ShoesInput: React.FC<ShoesInputProps> = ({
     newModel: string,
     newEdition: string,
   ) => {
-    setModalVisible(false);
     onChangeBrand(newBrand);
     onChangeModel(newModel);
     onChangeEdition(newEdition);
+    setModalVisible(false);
   };
 
   return (
@@ -200,7 +219,11 @@ const ShoesInput: React.FC<ShoesInputProps> = ({
         </TouchableOpacity>
       </View>
       <TextInput
-        value={`${brandValue} ${modelValue} ${editionValue}`}
+        value={
+          brandValue || modelValue || editionValue
+            ? (`${brandValue} ${modelValue} ${editionValue}`)
+            : ''
+        }
         editable={false}
         onPress={() => showModal()}
         placeholder='신발 정보를 입력해주세요'
