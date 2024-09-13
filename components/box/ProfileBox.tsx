@@ -24,18 +24,22 @@ const { width } = Dimensions.get('window');
 interface MyBestBoxProps {
   title?: string;
   value?: string;
-  description?: string;
-  additionalInfo?: string;
+  shoes?: string;
+  memo?: string;
   onEditPress?: () => void;
   isEditMode?: boolean;
-  onConfirm?: (newValue: string) => void;
+  onConfirm?: (
+    newDistance: string,
+    newShoes: string,
+    newMemo: string,
+  ) => void;
 }
 
 const MyBestBox: React.FC<MyBestBoxProps> = ({
   title,
   value,
-  description,
-  additionalInfo,
+  shoes,
+  memo,
   onEditPress,
   isEditMode = false,
 }) => {
@@ -55,8 +59,8 @@ const MyBestBox: React.FC<MyBestBoxProps> = ({
         numberOfLines={1}
       >{value}</Text>
       <View style={styles.descriptionContainer}>
-        <Text style={styles.description}>{description}</Text>
-        <Text style={styles.additionalInfo}>{additionalInfo}</Text>
+        <Text style={styles.shoes}>{shoes}</Text>
+        <Text style={styles.memo}>{memo}</Text>
       </View>
     </View>
   );
@@ -68,26 +72,33 @@ const DistanceBox: React.FC<MyBestBoxProps> = ({
   ...props
 }) => {
   const [isDistanceModalVisible, setDistanceModalVisible] = useState(false);
-  const [distance, setDistance] = useState(props.value);
+  const [distance, setDistance] = useState(props.value || '');
+  const [shoes, setShoes] = useState(props.shoes || '');
+  const [memo, setMemo] = useState(props.memo || '');
 
   return (
     <View>
       <MyBestBox
         title={title}
-        value={distance + 'KM'}
+        value={distance}
+        shoes={shoes}
+        memo={memo}
         onEditPress={() => setDistanceModalVisible(true)}
         {...props}
       />
       <DistanceUpdateModal
         isVisible={isDistanceModalVisible}
         onCancel={() => setDistanceModalVisible(false)}
-        onConfirm={(newDistance) => {
-          setDistance(newDistance);
-          onConfirm?.(newDistance);
+        onConfirm={(newDistance, newShoes, newMemo) => {
+          onConfirm?.(newDistance, newShoes, newMemo);
           setDistanceModalVisible(false);
         }}
         value={distance}
+        shoesValue={shoes}
+        memoValue={memo}
         onChangeText={setDistance}
+        onChangeShoes={setShoes}
+        onChangeMemo={setMemo}
       />
     </View>
   );
@@ -101,26 +112,32 @@ const PaceBox: React.FC<MyBestBoxProps> = ({
 }) => {
   const [isPaceModalVisible, setPaceModalVisible] = useState(false);
   const [pace, setPace] = useState(props.value);
+  const [shoes, setShoes] = useState(props.shoes);
+  const [memo, setMemo] = useState(props.memo);
 
   return (
     <View>
       <MyBestBox
         title={title}
         value={pace}
+        shoes={shoes}
+        memo={memo}
         onEditPress={() => setPaceModalVisible(true)}
         {...props}
       />
-
       <PaceUpdateModal
         isVisible={isPaceModalVisible}
         onCancel={() => setPaceModalVisible(false)}
-        onConfirm={(newPace) => {
-          setPace(newPace);
-          onConfirm?.(newPace);
+        onConfirm={(newPace, newShoes, newMemo) => {
+          onConfirm?.(newPace, newShoes, newMemo);
           setPaceModalVisible(false);
         }}
         value={pace}
+        shoesValue={shoes}
+        memoValue={memo}
         onChangeText={setPace}
+        onChangeShoes={setShoes}
+        onChangeMemo={setMemo}
       />
     </View>
   );
@@ -133,26 +150,32 @@ const TimeBox: React.FC<MyBestBoxProps> = ({
 }) => {
   const [isTimeModalVisible, setTimeModalVisible] = useState(false);
   const [time, setTime] = useState(props.value);
+  const [shoes, setShoes] = useState(props.shoes);
+  const [memo, setMemo] = useState(props.memo);
 
   return (
     <View>
       <MyBestBox
         title={title}
         value={time}
+        shoes={shoes}
+        memo={memo}
         onEditPress={() => setTimeModalVisible(true)}
         {...props}
       />
-
       <TimeUpdateModal
         isVisible={isTimeModalVisible}
         onCancel={() => setTimeModalVisible(false)}
-        onConfirm={(newTime) => {
-          setTime(newTime);
-          onConfirm?.(newTime);
+        onConfirm={(newTime, newShoes, newMemo) => {
+          onConfirm?.(newTime, newShoes, newMemo);
           setTimeModalVisible(false);
         }}
         value={time}
+        shoesValue={shoes}
+        memoValue={memo}
         onChangeText={setTime}
+        onChangeShoes={setShoes}
+        onChangeMemo={setMemo}
       />
     </View>
   );
@@ -239,12 +262,12 @@ const styles = StyleSheet.create({
     marginTop: getSize(8),
     width: getSize(291),
   },
-  description: {
+  shoes: {
     fontSize: getSize(16),
     color: 'white',
     fontFamily: 'Pretendard-Medium',
   },
-  additionalInfo: {
+  memo: {
     fontSize: getSize(14),
     color: 'white',
     fontFamily: 'Pretendard-Light',
