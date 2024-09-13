@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextStyle, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Svg, Path } from 'react-native-svg';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
@@ -13,12 +13,18 @@ import OptionSvgIcon from '@/assets/icons/option.svg';
 
 const { width } = Dimensions.get('window');
 
-// 공통 타입 정의
+type RootStackParamList = {
+  "user/profile": undefined;
+  "user/setting": undefined;
+};
+
+type NavigationProp =
+  StackNavigationProp<RootStackParamList, 'user/setting'>;
+
 interface IconProps {
   onPress?: () => void;
 }
 
-// BackProps 정의
 const BackIcon: React.FC<IconProps> = ({ onPress }) => {
   const navigation = useNavigation();
   return (
@@ -40,15 +46,19 @@ const EditIcon: React.FC<IconProps> = ({ onPress }) => (
   </TouchableOpacity>
 );
 
-const SettingIcon: React.FC<IconProps> = ({ onPress }) => (
-  <TouchableOpacity
-    // to do : setting 화면으로 넘어가기
-    onPress={onPress}
-    style={styles.iconButton}
-  >
-    <SettingSvgIcon width={getSize(24)} height={getSize(23)} />
-  </TouchableOpacity>
-);
+const SettingIcon: React.FC<IconProps> = ({ onPress }) => {
+  const navigation = useNavigation<NavigationProp>();
+
+  return (
+    <TouchableOpacity
+      // to do : setting 화면으로 넘어가기
+      onPress={() => navigation.navigate('user/setting')}
+      style={styles.iconButton}
+    >
+      <SettingSvgIcon width={getSize(24)} height={getSize(23)} />
+    </TouchableOpacity>
+  );
+};
 
 const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity
