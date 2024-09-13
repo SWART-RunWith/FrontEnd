@@ -7,9 +7,9 @@ export default {
   main: "#B0FF4C",
   lightestGray: "#BBBBBB",
   gray: "#6B6B6B",
-  lightGrayBox: "494949",
+  lightGrayBox: "#494949",
   grayBox: "#383838",
   darkGrayBox: "#1E1E1E",
   background: "#282828",
-  navigator: "#282828"
+  navigator: "#282828",
 };

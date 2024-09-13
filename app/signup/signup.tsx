@@ -24,7 +24,7 @@ import {
   SignUpPhoneBar,
   SignUpWeightBar
 } from '@/components/bar/SignUpBar';
-import { SignUpHeader } from '@/components/Header';
+import { SignUpHeader } from '@/components/header/IconHeader';
 import { DefaultButton, SignUpButton } from '@/components/button/Button';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
@@ -52,7 +52,7 @@ const SignUpScreen: React.FC = () => {
           extraScrollHeight={getSize(20)}
         >
           <SignUpHeader
-            onPress={() => {
+            onPressBack={() => {
               step === 1
                 ? navigation.replace('signup/terms')
                 : setStep(prevStep => prevStep - 1)
@@ -110,7 +110,7 @@ const SignUpScreen: React.FC = () => {
               />
               <View style={styles.ButtonContainer}>
                 {/* to do : 회원가입 api 연동 */}
-                <SignUpButton onPress={() => { navigation.replace('home') }} />
+                <SignUpButton onPress={() => { navigation.replace('signup/profile') }} />
               </View>
             </View>)}
 

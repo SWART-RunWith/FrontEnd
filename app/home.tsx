@@ -1,29 +1,26 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  Button
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
-import { StartButton } from '@/components/button/Button';
+import { DefaultButton, StartButton } from '@/components/button/Button';
+import { HomeScreenNavigationProp } from '@/scripts/navigation';
 
 const { width, height } = Dimensions.get('window');
 
-// 네비게이션 스택 파라미터 리스트 정의
-type RootStackParamList = {
-  home: undefined;
-};
+const HomeScreen: React.FC = ({ }) => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
-// `navigation`의 타입 지정
-type HomeScreenNavigationProp =
-  StackNavigationProp<RootStackParamList, 'home'>;
-
-type Props = {
-  navigation: HomeScreenNavigationProp;
-};
-
-const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const handleStartPress = () => {
     // START 버튼을 눌렀을 때의 동작
   };
@@ -36,6 +33,12 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         onPress={() => console.log('START button pressed')}
       />
       <View style={styles.box} />
+      <DefaultButton
+        style={{
+          marginTop: getSize(100),
+        }}
+        onPress={() => navigation.replace('user/profile')}
+      />
     </View>
   );
 };
