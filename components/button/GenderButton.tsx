@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   genderButton: {
     width: (width - getSize(Sizes.formMargin)) / 2 - (getSize(8) * 2),
     height: getSize(56),
-    borderRadius: getSize(10),
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
