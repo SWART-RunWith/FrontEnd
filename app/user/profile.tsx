@@ -58,9 +58,20 @@ const ProfileScreen = () => {
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
   const [isDescriptionModalVisible, setDescriptionModalVisible] = useState(false);
 
+  // distance
   const [distance, setDistance] = useState('42.40KM');
+  const [distanceShoes, setDistanceShoes] = useState('');
+  const [distanceMemo, setDistanceMemo] = useState('');
+
+  // pace
   const [pace, setPace] = useState("4'07\"");
+  const [paceShoes, setPaceShoes] = useState('');
+  const [paceMemo, setPaceMemo] = useState('');
+
+  // time
   const [time, setTime] = useState('03:46:29');
+  const [timeShoes, setTimeShoes] = useState('');
+  const [timeMemo, setTimeMemo] = useState('');
 
   const requestPermission = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -164,23 +175,35 @@ const ProfileScreen = () => {
             <DistanceBox
               isEditMode={isEditMode}
               value={distance}
-              description="Adidas Adizero Adios Pro"
-              additionalInfo="동아마라톤 2024 Edition"
-              onConfirm={setDistance}
+              shoes={distanceShoes}
+              memo={distanceMemo}
+              onConfirm={(newDistance, newShoes, newMemo) => {
+                setDistance(newDistance);
+                setDistanceShoes(newShoes);
+                setDistanceMemo(newMemo);
+              }}
             />
             <PaceBox
               isEditMode={isEditMode}
               value={pace}
-              description="Adidas Adizero Takumi Sen 10"
-              additionalInfo="Green Spark / Aurora Met. / Lucid Lemon"
-              onConfirm={setPace}
+              shoes={paceShoes}
+              memo={paceMemo}
+              onConfirm={(newPace, newShoes, newMemo) => {
+                setPace(newPace);
+                setPaceShoes(newShoes);
+                setPaceMemo(newMemo);
+              }}
             />
             <TimeBox
               isEditMode={isEditMode}
               value={time}
-              description="Asics Metaspeed Sky"
-              additionalInfo="Paris Edition"
-              onConfirm={setTime}
+              shoes={timeShoes}
+              memo={timeMemo}
+              onConfirm={(newTime, newShoes, newMemo) => {
+                setTime(newTime);
+                setTimeShoes(newShoes);
+                setTimeMemo(newMemo);
+              }}
             />
           </View>
         </View>
