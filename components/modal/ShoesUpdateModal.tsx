@@ -13,11 +13,9 @@ import {
   Platform,
 } from 'react-native';
 import RNModal from 'react-native-modal';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
-import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
 import {
   ModalHeader,
@@ -51,7 +49,7 @@ interface UpdateValueProps {
   ) => void;
 }
 
-interface ShoesProps {
+interface ShoesInfoProps {
   brand?: string;
   model?: string;
   edition?: string;
@@ -65,7 +63,7 @@ interface ShoesProps {
   ) => void;
 }
 
-const ShoesInfoModal: React.FC<ShoesProps & ModalProps> = ({
+const ShoesInfoModal: React.FC<ShoesInfoProps & ModalProps> = ({
   isVisible,
   onCancel,
   onConfirm,
@@ -89,7 +87,6 @@ const ShoesInfoModal: React.FC<ShoesProps & ModalProps> = ({
           style={shoesInfoModalStyles.modalContainer}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-
           <View style={shoesInfoModalStyles.modalContent}>
             <View style={shoesInfoModalStyles.modalTitleContainer}>
               <Text style={shoesInfoModalStyles.modalTitle}>신발 정보 입력</Text>
@@ -129,10 +126,16 @@ const ShoesInfoModal: React.FC<ShoesProps & ModalProps> = ({
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => onConfirm(brand, model, edition)}
-                style={[shoesInfoModalStyles.button, shoesInfoModalStyles.confirmButton]}
+                style={[
+                  shoesInfoModalStyles.button,
+                  shoesInfoModalStyles.confirmButton
+                ]}
               >
                 <Text
-                  style={[shoesInfoModalStyles.buttonText, shoesInfoModalStyles.confirmButtonText]}
+                  style={[
+                    shoesInfoModalStyles.buttonText,
+                    shoesInfoModalStyles.confirmButtonText
+                  ]}
                 >
                   확인
                 </Text>
@@ -141,7 +144,6 @@ const ShoesInfoModal: React.FC<ShoesProps & ModalProps> = ({
           </View>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-
     </Modal >
   );
 };
@@ -198,10 +200,10 @@ const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
               onConfirm={() => {
                 if (onConfirm) {
                   onConfirm(
-                    brandValue === '' ? '' : brandValue,
-                    modelValue === '' ? '' : modelValue,
-                    editionValue === '' ? '' : editionValue,
-                    memoValue === '' ? '' : memoValue
+                    brandValue,
+                    modelValue,
+                    editionValue,
+                    memoValue,
                   );
                 }
               }}
@@ -371,7 +373,7 @@ const shoesInfoModalStyles = StyleSheet.create({
 })
 
 export {
-  ShoesProps,
+  ShoesInfoProps,
   ShoesInfoModal,
   ShoesUpdateModal
 
