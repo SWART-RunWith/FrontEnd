@@ -191,39 +191,6 @@ const TimerModal: React.FC<TimerModalProps> = ({
   );
 };
 
-const TimerInput = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('0:00 KM');
-
-  const showModal = () => setModalVisible(true);
-  const hideModal = () => setModalVisible(false);
-
-  const handleConfirm = (value: string) => {
-    setSelectedValue(value);
-    hideModal();
-  };
-
-  return (
-    <View>
-      {/* Display Selected Value */}
-      <TouchableOpacity onPress={showModal}>
-        <View style={styles.timerBox}>
-          <Text style={styles.timerText}>거리</Text>
-          <Text style={styles.timerValue}>{selectedValue}</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Modal for Time Picker */}
-      <TimerModal
-        isVisible={isModalVisible}
-        onCancel={hideModal}
-        onConfirm={handleConfirm}
-        type="distance" // You can also use "pace" or "time"
-      />
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
   timerBox: {
     borderWidth: 1,
