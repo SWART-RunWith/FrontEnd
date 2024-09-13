@@ -253,35 +253,14 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     alignItems: 'center',
   },
-  modalTitleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: width,
-    height: getSize(29),
-    paddingHorizontal: getSize(24),
-    marginTop: getSize(13),
-  },
-  modalCancel: {
-    fontSize: getSize(16),
-    fontFamily: 'Pretendard-SemiBold',
-    color: 'white',
-  },
-  modalTitle: {
-    fontSize: getSize(Sizes.pageTitle),
-    fontFamily: 'Pretendard-SemiBold',
-    color: 'white',
-  },
-  modalConfirm: {
-    fontSize: getSize(16),
-    fontFamily: 'Pretendard-SemiBold',
-    color: Colors.main,
+  modalInputContainers: {
+    marginTop: getSize(48),
+    gap: getSize(12),
   },
   modalInputContainer: {
     paddingLeft: getSize(18),
     width: width - getSize(Sizes.formMargin) * 2,
-    height: getSize(140),
-    marginTop: getSize(24),
+    height: getSize(99),
     borderColor: 'white',
     borderWidth: getSize(1),
     borderRadius: 20,
@@ -291,19 +270,46 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   modalInputTitle: {
-    fontSize: getSize(14),
-    color: 'white',
+    fontSize: getSize(20),
+    color: Colors.main,
     fontFamily: 'Pretendard-SemiBold',
-    marginTop: getSize(18),
+    marginTop: getSize(13),
   },
   modalInput: {
     marginRight: getSize(55),
     marginBottom: getSize(25),
-    fontSize: getSize(14),
+    fontSize: getSize(16),
     color: 'white',
-    fontFamily: 'Pretendard-Light',
+    fontFamily: 'Pretendard-Medium',
     marginTop: getSize(10),
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  button: {
+    flex: 1,
+    height: getSize(60),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: getSize(16),
+    color: 'white',
+  },
+  confirmButton: {
+    backgroundColor: Colors.main,
+    borderBottomRightRadius: 10,
+  },
+  confirmButtonText: {
+    color: 'black',
   },
 });
 
-export { ShoesUpdateModal };
+export {
+  ShoesProps,
+  ShoesInfoModal,
+  ShoesUpdateModal
+
+};
