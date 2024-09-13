@@ -29,6 +29,8 @@ const SettingScreen = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <SettingHeader />
 
+      <View style={{ marginTop: getSize(17) }} />
+
       <View style={styles.textContainer}>
         <Text style={styles.label}>이메일</Text>
         <Text style={styles.value}>tama0412@naver.com</Text>
