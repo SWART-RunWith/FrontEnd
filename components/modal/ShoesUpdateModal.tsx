@@ -20,7 +20,7 @@ const { width } = Dimensions.get('window');
 interface ShoesUpdateModalProps {
   isVisible?: boolean;
   onCancel?: () => void;
-  onConfirm?: (newValue: string) => void; // Accept the new value when confirmed
+  onConfirm?: (newValue: string) => void;
   value?: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
@@ -36,7 +36,7 @@ const ShoesUpdateModal: React.FC<ShoesUpdateModalProps> = ({
   placeholder,
   onChangeText
 }) => {
-  const [tempValue, setTempValue] = useState(value); // Store the temporary input value
+  const [tempValue, setTempValue] = useState(value);
 
   return (
     <RNModal
@@ -60,8 +60,8 @@ const ShoesUpdateModal: React.FC<ShoesUpdateModalProps> = ({
               <TextInput
                 value={tempValue}
                 onChangeText={(text) => {
-                  setTempValue(text); // Update the temporary value
-                  onChangeText(text); // Call the onChangeText handler
+                  setTempValue(text);
+                  onChangeText(text);
                 }}
                 style={styles.modalInput}
                 placeholder={placeholder}

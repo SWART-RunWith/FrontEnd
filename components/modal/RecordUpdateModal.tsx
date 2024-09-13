@@ -7,15 +7,15 @@ import {
   Keyboard,
 } from 'react-native';
 import RNModal from 'react-native-modal';
-import Colors from '@/constants/Colors';
-import getSize from '@/scripts/getSize';
+
 import {
   ModalHeader,
   ModalRecordInput,
 } from '@/components/modal/UpdateModal';
+import Colors from '@/constants/Colors';
+import getSize from '@/scripts/getSize';
 
 const { width } = Dimensions.get('window');
-
 
 interface ModalProps {
   label: string;
