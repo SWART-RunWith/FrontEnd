@@ -206,6 +206,8 @@ const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
 }) => {
   const [isShoeModalVisible, setShoeModalVisible] = useState(false);
   const [brand, setBrand] = useState(props.brand || '');
+  const [model, setModel] = useState(props.model || '');
+  const [edition, setEdition] = useState(props.edition || '');
   const [shoeInfo, setShoeInfo] = useState(`${props.model} ${props.edition}` || '');
   const [memo, setMemo] = useState(props.memo || '');
 
@@ -237,7 +239,8 @@ const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
         }}
         memoValue={memo}
         onChangeBrand={setBrand}
-        onChangeShoesInfo={setShoeInfo}
+        onChangeModel={setModel}
+        onChangeEdition={setEdition}
         onChangeMemo={setMemo}
       />
     </View>
