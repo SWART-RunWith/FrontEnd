@@ -146,20 +146,24 @@ const ShoesInfoModal: React.FC<ShoesInfoProps & ModalProps> = ({
   );
 };
 
-const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
-  isVisible = false,
-  brandValue = '',
-  modelValue = '',
-  editionValue = '',
-  memoValue = '',
+interface ShoesInputProps {
+  brandValue: string;
+  modelValue: string;
+  editionValue: string;
+  onChangeBrand: (text: string) => void;
+  onChangeModel: (text: string) => void;
+  onChangeEdition: (text: string) => void;
+  onClear: () => void;
+}
+
+const ShoesInput: React.FC<ShoesInputProps> = ({
+  brandValue,
+  modelValue,
+  editionValue,
   onChangeBrand,
   onChangeModel,
   onChangeEdition,
-  onChangeMemo,
-  onCancel,
-  onConfirm,
-  label = '신발 정보',
-  title = '신발 정보 수정',
+  onClear,
 }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -181,6 +185,59 @@ const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
     onChangeModel(newModel);
     onChangeEdition(newEdition);
   };
+
+  return (
+    <View style={styles.modalInputContainer}>
+      <View style={styles.inputHeader}>
+        <Text style={styles.modalInputTitle}>신발 정보</Text>
+        <TouchableOpacity
+          style={{
+            marginTop: getSize(11),
+            marginRight: getSize(10),
+          }}
+          onPress={onClear}>
+          <CancelIcon width={getSize(20)} height={getSize(20)} fill={Colors.gray} />
+        </TouchableOpacity>
+      </View>
+      <TextInput
+        value={`${brandValue} ${modelValue} ${editionValue}`}
+        editable={false}
+        onPress={() => showModal()}
+        placeholder='신발 정보를 입력해주세요'
+        style={styles.modalInput}
+        placeholderTextColor="rgba(255, 255, 255, 0.7)"
+      />
+
+      <ShoesInfoModal
+        isVisible={isModalVisible}
+        brand={brandValue}
+        model={modelValue}
+        edition={editionValue}
+        onChangeBrand={onChangeBrand}
+        onChangeModel={onChangeModel}
+        onChangeEdition={onChangeEdition}
+        onCancel={handleCancel}
+        onConfirm={handleConfirm}
+      />
+    </View>
+  );
+};
+
+const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
+  isVisible = false,
+  brandValue = '',
+  modelValue = '',
+  editionValue = '',
+  memoValue = '',
+  onChangeBrand,
+  onChangeModel,
+  onChangeEdition,
+  onChangeMemo,
+  onCancel,
+  onConfirm,
+  label = '신발 정보',
+  title = '신발 정보 수정',
+}) => {
 
   return (
     <RNModal
@@ -208,37 +265,20 @@ const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
             />
 
             <View style={styles.modalInputContainers}>
-              <TouchableWithoutFeedback>
-                <View style={styles.modalInputContainer}>
-                  <View style={styles.inputHeader}>
-                    <Text style={styles.modalInputTitle}>{label}</Text>
-                    <TouchableOpacity
-                      style={{
-                        marginTop: getSize(11),
-                        marginRight: getSize(10),
-                      }}
-                      onPress={() => {
-                        onChangeBrand('');
-                        onChangeModel('');
-                        onChangeEdition('');
-                      }}>
-                      <CancelIcon width={getSize(20)} height={getSize(20)} fill={Colors.gray} />
-                    </TouchableOpacity>
-                  </View>
-                  <TextInput
-                    editable={false}
-                    onPress={() => showModal()}
-                    value={
-                      brandValue || modelValue || editionValue
-                        ? `${brandValue} ${modelValue} ${editionValue}`
-                        : ''
-                    }
-                    style={styles.modalInput}
-                    placeholder='신발 정보를 입력해주세요'
-                    placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                  />
-                </View>
-              </TouchableWithoutFeedback>
+              <ShoesInput
+                brandValue={brandValue}
+                modelValue={modelValue}
+                editionValue={editionValue}
+                onChangeBrand={onChangeBrand}
+                onChangeModel={onChangeModel}
+                onChangeEdition={onChangeEdition}
+                onClear={() => {
+                  onChangeBrand('');
+                  onChangeModel('');
+                  onChangeEdition('');
+                }}
+              />
+
               <ModalRecordInput
                 label='메모'
                 value={memoValue}
@@ -246,18 +286,6 @@ const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
                 placeholder='메모를 입력해주세요'
               />
             </View>
-
-            <ShoesInfoModal
-              isVisible={isModalVisible}
-              brand={brandValue}
-              model={modelValue}
-              edition={editionValue}
-              onChangeBrand={onChangeBrand}
-              onChangeModel={onChangeModel}
-              onChangeEdition={onChangeEdition}
-              onCancel={handleCancel}
-              onConfirm={handleConfirm}
-            />
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -374,5 +402,4 @@ export {
   ShoesInfoProps,
   ShoesInfoModal,
   ShoesUpdateModal
-
 };
