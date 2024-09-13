@@ -75,7 +75,7 @@ const RecordUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
             }}
           />
 
-          <View>
+          <View style={styles.modalInputContainer}>
             <ModalRecordInput
               label={label}
               value={value}
@@ -145,6 +145,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     alignItems: 'center',
   },
+  modalInputContainer: {
+    marginTop: getSize(48),
+    gap: getSize(12),
+  }
 });
 
 export {
