@@ -223,10 +223,10 @@ const ProfileScreen = () => {
 
         {isEditMode
           ? <ProfileSaveButton
-            style={{ marginTop: getSize(133) }}
+            style={styles.buttonContainer}
             onPress={() => { saveProfile() }} />
           : <ProfileUpdateButton
-            style={{ marginTop: getSize(90) }}
+            style={styles.buttonContainer}
             onPress={() => { updateProfile() }} />
         }
 
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
     marginTop: getSize(16),
   },
   buttonContainer: {
-    marginTop: getSize(10),
+    marginTop: getSize(91),
   }
 });
 

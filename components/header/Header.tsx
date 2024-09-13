@@ -143,7 +143,7 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
 // 스타일 정의
 const styles = StyleSheet.create({
   container: {
-    marginTop: getSize(57),
+    marginTop: getSize(58),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
