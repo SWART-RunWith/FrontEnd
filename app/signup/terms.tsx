@@ -20,7 +20,6 @@ const termsData = [
   { id: '2', title: '개인정보수집/이용 동의', required: true },
   { id: '3', title: '개인정보 제 3자 정보제공 동의', required: true },
   { id: '4', title: '위치기반 서비스 이용약관 동의', required: true },
-  { id: '5', title: '이메일 및 SMS 광고성 정보 수신동의', required: false },
 ];
 
 const TermsScreen: React.FC = () => {
