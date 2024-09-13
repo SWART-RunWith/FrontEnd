@@ -29,7 +29,7 @@ import {
   ProfileSaveButton,
   ProfileUpdateButton,
 } from '@/components/button/Button';
-import { LoginScreenNavigationProp } from '@/scripts/navigation';
+import { HomeScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
 import CameraIcon from '@/assets/icons/camera.svg';
 import LocationIcon from '@/assets/icons/location.svg';
@@ -42,7 +42,7 @@ const DefaultImage = require('@/assets/images/default.png');
 const { width } = Dimensions.get('window');
 
 const ProfileScreen = () => {
-  const navigation = useNavigation<LoginScreenNavigationProp>();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   const scrollRef = useRef<ScrollView>(null);
 
