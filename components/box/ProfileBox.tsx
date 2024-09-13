@@ -73,7 +73,9 @@ const DistanceBox: React.FC<MyBestBoxProps> = ({
 }) => {
   const [isDistanceModalVisible, setDistanceModalVisible] = useState(false);
   const [distance, setDistance] = useState(props.value || '');
-  const [shoes, setShoes] = useState(props.shoes || '');
+  const [brand, setBrand] = useState('');
+  const [model, setModel] = useState('');
+  const [edition, setEdition] = useState('');
   const [memo, setMemo] = useState(props.memo || '');
 
   return (
@@ -81,7 +83,7 @@ const DistanceBox: React.FC<MyBestBoxProps> = ({
       <MyBestBox
         title={title}
         value={distance}
-        shoes={shoes}
+        shoes={`${brand} ${model} ${edition}`}
         memo={memo}
         onEditPress={() => setDistanceModalVisible(true)}
         {...props}
@@ -89,21 +91,39 @@ const DistanceBox: React.FC<MyBestBoxProps> = ({
       <DistanceUpdateModal
         isVisible={isDistanceModalVisible}
         onCancel={() => setDistanceModalVisible(false)}
-        onConfirm={(newDistance, newShoes, newMemo) => {
-          onConfirm?.(newDistance, newShoes, newMemo);
+        onConfirm={(
+          newDistance,
+          newBrand,
+          newModel,
+          newEdition,
+          newMemo
+        ) => {
+          setDistance(newDistance);
+          setBrand(newBrand);
+          setModel(newModel);
+          setEdition(newEdition);
+          setMemo(newMemo);
           setDistanceModalVisible(false);
+          onConfirm?.(
+            newDistance,
+            `${newBrand} ${newModel} ${newEdition}`,
+            newMemo
+          );
         }}
         value={distance}
-        shoesValue={shoes}
+        brandValue={brand}
+        modelValue={model}
+        editionValue={edition}
         memoValue={memo}
         onChangeText={setDistance}
-        onChangeShoes={setShoes}
+        onChangeBrand={setBrand}
+        onChangeModel={setModel}
+        onChangeEdition={setEdition}
         onChangeMemo={setMemo}
       />
     </View>
   );
 };
-
 
 const PaceBox: React.FC<MyBestBoxProps> = ({
   title = '최고 페이스',
@@ -111,16 +131,18 @@ const PaceBox: React.FC<MyBestBoxProps> = ({
   ...props
 }) => {
   const [isPaceModalVisible, setPaceModalVisible] = useState(false);
-  const [pace, setPace] = useState(props.value);
-  const [shoes, setShoes] = useState(props.shoes);
-  const [memo, setMemo] = useState(props.memo);
+  const [pace, setPace] = useState(props.value || '');
+  const [brand, setBrand] = useState('');
+  const [model, setModel] = useState('');
+  const [edition, setEdition] = useState('');
+  const [memo, setMemo] = useState(props.memo || '');
 
   return (
     <View>
       <MyBestBox
         title={title}
         value={pace}
-        shoes={shoes}
+        shoes={`${brand} ${model} ${edition}`}
         memo={memo}
         onEditPress={() => setPaceModalVisible(true)}
         {...props}
@@ -128,15 +150,34 @@ const PaceBox: React.FC<MyBestBoxProps> = ({
       <PaceUpdateModal
         isVisible={isPaceModalVisible}
         onCancel={() => setPaceModalVisible(false)}
-        onConfirm={(newPace, newShoes, newMemo) => {
-          onConfirm?.(newPace, newShoes, newMemo);
+        onConfirm={(
+          newPace,
+          newBrand,
+          newModel,
+          newEdition,
+          newMemo
+        ) => {
+          setPace(newPace);
+          setBrand(newBrand);
+          setModel(newModel);
+          setEdition(newEdition);
+          setMemo(newMemo);
           setPaceModalVisible(false);
+          onConfirm?.(
+            newPace,
+            `${newBrand} ${newModel} ${newEdition}`,
+            newMemo
+          );
         }}
         value={pace}
-        shoesValue={shoes}
+        brandValue={brand}
+        modelValue={model}
+        editionValue={edition}
         memoValue={memo}
         onChangeText={setPace}
-        onChangeShoes={setShoes}
+        onChangeBrand={setBrand}
+        onChangeModel={setModel}
+        onChangeEdition={setEdition}
         onChangeMemo={setMemo}
       />
     </View>
@@ -149,16 +190,18 @@ const TimeBox: React.FC<MyBestBoxProps> = ({
   ...props
 }) => {
   const [isTimeModalVisible, setTimeModalVisible] = useState(false);
-  const [time, setTime] = useState(props.value);
-  const [shoes, setShoes] = useState(props.shoes);
-  const [memo, setMemo] = useState(props.memo);
+  const [time, setTime] = useState(props.value || '');
+  const [brand, setBrand] = useState('');
+  const [model, setModel] = useState('');
+  const [edition, setEdition] = useState('');
+  const [memo, setMemo] = useState(props.memo || '');
 
   return (
     <View>
       <MyBestBox
         title={title}
         value={time}
-        shoes={shoes}
+        shoes={`${brand} ${model} ${edition}`}
         memo={memo}
         onEditPress={() => setTimeModalVisible(true)}
         {...props}
@@ -166,15 +209,34 @@ const TimeBox: React.FC<MyBestBoxProps> = ({
       <TimeUpdateModal
         isVisible={isTimeModalVisible}
         onCancel={() => setTimeModalVisible(false)}
-        onConfirm={(newTime, newShoes, newMemo) => {
-          onConfirm?.(newTime, newShoes, newMemo);
+        onConfirm={(
+          newTime,
+          newBrand,
+          newModel,
+          newEdition,
+          newMemo
+        ) => {
+          setTime(newTime);
+          setBrand(newBrand);
+          setModel(newModel);
+          setEdition(newEdition);
+          setMemo(newMemo);
           setTimeModalVisible(false);
+          onConfirm?.(
+            newTime,
+            `${newBrand} ${newModel} ${newEdition}`,
+            newMemo
+          );
         }}
         value={time}
-        shoesValue={shoes}
+        brandValue={brand}
+        modelValue={model}
+        editionValue={edition}
         memoValue={memo}
         onChangeText={setTime}
-        onChangeShoes={setShoes}
+        onChangeBrand={setBrand}
+        onChangeModel={setModel}
+        onChangeEdition={setEdition}
         onChangeMemo={setMemo}
       />
     </View>
