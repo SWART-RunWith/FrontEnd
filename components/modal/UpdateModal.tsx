@@ -44,7 +44,7 @@ const ModalHeader: React.FC<{
     </View>
   );
 
-const ModalInput: React.FC<{
+const ModalProfileInput: React.FC<{
   label: string;
   value: string;
   onChangeText: (text: string) => void;
@@ -55,9 +55,9 @@ const ModalInput: React.FC<{
   onChangeText,
   placeholder
 }) => (
-    <View style={styles.modalInputContainer}>
-      <View style={styles.inputHeader}>
-        <Text style={styles.modalInputTitle}>{label}</Text>
+    <View style={profileStyles.modalInputContainer}>
+      <View style={profileStyles.inputHeader}>
+        <Text style={profileStyles.modalInputTitle}>{label}</Text>
         <TouchableOpacity
           style={{
             marginTop: getSize(11),
@@ -70,7 +70,42 @@ const ModalInput: React.FC<{
       <TextInput
         value={value}
         onChangeText={onChangeText}
-        style={styles.modalInput}
+        style={profileStyles.modalInput}
+        placeholder={placeholder}
+        placeholderTextColor="rgba(255, 255, 255, 0.7)"
+        multiline={true}
+        maxLength={200}
+      />
+    </View>
+  );
+
+const ModalRecordInput: React.FC<{
+  label: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder: string;
+}> = ({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+}) => (
+    <View style={recordStyles.modalInputContainer}>
+      <View style={recordStyles.inputHeader}>
+        <Text style={recordStyles.modalInputTitle}>{label}</Text>
+        <TouchableOpacity
+          style={{
+            marginTop: getSize(11),
+            marginRight: getSize(10),
+          }}
+          onPress={() => onChangeText('')}>
+          <CancelIcon width={getSize(20)} height={getSize(20)} fill={Colors.gray} />
+        </TouchableOpacity>
+      </View>
+      <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        style={recordStyles.modalInput}
         placeholder={placeholder}
         placeholderTextColor="rgba(255, 255, 255, 0.7)"
         multiline={true}
@@ -104,6 +139,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-SemiBold',
     color: Colors.main,
   },
+})
+
+const profileStyles = StyleSheet.create({
   inputHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -133,8 +171,38 @@ const styles = StyleSheet.create({
   },
 })
 
+const recordStyles = StyleSheet.create({
+  inputHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  modalInputContainer: {
+    paddingLeft: getSize(18),
+    width: width - getSize(Sizes.formMargin) * 2,
+    height: getSize(99),
+    borderColor: 'white',
+    borderWidth: getSize(1),
+    borderRadius: 20,
+  },
+  modalInputTitle: {
+    fontSize: getSize(20),
+    color: Colors.main,
+    fontFamily: 'Pretendard-SemiBold',
+    marginTop: getSize(13),
+  },
+  modalInput: {
+    marginRight: getSize(55),
+    marginBottom: getSize(25),
+    fontSize: getSize(16),
+    color: 'white',
+    fontFamily: 'Pretendard-Medium',
+    marginTop: getSize(10),
+  },
+})
+
 export {
   ModalProps,
   ModalHeader,
-  ModalInput,
+  ModalProfileInput,
+  ModalRecordInput,
 }
