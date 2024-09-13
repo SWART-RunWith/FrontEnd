@@ -218,18 +218,16 @@ const ShoesInput: React.FC<ShoesInputProps> = ({
           <CancelIcon width={getSize(20)} height={getSize(20)} fill={Colors.gray} />
         </TouchableOpacity>
       </View>
-      <TextInput
-        value={
-          brandValue || modelValue || editionValue
-            ? (`${brandValue} ${modelValue} ${editionValue}`)
-            : ''
+      <TouchableOpacity onPress={showModal} style={styles.modalInput}>
+        {brandValue || modelValue || editionValue
+          ? <Text style={styles.modalInputText}>
+            {brandValue} {modelValue} {editionValue}
+          </Text>
+          : <Text style={styles.modalPlaceHolderText}>
+            신발 정보를 입력해주세요
+          </Text>
         }
-        editable={false}
-        onPress={() => showModal()}
-        placeholder='신발 정보를 입력해주세요'
-        style={styles.modalInput}
-        placeholderTextColor="rgba(255, 255, 255, 0.7)"
-      />
+      </TouchableOpacity>
 
       <ShoesInfoModal
         isVisible={isModalVisible}
@@ -367,10 +365,17 @@ const styles = StyleSheet.create({
     marginTop: getSize(13),
   },
   modalInput: {
-    marginRight: getSize(55),
-    marginBottom: getSize(25),
+    height: '100%',
+  },
+  modalInputText: {
     fontSize: getSize(16),
     color: 'white',
+    fontFamily: 'Pretendard-Medium',
+    marginTop: getSize(10),
+  },
+  modalPlaceHolderText: {
+    fontSize: getSize(16),
+    color: 'rgba(255, 255, 255, 0.7)',
     fontFamily: 'Pretendard-Medium',
     marginTop: getSize(10),
   },
