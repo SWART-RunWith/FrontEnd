@@ -113,12 +113,14 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
   containerStyle = {},
 }) => (
   <View style={[styles.container, containerStyle]}>
-    {/* Back Icon */}
-    {showBackIcon && backProps && (
-      <View style={styles.leftIcons}>
-        <BackIcon {...backProps} />
-      </View>
-    )}
+    <View style={styles.leftIconContainer}>
+      {/* Back Icon */}
+      {showBackIcon && backProps && (
+        <View style={styles.leftIcons}>
+          <BackIcon {...backProps} />
+        </View>
+      )}
+    </View>
 
     {/* Text */}
     <View style={styles.centerText}>
@@ -156,18 +158,25 @@ const styles = StyleSheet.create({
     marginTop: getSize(58),
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: getSize(Sizes.formMargin),
     width: width,
     height: getSize(29),
     zIndex: 10,
   },
+  leftIconContainer: {
+    position: 'absolute',
+    flexDirection: 'row',
+    gap: getSize(24),
+    left: getSize(Sizes.formMargin),
+  },
   leftIcons: {
   },
   rightIconContainer: {
+    position: 'absolute',
     flexDirection: 'row',
     gap: getSize(24),
-    right: 0,
+    right: getSize(Sizes.formMargin),
   },
   rightIcons: {
   },
