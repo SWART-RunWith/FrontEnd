@@ -185,7 +185,7 @@ const OnboardingScreen: React.FC = () => {
             <SignUpButton
               onPress={() => {
                 handleOnboardingFinish();
-                navigation.replace('signup/signup');
+                navigation.replace('signup/terms');
               }}
               isGary={true}
             />
