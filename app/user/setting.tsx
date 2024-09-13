@@ -45,7 +45,7 @@ const SettingScreen = () => {
 
       <TouchableOpacity
         style={styles.textContainer}
-        onPress={() => navigation.navigate('MyInfo')}>
+        onPress={() => { console.log('설정 파일 navi') }}>
         <Text style={styles.label}>내 정보</Text>
         <RightArrowIcon width={getSize(8)} height={getSize(14)} />
       </TouchableOpacity>
@@ -54,7 +54,7 @@ const SettingScreen = () => {
 
       <TouchableOpacity
         style={styles.textContainer}
-        onPress={() => navigation.navigate('MeasurementUnit')}>
+        onPress={() => { console.log('설정 파일 navi') }}>
         <Text style={styles.label}>측정 단위</Text>
         <RightArrowIcon width={getSize(8)} height={getSize(14)} />
       </TouchableOpacity>
@@ -63,7 +63,7 @@ const SettingScreen = () => {
 
       <TouchableOpacity
         style={styles.textContainer}
-        onPress={() => navigation.navigate('Notifications')}>
+        onPress={() => { console.log('설정 파일 navi') }}>
         <Text style={styles.label}>알림</Text>
         <RightArrowIcon width={getSize(8)} height={getSize(14)} />
       </TouchableOpacity>
@@ -72,7 +72,7 @@ const SettingScreen = () => {
 
       <TouchableOpacity
         style={styles.textContainer}
-        onPress={() => navigation.navigate('ProfileVisibility')}>
+        onPress={() => { console.log('설정 파일 navi') }}>
         <Text style={styles.label}>프로필 공개 범위</Text>
         <RightArrowIcon width={getSize(8)} height={getSize(14)} />
       </TouchableOpacity>
@@ -95,7 +95,7 @@ const SettingScreen = () => {
 
       <TouchableOpacity
         style={styles.textContainer}
-        onPress={() => navigation.navigate('PrivacyPolicy')}>
+        onPress={() => { console.log('설정 파일 navi') }}>
         <Text style={styles.label}>개인정보 처리 방침</Text>
         <RightArrowIcon width={getSize(8)} height={getSize(14)} />
       </TouchableOpacity>
@@ -104,7 +104,7 @@ const SettingScreen = () => {
 
       <TouchableOpacity
         style={styles.textContainer}
-        onPress={() => navigation.navigate('ContactUs')}>
+        onPress={() => { console.log('설정 파일 navi') }}>
         <Text style={styles.label}>문의하기</Text>
         <RightArrowIcon width={getSize(8)} height={getSize(14)} />
       </TouchableOpacity>
@@ -113,7 +113,7 @@ const SettingScreen = () => {
 
       <TouchableOpacity
         style={styles.textContainer}
-        onPress={() => navigation.navigate('DeleteAccount')}>
+        onPress={() => { console.log('설정 파일 navi') }}>
         <Text style={styles.label}>계정 탈퇴</Text>
         <RightArrowIcon width={getSize(8)} height={getSize(14)} />
       </TouchableOpacity>
