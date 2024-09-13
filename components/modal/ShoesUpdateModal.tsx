@@ -400,6 +400,6 @@ const shoesInfoModalStyles = StyleSheet.create({
 
 export {
   ShoesInfoProps,
-  ShoesInfoModal,
+  ShoesInput,
   ShoesUpdateModal
 };

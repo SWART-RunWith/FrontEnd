@@ -15,6 +15,7 @@ import {
   ModalRecordInput,
 } from '@/components/modal/UpdateModal';
 import { TimerModal } from '@/components/modal/TimerModal';
+import { ShoesInput } from '@/components/modal/ShoesUpdateModal';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
@@ -31,15 +32,21 @@ interface ModalProps {
 interface UpdateValueProps {
   isVisible?: boolean;
   value?: string;
-  shoesValue?: string;
+  brandValue?: string;
+  modelValue?: string;
+  editionValue?: string;
   memoValue?: string;
   onChangeText: (text: string) => void;
-  onChangeShoes: (text: string) => void;
+  onChangeBrand: (text: string) => void;
+  onChangeModel: (text: string) => void;
+  onChangeEdition: (text: string) => void;
   onChangeMemo: (text: string) => void;
   onCancel?: () => void;
   onConfirm?: (
     newValue: string,
-    newShoes: string,
+    newBrand: string,
+    newModel: string,
+    newEdition: string,
     newMemo: string
   ) => void;
 }
@@ -47,10 +54,14 @@ interface UpdateValueProps {
 const RecordUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
   isVisible,
   value = '',
-  shoesValue = '',
+  brandValue = '',
+  modelValue = '',
+  editionValue = '',
   memoValue = '',
   onChangeText,
-  onChangeShoes,
+  onChangeBrand,
+  onChangeModel,
+  onChangeEdition,
   onChangeMemo,
   onCancel,
   onConfirm,
@@ -91,8 +102,10 @@ const RecordUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
                 if (onConfirm) {
                   onConfirm(
                     value === '' ? '0' : value,
-                    shoesValue === '' ? '' : shoesValue,
-                    memoValue === '' ? '' : memoValue
+                    brandValue,
+                    modelValue,
+                    editionValue,
+                    memoValue
                   );
                 }
               }}
@@ -116,12 +129,21 @@ const RecordUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
                   <Text style={styles.modalInput}>{value}</Text>
                 </View>
               </TouchableWithoutFeedback>
-              <ModalRecordInput
-                label='신발 정보'
-                value={shoesValue}
-                onChangeText={onChangeShoes}
-                placeholder='신발 정보를 입력해주세요'
+
+              <ShoesInput
+                brandValue={brandValue}
+                modelValue={modelValue}
+                editionValue={editionValue}
+                onChangeBrand={onChangeBrand}
+                onChangeModel={onChangeModel}
+                onChangeEdition={onChangeEdition}
+                onClear={() => {
+                  onChangeBrand('');
+                  onChangeModel('');
+                  onChangeEdition('');
+                }}
               />
+
               <ModalRecordInput
                 label='메모'
                 value={memoValue}
