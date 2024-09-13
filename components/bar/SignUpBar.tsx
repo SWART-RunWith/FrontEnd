@@ -69,6 +69,7 @@ const SignUpPasswordBar = ({
   ...props
 }: BarProps) => {
   const [secureText, setSecureText] = useState(true);
+  const [isSecure, setIsSecure] = useState(false);
 
   return (
     <SignUpBar
@@ -77,11 +78,13 @@ const SignUpPasswordBar = ({
       isSecure={secureText}
       eyeIcon={<Ionicons
         name={secureText ? 'eye-off' : 'eye'}
-        size={20}
+        size={getSize(20)}
         color="rgba(255, 255, 255, 0.6)"
       />}
-      onButtonPressIn={() => setSecureText(false)}
-      onButtonPressOut={() => setSecureText(true)}
+      onButtonPress={() => {
+        setSecureText(!isSecure);
+        setIsSecure(!isSecure);
+      }}
       {...props}
     />
   );
@@ -139,7 +142,7 @@ const SignUpDateOfBirthBar = ({
         placeholder={placeholder}
         value={selectedDate || ''}
         isCalendar={true}
-        onButtonPressIn={showDatePicker}
+        onButtonPress={showDatePicker}
         {...props}
       />
 

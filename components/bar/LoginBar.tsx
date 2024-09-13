@@ -32,6 +32,7 @@ const LoginPasswordBar = ({
   ...props
 }: BarProps) => {
   const [secureText, setSecureText] = useState(true);
+  const [isSecure, setIsSecure] = useState(false);
 
   return (
     <LoginBar
@@ -43,8 +44,10 @@ const LoginPasswordBar = ({
         size={20}
         color="rgba(255, 255, 255, 0.6)"
       />}
-      onButtonPressIn={() => setSecureText(false)}
-      onButtonPressOut={() => setSecureText(true)}
+      onButtonPress={() => {
+        setSecureText(!isSecure);
+        setIsSecure(!isSecure);
+      }}
       {...props}
     />
   );
