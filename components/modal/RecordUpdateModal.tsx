@@ -69,9 +69,10 @@ const RecordUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
     setModalVisible(false);
   };
 
-  const handleConfirm = (value: string) => {
-    setSelectedValue(value);
+  const handleConfirm = (selected: string) => {
+    setSelectedValue(selected);
     setModalVisible(false);
+    onChangeText(selected);
   };
 
   return (
