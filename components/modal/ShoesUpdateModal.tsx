@@ -9,11 +9,15 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import RNModal from 'react-native-modal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
+import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
 import {
   ModalHeader,
@@ -21,7 +25,7 @@ import {
 } from '@/components/modal/UpdateModal';
 import CancelIcon from '@/assets/icons/cancel.svg';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 interface ModalProps {
   isVisible?: boolean;
@@ -68,6 +72,9 @@ const ShoesInfoModal: React.FC<ShoesProps & ModalProps> = ({
   brand = '',
   model = '',
   edition = '',
+  onChangeBrand,
+  onChangeModel,
+  onChangeEdition,
   ...props
 }) => {
   return (
@@ -77,46 +84,65 @@ const ShoesInfoModal: React.FC<ShoesProps & ModalProps> = ({
       visible={isVisible}
       onRequestClose={onCancel}
     >
-      <View>
-        <ModalRecordInput
-          label='브랜드'
-          value={brand}
-          onChangeText={props.onChangeBrand}
-          placeholder='브랜드를 입력해주세요'
-        />
-        <ModalRecordInput
-          label='모델'
-          value={model}
-          onChangeText={props.onChangeModel}
-          placeholder='모델을 입력해주세요'
-        />
-        <ModalRecordInput
-          label='에디션'
-          value={edition}
-          onChangeText={props.onChangeEdition}
-          placeholder='에디션을 입력해주세요'
-        />
-      </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          style={shoesInfoModalStyles.modalContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
 
-      <View style={styles.buttonRow}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={onCancel}
-        >
-          <Text style={styles.buttonText}>취소</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => onConfirm(brand, model, edition)}
-          style={[styles.button, styles.confirmButton]}
-        >
-          <Text
-            style={[styles.buttonText, styles.confirmButtonText]}
-          >
-            확인
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </Modal>
+          <View style={shoesInfoModalStyles.modalContent}>
+            <View style={shoesInfoModalStyles.modalTitleContainer}>
+              <Text style={shoesInfoModalStyles.modalTitle}>신발 정보 입력</Text>
+            </View>
+
+            <View style={shoesInfoModalStyles.modalBar} />
+
+            <View style={shoesInfoModalStyles.modalInputContainers}>
+              <ModalRecordInput
+                label='브랜드'
+                value={brand}
+                onChangeText={onChangeBrand}
+                placeholder='브랜드를 입력해주세요'
+              />
+              <ModalRecordInput
+                label='모델'
+                value={model}
+                onChangeText={onChangeModel}
+                placeholder='모델을 입력해주세요'
+              />
+              <ModalRecordInput
+                label='에디션'
+                value={edition}
+                onChangeText={onChangeEdition}
+                placeholder='에디션을 입력해주세요'
+              />
+            </View>
+
+            <View style={shoesInfoModalStyles.modalBar} />
+
+            <View style={shoesInfoModalStyles.buttonRow}>
+              <TouchableOpacity
+                style={shoesInfoModalStyles.button}
+                onPress={onCancel}
+              >
+                <Text style={shoesInfoModalStyles.buttonText}>취소</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onConfirm(brand, model, edition)}
+                style={[shoesInfoModalStyles.button, shoesInfoModalStyles.confirmButton]}
+              >
+                <Text
+                  style={[shoesInfoModalStyles.buttonText, shoesInfoModalStyles.confirmButtonText]}
+                >
+                  확인
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+
+    </Modal >
   );
 };
 
@@ -182,8 +208,7 @@ const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
             />
 
             <View style={styles.modalInputContainers}>
-              <TouchableWithoutFeedback
-                onPress={() => showModal()}>
+              <TouchableWithoutFeedback>
                 <View style={styles.modalInputContainer}>
                   <View style={styles.inputHeader}>
                     <Text style={styles.modalInputTitle}>{label}</Text>
@@ -195,11 +220,14 @@ const ShoesUpdateModal: React.FC<ModalProps & UpdateValueProps> = ({
                       onPress={() => {
                         onChangeBrand('');
                         onChangeModel('');
+                        onChangeEdition('');
                       }}>
                       <CancelIcon width={getSize(20)} height={getSize(20)} fill={Colors.gray} />
                     </TouchableOpacity>
                   </View>
                   <TextInput
+                    editable={false}
+                    onPress={() => showModal()}
                     value={
                       brandValue || modelValue || editionValue
                         ? `${brandValue} ${modelValue} ${editionValue}`
@@ -283,6 +311,41 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Medium',
     marginTop: getSize(10),
   },
+});
+
+const shoesInfoModalStyles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: Colors.grayBox,
+    borderRadius: 10,
+    width: width,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalBar: {
+    backgroundColor: Colors.lightGrayBox,
+    height: getSize(1),
+    width: '100%',
+  },
+  modalTitleContainer: {
+    height: getSize(60),
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  modalTitle: {
+    fontSize: getSize(18),
+    fontFamily: 'Pretendard-Bold',
+    color: 'white',
+  },
+  modalInputContainers: {
+    marginVertical: getSize(50),
+    gap: getSize(12),
+  },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -305,7 +368,7 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: 'black',
   },
-});
+})
 
 export {
   ShoesProps,
