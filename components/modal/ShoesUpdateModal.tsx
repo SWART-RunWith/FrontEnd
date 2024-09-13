@@ -131,12 +131,10 @@ const ShoesInfoModal: React.FC<ShoesInfoProps & ModalProps> = ({
                   shoesInfoModalStyles.confirmButton
                 ]}
               >
-                <Text
-                  style={[
-                    shoesInfoModalStyles.buttonText,
-                    shoesInfoModalStyles.confirmButtonText
-                  ]}
-                >
+                <Text style={[
+                  shoesInfoModalStyles.buttonText,
+                  shoesInfoModalStyles.confirmButtonText
+                ]}>
                   확인
                 </Text>
               </TouchableOpacity>
@@ -144,7 +142,7 @@ const ShoesInfoModal: React.FC<ShoesInfoProps & ModalProps> = ({
           </View>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-    </Modal >
+    </Modal>
   );
 };
 

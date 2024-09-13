@@ -208,8 +208,20 @@ const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
   const [brand, setBrand] = useState(props.brand || '');
   const [model, setModel] = useState(props.model || '');
   const [edition, setEdition] = useState(props.edition || '');
-  const [shoeInfo, setShoeInfo] = useState(`${props.model} ${props.edition}` || '');
   const [memo, setMemo] = useState(props.memo || '');
+
+  const handleConfirm = (
+    newBrand: string,
+    newModel: string,
+    newEdition: string,
+    newMemo: string
+  ) => {
+    setBrand(newBrand);
+    setModel(newModel);
+    setEdition(newEdition);
+    setMemo(newMemo);
+    setShoeModalVisible(false);
+  };
 
   return (
     <View style={styles.shoesContainer}>
@@ -224,20 +236,17 @@ const RunningShoesBox: React.FC<RunningShoesBoxProps> = ({
       <Image source={ShoesImage} style={styles.shoesImage} resizeMode="contain" />
       <View style={styles.textContainer}>
         <Text style={styles.brand}>{brand}</Text>
-        <Text style={styles.model}>{shoeInfo}</Text>
-        <Text style={styles.edition}>{memo}</Text>
+        <Text style={styles.model}>{`${model} ${edition}`}</Text>
+        <Text style={styles.memo}>{memo}</Text>
       </View>
 
       <ShoesUpdateModal
         isVisible={isShoeModalVisible}
         onCancel={() => setShoeModalVisible(false)}
-        onConfirm={(newBrand, newModel, newEdition, newMemo) => {
-          setBrand(newBrand);
-          setModel(newModel);
-          setEdition(newEdition);
-          setMemo(newMemo);
-          setShoeModalVisible(false);
-        }}
+        onConfirm={handleConfirm}
+        brandValue={brand}
+        modelValue={model}
+        editionValue={edition}
         memoValue={memo}
         onChangeBrand={setBrand}
         onChangeModel={setModel}
