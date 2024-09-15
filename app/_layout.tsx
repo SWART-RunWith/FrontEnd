@@ -48,6 +48,7 @@ export default function RootLayout() {
         <Stack.Screen name='signup/profile' />
         <Stack.Screen name='user/profile' />
         <Stack.Screen name='user/setting' />
+        <Stack.Screen name='running/countDown' />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>

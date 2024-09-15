@@ -22,7 +22,8 @@ const HomeScreen: React.FC = ({ }) => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
   const handleStartPress = () => {
-    // START 버튼을 눌렀을 때의 동작
+    console.log('START button pressed')
+    navigation.replace('running/countDown');
   };
 
   return (
@@ -30,7 +31,7 @@ const HomeScreen: React.FC = ({ }) => {
       <Text style={styles.title}>RUNWITH</Text>
       <StartButton
         style={styles.button}
-        onPress={() => console.log('START button pressed')}
+        onPress={() => handleStartPress}
       />
       <View style={styles.box} />
       <DefaultButton

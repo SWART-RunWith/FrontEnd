@@ -9,6 +9,7 @@ export type RootStackParamList = {
   "signup/profile": undefined;
   "user/profile": undefined;
   "user/setting": undefined;
+  "running/countDown": undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
