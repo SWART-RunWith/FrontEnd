@@ -27,8 +27,7 @@ interface BarProps {
   isSecure?: boolean;
   isRequired?: boolean;
   buttonText?: string;
-  onButtonPressIn?: () => void;
-  onButtonPressOut?: () => void;
+  onButtonPress?: () => void;
   errorText?: string;
   unit?: string;
   eyeIcon?: React.ReactNode;
@@ -47,8 +46,7 @@ const DefaultBar = ({
   isSecure = false,
   isRequired = false,
   buttonText = '',
-  onButtonPressIn,
-  onButtonPressOut,
+  onButtonPress,
   errorText = '',
   unit = '',
   eyeIcon = null,
@@ -83,15 +81,14 @@ const DefaultBar = ({
         />
 
         {buttonText ? (
-          <TouchableOpacity style={styles.button} onPress={onButtonPressIn}>
+          <TouchableOpacity style={styles.button} onPress={onButtonPress}>
             <Text style={styles.buttonText}>{buttonText}</Text>
           </TouchableOpacity>
         ) : unit ? (
           <Text style={styles.unitText}>{unit}</Text>
         ) : eyeIcon ? (
           <TouchableOpacity
-            onPressIn={onButtonPressIn}
-            onPressOut={onButtonPressOut}
+            onPress={onButtonPress}
           >
             <View style={styles.svgIconContainer}>
               {eyeIcon}
@@ -99,7 +96,7 @@ const DefaultBar = ({
           </TouchableOpacity>
         ) : isCalendar ? (
           <TouchableOpacity
-            onPress={onButtonPressIn}
+            onPress={onButtonPress}
           >
             <View style={styles.svgIconContainer} >
               <CalendarIcon width={getSize(22)} height={getSize(24)} fill='white' />
@@ -122,6 +119,7 @@ export {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: getSize(Sizes.formMargin),
+    height: getSize(81),
   },
   labelContainer: {
     flexDirection: 'row',

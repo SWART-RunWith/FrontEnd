@@ -40,18 +40,24 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginTop: Sizes.formMargin,
   },
+  imageContainer: {
+    alignContent: 'center',
+  },
   image1: {
     width: width,
+    height: getSize(405),
     resizeMode: 'contain',
     marginTop: getSize(27),
   },
   image2: {
     width: width,
+    height: getSize(398),
     resizeMode: 'contain',
     marginTop: getSize(16),
   },
   image3: {
     width: width,
+    height: getSize(456),
     resizeMode: 'contain',
     marginTop: getSize(9),
   },
@@ -154,7 +160,9 @@ const OnboardingScreen: React.FC = () => {
                 <Text style={styles.title}>{page.title}</Text>
                 <Text style={styles.subtitle}>{page.subtitle}</Text>
               </View>
-              <Image source={page.image} style={page.imageStyle} />
+              <View style={styles.imageContainer}>
+                <Image source={page.image} style={page.imageStyle} />
+              </View>
             </View>
           </View>
         ))}
@@ -177,7 +185,7 @@ const OnboardingScreen: React.FC = () => {
             <SignUpButton
               onPress={() => {
                 handleOnboardingFinish();
-                navigation.replace('signup');
+                navigation.replace('signup/terms');
               }}
               isGary={true}
             />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -28,6 +28,11 @@ const TermsScreen: React.FC = () => {
   const [allChecked, setAllChecked] = useState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
+  // 필수 항목 id
+  const requiredTerms = termsData
+    .filter((term) => term.required)
+    .map((term) => term.id);
+
   const toggleAllChecked = () => {
     if (allChecked) {
       setCheckedItems([]);
@@ -35,9 +40,7 @@ const TermsScreen: React.FC = () => {
       setCheckedItems(termsData.map((item) => item.id));
     }
     setAllChecked(!allChecked);
-    console.log('allChecked:', !allChecked);
   };
-
 
   const toggleItemChecked = (id: string) => {
     setCheckedItems((prevCheckedItems) =>
@@ -46,6 +49,14 @@ const TermsScreen: React.FC = () => {
         : [...prevCheckedItems, id]
     );
   };
+
+  useEffect(() => {
+    // 필수 항목 모두 선택 -> allChecked = true
+    const allRequiredChecked = requiredTerms.every((id) => checkedItems.includes(id));
+    setAllChecked(allRequiredChecked && checkedItems.length === termsData.length);
+  }, [checkedItems]);
+
+  const isAllRequiredChecked = requiredTerms.every((id) => checkedItems.includes(id));
 
   return (
     <View style={Styles.container}>
@@ -63,7 +74,9 @@ const TermsScreen: React.FC = () => {
           onPress={toggleAllChecked}
         >
           <Ionicons
-            name={allChecked ? 'checkmark-circle' : 'checkmark-circle-outline'}
+            name={allChecked
+              ? 'checkmark-circle'
+              : 'checkmark-circle-outline'}
             size={getSize(20)}
             color={allChecked ? Colors.main : '#AFAFAF'}
           />
@@ -81,18 +94,17 @@ const TermsScreen: React.FC = () => {
             >
               <View style={styles.termItemContainer}>
                 <Ionicons
-                  name={checkedItems.includes(item.id) ? 'checkmark-circle' : 'checkmark-circle-outline'}
+                  name={checkedItems.includes(item.id)
+                    ? 'checkmark-circle'
+                    : 'checkmark-circle-outline'}
                   size={getSize(20)}
                   color={checkedItems.includes(item.id) ? Colors.main : '#AFAFAF'}
                 />
-                {item.required && (
-                  <View style={styles.requiredBox}>
-                    <Text style={styles.requiredTag}>필수</Text>
-                  </View>
-                )}
+                <View style={styles.requiredBox}>
+                  <Text style={styles.requiredTag}>{item.required ? '필수' : '선택'}</Text>
+                </View>
                 <Text style={styles.termText}>{item.title}</Text>
               </View>
-
               <View style={styles.rightIcon}>
                 <RightArrowIcon width={getSize(10)} height={getSize(18)} color={'white'} />
               </View>
@@ -100,8 +112,9 @@ const TermsScreen: React.FC = () => {
           )}
         />
       </View>
-      {/* 전체 동의 -> 버튼 */}
-      {allChecked && (
+
+      {/* 필수 항목 모두 체크 -> 시작하기 버튼 표시 */}
+      {isAllRequiredChecked && (
         <View style={styles.buttonContainer}>
           <DefaultButton
             text="시작하기"
@@ -132,7 +145,6 @@ const styles = StyleSheet.create({
   },
   termContainer: {
     marginTop: getSize(30),
-    height: getSize(260),
   },
   termAllAgree: {
     flexDirection: 'row',

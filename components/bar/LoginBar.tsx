@@ -20,6 +20,7 @@ const LoginEmailBar = ({
     <LoginBar
       label={label}
       placeholder={placeholder}
+      keyboardType='email-address'
       {...props}
     />
   );
@@ -31,19 +32,22 @@ const LoginPasswordBar = ({
   ...props
 }: BarProps) => {
   const [secureText, setSecureText] = useState(true);
+  const [isSecure, setIsSecure] = useState(false);
 
   return (
     <LoginBar
       label={label}
       placeholder={placeholder}
       isSecure={secureText}
-      svgIcon={<Ionicons
+      eyeIcon={<Ionicons
         name={secureText ? 'eye-off' : 'eye'}
         size={20}
         color="rgba(255, 255, 255, 0.6)"
       />}
-      onButtonPressIn={() => setSecureText(false)}
-      onButtonPressOut={() => setSecureText(true)}
+      onButtonPress={() => {
+        setSecureText(!isSecure);
+        setIsSecure(!isSecure);
+      }}
       {...props}
     />
   );
