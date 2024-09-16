@@ -31,7 +31,7 @@ const HomeScreen: React.FC = ({ }) => {
       <Text style={styles.title}>RUNWITH</Text>
       <StartButton
         style={styles.button}
-        onPress={() => handleStartPress}
+        onPress={() => handleStartPress()}
       />
       <View style={styles.box} />
       <DefaultButton
