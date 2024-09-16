@@ -10,18 +10,18 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
+import { CourseButton } from '@/components/button/RunningButton';
+import { BackHeader } from '@/components/header/IconHeader';
+import { MyCourseSaveModal } from '@/components/modal/pop-up-modal/CourseModal';
+import Colors from '@/constants/Colors';
+import Sizes from '@/constants/Sizes';
 import {
   RunningFinishScreenRouteProp,
   RunningScreenNavigationProp
 } from '@/scripts/navigation';
 import { formatDistance, formatTime } from '@/scripts/format';
 import getSize from '@/scripts/getSize';
-import Colors from '@/constants/Colors';
-import Sizes from '@/constants/Sizes';
-import { CourseButton } from '@/components/button/RunningButton';
-import { BackHeader } from '@/components/header/IconHeader';
-import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
-import { MyCourseSaveModal } from '@/components/modal/pop-up-modal/CourseModal';
 
 const { width } = Dimensions.get('window');
 
