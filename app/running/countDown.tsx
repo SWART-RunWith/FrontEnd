@@ -20,7 +20,7 @@ const CountDown: React.FC = () => {
       return () => clearInterval(timer);
     } else {
       setTimeout(() => {
-        navigation.navigate('running/running');
+        navigation.replace('running/running');
       }, 1000);
     }
   }, [count]);

@@ -36,7 +36,7 @@ const FinishScreen = () => {
 
   return (
     <View style={styles.container}>
-      <BackHeader onPressBack={() => { navigation.replace('running/running') }} />
+      <BackHeader onPressBack={() => { navigation.goBack() }} />
 
       {/* 러닝 완료 정보 */}
       <View style={styles.infoContainer}>

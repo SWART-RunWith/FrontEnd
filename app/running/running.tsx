@@ -86,7 +86,7 @@ const RunningScreen = () => {
   };
 
   const handleStop = () => {
-    navigation.replace('running/finish', {
+    navigation.navigate('running/finish', {
       seconds,
       meters,
       pace,

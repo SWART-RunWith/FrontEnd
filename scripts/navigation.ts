@@ -62,7 +62,7 @@ export type RunningStackParamList = {
 
 export type RunningScreenNavigationProp = StackNavigationProp<
   RunningStackParamList,
-  "running/countDown"
+  "running/running"
 >;
 
 export type RunningFinishScreenRouteProp = RouteProp<
