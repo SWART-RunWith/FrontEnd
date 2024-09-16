@@ -15,6 +15,8 @@ import {
 } from '@/components/button/RunningButton';
 import { RunningScreenNavigationProp } from '@/scripts/navigation';
 import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
+import { formatDistance, formatTime } from '@/scripts/format';
+import { calculatePace } from '@/scripts/calculatePace';
 import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
@@ -77,35 +79,6 @@ const RunningScreen = () => {
     if (newHeartRate > maxHeartRate) newHeartRate = maxHeartRate;
 
     setHeartRate(newHeartRate);
-  };
-
-  const formatTime = (secs: number) => {
-    const hours = Math.floor(secs / 3600);
-    const minutes = Math.floor((secs % 3600) / 60);
-    const seconds = secs % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  const formatDistance = (meters: number) => {
-    const km = Math.floor(meters / 1000);
-    const m = Math.floor((meters % 1000) / 10);
-    return `${km.toString().padStart(2, '0')}.${m.toString().padStart(2, '0')}`;
-  };
-
-  const calculatePace = (
-    timeInSeconds: number,
-    distanceInMeters: number
-  ): string => {
-    if (distanceInMeters === 0) return "0'00\"";
-
-    const distanceInKm = distanceInMeters / 1000;
-    const totalMinutes = timeInSeconds / 60;
-    const pace = totalMinutes / distanceInKm;
-
-    const minutes = Math.floor(pace);
-    const seconds = Math.round((pace - minutes) * 60);
-
-    return `${minutes}'${seconds < 10 ? '0' : ''}${seconds}"`;
   };
 
   const togglePause = () => {
