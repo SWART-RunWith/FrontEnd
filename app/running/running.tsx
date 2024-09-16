@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -16,7 +16,27 @@ import Styles from '@/constants/Styles';
 const RunningScreen = () => {
   const navigation = useNavigation<RunningScreenNavigationProp>();
 
+  const [seconds, setSeconds] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!isPaused) {
+      timer = setInterval(() => {
+        setSeconds(prev => prev + 1);
+      }, 1000);
+    } else if (isPaused && seconds !== 0) {
+      return () => clearInterval(timer);
+    }
+    return () => clearInterval(timer);
+  }, [isPaused, seconds]);
+
+  const formatTime = (secs: number) => {
+    const hours = Math.floor(secs / 3600);
+    const minutes = Math.floor((secs % 3600) / 60);
+    const seconds = secs % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   const togglePause = () => {
     setIsPaused(!isPaused);
@@ -35,7 +55,7 @@ const RunningScreen = () => {
       ]}>
         <View style={styles.textContainer}>
           <Text style={styles.headerText}>현재 러닝 정보</Text>
-          <Text style={styles.timeText}>10:03:23</Text>
+          <Text style={styles.timeText}>{formatTime(seconds)}</Text>
           <Text style={styles.distanceText}>00.00KM</Text>
 
           <View style={styles.statsContainer}>
