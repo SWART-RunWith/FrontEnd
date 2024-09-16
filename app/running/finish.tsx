@@ -5,14 +5,22 @@ import {
   StyleSheet,
   TouchableOpacity,
   Modal,
+  Image,
 } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { RunningFinishScreenRouteProp } from '@/scripts/navigation';
+import {
+  RunningFinishScreenRouteProp,
+  RunningScreenNavigationProp
+} from '@/scripts/navigation';
 import { formatDistance, formatTime } from '@/scripts/format';
-import { calculatePace } from '@/scripts/calculatePace';
+import getSize from '@/scripts/getSize';
+import Colors from '@/constants/Colors';
+import { BackHeader } from '@/components/header/IconHeader';
+import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
 
 const FinishScreen = () => {
+  const navigation = useNavigation<RunningScreenNavigationProp>();
   const route = useRoute<RunningFinishScreenRouteProp>();
   const { seconds, meters, pace, heartRate } = route.params;
 
@@ -28,18 +36,42 @@ const FinishScreen = () => {
 
   return (
     <View style={styles.container}>
+      <BackHeader onPressBack={() => { navigation.goBack() }} />
+
       {/* 러닝 완료 정보 */}
       <View style={styles.infoContainer}>
-        <Text style={styles.headerText}>러닝 완료!</Text>
-        <Text style={styles.timeText}>{formatTime(seconds)}</Text>
-        <Text style={styles.distanceText}>{formatDistance(meters)}KM</Text>
-        <View style={styles.statsContainer}>
-          <Text style={styles.statText}>페이스</Text>
-          <Text style={styles.statText}>{pace}</Text>
-          <Text style={styles.statText}>심박수</Text>
-          <Text style={styles.statText}>{heartRate}</Text>
-          <Text style={styles.statText}>칼로리 111</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.headerText}>러닝 완료!</Text>
+          <Text style={styles.timeText}>{formatTime(seconds)}</Text>
+          <Text style={styles.distanceText}>{formatDistance(meters)}KM</Text>
+
+          <View style={[styles.statsContainer, { marginTop: getSize(17) }]}>
+            <View style={styles.statLeftContainer}>
+              <Text style={styles.statLabelText}>페이스</Text>
+              <Text style={styles.statText}>{pace}</Text>
+            </View>
+            <View style={styles.statRightContainer}>
+              <Text style={styles.statLabelText}>심박수</Text>
+              <Text style={styles.statText}>{heartRate}</Text>
+              <EmptyHeartIcon />
+            </View>
+          </View>
+
+          <View style={[styles.statsContainer, { marginTop: getSize(12) }]}>
+            <View style={styles.statLeftContainer}>
+              <Text style={styles.statLabelText}>고도 상승</Text>
+              <Text style={styles.statText}>{pace}</Text>
+            </View>
+            <View style={styles.statRightContainer}>
+              <Text style={styles.statLabelText}>칼로리</Text>
+              <Text style={styles.statText}>{heartRate}</Text>
+            </View>
+          </View>
         </View>
+
+        <Image
+          style={styles.imageStyle}
+          source={require('@/assets/images/trophy.png')} />
       </View>
 
       {/* 코스 저장하기 버튼 */}
@@ -69,44 +101,64 @@ const FinishScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#1E1E1E',
-    justifyContent: 'center',
+    backgroundColor: 'black',
     alignItems: 'center',
   },
   infoContainer: {
     width: '100%',
-    padding: 20,
-    backgroundColor: '#000',
-    borderRadius: 20,
-    alignItems: 'center',
-    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: getSize(16),
+  },
+  textContainer: {
+    marginTop: getSize(60),
   },
   headerText: {
-    fontSize: 24,
+    fontSize: getSize(24),
+    fontFamily: 'Pretendard-Bold',
     color: '#FFFFFF',
-    marginBottom: 10,
   },
   timeText: {
-    fontSize: 24,
+    fontSize: getSize(20),
+    fontFamily: 'Pretendard-SemiBold',
     color: '#FFFFFF',
-    marginBottom: 10,
+    marginTop: getSize(14),
   },
   distanceText: {
-    fontSize: 48,
-    color: '#B0FF3D',
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: getSize(50),
+    color: Colors.main,
+    fontFamily: 'Pretendard-Black',
   },
   statsContainer: {
     flexDirection: 'row',
+    gap: getSize(20),
+  },
+  statLeftContainer: {
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
-    paddingHorizontal: 20,
+    alignItems: 'center',
+    width: getSize(134),
+  },
+  statRightContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: getSize(8),
+  },
+  statLabelText: {
+    fontSize: getSize(18),
+    fontFamily: 'Pretendard-Bold',
+    color: '#FFFFFF',
   },
   statText: {
-    fontSize: 18,
-    color: '#FFFFFF',
+    fontSize: getSize(20),
+    fontFamily: 'Pretendard-Bold',
+    color: 'white',
+  },
+  imageStyle: {
+    width: getSize(77),
+    height: getSize(144),
+    marginTop: getSize(67),
+    resizeMode: 'contain',
   },
   saveButton: {
     backgroundColor: '#B0FF3D',
