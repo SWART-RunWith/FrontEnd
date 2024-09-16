@@ -12,15 +12,19 @@ import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
 import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
+import Sizes from '@/constants/Sizes';
 
 const RunningScreen = () => {
   const navigation = useNavigation<RunningScreenNavigationProp>();
+
+  const [isPaused, setIsPaused] = useState(false);
 
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(0);
   const [pace, setPace] = useState("0'00\"");
   const [heartRate, setHeartRate] = useState(120);
-  const [isPaused, setIsPaused] = useState(false);
+
+  const heightAnim = useRef(new Animated.Value(getSize(236))).current;
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -38,6 +42,14 @@ const RunningScreen = () => {
     }
     return () => clearInterval(timer);
   }, [isPaused, seconds]);
+
+  useEffect(() => {
+    Animated.timing(heightAnim, {
+      toValue: isPaused ? getSize(430) : getSize(236),
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  }, [isPaused]);
 
   // 심박수 랜덤
   const updateHeartRate = () => {
@@ -92,9 +104,9 @@ const RunningScreen = () => {
   return (
     <View style={Styles.container}>
       {/* 상단 러닝 정보 */}
-      <View style={[
+      <Animated.View style={[
         styles.infoContainer,
-        isPaused && styles.pausedInfoContainer
+        { height: heightAnim }
       ]}>
         <View style={styles.textContainer}>
           <Text style={styles.headerText}>현재 러닝 정보</Text>
@@ -121,7 +133,9 @@ const RunningScreen = () => {
           ? require('@/assets/images/stop-c.png')
           : require('@/assets/images/running-c.png')
         } />
-      </View>
+
+        {isPaused && <View style={styles.mapContainer} />}
+      </Animated.View>
 
       {/* 하단 버튼 */}
       <View style={styles.buttonContainer}>
@@ -149,8 +163,15 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
-  pausedInfoContainer: {
-    height: '50%', // 일시정지 시 화면 확장
+  mapContainer: {
+    position: 'absolute',
+    backgroundColor: Colors.grayBox,
+    width: '100%',
+    height: getSize(166),
+    borderRadius: 20,
+    left: getSize(Sizes.formMargin),
+    top: getSize(242),
+    bottom: getSize(22),
   },
   textContainer: {
     marginTop: getSize(48),
