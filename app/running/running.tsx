@@ -96,43 +96,45 @@ const RunningScreen = () => {
 
   return (
     <View style={Styles.container}>
-      {/* 상단 러닝 정보 */}
       <Animated.View style={[
-        styles.infoContainer,
+        styles.topContainer,
         { height: heightAnim }
       ]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.headerText}>현재 러닝 정보</Text>
-          <Text style={styles.timeText}>{formatTime(seconds)}</Text>
-          <Text style={styles.distanceText}>{formatDistance(meters)}KM</Text>
+        <View style={styles.infoContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.headerText}>현재 러닝 정보</Text>
+            <Text style={styles.timeText}>{formatTime(seconds)}</Text>
+            <Text style={styles.distanceText}>{formatDistance(meters)}KM</Text>
 
-          <View style={styles.statsContainer}>
-            <View style={styles.statContainer}>
-              <Text style={styles.statLabelText}>페이스</Text>
-              <Text style={styles.statText}>{pace}</Text>
-            </View>
+            <View style={styles.statsContainer}>
+              <View style={styles.statContainer}>
+                <Text style={styles.statLabelText}>페이스</Text>
+                <Text style={styles.statText}>{pace}</Text>
+              </View>
 
-            <View style={styles.statContainer}>
-              <Text style={styles.statLabelText}>심박수</Text>
-              <View style={styles.heartContainer}>
-                <Text style={styles.statText}>{heartRate}</Text>
-                <EmptyHeartIcon />
+              <View style={styles.statContainer}>
+                <Text style={styles.statLabelText}>심박수</Text>
+                <View style={styles.heartContainer}>
+                  <Text style={styles.statText}>{heartRate}</Text>
+                  <EmptyHeartIcon />
+                </View>
               </View>
             </View>
           </View>
+
+          <Image style={styles.imageStyle} source={isPaused
+            ? require('@/assets/images/stop-c.png')
+            : require('@/assets/images/running-c.png')
+          } />
+
         </View>
-
-        <Image style={styles.imageStyle} source={isPaused
-          ? require('@/assets/images/stop-c.png')
-          : require('@/assets/images/running-c.png')
-        } />
-
         <Animated.View
           style={[
             styles.mapContainer,
             { height: mapHeightAnim }
           ]}
         />
+
       </Animated.View>
 
       {/* 하단 버튼 */}
@@ -151,25 +153,25 @@ const RunningScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  infoContainer: {
+  topContainer: {
     width: '100%',
-    height: getSize(236),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     backgroundColor: '#000',
+    height: getSize(236),
     paddingHorizontal: getSize(16),
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
+  infoContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   mapContainer: {
-    position: 'absolute',
     backgroundColor: Colors.grayBox,
     width: '100%',
     height: getSize(166),
     borderRadius: 20,
-    left: getSize(Sizes.formMargin),
-    top: getSize(242),
-    bottom: getSize(22),
+    marginTop: getSize(26),
   },
   textContainer: {
     marginTop: getSize(48),
