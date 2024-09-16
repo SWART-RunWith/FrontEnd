@@ -13,7 +13,8 @@ import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
-import { DefaultButton, StartButton } from '@/components/button/Button';
+import { StartButton } from '@/components/button/RunningButton';
+import { DefaultButton, } from '@/components/button/Button';
 import { HomeScreenNavigationProp } from '@/scripts/navigation';
 
 const { width, height } = Dimensions.get('window');
