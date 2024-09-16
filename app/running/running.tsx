@@ -31,6 +31,7 @@ const RunningScreen = () => {
   const [heartRate, setHeartRate] = useState(120);
 
   const heightAnim = useRef(new Animated.Value(getSize(236))).current;
+  const mapHeightAnim = useRef(new Animated.Value(getSize(0))).current;
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -55,6 +56,14 @@ const RunningScreen = () => {
       duration: 300,
       useNativeDriver: false,
     }).start();
+
+    Animated.parallel([
+      Animated.timing(mapHeightAnim, {
+        toValue: isPaused ? getSize(166) : getSize(0),
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start();
   }, [isPaused]);
 
   // 심박수 랜덤
@@ -140,7 +149,12 @@ const RunningScreen = () => {
           : require('@/assets/images/running-c.png')
         } />
 
-        {isPaused && <View style={styles.mapContainer} />}
+        <Animated.View
+          style={[
+            styles.mapContainer,
+            { height: mapHeightAnim }
+          ]}
+        />
       </Animated.View>
 
       {/* 하단 버튼 */}
