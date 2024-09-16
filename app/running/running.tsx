@@ -102,9 +102,15 @@ const RunningScreen = () => {
       ]}>
         <View style={styles.infoContainer}>
           <View style={styles.textContainer}>
-            <Text style={styles.headerText}>현재 러닝 정보</Text>
-            <Text style={styles.timeText}>{formatTime(seconds)}</Text>
-            <Text style={styles.distanceText}>{formatDistance(meters)}KM</Text>
+            <View style={{ height: getSize(29) }}>
+              <Text style={styles.headerText}>현재 러닝 정보</Text>
+            </View>
+            <View style={{ height: getSize(24), marginTop: getSize(14) }}>
+              <Text style={styles.timeText}>{formatTime(seconds)}</Text>
+            </View>
+            <View style={{ height: getSize(60) }}>
+              <Text style={styles.distanceText}>{formatDistance(meters)}KM</Text>
+            </View>
 
             <View style={styles.statsContainer}>
               <View style={styles.statContainer}>
@@ -175,6 +181,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginTop: getSize(48),
+    height: getSize(168),
   },
   headerText: {
     fontSize: getSize(24),
@@ -185,7 +192,6 @@ const styles = StyleSheet.create({
     fontSize: getSize(20),
     fontFamily: 'Pretendard-SemiBold',
     color: '#FFFFFF',
-    marginTop: getSize(14),
   },
   distanceText: {
     fontSize: getSize(50),

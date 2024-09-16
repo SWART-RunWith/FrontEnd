@@ -33,6 +33,7 @@ const FinishScreen = () => {
   const [showModal, setShowModal] = useState(false);
 
   const handleSaveCourse = () => {
+    // to do : 코스 저장 api 연결
     console.log('코스 저장');
     setShowModal(false);
     navigation.navigate('course-feed/folder');
@@ -44,6 +45,7 @@ const FinishScreen = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    navigation.navigate('course-feed/folder');
   };
 
   return (
@@ -109,6 +111,7 @@ const FinishScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: 'black',
     alignItems: 'center',
   },

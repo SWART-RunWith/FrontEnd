@@ -58,10 +58,14 @@ const ActionModal: React.FC<ActionModalProps> = ({
 
             {/* text */}
             <View style={styles.textContainer}>
-              <Text style={styles.title}>
-                선택하신 {type}를 {isSave ? '저장' : '삭제'}하시겠습니까?
-              </Text>
-              <Text style={styles.description}>{description}</Text>
+              <View style={{ height: getSize(24) }}>
+                <Text style={styles.title}>
+                  선택하신 {type}를 {isSave ? '저장' : '삭제'}하시겠습니까?
+                </Text>
+              </View>
+              <View style={{ height: getSize(17), marginTop: getSize(10) }}>
+                <Text style={styles.description}>{description}</Text>
+              </View>
             </View>
 
             {/* button */}
@@ -128,14 +132,12 @@ const styles = StyleSheet.create({
     fontSize: getSize(20),
     fontFamily: 'Pretendard-SemiBold',
     color: '#FFF',
-    textAlign: 'center',
   },
   description: {
     fontSize: getSize(14),
     fontFamily: 'Pretendard-Medium',
     textAlign: 'center',
     color: Colors.main,
-    marginTop: getSize(12),
   },
   buttonContainer: {
     marginTop: getSize(17),
