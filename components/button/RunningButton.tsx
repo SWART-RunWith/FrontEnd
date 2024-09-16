@@ -1,10 +1,13 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
-import Svg, { Path, Rect } from 'react-native-svg';
 
 import Colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import Sizes from '@/constants/Sizes';
+
+import PlayIcon from '@/assets/icons/play.svg';
+import StopIcon from '@/assets/icons/stop.svg';
+import PauseIcon from '@/assets/icons/pause.svg';
 
 interface RunningButtonProps {
   onPress: () => void;
@@ -74,21 +77,22 @@ const StartButton = ({
 
 const PlayButton = ({
   svg = (
-    <Svg width={getSize(24)} height={getSize(28)} viewBox="0 0 22 28" fill="none">
-      <Path d="M0 0V28L22 14L0 0Z" fill="black" />
-    </Svg>
+    <PlayIcon width={getSize(22)} height={getSize(28)} />
   ),
   ...props
 }: RunningButtonProps) => {
-  return <RunningButton {...props} svg={svg} />;
+  return <RunningButton {...props}
+    svg={svg}
+    style={{
+      paddingLeft: getSize(3),
+    }}
+  />;
 };
 
 const EndButton = ({
   isEnd = true,
   svg = (
-    <Svg width={getSize(20)} height={getSize(20)} viewBox="0 0 28 28" fill="none">
-      <Rect width={getSize(28)} height={getSize(28)} fill={Colors.main} />
-    </Svg>
+    <StopIcon width={getSize(28)} height={getSize(28)} />
   ),
   ...props
 }: RunningButtonProps) => {
@@ -97,9 +101,7 @@ const EndButton = ({
 
 const PauseButton = ({
   svg = (
-    <Svg width={getSize(24)} height={getSize(28)} viewBox="0 0 24 28" fill="none">
-      <Path d="M0 28H8V0H0V28ZM16 0V28H24V0H16Z" fill="black" />
-    </Svg>
+    <PauseIcon width={getSize(24)} height={getSize(28)} />
   ),
   ...props
 }: RunningButtonProps) => {
