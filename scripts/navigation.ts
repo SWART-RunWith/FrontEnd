@@ -47,3 +47,14 @@ export type SignUpScreenNavigationProp = StackNavigationProp<
   SignUpStackParamList,
   "signup/terms"
 >;
+
+export type RunningStackParamList = {
+  "running/countDown": undefined;
+  "running/running": undefined;
+  "running/finish": undefined;
+};
+
+export type RunningScreenNavigationProp = StackNavigationProp<
+  RunningStackParamList,
+  "running/countDown"
+>;
