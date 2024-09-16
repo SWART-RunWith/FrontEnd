@@ -248,6 +248,7 @@ const styles = StyleSheet.create({
     bottom: getSize(92),
     flexDirection: 'row',
     justifyContent: 'center',
+    gap: getSize(36),
   },
 });
 
