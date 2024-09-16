@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   Image,
+  Dimensions,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -18,6 +19,9 @@ import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
 import { BackHeader } from '@/components/header/IconHeader';
 import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
+import Sizes from '@/constants/Sizes';
+
+const { width } = Dimensions.get('window');
 
 const FinishScreen = () => {
   const navigation = useNavigation<RunningScreenNavigationProp>();
@@ -27,7 +31,7 @@ const FinishScreen = () => {
   const [showModal, setShowModal] = useState(false);
 
   const handleSaveCourse = () => {
-    setShowModal(true); // 코스 저장하기를 누르면 모달창이 뜸
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
@@ -74,10 +78,11 @@ const FinishScreen = () => {
           source={require('@/assets/images/trophy.png')} />
       </View>
 
-      {/* 코스 저장하기 버튼 */}
-      <TouchableOpacity style={styles.saveButton} onPress={handleSaveCourse}>
-        <Text style={styles.saveButtonText}>코스 저장하기</Text>
-      </TouchableOpacity>
+      <View style={styles.courseBox}>
+        <TouchableOpacity style={styles.saveButton} onPress={handleSaveCourse}>
+          <Text style={styles.saveButtonText}>코스 저장하기</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* 모달창 */}
       <Modal visible={showModal} transparent={true} animationType="fade">
@@ -108,7 +113,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: getSize(16),
+    paddingHorizontal: getSize(Sizes.formMargin),
   },
   textContainer: {
     marginTop: getSize(60),
@@ -159,6 +164,13 @@ const styles = StyleSheet.create({
     height: getSize(144),
     marginTop: getSize(67),
     resizeMode: 'contain',
+  },
+  courseBox: {
+    backgroundColor: Colors.grayBox,
+    width: width - getSize(Sizes.formMargin) * 2,
+    height: getSize(402),
+    borderRadius: 20,
+    marginTop: getSize(38),
   },
   saveButton: {
     backgroundColor: '#B0FF3D',
