@@ -34,6 +34,7 @@ const FinishScreen = () => {
 
   const handleSaveCourse = () => {
     console.log('코스 저장');
+    setShowModal(false);
   };
 
   const handleShowModal = () => {
@@ -97,8 +98,9 @@ const FinishScreen = () => {
       {/* 모달창 */}
       <MyCourseSaveModal
         modalVisible={showModal}
-        onLeftButtonPress={() => { handleSaveCourse() }}
-        onRightButtonPress={handleCloseModal}
+        isLeftMain={false}
+        onLeftButtonPress={handleCloseModal}
+        onRightButtonPress={() => { handleSaveCourse() }}
       />
     </View>
   );
