@@ -1,7 +1,7 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-export type RootStackParamList = {
+type RootStackParamList = {
   home: undefined;
   "user/profile": undefined;
   "user/setting": undefined;
@@ -13,7 +13,7 @@ export type HomeScreenNavigationProp = StackNavigationProp<
   "home"
 >;
 
-export type LoginStackParaList = {
+type LoginStackParaList = {
   login: undefined;
   "signup/terms": undefined;
   home: undefined;
@@ -24,7 +24,7 @@ export type LoginScreenNavigationProp = StackNavigationProp<
   "login"
 >;
 
-export type OnboardingStackParamList = {
+type OnboardingStackParamList = {
   home: undefined; // 임시
   onboarding: undefined;
   login: undefined;
@@ -36,7 +36,7 @@ export type OnboardingScreenNavigationProp = StackNavigationProp<
   "onboarding"
 >;
 
-export type SignUpStackParamList = {
+type SignUpStackParamList = {
   "signup/terms": undefined;
   "signup/signup": undefined;
   "signup/profile": undefined;
@@ -49,7 +49,7 @@ export type SignUpScreenNavigationProp = StackNavigationProp<
   "signup/terms"
 >;
 
-export type RunningStackParamList = {
+type RunningStackParamList = {
   "running/countDown": undefined;
   "running/running": undefined;
   "running/finish": {
@@ -58,6 +58,7 @@ export type RunningStackParamList = {
     pace: string;
     heartRate: number;
   };
+  "course-feed/folder": undefined;
 };
 
 export type RunningScreenNavigationProp = StackNavigationProp<

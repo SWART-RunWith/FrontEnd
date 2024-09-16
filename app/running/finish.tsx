@@ -35,6 +35,7 @@ const FinishScreen = () => {
   const handleSaveCourse = () => {
     console.log('코스 저장');
     setShowModal(false);
+    navigation.navigate('course-feed/folder');
   };
 
   const handleShowModal = () => {
