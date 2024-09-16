@@ -17,9 +17,10 @@ import {
 import { formatDistance, formatTime } from '@/scripts/format';
 import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
+import Sizes from '@/constants/Sizes';
+import { CourseButton } from '@/components/button/RunningButton';
 import { BackHeader } from '@/components/header/IconHeader';
 import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
-import Sizes from '@/constants/Sizes';
 
 const { width } = Dimensions.get('window');
 
@@ -31,6 +32,7 @@ const FinishScreen = () => {
   const [showModal, setShowModal] = useState(false);
 
   const handleSaveCourse = () => {
+    console.log('코스 저장');
     setShowModal(true);
   };
 
@@ -79,9 +81,13 @@ const FinishScreen = () => {
       </View>
 
       <View style={styles.courseBox}>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSaveCourse}>
-          <Text style={styles.saveButtonText}>코스 저장하기</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <CourseButton
+            onPress={() => { handleSaveCourse() }}
+            width={177}
+            text='코스 저장하기'
+          />
+        </View>
       </View>
 
       {/* 모달창 */}
@@ -167,19 +173,14 @@ const styles = StyleSheet.create({
   },
   courseBox: {
     backgroundColor: Colors.grayBox,
+    alignItems: 'center',
     width: width - getSize(Sizes.formMargin) * 2,
     height: getSize(402),
     borderRadius: 20,
     marginTop: getSize(38),
   },
-  saveButton: {
-    backgroundColor: '#B0FF3D',
-    padding: 20,
-    borderRadius: 10,
-  },
-  saveButtonText: {
-    fontSize: 18,
-    color: '#000',
+  buttonContainer: {
+    top: getSize(344),
   },
   modalContainer: {
     flex: 1,
