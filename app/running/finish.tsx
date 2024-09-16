@@ -1,8 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { useState } from 'react';
+import { useRoute } from '@react-navigation/native';
+
+import { RunningFinishScreenRouteProp } from '@/scripts/navigation';
+import { formatDistance, formatTime } from '@/scripts/format';
+import { calculatePace } from '@/scripts/calculatePace';
 
 const FinishScreen = () => {
+  const route = useRoute<RunningFinishScreenRouteProp>();
+  const { seconds, meters, pace, heartRate } = route.params;
+
   const [showModal, setShowModal] = useState(false);
 
   const handleSaveCourse = () => {
@@ -18,11 +26,13 @@ const FinishScreen = () => {
       {/* 러닝 완료 정보 */}
       <View style={styles.infoContainer}>
         <Text style={styles.headerText}>러닝 완료!</Text>
-        <Text style={styles.timeText}>10:03:23</Text>
-        <Text style={styles.distanceText}>00.00KM</Text>
+        <Text style={styles.timeText}>{formatTime(seconds)}</Text>
+        <Text style={styles.distanceText}>{formatDistance(meters)}KM</Text>
         <View style={styles.statsContainer}>
-          <Text style={styles.statText}>페이스 6'04"</Text>
-          <Text style={styles.statText}>심박수 111 ♥</Text>
+          <Text style={styles.statText}>페이스</Text>
+          <Text style={styles.statText}>{pace}</Text>
+          <Text style={styles.statText}>심박수</Text>
+          <Text style={styles.statText}>{heartRate}</Text>
           <Text style={styles.statText}>칼로리 111</Text>
         </View>
       </View>

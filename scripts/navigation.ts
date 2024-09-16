@@ -1,3 +1,4 @@
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 export type RootStackParamList = {
@@ -51,10 +52,20 @@ export type SignUpScreenNavigationProp = StackNavigationProp<
 export type RunningStackParamList = {
   "running/countDown": undefined;
   "running/running": undefined;
-  "running/finish": undefined;
+  "running/finish": {
+    seconds: number;
+    meters: number;
+    pace: string;
+    heartRate: number;
+  };
 };
 
 export type RunningScreenNavigationProp = StackNavigationProp<
   RunningStackParamList,
   "running/countDown"
+>;
+
+export type RunningFinishScreenRouteProp = RouteProp<
+  RunningStackParamList,
+  "running/finish"
 >;

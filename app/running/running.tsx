@@ -86,7 +86,12 @@ const RunningScreen = () => {
   };
 
   const handleStop = () => {
-    navigation.replace('running/finish');
+    navigation.replace('running/finish', {
+      seconds,
+      meters,
+      pace,
+      heartRate,
+    });
   };
 
   return (
