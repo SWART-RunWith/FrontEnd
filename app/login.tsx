@@ -7,7 +7,7 @@ import { LoginEmailBar, LoginPasswordBar } from '@/components/bar/LoginBar';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
-import { HomeScreenNavigationProp } from '@/scripts/navigation';
+import { LoginScreenNavigationProp } from '@/scripts/navigation';
 import { LoginButton } from '@/components/button/Button';
 import { LoginHeader } from '@/components/header/TextOnlyHeader';
 
@@ -15,7 +15,7 @@ const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation<LoginScreenNavigationProp>();
 
   return (
     <View style={Styles.container}>

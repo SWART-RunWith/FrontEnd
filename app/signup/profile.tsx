@@ -18,7 +18,7 @@ import {
   DescriptionUpdateModal,
 } from '@/components/modal/ProfileUpdateDataModal';
 import { CameraModal } from '@/components/modal/CameraModal';
-import { LoginScreenNavigationProp } from '@/scripts/navigation';
+import { SignUpScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
 import CameraIcon from '@/assets/icons/camera.svg';
 import LocationIcon from '@/assets/icons/location.svg';
@@ -31,7 +31,7 @@ const DefaultImage = require('@/assets/images/default.png');
 const { width } = Dimensions.get('window');
 
 const SignUpProfileScreen = () => {
-  const navigation = useNavigation<LoginScreenNavigationProp>();
+  const navigation = useNavigation<SignUpScreenNavigationProp>();
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isCameraModalVisible, setCameraModalVisible] = useState(false);

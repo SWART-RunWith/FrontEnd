@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
-import { LoginScreenNavigationProp } from '@/scripts/navigation';
+import { SignUpScreenNavigationProp } from '@/scripts/navigation';
 import {
   SignUpDateOfBirthBar,
   SignUpEmailBar,
@@ -32,7 +32,7 @@ import Sizes from '@/constants/Sizes';
 const { width } = Dimensions.get('window');
 
 const SignUpScreen: React.FC = () => {
-  const navigation = useNavigation<LoginScreenNavigationProp>();
+  const navigation = useNavigation<SignUpScreenNavigationProp>();
 
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
