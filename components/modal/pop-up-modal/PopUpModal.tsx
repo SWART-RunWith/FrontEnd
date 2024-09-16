@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
 
 import LocationIcon from '@/assets/icons/location.svg';
 import FolderIcon from '@/assets/icons/folder.svg';
 import Colors from '@/constants/Colors';
+import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
 import Sizes from '@/constants/Sizes';
 
@@ -43,47 +45,53 @@ const ActionModal: React.FC<ActionModalProps> = ({
       animationType="fade"
     >
       <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <View style={styles.iconContainer}>
-            {type === '코스' ?
-              <LocationIcon width={getSize(17)} height={getSize(24)} /> :
-              <FolderIcon width={getSize(24)} height={getSize(20.31)} />
-            }
-          </View>
+        <BlurView intensity={20} style={Styles.blurContainer}>
 
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>
-              선택하신 {type}를 {isSave ? '저장' : '삭제'}하시겠습니까?
-            </Text>
-            <Text style={styles.description}>{description}</Text>
-          </View>
+          <View style={styles.modalContent}>
+            {/* icon */}
+            <View style={styles.iconContainer}>
+              {type === '코스' ?
+                <LocationIcon width={getSize(17)} height={getSize(24)} /> :
+                <FolderIcon width={getSize(24)} height={getSize(20.31)} />
+              }
+            </View>
 
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={onLeftButtonPress} style={[
-              styles.button,
-              isLeftMain && { backgroundColor: Colors.main }
-            ]}
-            >
-              <Text style={[
-                styles.buttonText,
-                isLeftMain && { color: 'black' }
-              ]}>
-                {leftButtonText}
+            {/* text */}
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>
+                선택하신 {type}를 {isSave ? '저장' : '삭제'}하시겠습니까?
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onRightButtonPress} style={[
-              styles.button,
-              !isLeftMain && { backgroundColor: Colors.main }
-            ]}>
-              <Text style={[
-                styles.buttonText,
-                !isLeftMain && { color: 'black' }
+              <Text style={styles.description}>{description}</Text>
+            </View>
+
+            {/* button */}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={onLeftButtonPress} style={[
+                styles.button,
+                isLeftMain && { backgroundColor: Colors.main }
+              ]}
+              >
+                <Text style={[
+                  styles.buttonText,
+                  isLeftMain && { color: 'black' }
+                ]}>
+                  {leftButtonText}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onRightButtonPress} style={[
+                styles.button,
+                !isLeftMain && { backgroundColor: Colors.main }
               ]}>
-                {rightButtonText}
-              </Text>
-            </TouchableOpacity>
+                <Text style={[
+                  styles.buttonText,
+                  !isLeftMain && { color: 'black' }
+                ]}>
+                  {rightButtonText}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </BlurView>
       </View>
     </Modal>
   );
@@ -94,7 +102,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     backgroundColor: Colors.darkGrayBox,
