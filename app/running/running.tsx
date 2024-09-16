@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { RunningScreenNavigationProp, RunningStackParamList } from '@/scripts/navigation';
+import { EndButton, PauseButton, PlayButton } from '@/components/button/RunningButton';
 
 const RunningScreen = () => {
   const navigation = useNavigation<RunningScreenNavigationProp>();
@@ -35,17 +36,11 @@ const RunningScreen = () => {
       <View style={styles.buttonContainer}>
         {isPaused ? (
           <>
-            <TouchableOpacity style={styles.controlButton} onPress={togglePause}>
-              <Icon name="play" size={40} color="#000" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.controlButton} onPress={handleStop}>
-              <Icon name="stop" size={40} color="#000" />
-            </TouchableOpacity>
+            <EndButton onPress={handleStop} />
+            <PlayButton onPress={togglePause} />
           </>
         ) : (
-          <TouchableOpacity style={styles.pauseButton} onPress={togglePause}>
-            <Icon name="pause" size={40} color="#000" />
-          </TouchableOpacity>
+          <PauseButton onPress={togglePause} />
         )}
       </View>
     </View>
