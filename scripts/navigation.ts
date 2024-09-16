@@ -1,12 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 
 export type RootStackParamList = {
-  login: undefined;
   home: undefined;
-  onboarding: undefined;
-  "signup/signup": undefined;
-  "signup/terms": undefined;
-  "signup/profile": undefined;
   "user/profile": undefined;
   "user/setting": undefined;
   "running/countDown": undefined;
@@ -17,17 +12,38 @@ export type HomeScreenNavigationProp = StackNavigationProp<
   "home"
 >;
 
+export type LoginStackParaList = {
+  login: undefined;
+  "signup/terms": undefined;
+  home: undefined;
+};
+
 export type LoginScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  LoginStackParaList,
   "login"
 >;
 
+export type OnboardingStackParamList = {
+  home: undefined; // 임시
+  onboarding: undefined;
+  login: undefined;
+  "signup/terms": undefined;
+};
+
 export type OnboardingScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  OnboardingStackParamList,
   "onboarding"
 >;
 
+export type SignUpStackParamList = {
+  "signup/terms": undefined;
+  "signup/signup": undefined;
+  "signup/profile": undefined;
+  login: undefined;
+  home: undefined;
+};
+
 export type SignUpScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "signup/signup"
+  SignUpStackParamList,
+  "signup/terms"
 >;
