@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import {
@@ -53,6 +53,11 @@ const RunningScreen = () => {
             </View>
           </View>
         </View>
+
+        <Image style={styles.imageStyle} source={isPaused
+          ? require('@/assets/images/stop-c.png')
+          : require('@/assets/images/running-c.png')
+        } />
       </View>
 
       {/* 하단 버튼 */}
@@ -74,6 +79,8 @@ const styles = StyleSheet.create({
   infoContainer: {
     width: '100%',
     height: getSize(236),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: '#000',
     paddingHorizontal: getSize(16),
     borderBottomLeftRadius: 20,
@@ -125,6 +132,12 @@ const styles = StyleSheet.create({
     fontSize: getSize(20),
     fontFamily: 'Pretendard-Bold',
     color: 'white',
+  },
+  imageStyle: {
+    width: getSize(77),
+    height: getSize(144),
+    marginTop: getSize(54),
+    resizeMode: 'contain',
   },
   buttonContainer: {
     position: 'absolute',
