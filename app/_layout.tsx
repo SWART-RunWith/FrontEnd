@@ -12,6 +12,7 @@ export default function RootLayout() {
 
   const [fontsLoaded] = useFonts({
     'Hanson': require('@/assets/fonts/Hanson-Bold.ttf'),
+    'Pretendard-Black': require('@/assets/fonts/Pretendard-Black.ttf'),
     'Pretendard-Bold': require('@/assets/fonts/Pretendard-Bold.ttf'),
     'Pretendard-ExtraBold': require('@/assets/fonts/Pretendard-ExtraBold.ttf'),
     'Pretendard-ExtraLight': require('@/assets/fonts/Pretendard-ExtraLight.ttf'),
