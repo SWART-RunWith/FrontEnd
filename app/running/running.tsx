@@ -19,6 +19,7 @@ const RunningScreen = () => {
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(0);
   const [pace, setPace] = useState("0'00\"");
+  const [heartRate, setHeartRate] = useState(120);
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
@@ -26,15 +27,30 @@ const RunningScreen = () => {
     if (!isPaused) {
       timer = setInterval(() => {
         setSeconds(prev => prev + 1);
-        setMeters(prev => prev + 5);
         const newPace = calculatePace(seconds + 1, meters);
         setPace(newPace);
+        setMeters(prev => prev + 5);
+        updateHeartRate();
+
       }, 1000);
     } else if (isPaused && seconds !== 0) {
       return () => clearInterval(timer);
     }
     return () => clearInterval(timer);
   }, [isPaused, seconds]);
+
+  // 심박수 랜덤
+  const updateHeartRate = () => {
+    const minHeartRate = 100;
+    const maxHeartRate = 180;
+    const randomChange = Math.floor(Math.random() * 11) - 3;
+    let newHeartRate = heartRate + randomChange;
+
+    if (newHeartRate < minHeartRate) newHeartRate = minHeartRate;
+    if (newHeartRate > maxHeartRate) newHeartRate = maxHeartRate;
+
+    setHeartRate(newHeartRate);
+  };
 
   const formatTime = (secs: number) => {
     const hours = Math.floor(secs / 3600);
@@ -94,7 +110,7 @@ const RunningScreen = () => {
             <View style={styles.statContainer}>
               <Text style={styles.statLabelText}>심박수</Text>
               <View style={styles.heartContainer}>
-                <Text style={styles.statText}>111</Text>
+                <Text style={styles.statText}>{heartRate}</Text>
                 <EmptyHeartIcon />
               </View>
             </View>
