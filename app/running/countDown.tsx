@@ -17,42 +17,69 @@ const { width, height } = Dimensions.get('window');
 const CountDown: React.FC = () => {
   const navigation = useNavigation<RunningScreenNavigationProp>();
 
-  const [count, setCount] = useState(3);
-  const numberAnim = useRef(new Animated.Value(1)).current;
+  const fadeAnim3 = useRef(new Animated.Value(1)).current;
+  const fadeAnim2 = useRef(new Animated.Value(0)).current;
+  const fadeAnim1 = useRef(new Animated.Value(0)).current;
+  const fadeAnimRunWith = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (count > 0) {
-      const timer = setInterval(() => {
-        Animated.parallel([
-          Animated.timing(numberAnim, {
-            toValue: 0,
-            duration: 400,
-            useNativeDriver: true,
-          }),
-          Animated.timing(numberAnim, {
-            toValue: 1,
-            duration: 400,
-            useNativeDriver: true,
-          }),
-        ]).start();
+    Animated.timing(fadeAnim3, {
+      toValue: 0,
+      duration: 900,
+      useNativeDriver: true,
+    }).start();
 
-        setCount(prevCount => prevCount - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    } else {
-      setTimeout(() => {
-        navigation.replace('running/running');
-      }, 1000);
-    }
-  }, [count]);
+    Animated.timing(fadeAnim2, {
+      toValue: 1,
+      duration: 900,
+      delay: 600,
+      useNativeDriver: true,
+    }).start(() => {
+      Animated.timing(fadeAnim2, {
+        toValue: 0,
+        duration: 900,
+        useNativeDriver: true,
+      }).start();
+
+      Animated.timing(fadeAnim1, {
+        toValue: 1,
+        duration: 900,
+        delay: 600,
+        useNativeDriver: true,
+      }).start(() => {
+        Animated.timing(fadeAnim1, {
+          toValue: 0,
+          duration: 900,
+          useNativeDriver: true,
+        }).start();
+
+        Animated.timing(fadeAnimRunWith, {
+          toValue: 1,
+          duration: 900,
+          delay: 600,
+          useNativeDriver: true,
+        }).start(() => {
+          setTimeout(() => {
+            navigation.replace('running/running');
+          }, 1000);
+        });
+      });
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Animated.Text style={[
-        styles.countText,
-        { opacity: numberAnim }]
-      }>
-        {count > 0 ? count : 'RUN\nWITH'}
+      <Animated.Text style={[styles.countText, { opacity: fadeAnim3 }]}>
+        3
+      </Animated.Text>
+      <Animated.Text style={[styles.countText, { opacity: fadeAnim2 }]}>
+        2
+      </Animated.Text>
+      <Animated.Text style={[styles.countText, { opacity: fadeAnim1 }]}>
+        1
+      </Animated.Text>
+      <Animated.Text style={[styles.countText, { opacity: fadeAnimRunWith }]}>
+        RUN{"\n"}WITH
       </Animated.Text>
     </View>
   );
@@ -71,8 +98,9 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     fontFamily: 'Hanson',
-    fontSize: getSize(100)
+    fontSize: getSize(100),
+    position: 'absolute'
   },
 });
 
-export default CountDown;
+export default CountDown
