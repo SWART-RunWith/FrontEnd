@@ -115,3 +115,37 @@ export {
   EndButton,
   PauseButton,
 };
+
+interface CourseButtonProps {
+  text: string;
+  width: number;
+  onPress: () => void
+}
+
+const CourseButton: React.FC<CourseButtonProps> = ({
+  text = '',
+  width = 100,
+  onPress,
+}) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        backgroundColor: Colors.main,
+        width: getSize(width),
+        height: getSize(40),
+      }}>
+      <Text style={{
+        color: 'black',
+        fontFamily: 'Pretendard-SemiBold',
+        fontSize: getSize(16),
+      }}>
+        {text}
+      </Text>
+    </TouchableOpacity>
+  )
+}
+
+export {
+  CourseButton as CourseRunButton,
+}
