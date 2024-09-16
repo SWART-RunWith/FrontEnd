@@ -1,6 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
 import { RunningFinishScreenRouteProp } from '@/scripts/navigation';
