@@ -17,6 +17,8 @@ const RunningScreen = () => {
   const navigation = useNavigation<RunningScreenNavigationProp>();
 
   const [seconds, setSeconds] = useState(0);
+  const [meters, setMeters] = useState(0);
+  const [pace, setPace] = useState("0'00\"");
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
@@ -24,6 +26,9 @@ const RunningScreen = () => {
     if (!isPaused) {
       timer = setInterval(() => {
         setSeconds(prev => prev + 1);
+        setMeters(prev => prev + 5);
+        const newPace = calculatePace(seconds + 1, meters);
+        setPace(newPace);
       }, 1000);
     } else if (isPaused && seconds !== 0) {
       return () => clearInterval(timer);
@@ -36,6 +41,28 @@ const RunningScreen = () => {
     const minutes = Math.floor((secs % 3600) / 60);
     const seconds = secs % 60;
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const formatDistance = (meters: number) => {
+    const km = Math.floor(meters / 1000);
+    const m = Math.floor((meters % 1000) / 10);
+    return `${km.toString().padStart(2, '0')}.${m.toString().padStart(2, '0')}`;
+  };
+
+  const calculatePace = (
+    timeInSeconds: number,
+    distanceInMeters: number
+  ): string => {
+    if (distanceInMeters === 0) return "0'00\"";
+
+    const distanceInKm = distanceInMeters / 1000;
+    const totalMinutes = timeInSeconds / 60;
+    const pace = totalMinutes / distanceInKm;
+
+    const minutes = Math.floor(pace);
+    const seconds = Math.round((pace - minutes) * 60);
+
+    return `${minutes}'${seconds < 10 ? '0' : ''}${seconds}"`;
   };
 
   const togglePause = () => {
@@ -56,18 +83,18 @@ const RunningScreen = () => {
         <View style={styles.textContainer}>
           <Text style={styles.headerText}>현재 러닝 정보</Text>
           <Text style={styles.timeText}>{formatTime(seconds)}</Text>
-          <Text style={styles.distanceText}>00.00KM</Text>
+          <Text style={styles.distanceText}>{formatDistance(meters)}KM</Text>
 
           <View style={styles.statsContainer}>
             <View style={styles.statContainer}>
               <Text style={styles.statLabelText}>페이스</Text>
-              <Text style={styles.statText}> 6'04"</Text>
+              <Text style={styles.statText}>{pace}</Text>
             </View>
 
             <View style={styles.statContainer}>
               <Text style={styles.statLabelText}>심박수</Text>
               <View style={styles.heartContainer}>
-                <Text style={styles.statLabelText}>111</Text>
+                <Text style={styles.statText}>111</Text>
                 <EmptyHeartIcon />
               </View>
             </View>
