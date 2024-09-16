@@ -21,6 +21,7 @@ import Sizes from '@/constants/Sizes';
 import { CourseButton } from '@/components/button/RunningButton';
 import { BackHeader } from '@/components/header/IconHeader';
 import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
+import { MyCourseSaveModal } from '@/components/modal/pop-up-modal/CourseModal';
 
 const { width } = Dimensions.get('window');
 
@@ -33,8 +34,11 @@ const FinishScreen = () => {
 
   const handleSaveCourse = () => {
     console.log('코스 저장');
-    setShowModal(true);
   };
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  }
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -83,7 +87,7 @@ const FinishScreen = () => {
       <View style={styles.courseBox}>
         <View style={styles.buttonContainer}>
           <CourseButton
-            onPress={() => { handleSaveCourse() }}
+            onPress={handleShowModal}
             width={177}
             text='코스 저장하기'
           />
@@ -91,21 +95,11 @@ const FinishScreen = () => {
       </View>
 
       {/* 모달창 */}
-      <Modal visible={showModal} transparent={true} animationType="fade">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text>선택하신 코스를 저장하시겠습니까?</Text>
-            <View style={styles.modalButtonContainer}>
-              <TouchableOpacity onPress={handleCloseModal} style={styles.modalButton}>
-                <Text>아니요</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleCloseModal} style={styles.modalButton}>
-                <Text>저장하기</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <MyCourseSaveModal
+        modalVisible={showModal}
+        onLeftButtonPress={() => { handleSaveCourse() }}
+        onRightButtonPress={handleCloseModal}
+      />
     </View>
   );
 };
@@ -182,6 +176,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     top: getSize(344),
   },
+});
+
+const modalStyles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -204,6 +201,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#B0FF3D',
     borderRadius: 10,
   },
-});
+})
 
 export default FinishScreen;
