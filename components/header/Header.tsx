@@ -51,7 +51,6 @@ const SettingIcon: React.FC<IconProps> = ({ onPress }) => {
 
   return (
     <TouchableOpacity
-      // to do : setting 화면으로 넘어가기
       onPress={() => navigation.navigate('user/setting')}
       style={styles.iconButton}
     >

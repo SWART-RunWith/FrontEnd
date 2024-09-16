@@ -54,7 +54,7 @@ const SignUpScreen: React.FC = () => {
           <SignUpHeader
             onPressBack={() => {
               step === 1
-                ? navigation.replace('signup/terms')
+                ? navigation.goBack()
                 : setStep(prevStep => prevStep - 1)
             }} />
 
@@ -110,7 +110,7 @@ const SignUpScreen: React.FC = () => {
               />
               <View style={styles.ButtonContainer}>
                 {/* to do : 회원가입 api 연동 */}
-                <SignUpButton onPress={() => { navigation.replace('signup/profile') }} />
+                <SignUpButton onPress={() => { navigation.navigate('signup/profile') }} />
               </View>
             </View>)}
 

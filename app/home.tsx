@@ -39,7 +39,7 @@ const HomeScreen: React.FC = ({ }) => {
         style={{
           marginTop: getSize(100),
         }}
-        onPress={() => navigation.replace('user/profile')}
+        onPress={() => navigation.navigate('user/profile')}
       />
     </View>
   );

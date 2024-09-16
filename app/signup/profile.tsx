@@ -62,7 +62,9 @@ const SignUpProfileScreen = () => {
 
   return (
     <View style={Styles.container}>
-      <ProfileSettingHeader onPressBack={() => navigation.replace('signup/terms')} />
+      <ProfileSettingHeader
+        onPressBack={() => navigation.navigate('signup/terms')}
+      />
 
       <ImageBackground
         source={profileImage ? { uri: profileImage } : DefaultImage}
