@@ -134,11 +134,15 @@ const CourseButton: React.FC<CourseButtonProps> = ({
         backgroundColor: Colors.main,
         width: getSize(width),
         height: getSize(40),
+        borderRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
       }}>
       <Text style={{
         color: 'black',
         fontFamily: 'Pretendard-SemiBold',
-        fontSize: getSize(16),
+        fontSize: getSize(18),
+        textAlign: 'center',
       }}>
         {text}
       </Text>
@@ -147,5 +151,5 @@ const CourseButton: React.FC<CourseButtonProps> = ({
 }
 
 export {
-  CourseButton as CourseRunButton,
+  CourseButton,
 }
