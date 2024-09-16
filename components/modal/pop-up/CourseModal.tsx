@@ -1,5 +1,5 @@
 import React from "react";
-import ActionModal from "@/components/modal/pop-up-modal/PopUpModal"
+import ActionModal from "@/components/modal/pop-up/PopUpModal"
 
 interface CourseModalProps {
   modalVisible: boolean;
