@@ -141,6 +141,7 @@ export const CourseMyHomeHeader: React.FC<CombinedHeaderProps> = ({
 }) => {
   return (
     <CombinedHeader
+      isBlack={true}
       backProps={{}}
       optionProps={{}}
       textProps={{ text: '' }}

@@ -17,6 +17,8 @@ import EditSvgIcon from '@/assets/icons/edit.svg';
 import SettingSvgIcon from '@/assets/icons/setting.svg';
 import OptionSvgIcon from '@/assets/icons/option.svg';
 import SearchSvgIcon from '@/assets/icons/search.svg';
+import BacKBlackSvgIcon from '@/assets/icons/backBlack.svg';
+import OptionBlackSvgIcon from '@/assets/icons/optionBlack.svg';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
@@ -43,6 +45,18 @@ export const BackIcon: React.FC<IconProps> = ({ onPress }) => {
       style={styles.iconButton}
     >
       <BackSvgIcon width={getSize(14)} height={getSize(24)} />
+    </TouchableOpacity>
+  );
+};
+
+export const BackBlackIcon: React.FC<IconProps> = ({ onPress }) => {
+  const navigation = useNavigation();
+  return (
+    <TouchableOpacity
+      onPress={onPress || (() => navigation.goBack())}
+      style={styles.iconButton}
+    >
+      <BacKBlackSvgIcon width={getSize(14)} height={getSize(24)} />
     </TouchableOpacity>
   );
 };
@@ -75,6 +89,15 @@ export const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
     style={styles.iconButton}
   >
     <OptionSvgIcon width={getSize(5.33)} height={getSize(24)} />
+  </TouchableOpacity>
+);
+
+export const OptionBlackIcon: React.FC<IconProps> = ({ onPress }) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={styles.iconButton}
+  >
+    <OptionBlackSvgIcon width={getSize(5.33)} height={getSize(24)} />
   </TouchableOpacity>
 );
 
@@ -179,6 +202,7 @@ interface CombinedHeaderProps {
   isLeftSearch?: boolean;
   hasSearchModal?: boolean;
   query?: string;
+  isBlack?: boolean;
   backProps?: IconProps;
   editProps?: IconProps;
   settingProps?: IconProps;
@@ -193,6 +217,7 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
   isLeftSearch = false,
   hasSearchModal = true,
   query = '',
+  isBlack = false,
   backProps,
   editProps,
   settingProps,
@@ -206,7 +231,10 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
       {/* Back Icon */}
       {showBackIcon && backProps && (
         <View style={styles.leftIcons}>
-          <BackIcon {...backProps} />
+          {isBlack
+            ? <BackBlackIcon {...backProps} />
+            : <BackIcon {...backProps} />
+          }
         </View>
       )}
     </View>
@@ -256,7 +284,10 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
       {/* Option Icon */}
       {optionProps && (
         <View style={styles.rightIcons}>
-          <OptionIcon {...optionProps} />
+          {isBlack
+            ? <OptionBlackIcon {...optionProps} />
+            : <OptionIcon {...optionProps} />
+          }
         </View>
       )}
     </View>
