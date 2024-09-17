@@ -26,7 +26,7 @@ interface IconProps {
   onPress?: () => void;
 }
 
-const BackIcon: React.FC<IconProps> = ({ onPress }) => {
+export const BackIcon: React.FC<IconProps> = ({ onPress }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -38,7 +38,7 @@ const BackIcon: React.FC<IconProps> = ({ onPress }) => {
   );
 };
 
-const EditIcon: React.FC<IconProps> = ({ onPress }) => (
+export const EditIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity
     onPress={onPress}
     style={styles.iconButton}
@@ -47,7 +47,7 @@ const EditIcon: React.FC<IconProps> = ({ onPress }) => (
   </TouchableOpacity>
 );
 
-const SettingIcon: React.FC<IconProps> = ({ onPress }) => {
+export const SettingIcon: React.FC<IconProps> = ({ onPress }) => {
   const navigation = useNavigation<NavigationProp>();
 
   return (
@@ -60,7 +60,7 @@ const SettingIcon: React.FC<IconProps> = ({ onPress }) => {
   );
 };
 
-const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
+export const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity
     // to do : option 모달 띄우기
     onPress={onPress}
@@ -70,7 +70,7 @@ const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
   </TouchableOpacity>
 );
 
-const SearchIcon: React.FC<IconProps> = ({ onPress }) => {
+export const SearchIcon: React.FC<IconProps> = ({ onPress }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -218,10 +218,6 @@ const styles = StyleSheet.create({
 });
 
 export {
-  BackIcon,
-  EditIcon,
-  SettingIcon,
-  OptionIcon,
   TextProps,
   HeaderText,
   CombinedHeader,
