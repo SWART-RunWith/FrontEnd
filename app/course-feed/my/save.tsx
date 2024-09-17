@@ -13,7 +13,7 @@ import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
 import Sizes from "@/constants/Sizes";
 import { CourseSaveFolderButton } from "@/components/button/FolderButton";
 import { useState } from "react";
-import { EditModal } from "@/components/modal/pop-up/PopUpModal";
+import { CourseAddModal } from "@/components/modal/pop-up/CourseModal";
 
 const { width } = Dimensions.get('window');
 
@@ -68,12 +68,9 @@ const CourseSaveScreen = () => {
         ))}
       </View>
 
-      <EditModal
+      <CourseAddModal
         visible={visibleModal}
-        isLeftMain={true}
-        isSave={false}
-        leftButtonText='삭제하기'
-        rightButtonText='아니요'
+        isLeftMain={false}
         onLeftButtonPress={handleCloseModal}
         onRightButtonPress={() => { }}
       />
