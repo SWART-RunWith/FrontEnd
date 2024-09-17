@@ -14,15 +14,15 @@ import LocationIcon from '@/assets/icons/location.svg';
 interface FolderProps {
   name: string;
   isSelected: boolean;
-  showNum: boolean;
+  showNum?: boolean;
   count: number;
   onPress: () => void;
 }
 
-export const FolderButton: React.FC<FolderProps> = ({
+const FolderButton: React.FC<FolderProps> = ({
   name = '',
   isSelected = false,
-  showNum = true,
+  showNum = false,
   count = 0,
   onPress,
 }) => {
@@ -39,6 +39,25 @@ export const FolderButton: React.FC<FolderProps> = ({
         <Text style={styles.count}>{count}</Text>
       </View>}
     </TouchableOpacity>
+  );
+};
+
+export const CourseSaveFolderButton: React.FC<FolderProps> = ({
+  name = '',
+  isSelected = false,
+  count = 0,
+  onPress,
+}) => {
+
+
+  return (
+    <FolderButton
+      name={name}
+      isSelected={isSelected}
+      showNum={isSelected}
+      count={count}
+      onPress={onPress}
+    />
   );
 };
 
