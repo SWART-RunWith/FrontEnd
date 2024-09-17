@@ -73,9 +73,10 @@ export type RunningFinishScreenRouteProp = RouteProp<
 
 type CourseFeedStackParamList = {
   "course-feed/my/save": undefined;
+  "course-feed/my/home": undefined;
 };
 
 export type CourseFeedScreenNavigationProp = StackNavigationProp<
   CourseFeedStackParamList,
-  "course-feed/my/save"
+  "course-feed/my/home"
 >;
