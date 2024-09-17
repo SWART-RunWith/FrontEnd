@@ -14,12 +14,16 @@ import LocationIcon from '@/assets/icons/location.svg';
 interface FolderProps {
   name: string;
   isSelected: boolean;
+  showNum: boolean;
+  count: number;
   onPress: () => void;
 }
 
 export const FolderButton: React.FC<FolderProps> = ({
   name = '',
   isSelected = false,
+  showNum = true,
+  count = 0,
   onPress,
 }) => {
   return (
@@ -31,7 +35,9 @@ export const FolderButton: React.FC<FolderProps> = ({
       <View style={styles.nameContainer}>
         <Text style={styles.name}>{name}</Text>
       </View>
-      <View style={styles.countContainer}></View>
+      {showNum && <View style={styles.countContainer}>
+        <Text style={styles.count}>{count}</Text>
+      </View>}
     </TouchableOpacity>
   );
 };
@@ -41,7 +47,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.grayBox,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     width: getSize(171),
     height: getSize(56),
     paddingHorizontal: getSize(10),
@@ -64,10 +69,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Medium',
   },
   countContainer: {
+    position: 'absolute',
+    backgroundColor: Colors.main,
+    alignItems: 'center',
+    justifyContent: 'center',
     width: getSize(28),
     height: getSize(28),
-    backgroundColor: Colors.main,
     borderRadius: 100,
-    right: getSize(2),
+    right: getSize(12),
+  },
+  count: {
+    color: 'black',
+    fontSize: getSize(16),
+    fontFamily: 'Pretendard-Medium',
+    textAlign: 'center',
   },
 })

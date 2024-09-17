@@ -49,8 +49,10 @@ const CourseSaveScreen = () => {
           <View key={folder.id} style={styles.folderWrapper}>
             <FolderButton
               name={folder.name}
-              isSelected={selectedFolder === folder.id} // Check if folder is selected
-              onPress={() => handleSelectFolder(folder.id)} // Toggle selection on press
+              isSelected={selectedFolder === folder.id}
+              showNum={false}
+              count={0}
+              onPress={() => handleSelectFolder(folder.id)}
             />
           </View>
         ))}
