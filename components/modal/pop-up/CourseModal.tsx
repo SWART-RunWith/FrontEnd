@@ -2,21 +2,21 @@ import React from "react";
 import ActionModal from "@/components/modal/pop-up/PopUpModal"
 
 interface CourseModalProps {
-  modalVisible: boolean;
+  visible: boolean;
   isLeftMain: boolean;
   onLeftButtonPress: () => void;
   onRightButtonPress: () => void;
 }
 
 const CourseSaveModal: React.FC<CourseModalProps> = ({
-  modalVisible = false,
+  visible = false,
   isLeftMain,
   onLeftButtonPress,
   onRightButtonPress
 }) => {
   return (
     <ActionModal
-      visible={modalVisible}
+      visible={visible}
       isLeftMain={isLeftMain}
       type="코스"
       description="저장히지 않은 코스는 삭제됩니다."
@@ -30,17 +30,16 @@ const CourseSaveModal: React.FC<CourseModalProps> = ({
 };
 
 export const MyCourseSaveModal: React.FC<CourseModalProps> = ({
-  modalVisible = false,
+  visible = false,
   isLeftMain,
   onLeftButtonPress,
   onRightButtonPress
 }) => {
   return (
     <CourseSaveModal
-      modalVisible={modalVisible}
+      visible={visible}
       isLeftMain={isLeftMain}
       onLeftButtonPress={onLeftButtonPress}
       onRightButtonPress={onRightButtonPress}
     />
   );
-};
