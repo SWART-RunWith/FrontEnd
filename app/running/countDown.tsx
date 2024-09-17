@@ -25,7 +25,7 @@ const CountDown: React.FC = () => {
   useEffect(() => {
     Animated.timing(fadeAnim3, {
       toValue: 0,
-      duration: 900,
+      duration: 1200,
       useNativeDriver: true,
     }).start();
 
@@ -37,7 +37,7 @@ const CountDown: React.FC = () => {
     }).start(() => {
       Animated.timing(fadeAnim2, {
         toValue: 0,
-        duration: 900,
+        duration: 1200,
         useNativeDriver: true,
       }).start();
 
@@ -49,7 +49,7 @@ const CountDown: React.FC = () => {
       }).start(() => {
         Animated.timing(fadeAnim1, {
           toValue: 0,
-          duration: 900,
+          duration: 1200,
           useNativeDriver: true,
         }).start();
 
