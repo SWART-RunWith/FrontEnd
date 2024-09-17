@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,7 +14,7 @@ import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
-import { LoginScreenNavigationProp } from '@/scripts/navigation';
+import { OnboardingScreenNavigationProp } from '@/scripts/navigation';
 import { LoginButton, SignUpButton } from '@/components/button/Button';
 
 const { width, height } = Dimensions.get('window');
@@ -131,7 +138,7 @@ const onboardingData = [
 ];
 
 const OnboardingScreen: React.FC = () => {
-  const navigation = useNavigation<LoginScreenNavigationProp>();
+  const navigation = useNavigation<OnboardingScreenNavigationProp>();
   const [currentPage, setCurrentPage] = useState(0);
 
   const handleOnboardingFinish = async () => {

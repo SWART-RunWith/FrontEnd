@@ -11,9 +11,10 @@ import {
 import { BlurView } from 'expo-blur';
 import * as ImagePicker from 'expo-image-picker';
 
-import Colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
+import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
+import Styles from '@/constants/Styles';
 
 const { width, height } = Dimensions.get('window');
 
@@ -72,7 +73,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
       {isVisible && (
         <BlurView
           intensity={20}
-          style={styles.absoluteBlur}
+          style={[Styles.blurContainer, { zIndex: 10 }]}
         />
       )}
 
@@ -145,14 +146,6 @@ const styles = StyleSheet.create({
     height: getSize(1),
     backgroundColor: Colors.lightGrayBox,
     width: '100%',
-  },
-  absoluteBlur: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    zIndex: 10,
   },
 });
 

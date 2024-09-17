@@ -118,7 +118,7 @@ const TermsScreen: React.FC = () => {
         <View style={styles.buttonContainer}>
           <DefaultButton
             text="시작하기"
-            onPress={() => navigation.replace('signup/signup')}
+            onPress={() => navigation.navigate('signup/signup')}
           />
         </View>
       )}

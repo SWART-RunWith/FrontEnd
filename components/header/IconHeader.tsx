@@ -11,6 +11,17 @@ interface BackIconProps {
   onPressBack: () => void;
 }
 
+const BackHeader: React.FC<BackIconProps> = ({
+  onPressBack
+}) => {
+  return (
+    <CombinedHeader
+      backProps={{ onPress: onPressBack }}
+      textProps={{ text: '' }}
+    />
+  )
+}
+
 const SignUpHeader: React.FC<BackIconProps> = ({
   onPressBack
 }) => {
@@ -106,6 +117,7 @@ const styles = StyleSheet.create({
 });
 
 export {
+  BackHeader,
   SignUpHeader,
   TermsAgreeHeader,
   MyFolderHeader,

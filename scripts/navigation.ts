@@ -1,14 +1,11 @@
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-export type RootStackParamList = {
-  login: undefined;
+type RootStackParamList = {
   home: undefined;
-  onboarding: undefined;
-  "signup/signup": undefined;
-  "signup/terms": undefined;
-  "signup/profile": undefined;
   "user/profile": undefined;
   "user/setting": undefined;
+  "running/countDown": undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -16,17 +13,69 @@ export type HomeScreenNavigationProp = StackNavigationProp<
   "home"
 >;
 
+type LoginStackParaList = {
+  login: undefined;
+  "signup/terms": undefined;
+  home: undefined;
+};
+
 export type LoginScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  LoginStackParaList,
   "login"
 >;
 
+type OnboardingStackParamList = {
+  home: undefined; // 임시
+  onboarding: undefined;
+  login: undefined;
+  "signup/terms": undefined;
+};
+
 export type OnboardingScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  OnboardingStackParamList,
   "onboarding"
 >;
 
+type SignUpStackParamList = {
+  "signup/terms": undefined;
+  "signup/signup": undefined;
+  "signup/profile": undefined;
+  login: undefined;
+  home: undefined;
+};
+
 export type SignUpScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "signup/signup"
+  SignUpStackParamList,
+  "signup/terms"
+>;
+
+type RunningStackParamList = {
+  "running/countDown": undefined;
+  "running/running": undefined;
+  "running/finish": {
+    seconds: number;
+    meters: number;
+    pace: string;
+    heartRate: number;
+  };
+  "course-feed/folder": undefined;
+};
+
+export type RunningScreenNavigationProp = StackNavigationProp<
+  RunningStackParamList,
+  "running/running"
+>;
+
+export type RunningFinishScreenRouteProp = RouteProp<
+  RunningStackParamList,
+  "running/finish"
+>;
+
+type CourseFeedStackParamList = {
+  "course-feed/folder": undefined;
+};
+
+export type CourseFeedScreenNavigationProp = StackNavigationProp<
+  CourseFeedStackParamList,
+  "course-feed/folder"
 >;
