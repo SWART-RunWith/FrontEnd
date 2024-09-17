@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Modal,
   View,
@@ -165,6 +165,9 @@ const styles = StyleSheet.create({
 interface EditModalProps {
   visible: boolean;
   isLeftMain: boolean;
+  title: string;
+  value: string;
+  onChangeText: (text: string) => void;
   leftButtonText: string;
   rightButtonText: string;
   onLeftButtonPress: () => void;
@@ -174,12 +177,14 @@ interface EditModalProps {
 export const EditModal: React.FC<EditModalProps> = ({
   visible = false,
   isLeftMain = true,
+  title = '',
+  value,
+  onChangeText,
   leftButtonText,
   rightButtonText,
   onLeftButtonPress,
   onRightButtonPress,
 }) => {
-  const [courseName, setCourseName] = useState('');
 
   return (
     <Modal
@@ -193,15 +198,15 @@ export const EditModal: React.FC<EditModalProps> = ({
           <View style={[styles.modalContent, { paddingTop: 0 }]}>
             {/* title */}
             <View style={editStyles.titleContainer}>
-              <Text style={editStyles.title}>코스 추가</Text>
+              <Text style={editStyles.title}>{title}</Text>
             </View>
 
             {/* text bar */}
             <View style={editStyles.textContainer}>
               <TextInput
                 style={editStyles.textInput}
-                value={courseName}
-                onChangeText={setCourseName}
+                value={value}
+                onChangeText={onChangeText}
               />
             </View>
 

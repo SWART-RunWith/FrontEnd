@@ -15,7 +15,7 @@ const CourseSaveModal: React.FC<CourseModalProps> = ({
   visible = false,
   isLeftMain,
   onLeftButtonPress,
-  onRightButtonPress
+  onRightButtonPress,
 }) => {
   return (
     <ActionModal
@@ -36,7 +36,7 @@ export const MyCourseSaveModal: React.FC<CourseModalProps> = ({
   visible = false,
   isLeftMain,
   onLeftButtonPress,
-  onRightButtonPress
+  onRightButtonPress,
 }) => {
   return (
     <CourseSaveModal
@@ -48,9 +48,16 @@ export const MyCourseSaveModal: React.FC<CourseModalProps> = ({
   );
 };
 
-export const CourseAddModal: React.FC<CourseModalProps> = ({
+interface TextInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+}
+
+export const CourseAddModal: React.FC<CourseModalProps & TextInputProps> = ({
   visible = false,
   isLeftMain,
+  value = '',
+  onChangeText,
   onLeftButtonPress,
   onRightButtonPress,
 }) => {
@@ -58,10 +65,13 @@ export const CourseAddModal: React.FC<CourseModalProps> = ({
     <EditModal
       visible={visible}
       isLeftMain={isLeftMain}
-      leftButtonText='취소하기'
-      rightButtonText='저장하기'
+      title="코스 저장"
+      value={value}
+      onChangeText={onChangeText}
+      leftButtonText="취소하기"
+      rightButtonText="저장하기"
       onLeftButtonPress={onLeftButtonPress}
       onRightButtonPress={onRightButtonPress}
     />
   )
-}
+};

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -12,7 +13,6 @@ import getSize from "@/scripts/getSize";
 import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
 import Sizes from "@/constants/Sizes";
 import { CourseSaveFolderButton } from "@/components/button/FolderButton";
-import { useState } from "react";
 import { CourseAddModal } from "@/components/modal/pop-up/CourseModal";
 
 const { width } = Dimensions.get('window');
@@ -21,6 +21,7 @@ const CourseSaveScreen = () => {
   const navigation = useNavigation<CourseFeedScreenNavigationProp>();
 
   const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+  const [courseName, setCourseName] = useState('');
   const [visibleModal, setVisibleModal] = useState(false);
 
   // to do : 모든 폴더 데이터 가져오기 api 연동 -> list로 받기
@@ -42,7 +43,40 @@ const CourseSaveScreen = () => {
 
   const handleCloseModal = () => {
     setVisibleModal(false);
+    setSelectedFolder(null);
   }
+
+  const saveCourse = async () => {
+    const uri = 'localhost:8080/test/api'
+
+    console.log('api uri : ' + uri);
+    console.log('course name : ' + courseName);
+    handleCloseModal();
+
+    if (!uri) {
+      console.log('URI가 정의되지 않았습니다.');
+      return;
+    }
+
+    try {
+      const response = await fetch(uri, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ courseName }),
+      });
+
+      if (response.ok) {
+        console.log('코스가 성공적으로 저장되었습니다.');
+      } else {
+        console.log('저장 중 오류 발생');
+      }
+    } catch (error) {
+      console.log('API 호출 중 오류 발생', error);
+    }
+    handleCloseModal();
+  };
 
   return (
     <View style={Styles.container}>
@@ -55,6 +89,7 @@ const CourseSaveScreen = () => {
         <Text style={styles.notice}>저장하실 폴더를 선택해주세요</Text>
       </View>
 
+      {/* 폴더 리스트 */}
       <View style={styles.foldersContainer}>
         {folderList.map((folder) => (
           <View key={folder.id} style={styles.folderWrapper}>
@@ -71,8 +106,10 @@ const CourseSaveScreen = () => {
       <CourseAddModal
         visible={visibleModal}
         isLeftMain={false}
+        value={courseName}
+        onChangeText={setCourseName}
         onLeftButtonPress={handleCloseModal}
-        onRightButtonPress={() => { }}
+        onRightButtonPress={saveCourse}
       />
     </View>
   );
