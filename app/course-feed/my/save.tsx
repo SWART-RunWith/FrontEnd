@@ -11,7 +11,7 @@ import Styles from '@/constants/Styles';
 import getSize from "@/scripts/getSize";
 import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
 import Sizes from "@/constants/Sizes";
-import { FolderButton } from "@/components/button/FolderButton";
+import { CourseSaveFolderButton } from "@/components/button/FolderButton";
 import { useState } from "react";
 
 const { width } = Dimensions.get('window');
@@ -53,10 +53,9 @@ const CourseSaveScreen = () => {
       <View style={styles.foldersContainer}>
         {folderList.map((folder) => (
           <View key={folder.id} style={styles.folderWrapper}>
-            <FolderButton
+            <CourseSaveFolderButton
               name={folder.name}
               isSelected={selectedFolders.includes(folder.id)}
-              showNum={false}
               count={0}
               onPress={() => handleSelectFolder(folder.id)}
             />
