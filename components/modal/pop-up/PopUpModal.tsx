@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 
@@ -195,58 +197,61 @@ export const EditModal: React.FC<EditModalProps> = ({
       visible={visible}
       transparent={true}
       animationType="fade"
+      onRequestClose={Keyboard.dismiss}
     >
-      <View style={styles.modalContainer}>
-        <BlurView intensity={20} style={Styles.blurContainer}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.modalContainer}>
+          <BlurView intensity={20} style={Styles.blurContainer}>
 
-          <View style={[styles.modalContent, { paddingTop: 0 }]}>
-            {/* title */}
-            <View style={editStyles.titleContainer}>
-              <Text style={editStyles.title}>{title}</Text>
-            </View>
+            <View style={[styles.modalContent, { paddingTop: 0 }]}>
+              {/* title */}
+              <View style={editStyles.titleContainer}>
+                <Text style={editStyles.title}>{title}</Text>
+              </View>
 
-            {/* text bar */}
-            <View style={editStyles.textContainer}>
-              <TextInput
-                style={editStyles.textInput}
-                value={value}
-                onChangeText={onChangeText}
-                placeholder='코스 이름을 적성해주세요'
-              />
-              <TouchableOpacity onPress={resetText}>
-                <CancelIcon width={getSize(22.65)} height={getSize(24)} />
-              </TouchableOpacity>
-            </View>
+              {/* text bar */}
+              <View style={editStyles.textContainer}>
+                <TextInput
+                  style={editStyles.textInput}
+                  value={value}
+                  onChangeText={onChangeText}
+                  placeholder='코스 이름을 적성해주세요'
+                />
+                <TouchableOpacity onPress={resetText}>
+                  <CancelIcon width={getSize(22.65)} height={getSize(24)} />
+                </TouchableOpacity>
+              </View>
 
-            {/* button */}
-            <View style={[styles.buttonContainer, { marginTop: getSize(26) }]}>
-              <TouchableOpacity onPress={onLeftButtonPress} style={[
-                styles.button,
-                isLeftMain && { backgroundColor: Colors.main }
-              ]}
-              >
-                <Text style={[
-                  styles.buttonText,
-                  isLeftMain && { color: 'black' }
+              {/* button */}
+              <View style={[styles.buttonContainer, { marginTop: getSize(26) }]}>
+                <TouchableOpacity onPress={onLeftButtonPress} style={[
+                  styles.button,
+                  isLeftMain && { backgroundColor: Colors.main }
+                ]}
+                >
+                  <Text style={[
+                    styles.buttonText,
+                    isLeftMain && { color: 'black' }
+                  ]}>
+                    {leftButtonText}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={onRightButtonPress} style={[
+                  styles.button,
+                  !isLeftMain && { backgroundColor: Colors.main }
                 ]}>
-                  {leftButtonText}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={onRightButtonPress} style={[
-                styles.button,
-                !isLeftMain && { backgroundColor: Colors.main }
-              ]}>
-                <Text style={[
-                  styles.buttonText,
-                  !isLeftMain && { color: 'black' }
-                ]}>
-                  {rightButtonText}
-                </Text>
-              </TouchableOpacity>
+                  <Text style={[
+                    styles.buttonText,
+                    !isLeftMain && { color: 'black' }
+                  ]}>
+                    {rightButtonText}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        </BlurView>
-      </View>
+          </BlurView>
+        </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
