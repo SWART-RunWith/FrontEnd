@@ -25,6 +25,10 @@ const CourseSaveScreen = () => {
   const folderList = [
     { name: '서천동', id: '1' },
     { name: '봉천동', id: '2' },
+    { name: '대학로', id: '3' },
+    { name: '홍대입구', id: '4' },
+    { name: '강남', id: '5' },
+    { name: '이태원', id: '6' },
   ];
 
   const handleSelectFolder = (folderId: string) => {
