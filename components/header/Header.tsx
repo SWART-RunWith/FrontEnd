@@ -3,13 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextStyle, ViewSt
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import Colors from '@/constants/Colors';
-import Sizes from '@/constants/Sizes';
-import getSize from '@/scripts/getSize';
 import BackSvgIcon from '@/assets/icons/back.svg';
 import EditSvgIcon from '@/assets/icons/edit.svg';
 import SettingSvgIcon from '@/assets/icons/setting.svg';
 import OptionSvgIcon from '@/assets/icons/option.svg';
+import SearchSvgIcon from '@/assets/icons/search.svg';
+import Colors from '@/constants/Colors';
+import Sizes from '@/constants/Sizes';
+import getSize from '@/scripts/getSize';
 
 const { width } = Dimensions.get('window');
 
@@ -69,6 +70,17 @@ const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
   </TouchableOpacity>
 );
 
+const SearchIcon: React.FC<IconProps> = ({ onPress }) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.iconButton}
+    >
+      <SearchSvgIcon width={getSize(24)} height={getSize(24)} />
+    </TouchableOpacity>
+  );
+};
+
 // TextProps 정의
 interface TextProps {
   text?: string;
@@ -94,20 +106,24 @@ const HeaderText: React.FC<TextProps> = ({
 
 interface CombinedHeaderProps {
   showBackIcon?: boolean;
+  isLeftSearch?: boolean;
   backProps?: IconProps;
   editProps?: IconProps;
   settingProps?: IconProps;
   optionProps?: IconProps;
+  searchProps?: IconProps;
   textProps?: TextProps;
   containerStyle?: ViewStyle;
 }
 
 const CombinedHeader: React.FC<CombinedHeaderProps> = ({
   showBackIcon = true,
+  isLeftSearch = false,
   backProps,
   editProps,
   settingProps,
   optionProps,
+  searchProps,
   textProps,
   containerStyle = {},
 }) => (
@@ -117,6 +133,15 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
       {showBackIcon && backProps && (
         <View style={styles.leftIcons}>
           <BackIcon {...backProps} />
+        </View>
+      )}
+    </View>
+
+    <View style={styles.leftIconContainer}>
+      {/* Back Icon */}
+      {isLeftSearch && searchProps && (
+        <View style={styles.leftIcons}>
+          <SearchIcon {...backProps} />
         </View>
       )}
     </View>
@@ -140,6 +165,15 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
           <SettingIcon {...settingProps} />
         </View>
       )}
+
+      <View style={styles.leftIconContainer}>
+        {/* Back Icon */}
+        {!isLeftSearch && searchProps && (
+          <View style={styles.rightIcons}>
+            <SearchIcon {...backProps} />
+          </View>
+        )}
+      </View>
 
       {/* Option Icon */}
       {optionProps && (
