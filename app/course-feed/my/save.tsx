@@ -19,7 +19,7 @@ const { width } = Dimensions.get('window');
 const CourseSaveScreen = () => {
   const navigation = useNavigation<CourseFeedScreenNavigationProp>();
 
-  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+  const [selectedFolders, setSelectedFolders] = useState<string[]>([]);
 
   // to do : 모든 폴더 데이터 가져오기 api 연동 -> list로 받기
   const folderList = [
@@ -32,8 +32,10 @@ const CourseSaveScreen = () => {
   ];
 
   const handleSelectFolder = (folderId: string) => {
-    setSelectedFolder(prevSelected =>
-      prevSelected === folderId ? null : folderId // Toggle selection
+    setSelectedFolders(prevSelected =>
+      prevSelected.includes(folderId)
+        ? prevSelected.filter(id => id !== folderId)
+        : [...prevSelected, folderId]
     );
   };
 
@@ -53,7 +55,7 @@ const CourseSaveScreen = () => {
           <View key={folder.id} style={styles.folderWrapper}>
             <FolderButton
               name={folder.name}
-              isSelected={selectedFolder === folder.id}
+              isSelected={selectedFolders.includes(folder.id)}
               showNum={false}
               count={0}
               onPress={() => handleSelectFolder(folder.id)}
