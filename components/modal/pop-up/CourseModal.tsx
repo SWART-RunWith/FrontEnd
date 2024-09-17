@@ -1,5 +1,8 @@
 import React from "react";
-import ActionModal from "@/components/modal/pop-up/PopUpModal"
+import {
+  ActionModal,
+  EditModal
+} from "@/components/modal/pop-up/PopUpModal"
 
 interface CourseModalProps {
   visible: boolean;
@@ -43,3 +46,22 @@ export const MyCourseSaveModal: React.FC<CourseModalProps> = ({
       onRightButtonPress={onRightButtonPress}
     />
   );
+};
+
+export const CourseAddModal: React.FC<CourseModalProps> = ({
+  visible = false,
+  isLeftMain,
+  onLeftButtonPress,
+  onRightButtonPress,
+}) => {
+  return (
+    <EditModal
+      visible={visible}
+      isLeftMain={isLeftMain}
+      leftButtonText='취소하기'
+      rightButtonText='저장하기'
+      onLeftButtonPress={onLeftButtonPress}
+      onRightButtonPress={onRightButtonPress}
+    />
+  )
+}
