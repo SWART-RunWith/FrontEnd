@@ -5,12 +5,18 @@ import Styles from '@/constants/Styles';
 import getSize from "@/scripts/getSize";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenNavigationProp } from "@/scripts/navigation";
+import { CourseSaveHeader } from "@/components/header/IconHeader";
 
 const CourseSaveScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
   return (
     <View style={Styles.container}>
+      <CourseSaveHeader
+        onPressBack={() => { navigation.goBack() }}
+        onPressSearch={() => { console.log('search') }}
+      />
+
       <View style={{
         justifyContent: 'center',
         height: '30%',
