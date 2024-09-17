@@ -53,9 +53,9 @@ const styles = StyleSheet.create({
   },
   selectedShadow: {
     shadowColor: Colors.main,
-    shadowOpacity: 0.8,
+    shadowOpacity: 1,
     shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 10,
+    shadowRadius: getSize(4),
     elevation: 10,
   },
   nameContainer: {
