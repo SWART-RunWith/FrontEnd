@@ -13,13 +13,15 @@ import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
 import Sizes from "@/constants/Sizes";
 import { CourseSaveFolderButton } from "@/components/button/FolderButton";
 import { useState } from "react";
+import { EditModal } from "@/components/modal/pop-up/PopUpModal";
 
 const { width } = Dimensions.get('window');
 
 const CourseSaveScreen = () => {
   const navigation = useNavigation<CourseFeedScreenNavigationProp>();
 
-  const [selectedFolders, setSelectedFolders] = useState<string[]>([]);
+  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+  const [visibleModal, setVisibleModal] = useState(false);
 
   // to do : 모든 폴더 데이터 가져오기 api 연동 -> list로 받기
   const folderList = [
@@ -32,12 +34,15 @@ const CourseSaveScreen = () => {
   ];
 
   const handleSelectFolder = (folderId: string) => {
-    setSelectedFolders(prevSelected =>
-      prevSelected.includes(folderId)
-        ? prevSelected.filter(id => id !== folderId)
-        : [...prevSelected, folderId]
+    setSelectedFolder(prevSelected =>
+      prevSelected === folderId ? null : folderId
     );
+    setVisibleModal(true);
   };
+
+  const handleCloseModal = () => {
+    setVisibleModal(false);
+  }
 
   return (
     <View style={Styles.container}>
@@ -55,13 +60,23 @@ const CourseSaveScreen = () => {
           <View key={folder.id} style={styles.folderWrapper}>
             <CourseSaveFolderButton
               name={folder.name}
-              isSelected={selectedFolders.includes(folder.id)}
+              isSelected={selectedFolder === folder.id}
               count={0}
               onPress={() => handleSelectFolder(folder.id)}
             />
           </View>
         ))}
       </View>
+
+      <EditModal
+        visible={visibleModal}
+        isLeftMain={true}
+        isSave={false}
+        leftButtonText='삭제하기'
+        rightButtonText='아니요'
+        onLeftButtonPress={handleCloseModal}
+        onRightButtonPress={() => { }}
+      />
     </View>
   );
 };
