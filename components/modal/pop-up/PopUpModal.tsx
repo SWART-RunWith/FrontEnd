@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Modal,
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
+  TextInput,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 
@@ -14,6 +15,7 @@ import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
 import Sizes from '@/constants/Sizes';
+import Fonts from '@/constants/Fonts';
 
 interface ActionModalProps {
   visible: boolean;
@@ -177,6 +179,8 @@ export const EditModal: React.FC<EditModalProps> = ({
   onLeftButtonPress,
   onRightButtonPress,
 }) => {
+  const [courseName, setCourseName] = useState('');
+
   return (
     <Modal
       visible={visible}
@@ -186,13 +190,23 @@ export const EditModal: React.FC<EditModalProps> = ({
       <View style={styles.modalContainer}>
         <BlurView intensity={20} style={Styles.blurContainer}>
 
-          <View style={styles.modalContent}>
+          <View style={[styles.modalContent, { paddingTop: 0 }]}>
             {/* title */}
+            <View style={editStyles.titleContainer}>
+              <Text style={editStyles.title}>코스 추가</Text>
+            </View>
 
             {/* text bar */}
+            <View style={editStyles.textContainer}>
+              <TextInput
+                style={editStyles.textInput}
+                value={courseName}
+                onChangeText={setCourseName}
+              />
+            </View>
 
             {/* button */}
-            <View style={styles.buttonContainer}>
+            <View style={[styles.buttonContainer, { marginTop: getSize(26) }]}>
               <TouchableOpacity onPress={onLeftButtonPress} style={[
                 styles.button,
                 isLeftMain && { backgroundColor: Colors.main }
@@ -225,5 +239,28 @@ export const EditModal: React.FC<EditModalProps> = ({
 };
 
 const editStyles = StyleSheet.create({
-
+  titleContainer: {
+    marginTop: getSize(37),
+    height: getSize(24),
+  },
+  title: {
+    color: Colors.main,
+    fontSize: getSize(20),
+    fontFamily: Fonts.semiBold,
+    textAlign: 'center',
+  },
+  textContainer: {
+    backgroundColor: Colors.grayBox,
+    justifyContent: 'center',
+    width: getSize(326),
+    height: getSize(56),
+    borderRadius: 10,
+    paddingHorizontal: getSize(14),
+    marginTop: getSize(15),
+  },
+  textInput: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+  }
 })
