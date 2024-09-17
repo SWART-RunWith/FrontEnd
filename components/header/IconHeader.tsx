@@ -135,6 +135,19 @@ const SettingHeader: React.FC<CombinedHeaderProps> = ({
   );
 };
 
+export const CourseMyHomeHeader: React.FC<CombinedHeaderProps> = ({
+  backProps,
+  optionProps,
+}) => {
+  return (
+    <CombinedHeader
+      backProps={{}}
+      optionProps={{}}
+      textProps={{ text: '' }}
+    />
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
