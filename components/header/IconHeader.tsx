@@ -61,6 +61,8 @@ export const CourseSaveHeader: React.FC<
     return (
       <CombinedHeader
         isLeftSearch={false}
+        hasSearchModal={true}
+        query='folder search uri'
         backProps={{ onPress: onPressBack }}
         textProps={{ text: '' }}
         searchProps={{ onPress: onPressSearch }}

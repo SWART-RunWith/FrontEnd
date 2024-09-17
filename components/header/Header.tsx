@@ -71,7 +71,6 @@ export const SettingIcon: React.FC<IconProps> = ({ onPress }) => {
 
 export const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity
-    // to do : option 모달 띄우기
     onPress={onPress}
     style={styles.iconButton}
   >
@@ -79,63 +78,75 @@ export const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
   </TouchableOpacity>
 );
 
-export const SearchIcon: React.FC<IconProps> = ({ onPress }) => {
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={styles.iconButton}
-    >
-      <SearchSvgIcon width={getSize(24)} height={getSize(24)} />
-    </TouchableOpacity>
-  );
-};
+export const SearchIcon: React.FC<IconProps> = ({ onPress }) => (
+  <TouchableOpacity onPress={onPress} style={styles.iconButton}>
+    <SearchSvgIcon width={getSize(24)} height={getSize(24)} />
+  </TouchableOpacity>
+);
 
-export const SearchTextIcon: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [searchText, setSearchText] = useState('');
-  const inputWidthAnim = useRef(new Animated.Value(0)).current;
+export const SearchTextIcon: React.FC<{
+  query?: string;
+}> = ({
+  query,
+}) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const [searchText, setSearchText] = useState('');
+    const inputWidthAnim = useRef(new Animated.Value(0)).current;
 
-  const toggleSearchBar = () => {
-    if (isVisible) {
-      Animated.timing(inputWidthAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-      }).start(() => setIsVisible(false));
-    } else {
-      setIsVisible(true);
-      Animated.timing(inputWidthAnim, {
-        toValue: width * 0.6,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    }
+    const toggleSearchBar = () => {
+      if (isVisible) {
+        Animated.timing(inputWidthAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: false,
+        }).start(() => setIsVisible(false));
+      } else {
+        setIsVisible(true);
+        Animated.timing(inputWidthAnim, {
+          toValue: width - getSize(Sizes.formMargin),
+          duration: 300,
+          useNativeDriver: false,
+        }).start();
+      }
+    };
+
+    const handleSearchSubmit = () => {
+      // to do : api 연동
+      console.log('uri : ' + query + '?' + searchText);
+      toggleSearchBar();
+    };
+
+    return (
+      <View style={styles.searchContainer}>
+        {/* text input */}
+        {isVisible && (
+          <Animated.View
+            style={[
+              styles.animatedInputContainer,
+              { width: inputWidthAnim, right: -getSize(Sizes.formMargin / 2) }, // Opens to the left of the icon
+            ]}
+          >
+            <TextInput
+              style={styles.searchInput}
+              placeholder="폴더 이름을 적어주세요"
+              value={searchText}
+              onChangeText={setSearchText}
+              onSubmitEditing={handleSearchSubmit}
+              autoFocus={true}
+            />
+          </Animated.View>
+        )}
+
+        {/* Search Icon */}
+        <TouchableOpacity
+          onPress={isVisible ? handleSearchSubmit : toggleSearchBar}
+          style={styles.iconButton}
+        >
+          <SearchSvgIcon width={getSize(24)} height={getSize(24)} />
+        </TouchableOpacity>
+      </View>
+    );
   };
-
-  return (
-    <View style={styles.searchContainer}>
-      {/* text input */}
-      {isVisible && (
-        <Animated.View style={[styles.animatedInputContainer, { width: inputWidthAnim }]}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search..."
-            placeholderTextColor="black"
-            value={searchText}
-            onChangeText={setSearchText}
-            autoFocus={true} // 키보드 자동
-          />
-        </Animated.View>
-      )}
-
-      {/* Search 아이콘 */}
-      <TouchableOpacity onPress={toggleSearchBar} style={styles.iconButton}>
-        <SearchSvgIcon width={getSize(24)} height={getSize(24)} />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
 
 // TextProps 정의
 interface TextProps {
@@ -151,11 +162,13 @@ const HeaderText: React.FC<TextProps> = ({
   fontFamily = 'Pretendard-SemiBold',
   fontColor = Colors.main,
 }) => (
-  <Text style={{
-    fontSize: getSize(fontSize),
-    fontFamily,
-    color: fontColor
-  }}>
+  <Text
+    style={{
+      fontSize: getSize(fontSize),
+      fontFamily,
+      color: fontColor,
+    }}
+  >
     {text}
   </Text>
 );
@@ -164,6 +177,7 @@ interface CombinedHeaderProps {
   showBackIcon?: boolean;
   isLeftSearch?: boolean;
   hasSearchModal?: boolean;
+  query?: string;
   backProps?: IconProps;
   editProps?: IconProps;
   settingProps?: IconProps;
@@ -177,6 +191,7 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
   showBackIcon = true,
   isLeftSearch = false,
   hasSearchModal = true,
+  query = '',
   backProps,
   editProps,
   settingProps,
@@ -198,10 +213,11 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
     {/* Search Icon */}
     {isLeftSearch && searchProps && (
       <View style={styles.leftIcons}>
-        {hasSearchModal
-          ? <SearchTextIcon />
-          : <SearchIcon {...searchProps} />
-        }
+        {hasSearchModal ? (
+          <SearchTextIcon query={query} />
+        ) : (
+          <SearchIcon {...searchProps} />
+        )}
       </View>
     )}
 
@@ -228,10 +244,11 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
       {/* Search Icon */}
       {!isLeftSearch && searchProps && (
         <View style={styles.rightIcons}>
-          {hasSearchModal
-            ? <SearchTextIcon />
-            : <SearchIcon {...searchProps} />
-          }
+          {hasSearchModal ? (
+            <SearchTextIcon query={query} />
+          ) : (
+            <SearchIcon {...searchProps} />
+          )}
         </View>
       )}
 
@@ -263,16 +280,14 @@ const styles = StyleSheet.create({
     gap: getSize(24),
     left: getSize(Sizes.formMargin),
   },
-  leftIcons: {
-  },
+  leftIcons: {},
   rightIconContainer: {
     position: 'absolute',
     flexDirection: 'row',
     gap: getSize(24),
     right: getSize(Sizes.formMargin),
   },
-  rightIcons: {
-  },
+  rightIcons: {},
   iconButton: {
   },
   centerText: {
@@ -285,22 +300,17 @@ const styles = StyleSheet.create({
   },
   animatedInputContainer: {
     backgroundColor: Colors.grayBox,
-    height: getSize(40),
-    marginLeft: 10,
+    height: getSize(50),
     borderRadius: 10,
     justifyContent: 'center',
     overflow: 'hidden',
+    position: 'absolute',
   },
   searchInput: {
-    height: '100%',
-    paddingHorizontal: 10,
-    color: 'black',
+    color: 'white',
+    paddingHorizontal: getSize(Sizes.formMargin),
+    fontSize: getSize(14),
   },
 });
 
-export {
-  TextProps,
-  HeaderText,
-  CombinedHeader,
-  CombinedHeaderProps,
-};
+export { TextProps, HeaderText, CombinedHeader, CombinedHeaderProps };
