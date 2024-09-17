@@ -6,7 +6,7 @@ import getSize from "@/scripts/getSize";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenNavigationProp } from "@/scripts/navigation";
 
-const FolderScreen = () => {
+const CourseSaveScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
   return (
@@ -33,4 +33,4 @@ const FolderScreen = () => {
   );
 };
 
-export default FolderScreen;
+export default CourseSaveScreen;
