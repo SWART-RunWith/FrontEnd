@@ -107,6 +107,7 @@ export const SearchTextIcon: React.FC<{
           duration: 300,
           useNativeDriver: false,
         }).start();
+        setSearchText('');
       }
     };
 
