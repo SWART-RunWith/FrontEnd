@@ -1,5 +1,14 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextStyle, ViewStyle } from 'react-native';
+import React, { useRef, useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  ViewStyle,
+  TextInput,
+  Animated,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -81,6 +90,53 @@ export const SearchIcon: React.FC<IconProps> = ({ onPress }) => {
   );
 };
 
+export const SearchTextIcon: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const inputWidthAnim = useRef(new Animated.Value(0)).current;
+
+  const toggleSearchBar = () => {
+    if (isVisible) {
+      Animated.timing(inputWidthAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start(() => setIsVisible(false));
+    } else {
+      setIsVisible(true);
+      Animated.timing(inputWidthAnim, {
+        toValue: width * 0.6,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
+  return (
+    <View style={styles.searchContainer}>
+      {/* text input */}
+      {isVisible && (
+        <Animated.View style={[styles.animatedInputContainer, { width: inputWidthAnim }]}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search..."
+            placeholderTextColor="black"
+            value={searchText}
+            onChangeText={setSearchText}
+            autoFocus={true} // 키보드 자동
+          />
+        </Animated.View>
+      )}
+
+      {/* Search 아이콘 */}
+      <TouchableOpacity onPress={toggleSearchBar} style={styles.iconButton}>
+        <SearchSvgIcon width={getSize(24)} height={getSize(24)} />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+
 // TextProps 정의
 interface TextProps {
   text?: string;
@@ -107,6 +163,7 @@ const HeaderText: React.FC<TextProps> = ({
 interface CombinedHeaderProps {
   showBackIcon?: boolean;
   isLeftSearch?: boolean;
+  hasSearchModal?: boolean;
   backProps?: IconProps;
   editProps?: IconProps;
   settingProps?: IconProps;
@@ -119,6 +176,7 @@ interface CombinedHeaderProps {
 const CombinedHeader: React.FC<CombinedHeaderProps> = ({
   showBackIcon = true,
   isLeftSearch = false,
+  hasSearchModal = true,
   backProps,
   editProps,
   settingProps,
@@ -140,7 +198,10 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
     {/* Search Icon */}
     {isLeftSearch && searchProps && (
       <View style={styles.leftIcons}>
-        <SearchIcon {...searchProps} />
+        {hasSearchModal
+          ? <SearchTextIcon />
+          : <SearchIcon {...searchProps} />
+        }
       </View>
     )}
 
@@ -167,7 +228,10 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
       {/* Search Icon */}
       {!isLeftSearch && searchProps && (
         <View style={styles.rightIcons}>
-          <SearchIcon {...searchProps} />
+          {hasSearchModal
+            ? <SearchTextIcon />
+            : <SearchIcon {...searchProps} />
+          }
         </View>
       )}
 
@@ -214,6 +278,23 @@ const styles = StyleSheet.create({
   centerText: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  animatedInputContainer: {
+    backgroundColor: Colors.grayBox,
+    height: getSize(40),
+    marginLeft: 10,
+    borderRadius: 10,
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  searchInput: {
+    height: '100%',
+    paddingHorizontal: 10,
+    color: 'black',
   },
 });
 
