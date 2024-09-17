@@ -27,7 +27,7 @@ interface ActionModalProps {
   onRightButtonPress: () => void;
 }
 
-const ActionModal: React.FC<ActionModalProps> = ({
+export const ActionModal: React.FC<ActionModalProps> = ({
   visible = false,
   type = '코스',
   description,
@@ -160,4 +160,72 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ActionModal;
+interface EditModalProps {
+  visible: boolean;
+  isSave: boolean;
+  isLeftMain: boolean;
+  leftButtonText: string;
+  rightButtonText: string;
+  onLeftButtonPress: () => void;
+  onRightButtonPress: () => void;
+}
+
+export const EditModal: React.FC<EditModalProps> = ({
+  visible = false,
+  isSave = true,
+  isLeftMain = true,
+  leftButtonText,
+  rightButtonText,
+  onLeftButtonPress,
+  onRightButtonPress,
+}) => {
+  return (
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="fade"
+    >
+      <View style={styles.modalContainer}>
+        <BlurView intensity={20} style={Styles.blurContainer}>
+
+          <View style={styles.modalContent}>
+            {/* title */}
+
+            {/* text bar */}
+
+            {/* button */}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={onLeftButtonPress} style={[
+                styles.button,
+                isLeftMain && { backgroundColor: Colors.main }
+              ]}
+              >
+                <Text style={[
+                  styles.buttonText,
+                  isLeftMain && { color: 'black' }
+                ]}>
+                  {leftButtonText}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onRightButtonPress} style={[
+                styles.button,
+                !isLeftMain && { backgroundColor: Colors.main }
+              ]}>
+                <Text style={[
+                  styles.buttonText,
+                  !isLeftMain && { color: 'black' }
+                ]}>
+                  {rightButtonText}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </BlurView>
+      </View>
+    </Modal>
+  );
+};
+
+const editStyles = StyleSheet.create({
+
+})
