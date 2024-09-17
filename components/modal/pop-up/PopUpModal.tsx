@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
 
 interface EditModalProps {
   visible: boolean;
-  isSave: boolean;
   isLeftMain: boolean;
   leftButtonText: string;
   rightButtonText: string;
@@ -172,7 +171,6 @@ interface EditModalProps {
 
 export const EditModal: React.FC<EditModalProps> = ({
   visible = false,
-  isSave = true,
   isLeftMain = true,
   leftButtonText,
   rightButtonText,
