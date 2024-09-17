@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -23,6 +23,7 @@ const CourseSaveScreen = () => {
   const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
   const [courseName, setCourseName] = useState('');
   const [visibleModal, setVisibleModal] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   // to do : 모든 폴더 데이터 가져오기 api 연동 -> list로 받기
   const folderList = [
@@ -54,6 +55,7 @@ const CourseSaveScreen = () => {
     console.log('course name : ' + courseName);
     setCourseName('');
     handleCloseModal();
+    setIsSaved(true);
 
     if (!uri) {
       console.log('URI가 정의되지 않았습니다.');
@@ -77,8 +79,14 @@ const CourseSaveScreen = () => {
     } catch (error) {
       console.log('API 호출 중 오류 발생', error);
     }
-    handleCloseModal();
   };
+
+  useEffect(() => {
+    if (isSaved) {
+      setIsSaved(false);
+      navigation.navigate('course-feed/my/home'); // 이동할 화면으로 이동
+    }
+  }, [isSaved]);
 
   return (
     <View style={Styles.container}>
