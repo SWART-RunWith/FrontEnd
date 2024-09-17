@@ -11,6 +11,10 @@ interface BackIconProps {
   onPressBack: () => void;
 }
 
+interface SearchIconProps {
+  onPressSearch: () => void;
+}
+
 const BackHeader: React.FC<BackIconProps> = ({
   onPressBack
 }) => {
@@ -48,20 +52,40 @@ const TermsAgreeHeader: React.FC<BackIconProps> = ({
   );
 };
 
-const MyFolderHeader: React.FC<BackIconProps> = ({
-  onPressBack
+export const CourseSaveHeader: React.FC<
+  BackIconProps & SearchIconProps
+> = ({
+  onPressBack,
+  onPressSearch,
 }) => {
-  return (
-    <CombinedHeader
-      backProps={{ onPress: onPressBack }}
-      textProps={{
-        text: '내 폴더',
-        fontColor: 'white',
-      }}
-      settingProps={{ onPress: () => console.log('설정 버튼 클릭') }}
-    />
-  );
-};
+    return (
+      <CombinedHeader
+        isLeftSearch={false}
+        backProps={{ onPress: onPressBack }}
+        textProps={{ text: '' }}
+        searchProps={{ onPress: onPressSearch }}
+      />
+    );
+  };
+
+const MyFolderHeader: React.FC<
+  BackIconProps & SearchIconProps
+> = ({
+  onPressBack,
+  onPressSearch,
+}) => {
+    return (
+      <CombinedHeader
+        isLeftSearch={false}
+        backProps={{ onPress: onPressBack }}
+        textProps={{
+          text: '내 폴더',
+          fontColor: 'white',
+        }}
+        searchProps={{ onPress: onPressSearch }}
+      />
+    );
+  };
 
 const ProfileSettingHeader: React.FC<BackIconProps> = ({
   onPressBack
