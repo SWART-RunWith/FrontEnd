@@ -43,6 +43,7 @@ const CourseSaveScreen = () => {
 
   const handleCloseModal = () => {
     setVisibleModal(false);
+    setCourseName('');
     setSelectedFolder(null);
   }
 
@@ -51,6 +52,7 @@ const CourseSaveScreen = () => {
 
     console.log('api uri : ' + uri);
     console.log('course name : ' + courseName);
+    setCourseName('');
     handleCloseModal();
 
     if (!uri) {

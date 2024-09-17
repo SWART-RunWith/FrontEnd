@@ -65,7 +65,7 @@ export const CourseAddModal: React.FC<CourseModalProps & TextInputProps> = ({
     <EditModal
       visible={visible}
       isLeftMain={isLeftMain}
-      title="코스 저장"
+      title="코스 추가"
       value={value}
       onChangeText={onChangeText}
       leftButtonText="취소하기"

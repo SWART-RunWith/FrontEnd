@@ -11,6 +11,7 @@ import { BlurView } from 'expo-blur';
 
 import LocationIcon from '@/assets/icons/location.svg';
 import FolderIcon from '@/assets/icons/folder.svg';
+import CancelIcon from '@/assets/icons/cancel.svg';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
@@ -185,6 +186,9 @@ export const EditModal: React.FC<EditModalProps> = ({
   onLeftButtonPress,
   onRightButtonPress,
 }) => {
+  const resetText = () => {
+    onChangeText('');
+  }
 
   return (
     <Modal
@@ -207,7 +211,11 @@ export const EditModal: React.FC<EditModalProps> = ({
                 style={editStyles.textInput}
                 value={value}
                 onChangeText={onChangeText}
+                placeholder='코스 이름을 적성해주세요'
               />
+              <TouchableOpacity onPress={resetText}>
+                <CancelIcon width={getSize(22.65)} height={getSize(24)} />
+              </TouchableOpacity>
             </View>
 
             {/* button */}
@@ -256,7 +264,9 @@ const editStyles = StyleSheet.create({
   },
   textContainer: {
     backgroundColor: Colors.grayBox,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     width: getSize(326),
     height: getSize(56),
     borderRadius: 10,
@@ -267,5 +277,6 @@ const editStyles = StyleSheet.create({
     color: 'white',
     fontSize: getSize(16),
     fontFamily: Fonts.semiBold,
+    width: getSize(250),
   }
 })
