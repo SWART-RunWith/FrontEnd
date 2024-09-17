@@ -137,14 +137,12 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
       )}
     </View>
 
-    <View style={styles.leftIconContainer}>
-      {/* Back Icon */}
-      {isLeftSearch && searchProps && (
-        <View style={styles.leftIcons}>
-          <SearchIcon {...backProps} />
-        </View>
-      )}
-    </View>
+    {/* Search Icon */}
+    {isLeftSearch && searchProps && (
+      <View style={styles.leftIcons}>
+        <SearchIcon {...searchProps} />
+      </View>
+    )}
 
     {/* Text */}
     <View style={styles.centerText}>
@@ -166,14 +164,12 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
         </View>
       )}
 
-      <View style={styles.leftIconContainer}>
-        {/* Back Icon */}
-        {!isLeftSearch && searchProps && (
-          <View style={styles.rightIcons}>
-            <SearchIcon {...backProps} />
-          </View>
-        )}
-      </View>
+      {/* Search Icon */}
+      {!isLeftSearch && searchProps && (
+        <View style={styles.rightIcons}>
+          <SearchIcon {...searchProps} />
+        </View>
+      )}
 
       {/* Option Icon */}
       {optionProps && (
