@@ -80,10 +80,15 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   foldersContainer: {
-
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginTop: getSize(44),
+    paddingHorizontal: getSize(Sizes.formMargin),
   },
   folderWrapper: {
-
+    width: (width - getSize(Sizes.formMargin) * 2) / 2 - getSize(8),
+    marginBottom: getSize(22),
   },
 });
 
