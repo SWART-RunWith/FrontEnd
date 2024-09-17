@@ -70,3 +70,12 @@ export type RunningFinishScreenRouteProp = RouteProp<
   RunningStackParamList,
   "running/finish"
 >;
+
+type CourseFeedStackParamList = {
+  "course-feed/folder": undefined;
+};
+
+export type CourseFeedScreenNavigationProp = StackNavigationProp<
+  CourseFeedStackParamList,
+  "course-feed/folder"
+>;
