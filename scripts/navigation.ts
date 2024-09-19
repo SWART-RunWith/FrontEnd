@@ -58,7 +58,7 @@ type RunningStackParamList = {
     pace: string;
     heartRate: number;
   };
-  "course-feed/my/save": undefined;
+  "running/save": undefined;
 };
 
 export type RunningScreenNavigationProp = StackNavigationProp<
@@ -72,7 +72,7 @@ export type RunningFinishScreenRouteProp = RouteProp<
 >;
 
 type CourseFeedStackParamList = {
-  "course-feed/my/save": undefined;
+  "running/save": undefined;
   "course-feed/my/home": undefined;
 };
 
