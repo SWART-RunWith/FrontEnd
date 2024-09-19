@@ -33,6 +33,13 @@ const MyCourseScreen = () => {
     { title: '업힐 훈련', time: '01:20:14', distance: '04.30KM' },
     { title: '반달런', time: '00:31:25', distance: '02.58KM' },
     { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
   ];
 
   return (
@@ -62,21 +69,19 @@ const MyCourseScreen = () => {
         </View>
       </View>
 
-      <View style={{ marginTop: getSize(20) }}>
-        <ScrollView contentContainerStyle={styles.courseListContainer}>
-          {courseList.map((course, index) => (
-            <CourseBox
-              key={index}
-              title={course.title}
-              time={course.time}
-              distance={course.distance}
-              img={""}
-              onPressSave={() => console.log("Save course:", course.title)}
-              onPressButton={() => console.log("Start course:", course.title)}
-            />
-          ))}
-        </ScrollView>
-      </View>
+      <ScrollView contentContainerStyle={styles.courseListContainer}>
+        {courseList.map((course, index) => (
+          <CourseBox
+            key={index}
+            title={course.title}
+            time={course.time}
+            distance={course.distance}
+            img={""}
+            onPressSave={() => console.log("Save course:", course.title)}
+            onPressButton={() => console.log("Start course:", course.title)}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -87,6 +92,7 @@ const styles = StyleSheet.create({
     height: getSize(105),
     marginTop: getSize(27),
     paddingHorizontal: getSize(Sizes.formMargin),
+    marginBottom: getSize(20),
   },
   folderNameContainer: {
     flexDirection: 'row',
@@ -123,6 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: width,
     gap: getSize(20),
+    paddingBottom: getSize(20),
     paddingHorizontal: getSize(Sizes.formMargin),
   },
 })
