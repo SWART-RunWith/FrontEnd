@@ -152,7 +152,8 @@ export const SearchTextIcon: React.FC<{
           >
             <TextInput
               style={styles.searchInput}
-              placeholder="폴더 이름을 적어주세요"
+              placeholder="폴더, 코스 검색"
+              placeholderTextColor="#B3B3B3"
               value={searchText}
               onChangeText={setSearchText}
               onSubmitEditing={handleSearchSubmit}
@@ -341,7 +342,7 @@ const styles = StyleSheet.create({
   searchInput: {
     color: 'white',
     paddingHorizontal: getSize(Sizes.formMargin),
-    fontSize: getSize(14),
+    fontSize: getSize(18),
   },
 });
 
