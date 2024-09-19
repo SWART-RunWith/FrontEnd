@@ -86,5 +86,5 @@ export type CourseFeedScreenNavigationProp = StackNavigationProp<
 
 export type CourseSaveScreenRouteProp = RouteProp<
   CourseFeedStackParamList,
-  "running/save"
+  "course-feed/my/course"
 >;
