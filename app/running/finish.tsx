@@ -100,7 +100,7 @@ const FinishScreen = () => {
 
       {/* 모달창 */}
       <MyCourseSaveModal
-        modalVisible={showModal}
+        visible={showModal}
         isLeftMain={false}
         onLeftButtonPress={handleCloseModal}
         onRightButtonPress={() => { handleSaveCourse() }}
