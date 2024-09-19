@@ -15,6 +15,10 @@ interface SearchIconProps {
   onPressSearch: () => void;
 }
 
+interface OptionIconProps {
+  onPressOption: () => void;
+}
+
 const BackHeader: React.FC<BackIconProps> = ({
   onPressBack
 }) => {
@@ -66,6 +70,21 @@ export const CourseSaveHeader: React.FC<
         backProps={{ onPress: onPressBack }}
         textProps={{ text: '' }}
         searchProps={{ onPress: onPressSearch }}
+      />
+    );
+  };
+
+export const BackOptionHeader: React.FC<
+  BackIconProps & OptionIconProps
+> = ({
+  onPressBack,
+  onPressOption,
+}
+) => {
+    return (
+      <CombinedHeader
+        backProps={{ onPress: onPressBack }}
+        optionProps={{ onPress: onPressOption }}
       />
     );
   };
