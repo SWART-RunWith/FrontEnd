@@ -153,7 +153,7 @@ export const SearchTextIcon: React.FC<{
             <TextInput
               style={styles.searchInput}
               placeholder="폴더, 코스 검색"
-              placeholderTextColor="#B3B3B3"
+              placeholderTextColor={Colors.placeholder}
               value={searchText}
               onChangeText={setSearchText}
               onSubmitEditing={handleSearchSubmit}

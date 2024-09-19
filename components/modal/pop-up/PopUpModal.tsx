@@ -216,6 +216,7 @@ export const EditModal: React.FC<EditModalProps> = ({
                   value={value}
                   onChangeText={onChangeText}
                   placeholder='코스 이름을 적성해주세요'
+                  placeholderTextColor={Colors.placeholder}
                 />
                 <TouchableOpacity onPress={resetText}>
                   <CancelIcon width={getSize(22.65)} height={getSize(24)} />

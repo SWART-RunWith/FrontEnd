@@ -12,4 +12,5 @@ export default {
   darkGrayBox: "#1E1E1E",
   background: "#282828",
   navigator: "#282828",
+  placeholder: "#B3B3B3",
 };
