@@ -14,7 +14,7 @@ import getSize from "@/scripts/getSize";
 
 const { width } = Dimensions.get('window');
 
-const CourseMyHomeScreen = () => {
+const MyCourseHomeScreen = () => {
   return (
     <View style={Styles.container}>
       <LinearGradient
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
     color: 'black',
   }
 })
-export default CourseMyHomeScreen;
+export default MyCourseHomeScreen;
