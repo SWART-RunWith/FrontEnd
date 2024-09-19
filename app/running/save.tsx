@@ -20,22 +20,22 @@ const { width } = Dimensions.get('window');
 const CourseSaveScreen = () => {
   const navigation = useNavigation<CourseFeedScreenNavigationProp>();
 
-  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+  const [selectedFolder, setSelectedFolder] = useState<number | null>(null);
   const [courseName, setCourseName] = useState('');
   const [visibleModal, setVisibleModal] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   // to do : 모든 폴더 데이터 가져오기 api 연동 -> list로 받기
   const folderList = [
-    { name: '서천동', id: '1' },
-    { name: '봉천동', id: '2' },
-    { name: '대학로', id: '3' },
-    { name: '홍대입구', id: '4' },
-    { name: '강남', id: '5' },
-    { name: '이태원', id: '6' },
+    { name: '서천동', id: 1 },
+    { name: '봉천동', id: 2 },
+    { name: '대학로', id: 3 },
+    { name: '홍대입구', id: 4 },
+    { name: '강남', id: 5 },
+    { name: '이태원', id: 6 },
   ];
 
-  const handleSelectFolder = (folderId: string) => {
+  const handleSelectFolder = (folderId: number) => {
     setSelectedFolder(prevSelected =>
       prevSelected === folderId ? null : folderId
     );
@@ -53,6 +53,7 @@ const CourseSaveScreen = () => {
 
     console.log('api uri : ' + uri);
     console.log('course name : ' + courseName);
+    console.log('selected folder id : ', selectedFolder);
     setCourseName('');
     handleCloseModal();
     setIsSaved(true);
@@ -84,7 +85,9 @@ const CourseSaveScreen = () => {
   useEffect(() => {
     if (isSaved) {
       setIsSaved(false);
-      navigation.navigate('course-feed/my/home'); // 이동할 화면으로 이동
+      navigation.navigate('course-feed/my/course', {
+        folderId: selectedFolder ?? 0,
+      });
     }
   }, [isSaved]);
 
