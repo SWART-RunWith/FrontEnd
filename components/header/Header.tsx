@@ -182,7 +182,7 @@ interface TextProps {
 }
 
 const HeaderText: React.FC<TextProps> = ({
-  text = 'RUNWITH',
+  text = '',
   fontSize = Sizes.pageTitle,
   fontFamily = 'Pretendard-SemiBold',
   fontColor = Colors.main,
