@@ -2,6 +2,7 @@ import React from "react";
 import {
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 
 } from "react-native";
@@ -52,9 +53,12 @@ export const CourseBox: React.FC<CourseBoxProps> = ({
         </View>
       </View>
 
-      <View style={styles.uploadIcon}>
+      <TouchableOpacity
+        style={styles.uploadIcon}
+        onPress={onPressSave}
+      >
         <UploadIcon width={getSize(28)} height={getSize(28)} />
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.imageContainer} />
       <View style={styles.buttonContainer}>
