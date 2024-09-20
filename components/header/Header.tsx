@@ -63,10 +63,12 @@ const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity
     // to do : option 모달 띄우기
     onPress={onPress}
-    style={styles.iconButton}
+    style={[styles.iconButton]}
   >
-    <OptionSvgIcon width={getSize(5.33)} height={getSize(24)} />
-  </TouchableOpacity>
+    <View style={{ paddingLeft: getSize(24 - 5.33) }}>
+      <OptionSvgIcon width={getSize(5.33)} height={getSize(24)} />
+    </View>
+  </TouchableOpacity >
 );
 
 // TextProps 정의
@@ -180,6 +182,7 @@ const styles = StyleSheet.create({
   rightIcons: {
   },
   iconButton: {
+    width: getSize(24),
   },
   centerText: {
     justifyContent: 'center',
