@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 import { BarProps, DefaultBar } from '@/components/bar/Bar';
+import getSize from '@/scripts/getSize';
 
 // 로그인 Bar 컴포넌트
 const LoginBar = ({
@@ -39,11 +40,13 @@ const LoginPasswordBar = ({
       label={label}
       placeholder={placeholder}
       isSecure={secureText}
-      eyeIcon={<Ionicons
-        name={secureText ? 'eye-off' : 'eye'}
-        size={20}
-        color="rgba(255, 255, 255, 0.6)"
-      />}
+      eyeIcon={
+        <Ionicons
+          name={secureText ? 'eye-off' : 'eye'}
+          size={getSize(20)}
+          color="rgba(255, 255, 255, 0.6)"
+        />
+      }
       onButtonPress={() => {
         setSecureText(!isSecure);
         setIsSecure(!isSecure);
