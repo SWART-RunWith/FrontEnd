@@ -26,6 +26,7 @@ interface BarProps {
   onChangeText?: (text: string) => void;
   isSecure?: boolean;
   isRequired?: boolean;
+  canTextInputTouch?: boolean;
   buttonText?: string;
   onButtonPress?: () => void;
   errorText?: string;
@@ -45,6 +46,7 @@ const DefaultBar = ({
   onChangeText,
   isSecure = false,
   isRequired = false,
+  canTextInputTouch = true,
   buttonText = '',
   onButtonPress,
   errorText = '',
@@ -78,6 +80,7 @@ const DefaultBar = ({
           value={value}
           onChangeText={onChangeText}
           secureTextEntry={isSecure}
+          editable={canTextInputTouch}
         />
 
         {buttonText ? (
