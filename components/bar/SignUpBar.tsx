@@ -143,6 +143,7 @@ const SignUpDateOfBirthBar = ({
         value={selectedDate || ''}
         isCalendar={true}
         onButtonPress={showDatePicker}
+        canTextInputTouch={false}
         {...props}
       />
 
@@ -346,19 +347,20 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     backgroundColor: Colors.grayBox,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    width: width * 0.8,
+    borderRadius: 10,
     alignItems: 'center',
   },
   modalBar: {
     backgroundColor: Colors.lightGrayBox,
     height: getSize(1),
-    width: width,
+    width: '100%',
   },
   modalTitle: {
     fontSize: getSize(18),
@@ -370,10 +372,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 'auto',
+    // marginTop: 'auto',
   },
   button: {
     flex: 1,
+    backgroundColor: Colors.grayBox,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 0,
     paddingVertical: getSize(15),
     alignItems: 'center',
   },
@@ -383,6 +388,8 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     backgroundColor: Colors.main,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 10,
   },
   confirmButtonText: {
     color: 'black',
