@@ -5,7 +5,9 @@ import {
   Text,
   Dimensions,
   TextInput,
-  ScrollView
+  ScrollView,
+  Modal,
+  TouchableOpacity
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
@@ -25,7 +27,11 @@ const { width } = Dimensions.get('window');
 const MyCourseScreen = () => {
   const route = useRoute<CourseSaveScreenRouteProp>();
   const { folderId } = route.params;
+
   const [courseName, setCourseName] = useState('');
+  const [visibleModal, setVisibleModal] = useState(false);
+
+  const toggleModal = () => setVisibleModal(!visibleModal);
 
   const folderName = '서천동';
   const courseList = [
@@ -46,7 +52,7 @@ const MyCourseScreen = () => {
     <View style={Styles.container} >
       <BackOptionHeader
         onPressBack={() => { }}
-        onPressOption={() => { }}
+        onPressOption={toggleModal}
       />
 
       <View style={styles.topContainer}>
@@ -82,6 +88,31 @@ const MyCourseScreen = () => {
           />
         ))}
       </ScrollView>
+
+      {/* 옵션 */}
+      <Modal
+        transparent={true}
+        visible={visibleModal}
+        animationType="fade"
+        onRequestClose={toggleModal}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          onPress={toggleModal} // Close modal if clicking outside the menu
+        >
+          <View style={styles.menuContainer}>
+            <TouchableOpacity onPress={() => console.log('Edit course')}>
+              <Text style={styles.menuItem}>코스 이름 수정</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => console.log('Delete course')}>
+              <Text style={styles.menuItem}>코스 삭제</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => console.log('Delete folder')}>
+              <Text style={styles.menuItem}>폴더 삭제</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -131,6 +162,23 @@ const styles = StyleSheet.create({
     gap: getSize(20),
     paddingBottom: getSize(20),
     paddingHorizontal: getSize(Sizes.formMargin),
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)', // semi-transparent background
+  },
+  menuContainer: {
+    backgroundColor: Colors.grayBox,
+    borderRadius: 10,
+    padding: getSize(10),
+    width: getSize(200),
+  },
+  menuItem: {
+    color: 'white',
+    paddingVertical: getSize(10),
+    fontSize: getSize(16),
   },
 })
 
