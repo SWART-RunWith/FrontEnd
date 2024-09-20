@@ -28,7 +28,7 @@ import Styles from '@/constants/Styles';
 import { DefaultButton } from '@/components/button/Button';
 
 const DefaultImage = require('@/assets/images/default.png');
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const SignUpProfileScreen = () => {
   const navigation = useNavigation<SignUpScreenNavigationProp>();
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     marginTop: getSize(20),
     width: width,
-    height: getSize(752),
+    height: height,
     alignItems: 'center',
     backgroundColor: Colors.grayBox,
   },
