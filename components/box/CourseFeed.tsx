@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Image,
   ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Animated
 } from "react-native";
 
 import UploadIcon from '@/assets/icons/upload.svg';
@@ -202,34 +203,108 @@ const MainCourseStyles = StyleSheet.create({
   },
 })
 
-export const MyCourseBox: React.FC<CourseProps> = ({
-  imgUrl = 'imgurl',
-  location = '장소',
-  onPress,
-}) => {
-  return (
-    <View style={myCourseStyles.container}>
-      <View style={myCourseStyles.locationContainer}>
-        <LocationIcon width={getSize(17)} height={getSize(24)} />
-        <View style={{ height: getSize(17) }}>
-          <Text style={myCourseStyles.locationText}>{location}</Text>
-        </View>
-      </View>
+export const MyCourseBox: React.FC<
+  CourseProps & {
+    visible: number;
+    onPressLeft: () => void;
+    onPressRight: () => void;
+  }> = ({
+    imgUrl = 'imgurl',
+    location = '장소',
+    onPress,
+    visible,
+    onPressRight,
+    onPressLeft,
+  }) => {
+    const opacityAnim = useRef(new Animated.Value(visible ? 1 : 0)).current;
+    const scaleAnim = useRef(new Animated.Value(visible === 2 ? 1 : (visible === 1 ? 0.87 : 0.75))).current;
 
-      <View style={myCourseStyles.imageContainer}>
-        <ImageBackground />
-      </View>
+    useEffect(() => {
+      let scaleToValue = 1;
+      let opacityToValue = 1;
 
-      <View style={myCourseStyles.buttonContainer}>
-        <TouchableOpacity onPress={onPress}>
-          <View style={myCourseStyles.runButton}>
-            <Text style={myCourseStyles.buttonText}>코스 뛰기</Text>
+      if (visible === 1) {
+        scaleToValue = 0.87;
+        opacityToValue = 0;
+      } else if (visible === 0) {
+        scaleToValue = 0.75;
+        opacityToValue = 0;
+      }
+
+      Animated.parallel([
+        Animated.timing(opacityAnim, {
+          toValue: opacityToValue,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: scaleToValue,
+          duration: 500,
+          useNativeDriver: true,
+        })
+      ]).start();
+    }, [visible]);
+
+    return (
+      <Animated.View
+        style={[
+          myCourseStyles.container,
+          { transform: [{ scale: scaleAnim }] }
+        ]}
+      >
+        {visible !== 2 && (
+          <View style={[
+            myCourseStyles.barsContainer,
+            visible === 1 && myCourseStyles.one,
+            visible === 0 && myCourseStyles.zero,
+          ]}>
+            <TouchableOpacity
+              onPress={onPressLeft}
+              style={[myCourseStyles.barContainer]}
+            >
+              <View style={[
+                myCourseStyles.bar,
+                { left: getSize(16) }
+              ]}></View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={onPressRight}
+              style={[myCourseStyles.barContainer]}
+            >
+              <View style={[
+                myCourseStyles.bar,
+                { right: getSize(16) }
+              ]}></View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
+        )
+        }
+        <Animated.View style={{
+          opacity: opacityAnim,
+          transform: [{ scale: scaleAnim }]
+        }}>
+          <View style={myCourseStyles.locationContainer}>
+            <LocationIcon width={getSize(17)} height={getSize(24)} />
+            <View style={{ height: getSize(17) }}>
+              <Text style={myCourseStyles.locationText}>{location}</Text>
+            </View>
+          </View>
+
+          <View style={myCourseStyles.imageContainer}>
+            <ImageBackground />
+          </View>
+
+          <View style={myCourseStyles.buttonContainer}>
+            <TouchableOpacity onPress={onPress}>
+              <View style={myCourseStyles.runButton}>
+                <Text style={myCourseStyles.buttonText}>코스 뛰기</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
+      </Animated.View >
+    );
+  };
 
 const myCourseStyles = StyleSheet.create({
   container: {
@@ -258,9 +333,8 @@ const myCourseStyles = StyleSheet.create({
     width: '100%',
   },
   buttonContainer: {
-    position: 'absolute',
-    bottom: getSize(13),
-    right: getSize(13),
+    marginTop: getSize(39),
+    marginLeft: getSize(120),
   },
   runButton: {
     backgroundColor: Colors.main,
@@ -274,5 +348,31 @@ const myCourseStyles = StyleSheet.create({
     fontSize: getSize(16),
     fontFamily: Fonts.semiBold,
     color: "black",
+  },
+  bar: {
+    position: 'absolute',
+    backgroundColor: Colors.gray,
+    width: getSize(2),
+    height: getSize(40),
+    top: getSize(230 / 2),
+  },
+  barContainer: {
+    width: getSize(100),
+    height: getSize(270),
+  },
+  barsContainer: {
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  one: {
+    left: getSize(0),
+    right: getSize(0),
+    top: getSize(18),
+  },
+  zero: {
+    left: getSize(2),
+    right: getSize(2),
+    top: getSize(18),
   },
 });
