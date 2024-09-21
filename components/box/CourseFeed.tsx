@@ -82,26 +82,26 @@ export const MainCourseBox: React.FC<MainCourseProps> = ({
   onPressPlus,
 }) => {
   return (
-    <View style={styles.cardContainer}>
-      <TouchableOpacity style={styles.ImageBack} onPress={onPress}>
+    <View style={MainCourseStyles.cardContainer}>
+      <TouchableOpacity style={MainCourseStyles.ImageBack} onPress={onPress}>
         <ImageBackground
           source={{ uri: imgUrl }}
-          style={styles.courseImage}
+          style={MainCourseStyles.courseImage}
         />
 
-        <View style={styles.locationContainer}>
+        <View style={MainCourseStyles.locationContainer}>
           <LocationIcon width={getSize(11)} height={getSize(16)} />
           <View style={{ height: getSize(17) }}>
-            <Text style={styles.location}>{location}</Text>
+            <Text style={MainCourseStyles.location}>{location}</Text>
           </View>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.plusButton} onPress={onPressPlus}>
+      <TouchableOpacity style={MainCourseStyles.plusButton} onPress={onPressPlus}>
         <PlusIcon width={getSize(28)} height={getSize(28)} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.nextButton} onPress={onPressButton}>
+      <TouchableOpacity style={MainCourseStyles.nextButton} onPress={onPressButton}>
         <NextIcon width={getSize(44)} height={getSize(44)} />
       </TouchableOpacity>
     </View>
@@ -149,6 +149,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: getSize(12),
   },
+});
+
+const MainCourseStyles = StyleSheet.create({
   cardContainer: {
     width: getSize(226),
     height: getSize(309),
@@ -193,4 +196,5 @@ const styles = StyleSheet.create({
     bottom: getSize(16),
     right: getSize(16),
   },
-});
+})
+
