@@ -13,13 +13,13 @@ import LocationIcon from '@/assets/icons/location.svg';
 
 interface FolderProps {
   name: string;
-  isSelected: boolean;
+  isSelected?: boolean;
   showNum?: boolean;
   count: number;
   onPress: () => void;
 }
 
-const FolderButton: React.FC<FolderProps> = ({
+export const FolderButton: React.FC<FolderProps> = ({
   name = '',
   isSelected = false,
   showNum = false,
@@ -48,8 +48,6 @@ export const CourseSaveFolderButton: React.FC<FolderProps> = ({
   count = 0,
   onPress,
 }) => {
-
-
   return (
     <FolderButton
       name={name}
