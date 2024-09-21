@@ -15,6 +15,7 @@ import PlusIcon from '@/assets/icons/plus.svg';
 import Colors from "@/constants/Colors";
 import getSize from "@/scripts/getSize";
 import { CourseButton } from "../button/RunningButton";
+import Fonts from "@/constants/Fonts";
 
 interface CourseBoxProps {
   title: string;
@@ -66,10 +67,13 @@ export const CourseBox: React.FC<CourseBoxProps> = ({
   );
 };
 
-interface MainCourseProps {
+interface CourseProps {
   location: string;
   imgUrl: string;
   onPress: () => void;
+}
+
+interface MainCourseProps extends CourseProps {
   onPressButton: () => void;
   onPressPlus: () => void;
 }
@@ -198,3 +202,77 @@ const MainCourseStyles = StyleSheet.create({
   },
 })
 
+export const MyCourseBox: React.FC<CourseProps> = ({
+  imgUrl = 'imgurl',
+  location = '장소',
+  onPress,
+}) => {
+  return (
+    <View style={myCourseStyles.container}>
+      <View style={myCourseStyles.locationContainer}>
+        <LocationIcon width={getSize(17)} height={getSize(24)} />
+        <View style={{ height: getSize(17) }}>
+          <Text style={myCourseStyles.locationText}>{location}</Text>
+        </View>
+      </View>
+
+      <View style={myCourseStyles.imageContainer}>
+        <ImageBackground />
+      </View>
+
+      <View style={myCourseStyles.buttonContainer}>
+        <TouchableOpacity onPress={onPress}>
+          <View style={myCourseStyles.runButton}>
+            <Text style={myCourseStyles.buttonText}>코스 뛰기</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const myCourseStyles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.darkGrayBox,
+    height: getSize(310),
+    width: getSize(250),
+    borderRadius: 20,
+    paddingHorizontal: getSize(17),
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: getSize(24),
+    marginTop: getSize(20),
+    gap: getSize(6),
+  },
+  locationText: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.semiBold,
+  },
+  imageContainer: {
+    marginTop: getSize(48),
+    backgroundColor: 'black',
+    height: getSize(126),
+    width: '100%',
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: getSize(13),
+    right: getSize(13),
+  },
+  runButton: {
+    backgroundColor: Colors.main,
+    height: getSize(40),
+    width: getSize(100),
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+    color: "black",
+  },
+});
