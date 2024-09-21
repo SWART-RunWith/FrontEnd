@@ -1,13 +1,17 @@
 import React from "react";
 import {
+  Image,
+  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
-
 } from "react-native";
 
 import UploadIcon from '@/assets/icons/upload.svg';
+import LocationIcon from '@/assets/icons/location.svg';
+import NextIcon from '@/assets/icons/next.svg';
+import PlusIcon from '@/assets/icons/plus.svg';
 import Colors from "@/constants/Colors";
 import getSize from "@/scripts/getSize";
 import { CourseButton } from "../button/RunningButton";
@@ -32,25 +36,15 @@ export const CourseBox: React.FC<CourseBoxProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
-        <View style={{ height: getSize(14) }}>
-          <Text
-            style={styles.titleText}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >{title}</Text>
-        </View>
-        <View style={{
-          marginTop: getSize(10),
-          height: getSize(12),
-        }}>
-          <Text style={styles.timeText}>{time}</Text>
-        </View>
-        <View style={{
-          marginTop: getSize(6),
-          height: getSize(14),
-        }}>
-          <Text style={styles.distanceText}>{distance}</Text>
-        </View>
+        <Text
+          style={styles.titleText}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {title}
+        </Text>
+        <Text style={styles.timeText}>{time}</Text>
+        <Text style={styles.distanceText}>{distance}</Text>
       </View>
 
       <TouchableOpacity
@@ -65,11 +59,54 @@ export const CourseBox: React.FC<CourseBoxProps> = ({
         <CourseButton
           onPress={onPressButton}
           width={getSize(68)}
-          text="코스 뛰기" />
+          text="코스 뛰기"
+        />
       </View>
     </View>
   );
 };
+
+interface MainCourseProps {
+  location: string;
+  imgUrl: string;
+  onPress: () => void;
+  onPressButton: () => void;
+  onPressPlus: () => void;
+}
+
+export const MainCourse: React.FC<MainCourseProps> = ({
+  location = '장소',
+  imgUrl = 'imaUrl',
+  onPress,
+  onPressButton,
+  onPressPlus,
+}) => {
+  return (
+    <View style={styles.cardContainer}>
+      <TouchableOpacity style={styles.ImageBack} onPress={onPress}>
+        <ImageBackground
+          source={{ uri: imgUrl }}
+          style={styles.courseImage}
+        />
+
+        <View style={styles.locationContainer}>
+          <LocationIcon width={getSize(11)} height={getSize(16)} />
+          <View style={{ height: getSize(17) }}>
+            <Text style={styles.location}>{location}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.plusButton} onPress={onPressPlus}>
+        <PlusIcon width={getSize(28)} height={getSize(28)} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.nextButton} onPress={onPressButton}>
+        <NextIcon width={getSize(44)} height={getSize(44)} />
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -112,4 +149,48 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: getSize(12),
   },
-})
+  cardContainer: {
+    width: getSize(226),
+    height: getSize(309),
+    backgroundColor: 'black',
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  ImageBack: {
+    height: '100%',
+    width: '100%',
+  },
+  courseImage: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  locationContainer: {
+    backgroundColor: Colors.darkGrayBox,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: getSize(144),
+    height: getSize(34),
+    marginTop: getSize(16),
+    marginLeft: getSize(16),
+    paddingHorizontal: getSize(10),
+    paddingVertical: getSize(8),
+    borderRadius: 10,
+    gap: getSize(8),
+  },
+  location: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontWeight: 'bold',
+  },
+  plusButton: {
+    position: 'absolute',
+    top: getSize(21),
+    right: getSize(14),
+  },
+  nextButton: {
+    position: 'absolute',
+    bottom: getSize(16),
+    right: getSize(16),
+  },
+});
