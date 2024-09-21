@@ -74,7 +74,7 @@ interface MainCourseProps {
   onPressPlus: () => void;
 }
 
-export const MainCourse: React.FC<MainCourseProps> = ({
+export const MainCourseBox: React.FC<MainCourseProps> = ({
   location = '장소',
   imgUrl = 'imaUrl',
   onPress,
