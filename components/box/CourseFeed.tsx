@@ -216,27 +216,19 @@ export const MyCourseBox: React.FC<
     onPressRight,
     onPressLeft,
   }) => {
-    const opacityAnim = useRef(new Animated.Value(visible ? 1 : 0)).current;
+    // const opacityAnim = useRef(new Animated.Value(visible ? 1 : 0)).current;
     const scaleAnim = useRef(new Animated.Value(visible === 2 ? 1 : (visible === 1 ? 0.87 : 0.75))).current;
 
     useEffect(() => {
       let scaleToValue = 1;
-      let opacityToValue = 1;
 
       if (visible === 1) {
         scaleToValue = 0.87;
-        opacityToValue = 0;
       } else if (visible === 0) {
         scaleToValue = 0.75;
-        opacityToValue = 0;
       }
 
       Animated.parallel([
-        Animated.timing(opacityAnim, {
-          toValue: opacityToValue,
-          duration: 500,
-          useNativeDriver: true,
-        }),
         Animated.timing(scaleAnim, {
           toValue: scaleToValue,
           duration: 500,
@@ -265,7 +257,7 @@ export const MyCourseBox: React.FC<
               <View style={[
                 myCourseStyles.bar,
                 { left: getSize(16) }
-              ]}></View>
+              ]} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={onPressRight}
@@ -280,7 +272,7 @@ export const MyCourseBox: React.FC<
         )
         }
         <Animated.View style={{
-          opacity: opacityAnim,
+          // opacity: opacityAnim,
           transform: [{ scale: scaleAnim }]
         }}>
           <View style={myCourseStyles.locationContainer}>
@@ -312,7 +304,6 @@ const myCourseStyles = StyleSheet.create({
     height: getSize(310),
     width: getSize(250),
     borderRadius: 20,
-    paddingHorizontal: getSize(17),
   },
   locationContainer: {
     flexDirection: 'row',
@@ -320,6 +311,7 @@ const myCourseStyles = StyleSheet.create({
     height: getSize(24),
     marginTop: getSize(20),
     gap: getSize(6),
+    paddingHorizontal: getSize(26),
   },
   locationText: {
     color: 'white',
@@ -327,13 +319,14 @@ const myCourseStyles = StyleSheet.create({
     fontFamily: Fonts.semiBold,
   },
   imageContainer: {
-    marginTop: getSize(48),
+    marginTop: getSize(20),
     backgroundColor: 'black',
-    height: getSize(126),
-    width: '100%',
+    height: getSize(173),
+    width: getSize(225),
+    marginHorizontal: getSize(12),
   },
   buttonContainer: {
-    marginTop: getSize(39),
+    marginTop: getSize(20),
     marginLeft: getSize(120),
   },
   runButton: {
