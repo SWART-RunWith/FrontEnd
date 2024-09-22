@@ -10,8 +10,9 @@ import {
 } from 'react-native';
 import Styles from '@/constants/Styles';
 import getSize from "@/scripts/getSize";
-import { BackOptionHeader } from "@/components/header/IconHeader";
+import { BackOptionHeader, CourseFeedMainHeader } from "@/components/header/IconHeader";
 import { MainCourseBox } from '@/components/box/CourseFeed';
+import Fonts from '@/constants/Fonts';
 
 const { width } = Dimensions.get('window');
 
@@ -48,11 +49,10 @@ const CourseFeedHomeScreen = () => {
         blurRadius={5}
       />
 
-      <BackOptionHeader
-        onPressBack={() => { }}
-        onPressOption={() => { }}
-      />
-
+      <CourseFeedMainHeader />
+      <View style={{ height: getSize(29) }}>
+        <Text style={styles.titleText} >BEST 코스</Text>
+      </View>
       <ScrollView
         ref={scrollViewRef}
         horizontal
@@ -99,6 +99,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     height: getSize(1156),
     width: '100%',
+  },
+  titleText: {
+    color: 'white',
+    fontSize: getSize(24),
+    fontFamily: Fonts.semiBold,
   },
   scrollView: {
     flexGrow: 0,
