@@ -72,8 +72,10 @@ export type RunningFinishScreenRouteProp = RouteProp<
 >;
 
 type CourseFeedStackParamList = {
+  home: undefined;
   "running/save": undefined;
   "course-feed/my/home": undefined;
+  "course-feed/my/folder": undefined;
   "course-feed/my/course": {
     folderId: number;
   };
