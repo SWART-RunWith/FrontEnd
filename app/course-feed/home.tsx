@@ -8,16 +8,23 @@ import {
   Text,
   Animated,
   TouchableOpacity,
+  Image,
 } from 'react-native';
-import Styles from '@/constants/Styles';
+import { useNavigation } from '@react-navigation/native';
+
+import NextIcon from '@/assets/icons/next.svg';
 import getSize from "@/scripts/getSize";
 import { CourseFeedMainHeader } from "@/components/header/IconHeader";
 import { MainCourseBox } from '@/components/box/CourseFeed';
+import Styles from '@/constants/Styles';
 import Fonts from '@/constants/Fonts';
+import Colors from '@/constants/Colors';
+import { CourseFeedScreenNavigationProp } from '@/scripts/navigation';
 
 const { width } = Dimensions.get('window');
 
 const CourseFeedHomeScreen = () => {
+  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -134,11 +141,26 @@ const CourseFeedHomeScreen = () => {
             key={index}
             style={[
               styles.dot,
-              { opacity: activeIndex === index ? 1 : 0.3 }
+              activeIndex === index && { backgroundColor: '#D9D9D9' }
             ]}
             onPress={() => scrollToIndex(index)}
           />
         ))}
+      </View>
+
+      <View style={styles.bottomContainer}>
+        <Text style={styles.bottomText}>나의 러닝 코스</Text>
+        <Image
+
+          style={styles.bottomImg}
+          source={require('@/assets/images/goCourse.png')}
+        />
+        <TouchableOpacity
+          style={styles.arrowIcon}
+          onPress={() => { navigation.navigate('course-feed/my/home') }}
+        >
+          <NextIcon />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -183,8 +205,35 @@ const styles = StyleSheet.create({
     height: getSize(7),
     width: getSize(7),
     borderRadius: 50,
-    backgroundColor: '#fff',
+    backgroundColor: '#4A4A4A',
   },
+  bottomContainer: {
+    backgroundColor: Colors.darkGrayBox,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    height: getSize(193),
+    width: getSize(344),
+    marginTop: getSize(23.77),
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  bottomText: {
+    color: 'white',
+    fontSize: getSize(20),
+    fontFamily: Fonts.bold,
+    marginTop: getSize(22.77),
+    marginLeft: getSize(18),
+  },
+  bottomImg: {
+    width: getSize(239),
+    height: getSize(185),
+    resizeMode: 'contain',
+  },
+  arrowIcon: {
+    position: 'absolute',
+    right: getSize(21),
+    bottom: getSize(16),
+  }
 });
 
 export default CourseFeedHomeScreen;
