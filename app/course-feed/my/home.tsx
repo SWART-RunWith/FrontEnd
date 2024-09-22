@@ -7,22 +7,22 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+
 import { CourseMyHomeHeader } from '@/components/header/IconHeader';
+import { MyCourseBox } from '@/components/box/CourseFeed';
+import { FolderButton } from '@/components/button/FolderButton';
+import { MainGradient } from '@/components/Gradient';
 import Fonts from '@/constants/Fonts';
 import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
-import { HomeScreenNavigationProp } from '@/scripts/navigation';
-import { CourseBox, MyCourseBox } from '@/components/box/CourseFeed';
-import { CourseButton } from '@/components/button/RunningButton';
-import { FolderButton } from '@/components/button/FolderButton';
+import { CourseFeedScreenNavigationProp } from '@/scripts/navigation';
 
 const { width } = Dimensions.get('window');
 
 const MyCourseHomeScreen = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
 
   const [visibleLeft, setVisibleLeft] = useState(1);
   const [visibleMiddle, setVisibleMiddle] = useState(2);
@@ -75,10 +75,7 @@ const MyCourseHomeScreen = () => {
 
   return (
     <View style={Styles.container}>
-      <LinearGradient
-        colors={['rgba(176, 255, 76, 0.9)', 'transparent']}
-        style={styles.gradientOverlay}
-      />
+      <MainGradient />
 
       <CourseMyHomeHeader
         backProps={{
@@ -146,9 +143,12 @@ const MyCourseHomeScreen = () => {
       </View>
 
       <View style={styles.folderContainer}>
-        <View style={{ height: getSize(24) }}>
+        <TouchableOpacity
+          style={{ height: getSize(24) }}
+          onPress={() => { navigation.navigate('course-feed/my/folder'); }}
+        >
           <Text style={styles.folderTitle}>내 폴더</Text>
-        </View>
+        </TouchableOpacity>
         <View style={styles.folderList}>
           {folderList.map((folder) => (
             <View key={folder.id} style={styles.folderWrapper}>
@@ -167,11 +167,6 @@ const MyCourseHomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  gradientOverlay: {
-    position: 'absolute',
-    width: width,
-    height: getSize(495),
-  },
   textContainer: {
     marginTop: getSize(31),
     width: width,
