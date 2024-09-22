@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     width: width,
     height: getSize(29),
     marginTop: getSize(58),
