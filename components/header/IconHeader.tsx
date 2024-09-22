@@ -112,10 +112,10 @@ const MyFolderHeader: React.FC<
     return (
       <CombinedHeader
         isLeftSearch={false}
+        isBlack={true}
         backProps={{ onPress: onPressBack }}
         textProps={{
           text: '내 폴더',
-          fontColor: 'white',
         }}
         searchProps={{ onPress: onPressSearch }}
       />

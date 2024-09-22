@@ -226,54 +226,29 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
   searchProps,
   textProps,
   containerStyle = {},
-}) => (
-  <View style={[styles.container, containerStyle]}>
-    <View style={styles.leftIconContainer}>
-      {/* Back Icon */}
-      {showBackIcon && backProps && (
-        <View style={styles.leftIcons}>
-          {isBlack
-            ? <BackBlackIcon {...backProps} />
-            : <BackIcon {...backProps} />
-          }
-        </View>
-      )}
-    </View>
+}) => {
+  const adjustedTextProps = {
+    ...textProps,
+    fontColor: isBlack ? 'black' : textProps?.fontColor || 'white', // isBlack이 true이면 fontColor는 검정, 그렇지 않으면 textProps의 기본값 사용
+  };
 
-    {/* Search Icon */}
-    {isLeftSearch && searchProps && (
-      <View style={styles.leftIcons}>
-        {hasSearchModal ? (
-          <SearchTextIcon query={query} />
-        ) : (
-          <SearchIcon {...searchProps} />
+  return (
+    <View style={[styles.container, containerStyle]}>
+      <View style={styles.leftIconContainer}>
+        {/* Back Icon */}
+        {showBackIcon && backProps && (
+          <View style={styles.leftIcons}>
+            {isBlack
+              ? <BackBlackIcon {...backProps} />
+              : <BackIcon {...backProps} />
+            }
+          </View>
         )}
       </View>
-    )}
-
-    {/* Text */}
-    <View style={styles.centerText}>
-      <HeaderText {...textProps} />
-    </View>
-
-    <View style={styles.rightIconContainer}>
-      {/* Edit Icon */}
-      {editProps && (
-        <View style={styles.rightIcons}>
-          <EditIcon {...editProps} />
-        </View>
-      )}
-
-      {/* Settings Icon */}
-      {settingProps && (
-        <View style={styles.rightIcons}>
-          <SettingIcon {...settingProps} />
-        </View>
-      )}
 
       {/* Search Icon */}
-      {!isLeftSearch && searchProps && (
-        <View style={styles.rightIcons}>
+      {isLeftSearch && searchProps && (
+        <View style={styles.leftIcons}>
           {hasSearchModal ? (
             <SearchTextIcon query={query} />
           ) : (
@@ -282,18 +257,50 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
         </View>
       )}
 
-      {/* Option Icon */}
-      {optionProps && (
-        <View style={styles.rightIcons}>
-          {isBlack
-            ? <OptionBlackIcon {...optionProps} />
-            : <OptionIcon {...optionProps} />
-          }
-        </View>
-      )}
+      {/* Text */}
+      <View style={styles.centerText}>
+        <HeaderText {...adjustedTextProps} />
+      </View>
+
+      <View style={styles.rightIconContainer}>
+        {/* Edit Icon */}
+        {editProps && (
+          <View style={styles.rightIcons}>
+            <EditIcon {...editProps} />
+          </View>
+        )}
+
+        {/* Settings Icon */}
+        {settingProps && (
+          <View style={styles.rightIcons}>
+            <SettingIcon {...settingProps} />
+          </View>
+        )}
+
+        {/* Search Icon */}
+        {!isLeftSearch && searchProps && (
+          <View style={styles.rightIcons}>
+            {hasSearchModal ? (
+              <SearchTextIcon query={query} />
+            ) : (
+              <SearchIcon {...searchProps} />
+            )}
+          </View>
+        )}
+
+        {/* Option Icon */}
+        {optionProps && (
+          <View style={styles.rightIcons}>
+            {isBlack
+              ? <OptionBlackIcon {...optionProps} />
+              : <OptionIcon {...optionProps} />
+            }
+          </View>
+        )}
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 // 스타일 정의
 const styles = StyleSheet.create({
