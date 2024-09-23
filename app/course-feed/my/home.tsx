@@ -33,6 +33,10 @@ const MyCourseHomeScreen = () => {
   const scaleMiddleAnim = useRef(new Animated.Value(visibleMiddle === 2 ? 1 : (visibleMiddle === 1 ? 0.87 : 0.75))).current;
   const scaleRightAnim = useRef(new Animated.Value(visibleRight === 2 ? 1 : (visibleRight === 1 ? 0.87 : 0.75))).current;
 
+  const translateLeftAnim = useRef(new Animated.Value(0)).current;
+  const translateRightAnim = useRef(new Animated.Value(0)).current;
+  const translateMiddleAnim = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     animateBoxes();
   }, [visibleLeft, visibleMiddle, visibleRight]);
@@ -71,28 +75,48 @@ const MyCourseHomeScreen = () => {
 
   const animateBoxes = () => {
     Animated.parallel([
+      // left 
       Animated.timing(scaleLeftAnim, {
         toValue: visibleLeft === 2 ? 1 : (visibleLeft === 1 ? 0.87 : 0.75),
         duration: 500,
         useNativeDriver: true,
       }),
+      Animated.timing(translateLeftAnim, {
+        toValue: visibleLeft === 2 ? 0 : (visibleLeft === 1 ? getSize(-20) : getSize(-45)),
+        duration: 500,
+        useNativeDriver: true,
+      }),
+
+      // middle
       Animated.timing(scaleMiddleAnim, {
         toValue: visibleMiddle === 2 ? 1 : (visibleMiddle === 1 ? 0.87 : 0.75),
         duration: 500,
         useNativeDriver: true,
       }),
+      Animated.timing(translateMiddleAnim, {
+        toValue: visibleMiddle === 2 ? 0 : (visibleLeft === 2 ? getSize(25) : getSize(-25)),
+        duration: 500,
+        useNativeDriver: true,
+      }),
+
+      // right
       Animated.timing(scaleRightAnim, {
         toValue: visibleRight === 2 ? 1 : (visibleRight === 1 ? 0.87 : 0.75),
         duration: 500,
         useNativeDriver: true,
-      })
+      }),
+      Animated.timing(translateRightAnim, {
+        toValue: visibleRight === 2 ? 0 : (visibleRight === 1 ? getSize(20) : getSize(45)),
+        duration: 500,
+        useNativeDriver: true,
+      }),
     ]).start();
   };
 
   const bestCourseList = [
     { id: 1, location: '광교 호수 공원', imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s' },
-    { id: 2, location: '한강', imgUrl: 'https://i.namu.wiki/i/t2zvEe7ws93H0jrNgi_6co5wMkXToxQuGkmO7AhHbMrhPBSY9LZwNpthQZRkWYxYBB2ZPj8M08p5vw_yOJAz_g.webp' },
-    { id: 3, location: '남산 둘레길', imgUrl: 'https://www.ktsketch.co.kr/news/photo/202006/5978_26907_50.jpg' },
+    { id: 2, location: '남산 둘레길', imgUrl: 'https://www.ktsketch.co.kr/news/photo/202006/5978_26907_50.jpg' },
+    { id: 3, location: '한강', imgUrl: 'https://i.namu.wiki/i/t2zvEe7ws93H0jrNgi_6co5wMkXToxQuGkmO7AhHbMrhPBSY9LZwNpthQZRkWYxYBB2ZPj8M08p5vw_yOJAz_g.webp' },
   ];
 
   const folderList = [
@@ -128,7 +152,9 @@ const MyCourseHomeScreen = () => {
       <View style={styles.courseBoxesContainer}>
         <Animated.View style={[
           styles.leftBox,
-          { transform: [{ scale: scaleLeftAnim }] },
+          {
+            transform: [{ scale: scaleLeftAnim }, { translateX: translateLeftAnim }]
+          },
           { zIndex: visibleLeft === 2 ? 3 : (visibleLeft === 1 ? 2 : 1) }
         ]}>
           <MyCourseBox
@@ -143,7 +169,9 @@ const MyCourseHomeScreen = () => {
 
         <Animated.View style={[
           styles.middleBox,
-          { transform: [{ scale: scaleMiddleAnim }] },
+          {
+            transform: [{ scale: scaleMiddleAnim }, { translateX: translateMiddleAnim }]
+          },
           { zIndex: visibleMiddle === 2 ? 3 : (visibleMiddle === 1 ? 2 : 1) }
         ]}>
           <MyCourseBox
@@ -158,7 +186,9 @@ const MyCourseHomeScreen = () => {
 
         <Animated.View style={[
           styles.rightBox,
-          { transform: [{ scale: scaleRightAnim }] },
+          {
+            transform: [{ scale: scaleRightAnim }, { translateX: translateRightAnim }]
+          },
           { zIndex: visibleRight === 2 ? 3 : (visibleRight === 1 ? 2 : 1) }
         ]}>
           <MyCourseBox
