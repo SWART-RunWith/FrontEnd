@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     height: getSize(193),
-    width: getSize(344),
+    width: width - getSize(23) * 2,
     marginTop: getSize(23.77),
     borderRadius: 20,
     overflow: 'hidden',
