@@ -37,11 +37,7 @@ const MyCourseScreen = () => {
   const route = useRoute<CourseSaveScreenRouteProp>();
   const { folderId } = route.params;
 
-  const [courseName, setCourseName] = useState('');
-  const [visibleModal, setVisibleModal] = useState(false);
-
-  const toggleModal = () => setVisibleModal(!visibleModal);
-
+  // dummy data
   const folderName = '서천동';
   const courseList = [
     { id: 1, title: '경희대 - 서천 최애 달립니다 야호', time: '00:40:28', distance: '03.66KM' },
@@ -57,7 +53,8 @@ const MyCourseScreen = () => {
     { id: 11, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
   ];
 
-
+  // search
+  const [courseName, setCourseName] = useState('');
   const searchIconAnim = useRef(new Animated.Value(0)).current;
   const cancelIconOpacity = useRef(new Animated.Value(0)).current;
   const [showCancelIcon, setShowCancelIcon] = useState(false);
@@ -92,6 +89,68 @@ const MyCourseScreen = () => {
       }).start(() => setShowCancelIcon(false));
     }
   };
+
+  // 수정 & 삭제
+  const [mode, setMode] = useState<Mode>('BASIC');
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [visibleEditModal, setVisibleEditModal] = useState(false);
+  const [visibleCourseDeleteModal, setVisibleCourseDeleteModal] = useState(false);
+  const [visibleFolderDeleteModal, setVisibleFolderDeleteModal] = useState(false);
+  const [selectedCourses, setSelectedCourses] = useState<number[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<{ id: number, title: string } | null>(null);
+
+  const toggleModal = () => setVisibleModal(!visibleModal);
+
+  const handleCoursePress = (courseId: number) => {
+    switch (mode) {
+      case 'BASIC':
+        // navi 연결
+        break;
+
+      case 'EDIT':
+        if (selectedCourses.includes(courseId)) {
+          setSelectedCourses([]);
+        } else {
+          const course = courseList.find(c => c.id === courseId);
+          if (course) {
+            setSelectedCourse(course);
+            setSelectedCourses([courseId]);
+            setVisibleEditModal(true);
+          }
+        }
+        break;
+
+      case 'DELETE':
+        setSelectedCourses(prevSelected => {
+          if (prevSelected.includes(courseId)) {
+            return prevSelected.filter(id => id !== courseId);
+          } else {
+            return [...prevSelected, courseId];
+          }
+        });
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const handleCourseEdit = () => {
+    setMode('EDIT');
+    console.log('edit course');
+
+  }
+
+  const handleCourseDelete = () => {
+    setMode('DELETE');
+    console.log('delete courses')
+  }
+
+  const handleFolderDelete = () => {
+    // to do : folder 삭제 api 연동
+    console.log('delete folder');
+
+  }
 
   return (
     <View style={Styles.container} >
