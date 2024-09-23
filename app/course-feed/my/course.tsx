@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   Animated
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import LocationIcon from '@/assets/icons/location.svg';
 import SearchIcon from '@/assets/icons/search.svg';
@@ -21,12 +21,16 @@ import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
 import Styles from "@/constants/Styles";
 import getSize from "@/scripts/getSize";
-import { CourseSaveScreenRouteProp } from "@/scripts/navigation";
+import {
+  CourseFeedScreenNavigationProp,
+  CourseSaveScreenRouteProp
+} from "@/scripts/navigation";
 import { CourseBox } from "@/components/box/CourseFeed";
 
 const { width } = Dimensions.get('window');
 
 const MyCourseScreen = () => {
+  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
   const route = useRoute<CourseSaveScreenRouteProp>();
   const { folderId } = route.params;
 
@@ -89,7 +93,7 @@ const MyCourseScreen = () => {
   return (
     <View style={Styles.container} >
       <BackOptionHeader
-        onPressBack={() => { }}
+        onPressBack={() => { navigation.goBack() }}
         onPressOption={toggleModal}
       />
 
