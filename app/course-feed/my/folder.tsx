@@ -125,7 +125,7 @@ const CourseFeedFolderScreen = () => {
           >
             <Text style={styles.sideText}>취소</Text>
           </TouchableOpacity>
-          <Text style={styles.middleText}>{selectedFolders.length}개의 코스가 선택됨</Text>
+          <Text style={styles.middleText}>{selectedFolders.length}개의 폴더가 선택됨</Text>
           <TouchableOpacity
             style={[styles.sideButton, { alignItems: 'flex-end' }]}
             onPress={() => { setVisibleDeleteModal(true) }}
