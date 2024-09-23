@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { Alert } from "react-native";
+
 import {
   ActionModal,
   EditModal
@@ -74,4 +76,75 @@ export const CourseAddModal: React.FC<CourseModalProps & TextInputProps> = ({
       onRightButtonPress={onRightButtonPress}
     />
   )
+};
+
+interface CourseUpdateModalProp {
+  visible: boolean;
+  onClose: () => void;
+  folderId: number;
+  courseId: number;
+  courseTitle: string;
+  onUpdate: (updateCourse: {
+    folderId: number,
+    courseId: number;
+    title: string
+  }) => void;
+}
+
+export const CourseNameEditModal: React.FC<CourseUpdateModalProp> = ({
+  visible = false,
+  onClose,
+  folderId,
+  courseId,
+  courseTitle,
+  onUpdate,
+}) => {
+  const [newTitle, setNewTitle] = useState(courseTitle);
+
+  const updateCourseNameAPI = async (
+    folderId: number,
+    courseId: number,
+    title: string
+  ) => {
+    try {
+      const response = await fetch(`https://api.example.com/folder/${folderId}/courses/${courseId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+        }),
+      });
+
+      if (response.ok) {
+        const updatedCourse = await response.json();
+        onUpdate(updatedCourse);
+        onClose();
+      } else {
+        throw new Error("코스 이름 업데이트 실패");
+      }
+    } catch (error) {
+      Alert.alert("오류", "코스 이름을 업데이트할 수 없습니다.");
+      console.error(error);
+    }
+  };
+
+  const handleUpdate = () => {
+    updateCourseNameAPI(folderId, courseId, newTitle);
+  };
+
+  return (
+    <EditModal
+      visible={visible}
+      isLeftMain={false}
+      title="폴더 이름 수정"
+      value={newTitle}
+      onChangeText={setNewTitle}
+      leftButtonText="아니요"
+      rightButtonText="수정하기"
+      onLeftButtonPress={onClose}
+      onRightButtonPress={handleUpdate}
+    />
+  );
 };
