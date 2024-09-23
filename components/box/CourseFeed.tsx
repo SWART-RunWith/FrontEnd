@@ -13,6 +13,7 @@ import UploadIcon from '@/assets/icons/upload.svg';
 import LocationIcon from '@/assets/icons/location.svg';
 import NextIcon from '@/assets/icons/next.svg';
 import PlusIcon from '@/assets/icons/plus.svg';
+import CheckIcon from '@/assets/icons/check.svg';
 import Colors from "@/constants/Colors";
 import getSize from "@/scripts/getSize";
 import { CourseButton } from "../button/RunningButton";
@@ -40,10 +41,12 @@ export const CourseBox: React.FC<CourseBoxProps> = ({
   onPressButton,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[
-      styles.container,
-      isSelected && styles.selected,
-    ]}>
+    <TouchableOpacity onPress={onPress} style={[styles.container]}>
+      {isSelected && (
+        <View style={styles.checkmarkOverlay}>
+          <CheckIcon width={getSize(84)} height={getSize(84)} />
+        </View>
+      )}
       <View style={styles.textContainer}>
         <Text
           style={styles.titleText}
@@ -130,6 +133,7 @@ const styles = StyleSheet.create({
     height: getSize(240),
     borderRadius: 20,
     alignItems: 'center',
+    position: 'relative',
   },
   uploadIcon: {
     position: 'absolute',
@@ -164,12 +168,18 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: getSize(12),
   },
-  selected: {
+  checkmarkOverlay: {
     position: 'absolute',
-    // backgroundColor: 
-    width: '100%',
-    height: '100%',
-  }
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(30, 30, 30, 0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    zIndex: 3,
+  },
 });
 
 const MainCourseStyles = StyleSheet.create({
