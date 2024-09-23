@@ -176,6 +176,7 @@ const CourseFeedFolderScreen = () => {
           onClose={() => {
             setVisibleEditModal(false);
             setSelectedFolder(null);
+            setSelectedFolders([]);
           }}
           folderId={selectedFolder.id}
           folderName={selectedFolder.name}
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
   },
   sideButton: {
     justifyContent: 'center',
-    width: getSize(60),
+    width: getSize(90),
     height: getSize(90),
   },
   sideText: {
