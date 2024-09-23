@@ -167,6 +167,27 @@ const MyCourseScreen = () => {
         onPressOption={toggleModal}
       />
 
+      {mode === 'DELETE' &&
+        <View style={styles.selectBar}>
+          <TouchableOpacity
+            style={styles.sideButton}
+            onPress={() => {
+              setMode('BASIC')
+              setSelectedCourses([]);
+            }}
+          >
+            <Text style={styles.sideText}>취소</Text>
+          </TouchableOpacity>
+          <Text style={styles.middleText}>{selectedCourses.length}개의 코스가 선택됨</Text>
+          <TouchableOpacity
+            style={[styles.sideButton, { alignItems: 'flex-end' }]}
+            onPress={() => { setVisibleCourseDeleteModal(true) }}
+          >
+            <Text style={styles.sideText}>전체 삭제</Text>
+          </TouchableOpacity>
+        </View>
+      }
+
       <View style={styles.topContainer}>
         <View style={styles.folderNameContainer}>
           <LocationIcon width={getSize(17)} height={getSize(24)} />
@@ -235,6 +256,7 @@ const MyCourseScreen = () => {
           selectedCourses={selectedCourses}
           onFolderPress={handleCoursePress}
         />
+        {mode === 'DELETE' && <View style={{ height: getSize(90) }} />}
       </ScrollView>
 
       {/* 옵션 */}
@@ -288,6 +310,7 @@ const MyCourseScreen = () => {
             setVisibleEditModal(false);
             setSelectedCourse(null);
             setSelectedCourses([]);
+            setMode('BASIC');
           }}
         />
       }
@@ -374,7 +397,35 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightestGray,
     height: getSize(1),
     width: '100%',
+  },
+  selectBar: {
+    backgroundColor: Colors.navigator,
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    bottom: 0,
+    paddingHorizontal: getSize(Sizes.formMargin),
+    height: getSize(90),
+    width: width,
+    zIndex: 2,
+  },
+  sideButton: {
+    justifyContent: 'center',
+    width: getSize(60),
+    height: getSize(90),
+  },
+  sideText: {
+    color: Colors.main,
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+  },
+  middleText: {
+    color: 'white',
+    fontSize: getSize(18),
+    fontFamily: Fonts.bold,
   }
+
 })
 
 export default MyCourseScreen;
