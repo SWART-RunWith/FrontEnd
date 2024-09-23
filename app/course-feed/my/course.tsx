@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,12 +7,14 @@ import {
   TextInput,
   ScrollView,
   Modal,
-  TouchableOpacity
+  TouchableOpacity,
+  Animated
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import LocationIcon from '@/assets/icons/location.svg';
 import SearchIcon from '@/assets/icons/search.svg';
+import CancelIcon from '@/assets/icons/cancel.svg';
 import { BackOptionHeader } from "@/components/header/IconHeader";
 import Colors from "@/constants/Colors";
 import Fonts from "@/constants/Fonts";
@@ -35,18 +37,54 @@ const MyCourseScreen = () => {
 
   const folderName = '서천동';
   const courseList = [
-    { title: '경희대 - 서천 최애 달립니다 야호', time: '00:40:28', distance: '03.66KM' },
-    { title: '업힐 훈련', time: '01:20:14', distance: '04.30KM' },
-    { title: '반달런', time: '00:31:25', distance: '02.58KM' },
-    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { id: 1, title: '경희대 - 서천 최애 달립니다 야호', time: '00:40:28', distance: '03.66KM' },
+    { id: 2, title: '업힐 훈련', time: '01:20:14', distance: '04.30KM' },
+    { id: 3, title: '반달런', time: '00:31:25', distance: '02.58KM' },
+    { id: 4, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { id: 5, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { id: 6, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { id: 7, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { id: 8, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { id: 9, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { id: 10, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
+    { id: 11, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
   ];
+
+
+  const searchIconAnim = useRef(new Animated.Value(0)).current;
+  const cancelIconOpacity = useRef(new Animated.Value(0)).current;
+  const [showCancelIcon, setShowCancelIcon] = useState(false);
+
+  const handleInputFocus = () => {
+    Animated.timing(searchIconAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(cancelIconOpacity, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+    setShowCancelIcon(true);
+
+  };
+
+  const handleInputBlur = () => {
+    if (!courseName) {
+      Animated.timing(searchIconAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+
+      Animated.timing(cancelIconOpacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => setShowCancelIcon(false));
+    }
+  };
 
   return (
     <View style={Styles.container} >
@@ -64,28 +102,72 @@ const MyCourseScreen = () => {
         </View>
 
         <View style={styles.searchBar}>
-          <SearchIcon width={getSize(24)} height={getSize(24)} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="코스를 입력해주세요"
-            placeholderTextColor={Colors.placeholder}
-            value={courseName}
-            onChangeText={setCourseName}
-          />
+          <Animated.View
+            style={{
+              transform: [
+                {
+                  translateX: searchIconAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, (width - getSize(Sizes.formMargin) * 2) - 60],
+                  }),
+                },
+              ],
+            }}
+          >
+            <TouchableOpacity
+              style={styles.searchIcon}
+              disabled={!showCancelIcon}
+            >
+              <SearchIcon width={getSize(24)} height={getSize(24)} />
+            </TouchableOpacity>
+          </Animated.View>
+
+          <TouchableOpacity
+            onPress={() => { }}
+            activeOpacity={1}
+            style={{
+              justifyContent: 'center',
+              height: getSize(56),
+            }}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder={showCancelIcon ? "코스 이름, 지역" : ''}
+              placeholderTextColor={Colors.placeholder}
+              value={courseName}
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
+              onChangeText={setCourseName}
+            />
+          </TouchableOpacity>
+
+          {showCancelIcon && (
+            <Animated.View style={[
+              styles.cancelIcon,
+              { opacity: cancelIconOpacity }
+            ]}>
+              <TouchableOpacity
+                onPress={() => setCourseName('')}
+              >
+                <CancelIcon width={getSize(24)} height={getSize(24)} />
+              </TouchableOpacity>
+            </Animated.View>
+          )}
         </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.courseListContainer}>
         {courseList.map((course, index) => (
-          <CourseBox
-            key={index}
-            title={course.title}
-            time={course.time}
-            distance={course.distance}
-            img={""}
-            onPressSave={() => console.log("Save course:", course.title)}
-            onPressButton={() => console.log("Start course:", course.title)}
-          />
+          <View key={course.id} style={styles.courseWrapper}>
+            <CourseBox
+              key={index}
+              title={course.title}
+              time={course.time}
+              distance={course.distance}
+              img={""}
+              onPressSave={() => console.log("Save course:", course.title)}
+              onPressButton={() => console.log("Start course:", course.title)}
+            />
+          </View>
         ))}
       </ScrollView>
 
@@ -141,39 +223,52 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     backgroundColor: Colors.grayBox,
-    flexDirection: 'row',
-    alignItems: 'center',
     width: '100%',
     height: getSize(56),
-    paddingHorizontal: getSize(10),
+    justifyContent: 'center',
+    paddingHorizontal: getSize(20),
     marginTop: getSize(20),
     borderRadius: 10,
-    gap: getSize(10),
   },
   searchInput: {
     color: 'white',
     fontSize: getSize(18),
+    width: getSize(310),
+    // backgroundColor: 'white',
+  },
+  searchIcon: {
+    position: 'absolute',
+    top: getSize(16),
+    width: getSize(24),
+    height: getSize(24),
+  },
+  cancelIcon: {
+    position: 'absolute',
+    right: getSize(58),
   },
   courseListContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     width: width,
-    gap: getSize(20),
-    paddingBottom: getSize(20),
+    paddingBottom: getSize(18),
     paddingHorizontal: getSize(Sizes.formMargin),
+  },
+  courseWrapper: {
+    width: getSize(172),
+    marginBottom: getSize(20),
   },
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)', // semi-transparent background
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   menuContainer: {
     backgroundColor: Colors.grayBox,
     borderRadius: 10,
     padding: getSize(10),
-    width: getSize(200),
+    width: getSize(225),
   },
   menuItem: {
     color: 'white',

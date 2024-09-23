@@ -60,7 +60,7 @@ export const CourseBox: React.FC<CourseBoxProps> = ({
       <View style={styles.buttonContainer}>
         <CourseButton
           onPress={onPressButton}
-          width={getSize(68)}
+          width={100}
           text="코스 뛰기"
         />
       </View>
