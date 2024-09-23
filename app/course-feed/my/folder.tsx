@@ -20,7 +20,7 @@ import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
 import { FolderContainer } from "@/components/FolderContainer";
 import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
-import { FolderNameEditModal } from "@/components/modal/pop-up/FolderModal";
+import { FolderDeleteModal, FolderNameEditModal } from "@/components/modal/pop-up/FolderModal";
 
 const { width } = Dimensions.get('window');
 
@@ -43,6 +43,7 @@ const CourseFeedFolderScreen = () => {
   const [mode, setMode] = useState<Mode>('BASIC');
   const [visibleModal, setVisibleModal] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState(false);
+  const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
   const [selectedFolders, setSelectedFolders] = useState<number[]>([]);
   const [selectedFolder, setSelectedFolder] = useState<{ id: number, name: string } | null>(null);
 
@@ -81,6 +82,9 @@ const CourseFeedFolderScreen = () => {
         break;
     }
   };
+  const handleGet = () => {
+    // to do : folder list get api 연결
+  }
 
   const handleDelete = () => {
     console.log('Deleting folders:', selectedFolders);
@@ -124,7 +128,7 @@ const CourseFeedFolderScreen = () => {
           <Text style={styles.middleText}>{selectedFolders.length}개의 코스가 선택됨</Text>
           <TouchableOpacity
             style={[styles.sideButton, { alignItems: 'flex-end' }]}
-            onPress={() => { handleDelete }}
+            onPress={() => { setVisibleDeleteModal(true) }}
           >
             <Text style={styles.sideText}>전체 삭제</Text>
           </TouchableOpacity>
@@ -178,6 +182,16 @@ const CourseFeedFolderScreen = () => {
           onUpdate={handleEdit}
         />
       )}
+
+      <FolderDeleteModal
+        visible={visibleDeleteModal}
+        onCancel={() => setVisibleDeleteModal(false)}
+        onDelete={() => {
+          console.log('folder 삭제')
+          handleDelete();
+          setVisibleDeleteModal(false);
+        }}
+      />
     </View>
   );
 }
