@@ -1,3 +1,4 @@
+import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
 import { FolderButton } from "@/components/button/FolderButton";
@@ -9,18 +10,17 @@ import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
 const { width } = Dimensions.get('window');
 
 interface FolderContainerProp {
-  folderList: {
-    name: string,
-    id: number,
-  }[],
-  isSelected?: boolean,
-  count?: number,
+  folderList: { name: string, id: number }[];
+  selectedFolders?: number[];
+  onFolderPress: (folderId: number) => void;
+  mode?: 'BASIC' | 'EDIT' | 'DELETE';
 }
 
 export const FolderContainer: React.FC<FolderContainerProp> = ({
   folderList,
-  isSelected = false,
-  count = 0,
+  selectedFolders = [],
+  onFolderPress,
+  mode = 'BASIC',
 }) => {
   const navigation = useNavigation<CourseFeedScreenNavigationProp>();
 
@@ -30,16 +30,10 @@ export const FolderContainer: React.FC<FolderContainerProp> = ({
         {folderList.map((folder) => (
           <View key={folder.id} style={styles.folderWrapper}>
             <FolderButton
-              isSelected={isSelected}
+              isSelected={selectedFolders.includes(folder.id)}
               name={folder.name}
-              count={count}
-              onPress={() => {
-                console.log("folder.id : ", folder.id);
-                navigation.navigate(
-                  'course-feed/my/course',
-                  { folderId: folder.id }
-                );
-              }}
+              count={0}
+              onPress={() => onFolderPress(folder.id)}
             />
           </View>
         ))}

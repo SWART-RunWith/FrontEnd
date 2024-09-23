@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -16,6 +17,8 @@ import { FolderContainer } from "@/components/FolderContainer";
 
 const { width } = Dimensions.get('window');
 
+type Mode = 'BASIC' | 'EDIT' | 'DELETE';
+
 const CourseFeedFolderScreen = () => {
   const navigation = useNavigation<CourseFeedScreenNavigationProp>();
 
@@ -30,6 +33,33 @@ const CourseFeedFolderScreen = () => {
     { name: '화이팅', id: 8 },
   ];
 
+  const [mode, setMode] = useState<Mode>('BASIC');
+  const [selectedFolders, setSelectedFolders] = useState<number[]>([]);
+
+  const handleFolderPress = (folderId: number) => {
+    if (mode === 'BASIC') {
+      navigation.navigate('course-feed/my/course', { folderId });
+    } else {
+      setSelectedFolders(prevSelected => {
+        if (prevSelected.includes(folderId)) {
+          return prevSelected.filter(id => id !== folderId);
+        } else {
+          return [...prevSelected, folderId];
+        }
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    console.log('Deleting folders:', selectedFolders);
+    // to do : delete api 연결
+  };
+
+  const handleEdit = () => {
+    console.log('Editing folders:', selectedFolders);
+    // to do : edit api 연결
+  };
+
   return (
     <View style={Styles.container}>
       <MainGradient />
@@ -41,7 +71,12 @@ const CourseFeedFolderScreen = () => {
 
       <View style={{ marginTop: getSize(34) }} />
 
-      <FolderContainer folderList={folderList} />
+      <FolderContainer
+        folderList={folderList}
+        selectedFolders={selectedFolders}
+        onFolderPress={handleFolderPress}
+        mode={mode}
+      />
 
     </View>
   );
