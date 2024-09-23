@@ -287,6 +287,7 @@ const MyCourseScreen = () => {
           onClose={() => {
             setVisibleEditModal(false);
             setSelectedCourse(null);
+            setSelectedCourses([]);
           }}
         />
       }
