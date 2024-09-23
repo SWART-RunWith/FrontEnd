@@ -29,6 +29,7 @@ import {
   CourseSaveScreenRouteProp
 } from "@/scripts/navigation";
 import { CourseBox } from "@/components/box/CourseFeed";
+import { CourseContainer } from "@/components/container/CourseContainer";
 
 type Mode = 'BASIC' | 'EDIT' | 'DELETE';
 
@@ -224,21 +225,11 @@ const MyCourseScreen = () => {
       </View>
 
       <ScrollView contentContainerStyle={styles.courseListContainer}>
-        {courseList.map((course, index) => (
-          <View key={course.id} style={styles.courseWrapper}>
-            <CourseBox
-              key={index}
-              title={course.title}
-              time={course.time}
-              distance={course.distance}
-              img={""}
-              isSelected={selectedCourses.includes(course.id)}
-              onCoursePress={() => handleCoursePress(course.id)}
-              onPressSave={() => console.log("Save course:", course.title)}
-              onPressButton={() => console.log("Start course:", course.title)}
-            />
-          </View>
-        ))}
+        <CourseContainer
+          courseList={courseList}
+          selectedCourses={selectedCourses}
+          onFolderPress={handleCoursePress}
+        />
       </ScrollView>
 
       {/* 옵션 */}
@@ -319,7 +310,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: getSize(18),
     width: getSize(310),
-    // backgroundColor: 'white',
   },
   searchIcon: {
     position: 'absolute',
@@ -332,16 +322,7 @@ const styles = StyleSheet.create({
     right: getSize(58),
   },
   courseListContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
     width: width,
-    paddingBottom: getSize(18),
-    paddingHorizontal: getSize(Sizes.formMargin),
-  },
-  courseWrapper: {
-    width: getSize(172),
-    marginBottom: getSize(20),
   },
   modalOverlay: {
     flex: 1,

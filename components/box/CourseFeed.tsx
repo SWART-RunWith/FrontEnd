@@ -24,7 +24,7 @@ interface CourseBoxProps {
   distance: string;
   img: string;
   isSelected: boolean;
-  onCoursePress: (courseId: number) => void;
+  onPress: () => void;
   onPressSave: () => void;
   onPressButton: () => void;
 }
@@ -35,12 +35,15 @@ export const CourseBox: React.FC<CourseBoxProps> = ({
   distance = "0.0",
   img = "",
   isSelected = false,
-  onCoursePress: onPress,
+  onPress,
   onPressSave,
   onPressButton,
 }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={[
+      styles.container,
+      isSelected && styles.selected,
+    ]}>
       <View style={styles.textContainer}>
         <Text
           style={styles.titleText}
@@ -68,7 +71,7 @@ export const CourseBox: React.FC<CourseBoxProps> = ({
           text="코스 뛰기"
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -161,6 +164,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: getSize(12),
   },
+  selected: {
+    position: 'absolute',
+    // backgroundColor: 
+    width: '100%',
+    height: '100%',
+  }
 });
 
 const MainCourseStyles = StyleSheet.create({
