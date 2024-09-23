@@ -20,6 +20,7 @@ import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
 import { FolderContainer } from "@/components/FolderContainer";
 import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
+import { FolderNameEditModal } from "@/components/modal/FolderModal";
 
 const { width } = Dimensions.get('window');
 
@@ -41,21 +42,38 @@ const CourseFeedFolderScreen = () => {
 
   const [mode, setMode] = useState<Mode>('BASIC');
   const [visibleModal, setVisibleModal] = useState(false);
+  const [visibleEditModal, setVisibleEditModal] = useState(false);
   const [selectedFolders, setSelectedFolders] = useState<number[]>([]);
 
   const toggleModal = () => setVisibleModal(!visibleModal);
 
   const handleFolderPress = (folderId: number) => {
-    if (mode === 'BASIC') {
-      navigation.navigate('course-feed/my/course', { folderId });
-    } else {
-      setSelectedFolders(prevSelected => {
-        if (prevSelected.includes(folderId)) {
-          return prevSelected.filter(id => id !== folderId);
+    switch (mode) {
+      case 'BASIC':
+        navigation.navigate('course-feed/my/course', { folderId });
+        break;
+
+      case 'EDIT':
+        if (selectedFolders.includes(folderId)) {
+          setSelectedFolders([]);
         } else {
-          return [...prevSelected, folderId];
+          setSelectedFolders([folderId]);
+          setVisibleEditModal(true);
         }
-      });
+        break;
+
+      case 'DELETE':
+        setSelectedFolders(prevSelected => {
+          if (prevSelected.includes(folderId)) {
+            return prevSelected.filter(id => id !== folderId);
+          } else {
+            return [...prevSelected, folderId];
+          }
+        });
+        break;
+
+      default:
+        break;
     }
   };
 
@@ -103,6 +121,7 @@ const CourseFeedFolderScreen = () => {
               style={styles.menuItem}
               onPress={() => {
                 setMode('EDIT');
+                setVisibleEditModal(true);
                 setVisibleModal(false);
               }}>
               <Text style={styles.menuText}>코스 이름 수정</Text>
@@ -121,6 +140,11 @@ const CourseFeedFolderScreen = () => {
           </View>
         </TouchableOpacity>
       </Modal>
+
+      {/* <FolderNameEditModal
+        visible={visibleEditModal}
+        folderName=
+      /> */}
     </View>
   );
 }
