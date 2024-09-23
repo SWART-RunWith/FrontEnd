@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Dimensions,
@@ -29,22 +29,13 @@ const MyCourseHomeScreen = () => {
   const [visibleMiddle, setVisibleMiddle] = useState(2);
   const [visibleRight, setVisibleRight] = useState(1);
 
-  const bestCourseList = [
-    { id: 1, location: '광교 호수 공원', imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s' },
-    { id: 2, location: '광교2', imgUrl: 'https://via.placeholder.com/150' },
-    { id: 3, location: '광교 3 공원', imgUrl: 'https://via.placeholder.com/150' },
-  ];
+  const scaleLeftAnim = useRef(new Animated.Value(visibleLeft === 2 ? 1 : (visibleLeft === 1 ? 0.87 : 0.75))).current;
+  const scaleMiddleAnim = useRef(new Animated.Value(visibleMiddle === 2 ? 1 : (visibleMiddle === 1 ? 0.87 : 0.75))).current;
+  const scaleRightAnim = useRef(new Animated.Value(visibleRight === 2 ? 1 : (visibleRight === 1 ? 0.87 : 0.75))).current;
 
-  const folderList = [
-    { name: '서천동', id: 1 },
-    { name: '봉천동', id: 2 },
-    { name: '대학로', id: 3 },
-    { name: '홍대입구', id: 4 },
-  ]
-
-  const goHome = () => {
-    navigation.navigate('home');
-  };
+  useEffect(() => {
+    animateBoxes();
+  }, [visibleLeft, visibleMiddle, visibleRight]);
 
   const handlePressLeft = () => {
     if (visibleLeft === 2) return;
@@ -58,6 +49,8 @@ const MyCourseHomeScreen = () => {
       setVisibleMiddle(2);
       setVisibleRight(1);
     }
+
+    animateBoxes();
   };
 
   const handlePressRight = () => {
@@ -72,6 +65,45 @@ const MyCourseHomeScreen = () => {
       setVisibleMiddle(2);
       setVisibleLeft(1);
     }
+
+    animateBoxes();
+  };
+
+  const animateBoxes = () => {
+    Animated.parallel([
+      Animated.timing(scaleLeftAnim, {
+        toValue: visibleLeft === 2 ? 1 : (visibleLeft === 1 ? 0.87 : 0.75),
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleMiddleAnim, {
+        toValue: visibleMiddle === 2 ? 1 : (visibleMiddle === 1 ? 0.87 : 0.75),
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleRightAnim, {
+        toValue: visibleRight === 2 ? 1 : (visibleRight === 1 ? 0.87 : 0.75),
+        duration: 500,
+        useNativeDriver: true,
+      })
+    ]).start();
+  };
+
+  const bestCourseList = [
+    { id: 1, location: '광교 호수 공원', imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s' },
+    { id: 2, location: '한강', imgUrl: 'https://i.namu.wiki/i/t2zvEe7ws93H0jrNgi_6co5wMkXToxQuGkmO7AhHbMrhPBSY9LZwNpthQZRkWYxYBB2ZPj8M08p5vw_yOJAz_g.webp' },
+    { id: 3, location: '남산 둘레길', imgUrl: 'https://www.ktsketch.co.kr/news/photo/202006/5978_26907_50.jpg' },
+  ];
+
+  const folderList = [
+    { name: '서천동', id: 1 },
+    { name: '봉천동', id: 2 },
+    { name: '대학로', id: 3 },
+    { name: '홍대입구', id: 4 },
+  ]
+
+  const goHome = () => {
+    navigation.navigate('home');
   };
 
   return (
@@ -94,53 +126,50 @@ const MyCourseHomeScreen = () => {
       </View>
 
       <View style={styles.courseBoxesContainer}>
-        <View style={[
+        <Animated.View style={[
           styles.leftBox,
-          visibleLeft === 0 && { left: getSize(-16) },
-          visibleLeft === 1 && { left: getSize(0) },
-          visibleLeft === 2 && { zIndex: 2 }
+          { transform: [{ scale: scaleLeftAnim }] },
+          { zIndex: visibleLeft === 2 ? 3 : (visibleLeft === 1 ? 2 : 1) }
         ]}>
           <MyCourseBox
             imgUrl={bestCourseList[0].imgUrl}
             location={bestCourseList[0].location}
+            status={visibleLeft}
             onPress={() => { }}
-            visible={visibleLeft}
             onPressLeft={handlePressLeft}
             onPressRight={handlePressRight}
           />
-        </View>
+        </Animated.View>
 
-        <View style={[
-          styles.rightBox,
-          visibleRight === 0 && { right: getSize(-16) },
-          visibleRight === 1 && { right: getSize(0) },
-          visibleRight === 2 && { zIndex: 2 }
-        ]}>
-          <MyCourseBox
-            imgUrl={bestCourseList[2].imgUrl}
-            location={bestCourseList[2].location}
-            onPress={() => { }}
-            visible={visibleRight}
-            onPressLeft={handlePressLeft}
-            onPressRight={handlePressRight}
-          />
-        </View>
-
-        <View style={[
+        <Animated.View style={[
           styles.middleBox,
-          visibleMiddle === 1 && visibleLeft === 0 && { left: width / 2 - getSize(150) },
-          visibleMiddle === 1 && visibleRight === 0 && { left: width / 2 - getSize(105) },
-          visibleMiddle === 2 && { zIndex: 2 }
+          { transform: [{ scale: scaleMiddleAnim }] },
+          { zIndex: visibleMiddle === 2 ? 3 : (visibleMiddle === 1 ? 2 : 1) }
         ]}>
           <MyCourseBox
             imgUrl={bestCourseList[1].imgUrl}
             location={bestCourseList[1].location}
+            status={visibleMiddle}
             onPress={() => { }}
-            visible={visibleMiddle}
             onPressLeft={handlePressLeft}
             onPressRight={handlePressRight}
           />
-        </View>
+        </Animated.View>
+
+        <Animated.View style={[
+          styles.rightBox,
+          { transform: [{ scale: scaleRightAnim }] },
+          { zIndex: visibleRight === 2 ? 3 : (visibleRight === 1 ? 2 : 1) }
+        ]}>
+          <MyCourseBox
+            imgUrl={bestCourseList[2].imgUrl}
+            location={bestCourseList[2].location}
+            status={visibleRight}
+            onPress={() => { }}
+            onPressLeft={handlePressLeft}
+            onPressRight={handlePressRight}
+          />
+        </Animated.View>
       </View>
 
       <View style={{ marginTop: getSize(24) }}>
@@ -185,10 +214,16 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   courseBoxesContainer: {
+    position: 'relative',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
     marginTop: getSize(43),
     height: getSize(310),
     width: width,
-    position: 'relative',
+  },
+  box: {
+    width: getSize(250),
+    height: getSize(310),
   },
   leftBox: {
     position: 'absolute',
@@ -222,7 +257,7 @@ const styles = StyleSheet.create({
   folderWrapper: {
     width: (width - getSize(Sizes.formMargin * 2)) / 2 - 7,
     marginBottom: getSize(18),
-  }
+  },
 });
 
 export default MyCourseHomeScreen;
