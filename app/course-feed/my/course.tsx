@@ -15,6 +15,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import LocationIcon from '@/assets/icons/location.svg';
 import SearchIcon from '@/assets/icons/search.svg';
 import CancelIcon from '@/assets/icons/cancel.svg';
+import FolderEditIcon from '@/assets/icons/folderEdit.svg';
+import FolderDeleteIcon from '@/assets/icons/folderDelete.svg';
+import CourseDeleteIcon from '@/assets/icons/courseDelete.svg';
 import { BackOptionHeader } from "@/components/header/IconHeader";
 import Colors from "@/constants/Colors";
 import Fonts from "@/constants/Fonts";
@@ -112,7 +115,7 @@ const MyCourseScreen = () => {
                 {
                   translateX: searchIconAnim.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [0, (width - getSize(Sizes.formMargin) * 2) - 60],
+                    outputRange: [0, (width - getSize(Sizes.formMargin) * 2) - getSize(60)],
                   }),
                 },
               ],
@@ -181,20 +184,35 @@ const MyCourseScreen = () => {
         visible={visibleModal}
         animationType="fade"
         onRequestClose={toggleModal}
+        statusBarTranslucent
       >
         <TouchableOpacity
           style={styles.modalOverlay}
-          onPress={toggleModal} // Close modal if clicking outside the menu
+          onPress={toggleModal}
         >
           <View style={styles.menuContainer}>
-            <TouchableOpacity onPress={() => console.log('Edit course')}>
-              <Text style={styles.menuItem}>코스 이름 수정</Text>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => console.log('Edit course')}
+            >
+              <Text style={styles.menuText}>코스 이름 수정</Text>
+              <FolderEditIcon width={getSize(16)} height={getSize(14)} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log('Delete course')}>
-              <Text style={styles.menuItem}>코스 삭제</Text>
+            <View style={styles.bar} />
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => console.log('Delete course')}
+            >
+              <Text style={styles.menuText}>코스 삭제</Text>
+              <CourseDeleteIcon width={getSize(13)} height={getSize(16)} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log('Delete folder')}>
-              <Text style={styles.menuItem}>폴더 삭제</Text>
+            <View style={styles.bar} />
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => console.log('Delete folder')}
+            >
+              <Text style={styles.menuText}>폴더 삭제</Text>
+              <FolderDeleteIcon width={getSize(16)} height={getSize(14)} />
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -264,21 +282,35 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   menuContainer: {
+    position: 'absolute',
     backgroundColor: Colors.grayBox,
     borderRadius: 10,
-    padding: getSize(10),
     width: getSize(225),
+    height: getSize(168),
+    top: getSize(98),
+    right: getSize(Sizes.formMargin),
   },
   menuItem: {
-    color: 'white',
-    paddingVertical: getSize(10),
-    fontSize: getSize(16),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: getSize(14),
+    alignItems: 'center',
+    height: getSize(56),
+    width: '100%',
   },
+  menuText: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.medium,
+    marginLeft: getSize(-2),
+  },
+  bar: {
+    backgroundColor: Colors.lightestGray,
+    height: getSize(1),
+    width: '100%',
+  }
 })
 
 export default MyCourseScreen;
