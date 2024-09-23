@@ -76,6 +76,7 @@ type CourseFeedStackParamList = {
   "running/save": undefined;
   "course-feed/my/home": undefined;
   "course-feed/my/folder": undefined;
+  "course-feed/my/folderSearch": undefined;
   "course-feed/my/course": {
     folderId: number;
   };
