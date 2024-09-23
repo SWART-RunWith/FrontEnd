@@ -150,7 +150,12 @@ const MyCourseHomeScreen = () => {
         >
           <Text style={styles.folderTitle}>내 폴더</Text>
         </TouchableOpacity>
-        <FolderContainer folderList={folderList} />
+        <FolderContainer
+          folderList={folderList}
+          onFolderPress={(folderId: number) => {
+            navigation.navigate('course-feed/my/course', { folderId });
+          }}
+        />
       </View>
     </View>
   );
