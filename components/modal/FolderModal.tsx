@@ -61,7 +61,12 @@ export const FolderNameEditModal: React.FC<FolderUpdateModalProp> = ({
   };
 
   return (
-    <Modal visible={visible} transparent={true} animationType="fade">
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="fade"
+      statusBarTranslucent
+    >
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.titleText}>폴더 이름 수정</Text>
