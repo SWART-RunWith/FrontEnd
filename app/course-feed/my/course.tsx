@@ -28,9 +28,11 @@ import {
   CourseFeedScreenNavigationProp,
   CourseSaveScreenRouteProp
 } from "@/scripts/navigation";
-import { CourseBox } from "@/components/box/CourseFeed";
 import { CourseContainer } from "@/components/container/CourseContainer";
-import { CourseNameEditModal } from "@/components/modal/pop-up/CourseModal";
+import {
+  CourseDeleteModal,
+  CourseNameEditModal
+} from "@/components/modal/pop-up/CourseModal";
 
 type Mode = 'BASIC' | 'EDIT' | 'DELETE';
 
@@ -141,22 +143,23 @@ const MyCourseScreen = () => {
     }
   };
 
-  const handleCourseEdit = () => {
+  const handleCourseEditOption = () => {
     setMode('EDIT');
     setVisibleModal(false);
     console.log('edit course : ', mode);
   }
 
-  const handleCourseDelete = () => {
+  const handleCourseDeleteOption = () => {
     setMode('DELETE');
     setVisibleModal(false);
     console.log('delete courses: ', mode)
   }
 
-  const handleFolderDelete = () => {
+  const handleFolderDeleteOption = () => {
     // to do : folder 삭제 api 연동
     setVisibleModal(false);
     console.log('delete folder : ', mode);
+  }
 
   }
 
@@ -274,7 +277,7 @@ const MyCourseScreen = () => {
           <View style={styles.menuContainer}>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={handleCourseEdit}
+              onPress={handleCourseEditOption}
             >
               <Text style={styles.menuText}>코스 이름 수정</Text>
               <FolderEditIcon width={getSize(16)} height={getSize(14)} />
@@ -282,7 +285,7 @@ const MyCourseScreen = () => {
             <View style={styles.bar} />
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={handleCourseDelete}
+              onPress={handleCourseDeleteOption}
             >
               <Text style={styles.menuText}>코스 삭제</Text>
               <CourseDeleteIcon width={getSize(13)} height={getSize(16)} />
@@ -290,7 +293,7 @@ const MyCourseScreen = () => {
             <View style={styles.bar} />
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={handleFolderDelete}
+              onPress={handleFolderDeleteOption}
             >
               <Text style={styles.menuText}>폴더 삭제</Text>
               <FolderDeleteIcon width={getSize(16)} height={getSize(14)} />
@@ -305,7 +308,7 @@ const MyCourseScreen = () => {
           folderId={folderId}
           courseId={selectedCourse.id}
           courseTitle={selectedCourse.title}
-          onUpdate={handleCourseEdit}
+          onUpdate={handleCourseEditOption}
           onClose={() => {
             setVisibleEditModal(false);
             setSelectedCourse(null);
