@@ -43,6 +43,8 @@ const MyCourseScreen = () => {
   const route = useRoute<CourseSaveScreenRouteProp>();
   const { folderId } = route.params;
 
+  const scrollRef = useRef<ScrollView>(null);
+
   // dummy data
   const folderName = '서천동';
   const courseList = [
@@ -167,6 +169,8 @@ const MyCourseScreen = () => {
     setSelectedCourses([]);
     setMode('BASIC');
     // to do : get api 연결
+    // course list에서 해당 코스 데이터 삭제
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
   }
 
   return (
@@ -259,7 +263,10 @@ const MyCourseScreen = () => {
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.courseListContainer}>
+      <ScrollView
+        ref={scrollRef}
+        contentContainerStyle={styles.courseListContainer}
+      >
         <CourseContainer
           courseList={courseList}
           selectedCourses={selectedCourses}
