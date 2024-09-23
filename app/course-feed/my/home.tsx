@@ -18,6 +18,7 @@ import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
 import { CourseFeedScreenNavigationProp } from '@/scripts/navigation';
+import { FolderContainer } from '@/components/FolderContainer';
 
 const { width } = Dimensions.get('window');
 
@@ -142,27 +143,18 @@ const MyCourseHomeScreen = () => {
         </View>
       </View>
 
-      <View style={styles.folderContainer}>
-        <TouchableOpacity
-          style={{ height: getSize(24) }}
-          onPress={() => { navigation.navigate('course-feed/my/folder'); }}
-        >
-          <Text style={styles.folderTitle}>내 폴더</Text>
-        </TouchableOpacity>
-        <View style={styles.folderList}>
-          {folderList.map((folder) => (
-            <View key={folder.id} style={styles.folderWrapper}>
-              <FolderButton
-                isSelected={false}
-                name={folder.name}
-                count={0}
-                onPress={() => { }}
-              />
-            </View>
-          ))}
-        </View>
-      </View>
-    </View >
+      <TouchableOpacity
+        style={{ height: getSize(24) }}
+        onPress={() => { navigation.navigate('course-feed/my/folder'); }}
+      >
+        <Text style={styles.folderTitle}>내 폴더</Text>
+      </TouchableOpacity>
+      <FolderContainer
+        folderList={folderList}
+        onPress={() => { }}
+      />
+
+    </View>
   );
 };
 
