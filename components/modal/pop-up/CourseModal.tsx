@@ -148,3 +148,29 @@ export const CourseNameEditModal: React.FC<CourseUpdateModalProp> = ({
     />
   );
 };
+
+interface CourseDeleteModalProps {
+  visible: boolean;
+  onCancel: () => void;
+  onDelete: () => void;
+}
+
+export const CourseDeleteModal: React.FC<CourseDeleteModalProps> = ({
+  visible = false,
+  onCancel,
+  onDelete,
+}) => {
+  return (
+    <ActionModal
+      visible={visible}
+      type="코스"
+      description={'삭제하신 코스는 다시 복구 되지 않습니다.'}
+      isSave={false}
+      isLeftMain={false}
+      leftButtonText="삭제하기"
+      rightButtonText="아니요"
+      onLeftButtonPress={onDelete}
+      onRightButtonPress={onCancel}
+    />
+  );
+};
