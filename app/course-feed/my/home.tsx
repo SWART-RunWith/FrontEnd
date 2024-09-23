@@ -150,10 +150,7 @@ const MyCourseHomeScreen = () => {
         >
           <Text style={styles.folderTitle}>내 폴더</Text>
         </TouchableOpacity>
-        <FolderContainer
-          folderList={folderList}
-          onPress={() => { }}
-        />
+        <FolderContainer folderList={folderList} />
       </View>
     </View>
   );

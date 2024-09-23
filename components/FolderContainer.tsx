@@ -3,6 +3,8 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import { FolderButton } from "@/components/button/FolderButton";
 import Sizes from "@/constants/Sizes";
 import getSize from "@/scripts/getSize";
+import { useNavigation } from "@react-navigation/native";
+import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
 
 const { width } = Dimensions.get('window');
 
@@ -13,15 +15,15 @@ interface FolderContainerProp {
   }[],
   isSelected?: boolean,
   count?: number,
-  onPress: () => void;
 }
 
 export const FolderContainer: React.FC<FolderContainerProp> = ({
   folderList,
   isSelected = false,
   count = 0,
-  onPress
 }) => {
+  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
+
   return (
     <View style={styles.folderContainer}>
       <View style={styles.folderList}>
@@ -31,7 +33,13 @@ export const FolderContainer: React.FC<FolderContainerProp> = ({
               isSelected={isSelected}
               name={folder.name}
               count={count}
-              onPress={() => { }}
+              onPress={() => {
+                console.log("folder.id : ", folder.id);
+                navigation.navigate(
+                  'course-feed/my/course',
+                  { folderId: folder.id }
+                );
+              }}
             />
           </View>
         ))}

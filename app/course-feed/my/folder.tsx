@@ -41,9 +41,7 @@ const CourseFeedFolderScreen = () => {
 
       <View style={{ marginTop: getSize(34) }} />
 
-      <FolderContainer
-        folderList={folderList}
-        onPress={() => { }} />
+      <FolderContainer folderList={folderList} />
 
     </View>
   );
