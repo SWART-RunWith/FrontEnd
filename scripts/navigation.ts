@@ -82,12 +82,12 @@ type CourseFeedStackParamList = {
   };
 };
 
-export type CourseFeedScreenNavigationProp = StackNavigationProp<
-  CourseFeedStackParamList,
+export type CourseFeedMineScreenNavigationProp = StackNavigationProp<
+  CourseFeedMineStackParamList,
   "course-feed/my/home"
 >;
 
 export type CourseSaveScreenRouteProp = RouteProp<
-  CourseFeedStackParamList,
+  CourseFeedMineStackParamList,
   "course-feed/my/course"
 >;

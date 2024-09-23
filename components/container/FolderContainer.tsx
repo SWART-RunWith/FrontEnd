@@ -5,7 +5,7 @@ import { FolderButton } from "@/components/button/FolderButton";
 import Sizes from "@/constants/Sizes";
 import getSize from "@/scripts/getSize";
 import { useNavigation } from "@react-navigation/native";
-import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
+import { CourseFeedMineScreenNavigationProp } from "@/scripts/navigation";
 
 const { width } = Dimensions.get('window');
 
@@ -20,7 +20,7 @@ export const FolderContainer: React.FC<FolderContainerProp> = ({
   selectedFolders = [],
   onFolderPress,
 }) => {
-  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
+  const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
 
   return (
     <View style={styles.folderContainer}>

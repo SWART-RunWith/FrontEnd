@@ -17,13 +17,13 @@ import Fonts from '@/constants/Fonts';
 import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
-import { CourseFeedScreenNavigationProp } from '@/scripts/navigation';
+import { CourseFeedMineScreenNavigationProp } from '@/scripts/navigation';
 import { FolderContainer } from '@/components/container/FolderContainer';
 
 const { width } = Dimensions.get('window');
 
 const MyCourseHomeScreen = () => {
-  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
+  const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
 
   const [visibleLeft, setVisibleLeft] = useState(1);
   const [visibleMiddle, setVisibleMiddle] = useState(2);

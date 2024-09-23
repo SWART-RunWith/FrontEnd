@@ -16,7 +16,7 @@ import Styles from "@/constants/Styles";
 import { MainGradient } from "@/components/Gradient";
 import { MyFolderHeader } from "@/components/header/IconHeader";
 import getSize from "@/scripts/getSize";
-import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
+import { CourseFeedMineScreenNavigationProp } from "@/scripts/navigation";
 import { FolderContainer } from "@/components/container/FolderContainer";
 import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
@@ -27,7 +27,7 @@ const { width } = Dimensions.get('window');
 type Mode = 'BASIC' | 'EDIT' | 'DELETE';
 
 const CourseFeedFolderScreen = () => {
-  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
+  const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
 
   const folderList = [
     { name: '서천동', id: 1 },

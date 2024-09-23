@@ -25,7 +25,7 @@ import Sizes from "@/constants/Sizes";
 import Styles from "@/constants/Styles";
 import getSize from "@/scripts/getSize";
 import {
-  CourseFeedScreenNavigationProp,
+  CourseFeedMineScreenNavigationProp,
   CourseSaveScreenRouteProp
 } from "@/scripts/navigation";
 import { CourseContainer } from "@/components/container/CourseContainer";
@@ -39,7 +39,7 @@ type Mode = 'BASIC' | 'EDIT' | 'DELETE';
 const { width } = Dimensions.get('window');
 
 const MyCourseScreen = () => {
-  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
+  const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
   const route = useRoute<CourseSaveScreenRouteProp>();
   const { folderId } = route.params;
 

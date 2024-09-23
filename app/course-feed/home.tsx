@@ -19,12 +19,12 @@ import { MainCourseBox } from '@/components/box/CourseFeed';
 import Styles from '@/constants/Styles';
 import Fonts from '@/constants/Fonts';
 import Colors from '@/constants/Colors';
-import { CourseFeedScreenNavigationProp } from '@/scripts/navigation';
+import { CourseFeedMainScreenNavigationProp } from '@/scripts/navigation';
 
 const { width } = Dimensions.get('window');
 
 const CourseFeedHomeScreen = () => {
-  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
+  const navigation = useNavigation<CourseFeedMainScreenNavigationProp>();
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
   const [activeIndex, setActiveIndex] = useState(1);
