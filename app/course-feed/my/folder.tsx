@@ -101,14 +101,20 @@ const CourseFeedFolderScreen = () => {
           <View style={styles.menuContainer}>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => console.log('Edit course')}>
+              onPress={() => {
+                setMode('EDIT');
+                setVisibleModal(false);
+              }}>
               <Text style={styles.menuText}>코스 이름 수정</Text>
               <FolderEditIcon />
             </TouchableOpacity>
             <View style={styles.bar}></View>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => console.log('Delete course')}>
+              onPress={() => {
+                setMode('DELETE');
+                setVisibleModal(false);
+              }}>
               <Text style={styles.menuText}>코스 삭제</Text>
               <FolderDeleteIcon />
             </TouchableOpacity>
