@@ -50,6 +50,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({
       visible={visible}
       transparent={true}
       animationType="fade"
+      statusBarTranslucent
     >
       <View style={styles.modalContainer}>
         <BlurView intensity={20} style={Styles.blurContainer}>

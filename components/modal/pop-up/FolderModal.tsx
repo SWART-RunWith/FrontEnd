@@ -3,7 +3,10 @@ import {
   Alert,
 } from "react-native";
 
-import { EditModal } from "@/components/modal/pop-up/PopUpModal";
+import {
+  ActionModal,
+  EditModal
+} from "@/components/modal/pop-up/PopUpModal";
 
 interface FolderUpdateModalProp {
   visible: boolean;
@@ -48,14 +51,13 @@ export const FolderNameEditModal: React.FC<FolderUpdateModalProp> = ({
   };
 
   const handleUpdate = () => {
-    // 폴더 이름을 업데이트하는 API 호출
     updateFolderNameAPI(folderId, newName);
   };
 
   return (
     <EditModal
       visible={visible}
-      isLeftMain={false} // '아니요' 버튼이 보조 버튼
+      isLeftMain={false}
       title="폴더 이름 수정"
       value={newName}
       onChangeText={setNewName}
@@ -63,6 +65,33 @@ export const FolderNameEditModal: React.FC<FolderUpdateModalProp> = ({
       rightButtonText="수정하기"
       onLeftButtonPress={onClose}
       onRightButtonPress={handleUpdate}
+    />
+  );
+};
+
+
+interface FolderDeleteModalProps {
+  visible: boolean;
+  onCancel: () => void;
+  onDelete: () => void;
+}
+
+export const FolderDeleteModal: React.FC<FolderDeleteModalProps> = ({
+  visible = false,
+  onCancel,
+  onDelete,
+}) => {
+  return (
+    <ActionModal
+      visible={visible}
+      type="폴더"
+      description={'삭제하신 폴더는 다시 복구 되지 않습니다.'}
+      isSave={false}
+      isLeftMain={false}
+      leftButtonText="삭제하기"
+      rightButtonText="아니요"
+      onLeftButtonPress={onDelete}
+      onRightButtonPress={onCancel}
     />
   );
 };
