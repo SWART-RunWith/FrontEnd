@@ -13,14 +13,12 @@ interface FolderContainerProp {
   folderList: { name: string, id: number }[];
   selectedFolders?: number[];
   onFolderPress: (folderId: number) => void;
-  mode?: 'BASIC' | 'EDIT' | 'DELETE';
 }
 
 export const FolderContainer: React.FC<FolderContainerProp> = ({
   folderList,
   selectedFolders = [],
   onFolderPress,
-  mode = 'BASIC',
 }) => {
   const navigation = useNavigation<CourseFeedScreenNavigationProp>();
 

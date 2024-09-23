@@ -17,7 +17,7 @@ import { MainGradient } from "@/components/Gradient";
 import { MyFolderHeader } from "@/components/header/IconHeader";
 import getSize from "@/scripts/getSize";
 import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
-import { FolderContainer } from "@/components/FolderContainer";
+import { FolderContainer } from "@/components/container/FolderContainer";
 import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
 import { FolderDeleteModal, FolderNameEditModal } from "@/components/modal/pop-up/FolderModal";

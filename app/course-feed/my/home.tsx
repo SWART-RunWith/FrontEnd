@@ -18,7 +18,7 @@ import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
 import { CourseFeedScreenNavigationProp } from '@/scripts/navigation';
-import { FolderContainer } from '@/components/FolderContainer';
+import { FolderContainer } from '@/components/container/FolderContainer';
 
 const { width } = Dimensions.get('window');
 
