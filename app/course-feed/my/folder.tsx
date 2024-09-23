@@ -82,6 +82,7 @@ const CourseFeedFolderScreen = () => {
         break;
     }
   };
+
   const handleGet = () => {
     // to do : folder list get api 연결
   }
@@ -111,7 +112,6 @@ const CourseFeedFolderScreen = () => {
         folderList={folderList}
         selectedFolders={selectedFolders}
         onFolderPress={handleFolderPress}
-        mode={mode}
       />
 
       {mode === 'DELETE' &&
