@@ -161,6 +161,12 @@ const MyCourseScreen = () => {
     console.log('delete folder : ', mode);
   }
 
+  const handleCourseDelete = () => {
+    console.log("delete courses", selectedCourses);
+    setVisibleCourseDeleteModal(false);
+    setSelectedCourses([]);
+    setMode('BASIC');
+    // to do : get api 연결
   }
 
   return (
@@ -317,6 +323,14 @@ const MyCourseScreen = () => {
           }}
         />
       }
+
+      <CourseDeleteModal
+        visible={visibleCourseDeleteModal}
+        onDelete={handleCourseDelete}
+        onCancel={() => {
+          setVisibleCourseDeleteModal(false);
+        }}
+      />
     </View>
   );
 }
