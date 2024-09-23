@@ -138,11 +138,11 @@ export const CourseNameEditModal: React.FC<CourseUpdateModalProp> = ({
     <EditModal
       visible={visible}
       isLeftMain={false}
-      title="폴더 이름 수정"
+      title="폴더 이름 변경"
       value={newTitle}
       onChangeText={setNewTitle}
-      leftButtonText="아니요"
-      rightButtonText="수정하기"
+      leftButtonText="취소하기"
+      rightButtonText="저장하기"
       onLeftButtonPress={onClose}
       onRightButtonPress={handleUpdate}
     />
