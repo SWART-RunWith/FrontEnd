@@ -30,6 +30,7 @@ import {
 } from "@/scripts/navigation";
 import { CourseBox } from "@/components/box/CourseFeed";
 import { CourseContainer } from "@/components/container/CourseContainer";
+import { CourseNameEditModal } from "@/components/modal/pop-up/CourseModal";
 
 type Mode = 'BASIC' | 'EDIT' | 'DELETE';
 
@@ -275,6 +276,20 @@ const MyCourseScreen = () => {
           </View>
         </TouchableOpacity>
       </Modal>
+
+      {selectedCourse &&
+        <CourseNameEditModal
+          visible={visibleEditModal}
+          folderId={folderId}
+          courseId={selectedCourse.id}
+          courseTitle={selectedCourse.title}
+          onUpdate={handleCourseEdit}
+          onClose={() => {
+            setVisibleEditModal(false);
+            setSelectedCourse(null);
+          }}
+        />
+      }
     </View>
   );
 }
