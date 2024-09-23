@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
   ImageBackground,
@@ -53,6 +53,12 @@ const CourseFeedHomeScreen = () => {
   const scrollToIndex = (index: number) => {
     scrollViewRef.current?.scrollTo({ x: index * SNAP_INTERVAL, animated: true });
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollTo({ x: SNAP_INTERVAL, animated: false });
+    }, 0);
+  }, []);
 
   return (
     <View style={Styles.container}>
