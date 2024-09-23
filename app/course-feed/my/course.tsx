@@ -102,6 +102,8 @@ const MyCourseScreen = () => {
   const [selectedCourses, setSelectedCourses] = useState<number[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<{ id: number, title: string } | null>(null);
 
+  useEffect(() => { }, [mode])
+
   const toggleModal = () => setVisibleModal(!visibleModal);
 
   const handleCoursePress = (courseId: number) => {
@@ -140,18 +142,20 @@ const MyCourseScreen = () => {
 
   const handleCourseEdit = () => {
     setMode('EDIT');
-    console.log('edit course');
-
+    setVisibleModal(false);
+    console.log('edit course : ', mode);
   }
 
   const handleCourseDelete = () => {
     setMode('DELETE');
-    console.log('delete courses')
+    setVisibleModal(false);
+    console.log('delete courses: ', mode)
   }
 
   const handleFolderDelete = () => {
     // to do : folder 삭제 api 연동
-    console.log('delete folder');
+    setVisibleModal(false);
+    console.log('delete folder : ', mode);
 
   }
 
