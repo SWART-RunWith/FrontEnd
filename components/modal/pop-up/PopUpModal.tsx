@@ -200,6 +200,7 @@ export const EditModal: React.FC<EditModalProps> = ({
       transparent={true}
       animationType="fade"
       onRequestClose={Keyboard.dismiss}
+      statusBarTranslucent
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -224,7 +225,10 @@ export const EditModal: React.FC<EditModalProps> = ({
                     placeholder='코스 이름을 적성해주세요'
                     placeholderTextColor={Colors.placeholder}
                   />
-                  <TouchableOpacity onPress={resetText}>
+                  <TouchableOpacity
+                    style={editStyles.cancelIcon}
+                    onPress={resetText}
+                  >
                     <CancelIcon width={getSize(22.65)} height={getSize(24)} />
                   </TouchableOpacity>
                 </View>
@@ -290,6 +294,10 @@ const editStyles = StyleSheet.create({
     color: 'white',
     fontSize: getSize(16),
     fontFamily: Fonts.semiBold,
-    width: getSize(250),
-  }
+    width: '100%',
+  },
+  cancelIcon: {
+    position: 'absolute',
+    right: getSize(14),
+  },
 })
