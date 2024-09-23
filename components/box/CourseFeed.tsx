@@ -23,6 +23,8 @@ interface CourseBoxProps {
   time: string;
   distance: string;
   img: string;
+  isSelected: boolean;
+  onCoursePress: (courseId: number) => void;
   onPressSave: () => void;
   onPressButton: () => void;
 }
@@ -32,6 +34,8 @@ export const CourseBox: React.FC<CourseBoxProps> = ({
   time = "00:00:00",
   distance = "0.0",
   img = "",
+  isSelected = false,
+  onCoursePress: onPress,
   onPressSave,
   onPressButton,
 }) => {

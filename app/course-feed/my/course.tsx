@@ -30,6 +30,8 @@ import {
 } from "@/scripts/navigation";
 import { CourseBox } from "@/components/box/CourseFeed";
 
+type Mode = 'BASIC' | 'EDIT' | 'DELETE';
+
 const { width } = Dimensions.get('window');
 
 const MyCourseScreen = () => {
@@ -230,6 +232,8 @@ const MyCourseScreen = () => {
               time={course.time}
               distance={course.distance}
               img={""}
+              isSelected={selectedCourses.includes(course.id)}
+              onCoursePress={() => handleCoursePress(course.id)}
               onPressSave={() => console.log("Save course:", course.title)}
               onPressButton={() => console.log("Start course:", course.title)}
             />
@@ -252,7 +256,7 @@ const MyCourseScreen = () => {
           <View style={styles.menuContainer}>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => console.log('Edit course')}
+              onPress={handleCourseEdit}
             >
               <Text style={styles.menuText}>코스 이름 수정</Text>
               <FolderEditIcon width={getSize(16)} height={getSize(14)} />
@@ -260,7 +264,7 @@ const MyCourseScreen = () => {
             <View style={styles.bar} />
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => console.log('Delete course')}
+              onPress={handleCourseDelete}
             >
               <Text style={styles.menuText}>코스 삭제</Text>
               <CourseDeleteIcon width={getSize(13)} height={getSize(16)} />
@@ -268,7 +272,7 @@ const MyCourseScreen = () => {
             <View style={styles.bar} />
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => console.log('Delete folder')}
+              onPress={handleFolderDelete}
             >
               <Text style={styles.menuText}>폴더 삭제</Text>
               <FolderDeleteIcon width={getSize(16)} height={getSize(14)} />
