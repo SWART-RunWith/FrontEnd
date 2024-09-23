@@ -110,6 +110,26 @@ const CourseFeedFolderScreen = () => {
         mode={mode}
       />
 
+      {mode === 'DELETE' &&
+        <View style={styles.selectBar}>
+          <TouchableOpacity
+            style={styles.sideButton}
+            onPress={() => {
+              setMode('BASIC')
+              setSelectedFolders([]);
+            }}
+          >
+            <Text style={styles.sideText}>취소</Text>
+          </TouchableOpacity>
+          <Text style={styles.middleText}>{selectedFolders.length}개의 코스가 선택됨</Text>
+          <TouchableOpacity
+            style={[styles.sideButton, { alignItems: 'flex-end' }]}
+            onPress={() => { handleDelete }}
+          >
+            <Text style={styles.sideText}>전체 삭제</Text>
+          </TouchableOpacity>
+        </View>}
+
       {/* 옵션 */}
       <Modal
         transparent={true}
@@ -149,7 +169,10 @@ const CourseFeedFolderScreen = () => {
       {selectedFolder && (
         <FolderNameEditModal
           visible={visibleEditModal}
-          onClose={() => setVisibleEditModal(false)}
+          onClose={() => {
+            setVisibleEditModal(false);
+            setSelectedFolder(null);
+          }}
           folderId={selectedFolder.id}
           folderName={selectedFolder.name}
           onUpdate={handleEdit}
@@ -189,6 +212,32 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightestGray,
     width: '100%',
     height: getSize(1),
+  },
+  selectBar: {
+    backgroundColor: Colors.navigator,
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    bottom: 0,
+    paddingHorizontal: getSize(Sizes.formMargin),
+    height: getSize(90),
+    width: width,
+  },
+  sideButton: {
+    justifyContent: 'center',
+    width: getSize(60),
+    height: getSize(90),
+  },
+  sideText: {
+    color: Colors.main,
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+  },
+  middleText: {
+    color: 'white',
+    fontSize: getSize(18),
+    fontFamily: Fonts.bold,
   }
 })
 
