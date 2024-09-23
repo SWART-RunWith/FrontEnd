@@ -20,7 +20,7 @@ import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
 import { FolderContainer } from "@/components/FolderContainer";
 import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
-import { FolderNameEditModal } from "@/components/modal/FolderModal";
+import { FolderNameEditModal } from "@/components/modal/pop-up/FolderModal";
 
 const { width } = Dimensions.get('window');
 
@@ -44,6 +44,7 @@ const CourseFeedFolderScreen = () => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState(false);
   const [selectedFolders, setSelectedFolders] = useState<number[]>([]);
+  const [selectedFolder, setSelectedFolder] = useState<{ id: number, name: string } | null>(null);
 
   const toggleModal = () => setVisibleModal(!visibleModal);
 
@@ -57,8 +58,12 @@ const CourseFeedFolderScreen = () => {
         if (selectedFolders.includes(folderId)) {
           setSelectedFolders([]);
         } else {
-          setSelectedFolders([folderId]);
-          setVisibleEditModal(true);
+          const folder = folderList.find(f => f.id === folderId);
+          if (folder) {
+            setSelectedFolder(folder);
+            setSelectedFolders([folderId]);
+            setVisibleEditModal(true);
+          }
         }
         break;
 
@@ -83,7 +88,7 @@ const CourseFeedFolderScreen = () => {
   };
 
   const handleEdit = () => {
-    console.log('Editing folders:', selectedFolders);
+    console.log('Editing folders:', selectedFolder);
     // to do : edit api 연결
   };
 
@@ -114,7 +119,7 @@ const CourseFeedFolderScreen = () => {
       >
         <TouchableOpacity
           style={styles.modalOverlay}
-          onPress={toggleModal} // Close modal if clicking outside the menu
+          onPress={toggleModal}
         >
           <View style={styles.menuContainer}>
             <TouchableOpacity
@@ -141,10 +146,15 @@ const CourseFeedFolderScreen = () => {
         </TouchableOpacity>
       </Modal>
 
-      {/* <FolderNameEditModal
-        visible={visibleEditModal}
-        folderName=
-      /> */}
+      {selectedFolder && (
+        <FolderNameEditModal
+          visible={visibleEditModal}
+          onClose={() => setVisibleEditModal(false)}
+          folderId={selectedFolder.id}
+          folderName={selectedFolder.name}
+          onUpdate={handleEdit}
+        />
+      )}
     </View>
   );
 }
