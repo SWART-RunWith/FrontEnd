@@ -143,17 +143,18 @@ const MyCourseHomeScreen = () => {
         </View>
       </View>
 
-      <TouchableOpacity
-        style={{ height: getSize(24) }}
-        onPress={() => { navigation.navigate('course-feed/my/folder'); }}
-      >
-        <Text style={styles.folderTitle}>내 폴더</Text>
-      </TouchableOpacity>
-      <FolderContainer
-        folderList={folderList}
-        onPress={() => { }}
-      />
-
+      <View style={{ marginTop: getSize(24) }}>
+        <TouchableOpacity
+          style={{ height: getSize(24) }}
+          onPress={() => { navigation.navigate('course-feed/my/folder'); }}
+        >
+          <Text style={styles.folderTitle}>내 폴더</Text>
+        </TouchableOpacity>
+        <FolderContainer
+          folderList={folderList}
+          onPress={() => { }}
+        />
+      </View>
     </View>
   );
 };
@@ -205,6 +206,7 @@ const styles = StyleSheet.create({
     width: width,
   },
   folderTitle: {
+    paddingHorizontal: getSize(16),
     color: 'white',
     fontSize: getSize(20),
     fontFamily: Fonts.bold,
