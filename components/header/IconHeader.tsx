@@ -14,6 +14,7 @@ import {
   CombinedHeader,
   CombinedHeaderProps,
   SearchIcon,
+  TextProps,
 } from '@/components/header/Header';
 import getSize from '@/scripts/getSize';
 import { TouchableOpacity } from 'react-native';
@@ -103,13 +104,21 @@ export const BackOptionHeader: React.FC<
     );
   };
 
-export const BackSearchHeader: React.FC<BackIconProps & SearchIconProps> = ({
+export const BackSearchHeader: React.FC<BackIconProps & SearchIconProps & TextProps> = ({
   onPressSearch,
+  text = '',
+  fontFamily,
+  fontSize,
 }) => {
   return (
     <CombinedHeader
       hasSearchModal={false}
       backProps={{}}
+      textProps={{
+        text: text,
+        fontFamily: fontFamily,
+        fontSize: fontSize,
+      }}
       searchProps={{ onPress: onPressSearch }}
     />
   );
