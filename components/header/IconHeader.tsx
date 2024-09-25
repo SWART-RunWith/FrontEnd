@@ -108,6 +108,7 @@ export const BackSearchHeader: React.FC<BackIconProps & SearchIconProps> = ({
 }) => {
   return (
     <CombinedHeader
+      hasSearchModal={false}
       backProps={{}}
       searchProps={{ onPress: onPressSearch }}
     />
