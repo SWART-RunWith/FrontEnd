@@ -35,6 +35,7 @@ const CourseFEedDetailScreen = () => {
   useEffect(() => {
 
   })
+
   // dummy
   const courseData = bestCourseList[currentCourseIndex];
 
@@ -59,7 +60,7 @@ const CourseFEedDetailScreen = () => {
   return (
     <View style={Styles.container}>
       <ImageBackground
-        source={{ uri: courseData.backgroundImage }}
+        source={{ uri: courseData.backgroundImg }}
         style={styles.background}
         blurRadius={3}
       >
