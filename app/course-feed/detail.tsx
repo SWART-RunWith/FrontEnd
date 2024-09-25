@@ -1,20 +1,17 @@
 import {
   ImageBackground,
-  Text,
   View,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import LeftArrowIcon from '@/assets/icons/back.svg';
 import RightArrowIcon from '@/assets/icons/rightArrow.svg';
-import UserIcon from '@/assets/icons/user.svg';
 import bestCourseList from '@/assets/dummy/bestCourseList.json';
 import Styles from "@/constants/Styles";
 import Sizes from "@/constants/Sizes";
-import Fonts from "@/constants/Fonts";
-import Colors from "@/constants/Colors";
 import getSize from "@/scripts/getSize";
 import {
   CourseFeedMainScreenNavigationProp,
@@ -22,7 +19,9 @@ import {
 } from "@/scripts/navigation";
 import { useEffect, useState } from "react";
 import { MainCourseDetailBox } from "@/components/box/CourseFeed";
+import { BackSearchHeader } from "@/components/header/IconHeader";
 
+const { width } = Dimensions.get('window');
 
 const CourseFEedDetailScreen = () => {
   const navigation = useNavigation<CourseFeedMainScreenNavigationProp>();
@@ -64,7 +63,9 @@ const CourseFEedDetailScreen = () => {
         style={styles.background}
         blurRadius={3}
       >
-        <View style={styles.navigationArrows}>
+        <BackSearchHeader onPressSearch={() => { navigation.navigate('course-feed/search') }} />
+
+        <View style={styles.courseContainer}>
           <TouchableOpacity onPress={handlePrevCourse}>
             <LeftArrowIcon width={getSize(32)} height={getSize(32)} />
           </TouchableOpacity>
@@ -92,14 +93,14 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
-    paddingHorizontal: getSize(Sizes.formMargin),
   },
   courseContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: getSize(Sizes.formMargin),
+    marginTop: getSize(60),
     alignItems: 'center',
-    width: '100%',
+    width: width,
   },
 });
 
