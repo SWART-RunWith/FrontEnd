@@ -5,46 +5,142 @@ import {
   StyleSheet,
   Image,
   Animated,
+  Platform,
+  Modal,
+  Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import MapView, {
+  AnimatedRegion,
+  Marker,
+  Polyline
+} from 'react-native-maps';
+import * as Location from 'expo-location';
+import haversine from 'haversine';
 
 import {
   EndButton,
   PauseButton,
   PlayButton
 } from '@/components/button/RunningButton';
-import { RunningScreenNavigationProp } from '@/scripts/navigation';
 import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
-import { formatDistance, formatTime } from '@/scripts/format';
-import { calculatePace } from '@/scripts/calculatePace';
-import getSize from '@/scripts/getSize';
+import LocationIcon from '@/assets/icons/location.svg';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
-import Sizes from '@/constants/Sizes';
+import MapStyles from '@/constants/mapStyles.json';
+import { formatDistance, formatTime } from '@/scripts/format';
+import { RunningScreenNavigationProp } from '@/scripts/navigation';
+import { calculatePace } from '@/scripts/calcuate/calculatePace';
+import getSize from '@/scripts/getSize';
+import useCountdown from '@/scripts/countDown';
+import { calculateKcal } from '@/scripts/calcuate/calculateKcal';
+
+const { width, height } = Dimensions.get('window');
+const LATITUDE_DELTA = 0.01;
+const LONGITUDE_DELTA = 0.01;
 
 const RunningScreen = () => {
   const navigation = useNavigation<RunningScreenNavigationProp>();
 
-  const [isPaused, setIsPaused] = useState(false);
+  const { fadeAnim3, fadeAnim2, fadeAnim1, fadeAnimRunWith, startCountdown } = useCountdown();
+  const [isCountdownVisible, setIsCountdownVisible] = useState(true);
 
+  const [coordinate, setCoordinate] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [routeCoordinates, setRouteCoordinates] = useState<{ latitude: number; longitude: number }[]>([]);
+  // const [distanceTravelled, setDistanceTravelled] = useState(0);
+  const [prevLatLng, setPrevLatLng] = useState<{ latitude: number; longitude: number } | null>(null);
+  const mapRef = useRef<MapView>(null);
+  const [marker, setMarker] = useState<{ latitude: number; longitude: number } | null>(null);
+  // const MarkerAnimated = Animated.createAnimatedComponent(Marker);
+
+  const [isPaused, setIsPaused] = useState(true);
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(0);
   const [pace, setPace] = useState("0'00\"");
   const [heartRate, setHeartRate] = useState(120);
 
+  const calcDistance = (newLatLng: {
+    latitude: number;
+    longitude: number;
+  }) => {
+    const prevLatLng = routeCoordinates[routeCoordinates.length - 1] || newLatLng;
+    return haversine(prevLatLng, newLatLng) || 0;
+  };
+
   const heightAnim = useRef(new Animated.Value(getSize(236))).current;
   const mapHeightAnim = useRef(new Animated.Value(getSize(0))).current;
+
+  const resetState = () => {
+    setCoordinate(null);
+    setRouteCoordinates([]);
+    setMarker(null);
+    // setDistanceTravelled(0);
+    setPrevLatLng(null);
+    setSeconds(0);
+    setMeters(0);
+    setPace("0'00\"");
+    setHeartRate(120);
+  };
+
+  const startTracking = () => {
+    Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.Balanced,
+        timeInterval: 300,
+        distanceInterval: 1,
+      },
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newCoordinate = { latitude, longitude };
+
+        // if (coordinate !== newCoordinate) {
+        //   if (Platform.OS === 'android' && markerRef.current) {
+        //     markerRef.current.animateMarkerToCoordinate(newCoordinate, 500);
+        //   } else {
+
+        //   }
+        // }
+
+        setCoordinate(newCoordinate);
+        setMarker(coordinate);
+        setRouteCoordinates((prev) => [...prev, newCoordinate]);
+        const distance = calcDistance(newCoordinate);
+        setMeters((prev) => prev + distance);
+        setPrevLatLng(newCoordinate);
+      }
+    );
+  };
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.error('Location permission not granted');
+        return;
+      }
+      startCountdown(() => {
+        resetState();
+        setIsCountdownVisible(false);
+        setIsPaused(false);
+      });
+
+      const location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+
+      setCoordinate({ latitude, longitude });
+      setRouteCoordinates((prev) => [...prev, { latitude, longitude }]);
+    })();
+  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (!isPaused) {
       timer = setInterval(() => {
-        setSeconds(prev => prev + 1);
+        setSeconds((prev) => prev + 1);
+        startTracking();
         const newPace = calculatePace(seconds + 1, meters);
         setPace(newPace);
-        setMeters(prev => prev + 5);
         updateHeartRate();
-
       }, 1000);
     } else if (isPaused && seconds !== 0) {
       return () => clearInterval(timer);
@@ -96,6 +192,65 @@ const RunningScreen = () => {
 
   return (
     <View style={Styles.container}>
+      {/* 카운트다운 모달 */}
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={isCountdownVisible}
+        onRequestClose={() => setIsCountdownVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <Animated.Text style={[styles.countText, { opacity: fadeAnim3 }]}>
+            3
+          </Animated.Text>
+          <Animated.Text style={[styles.countText, { opacity: fadeAnim2 }]}>
+            2
+          </Animated.Text>
+          <Animated.Text style={[styles.countText, { opacity: fadeAnim1 }]}>
+            1
+          </Animated.Text>
+          <Animated.Text style={[styles.countText, { opacity: fadeAnimRunWith }]}>
+            RUN{"\n"}WITH
+          </Animated.Text>
+        </View>
+      </Modal>
+
+      {coordinate && (
+        <MapView
+          // provider="google"
+          style={styles.map}
+          ref={mapRef}
+          initialRegion={{
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }}
+          mapType='standard'
+          customMapStyle={MapStyles}
+          userInterfaceStyle='dark'
+          showsUserLocation={true}
+          followsUserLocation={true}
+          showsMyLocationButton={false}
+          loadingEnabled={true}
+        >
+          <Marker
+            coordinate={{
+              latitude: coordinate.latitude,
+              longitude: coordinate.longitude,
+            }}
+          >
+            <LocationIcon width={getSize(20)} height={getSize(20)} />
+          </Marker>
+
+          <Polyline
+            coordinates={routeCoordinates}
+            strokeColor={Colors.main}
+            strokeWidth={getSize(5)}
+          />
+        </MapView>
+      )}
+
       <Animated.View style={[
         styles.topContainer,
         { height: heightAnim }
@@ -235,6 +390,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     gap: getSize(36),
+  },
+  map: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.main,
+    width: width,
+    height: height,
+  },
+  countText: {
+    color: 'black',
+    textAlign: 'center',
+    fontFamily: 'Hanson',
+    fontSize: getSize(100),
+    position: 'absolute'
   },
 });
 
