@@ -108,7 +108,7 @@ const CourseFeedHomeScreen = () => {
     onPanResponderRelease: (evt, gestureState) => {
       if (gestureState.dy < -100) {
         Animated.timing(translateY, {
-          toValue: 0,
+          toValue: statusBarHeight,
           duration: 300,
           useNativeDriver: true,
         }).start(() => setIsCourseFeedScreenVisible(true));
@@ -238,9 +238,20 @@ const CourseFeedHomeScreen = () => {
         ]}
         {...panResponder.panHandlers}
       >
-        <Image
-          source={require('@/assets/images/swipeUp.png')}
-        />
+        {!isCourseFeedScreenVisible
+          ? <Image source={require('@/assets/images/swipeUp.png')} />
+          : <TouchableOpacity onPress={() => {
+            Animated.timing(translateY, {
+              toValue: getSize(720) + statusBarHeight,
+              duration: 300,
+              useNativeDriver: true,
+            }).start(() => {
+              setIsCourseFeedScreenVisible(false);
+            });
+          }}>
+            <Image source={require('@/assets/images/swipeDown.png')} />
+          </TouchableOpacity>
+        }
         <View style={[
           styles.courseFeedContainer,
           { marginTop: getSize(-1) }
