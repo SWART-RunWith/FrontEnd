@@ -8,8 +8,15 @@ export const calculatePace = (
   const totalMinutes = timeInSeconds / 60;
   const pace = totalMinutes / distanceInKm;
 
-  const minutes = Math.floor(pace);
-  const seconds = Math.round((pace - minutes) * 60);
+  if (isNaN(pace) || pace === Infinity) return "0'00\"";
+
+  let minutes = Math.floor(pace);
+  let seconds = Math.round((pace - minutes) * 60);
+
+  if (seconds === 60) {
+    seconds = 0;
+    minutes += 1;
+  }
 
   return `${minutes}'${seconds < 10 ? "0" : ""}${seconds}"`;
 };

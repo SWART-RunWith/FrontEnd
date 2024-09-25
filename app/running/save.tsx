@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { CourseSaveHeader } from "@/components/header/IconHeader";
 import Styles from '@/constants/Styles';
 import getSize from "@/scripts/getSize";
-import { CourseFeedScreenNavigationProp } from "@/scripts/navigation";
+import { CourseFeedMineScreenNavigationProp } from "@/scripts/navigation";
 import Sizes from "@/constants/Sizes";
 import { CourseSaveFolderButton } from "@/components/button/FolderButton";
 import { CourseAddModal } from "@/components/modal/pop-up/CourseModal";
@@ -18,7 +18,7 @@ import { CourseAddModal } from "@/components/modal/pop-up/CourseModal";
 const { width } = Dimensions.get('window');
 
 const CourseSaveScreen = () => {
-  const navigation = useNavigation<CourseFeedScreenNavigationProp>();
+  const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
 
   const [selectedFolder, setSelectedFolder] = useState<number | null>(null);
   const [courseName, setCourseName] = useState('');
