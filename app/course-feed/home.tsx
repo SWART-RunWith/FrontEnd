@@ -19,7 +19,8 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 import NextIcon from '@/assets/icons/next.svg';
-import bestCourseList from '@/assets/dummy/bestCourseList.json';
+import bestCourseDummyList from '@/assets/dummy/bestCourseList.json';
+import courseDummyList from '@/assets/dummy/courseList.json';
 import { BackSearchHeader, CourseFeedMainHeader } from "@/components/header/IconHeader";
 import { MainCourseBox, MainCoursePreviewBox } from '@/components/box/CourseFeed';
 import Styles from '@/constants/Styles';
@@ -46,11 +47,16 @@ const CourseFeedHomeScreen = () => {
   const navigation = useNavigation<CourseFeedMainScreenNavigationProp>();
 
   // 코스 데이터 가져오기
-  const [courseList, setCourseList] = useState<Course[]>([]);
+  const [courseList, setCourseList] = useState<Course[]>(courseDummyList);
+  const [bestCourseList, setBestCourseList] = useState<Course[]>(bestCourseDummyList);
 
   useEffect(() => {
-    setCourseList(bestCourseList);
-  })
+    setBestCourseList(bestCourseDummyList);
+  }, []);
+
+  useEffect(() => {
+    setCourseList(courseDummyList);
+  }, []);
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
@@ -153,12 +159,12 @@ const CourseFeedHomeScreen = () => {
   const loadMoreCourses = () => {
     if (!isEndReached) {
       setTimeout(() => {
-        if (courseList.length >= bestCourseList.length) {
+        if (courseList.length >= bestCourseDummyList.length) {
           setIsEndReached(true);
         } else {
           setCourseList(prevList => [
             ...prevList,
-            ...bestCourseList.slice(prevList.length, prevList.length + 3),
+            ...bestCourseDummyList.slice(prevList.length, prevList.length + 3),
           ]);
         }
       }, 1500);
@@ -197,7 +203,7 @@ const CourseFeedHomeScreen = () => {
           )}
           scrollEventThrottle={16}
         >
-          {courseList.map((course, index) => {
+          {bestCourseList.map((course, index) => {
             const inputRange = [
               (index - 1) * SNAP_INTERVAL,
               index * SNAP_INTERVAL,
@@ -251,7 +257,7 @@ const CourseFeedHomeScreen = () => {
 
       {/* 하단의 페이지 인디케이터 */}
       <View style={styles.pagination}>
-        {courseList.map((_, index) => (
+        {bestCourseList.map((_, index) => (
           <TouchableOpacity
             key={index}
             style={[
