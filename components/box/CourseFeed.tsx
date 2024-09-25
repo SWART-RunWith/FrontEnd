@@ -15,10 +15,12 @@ import NextIcon from '@/assets/icons/next.svg';
 import PlusIcon from '@/assets/icons/plus.svg';
 import GrayPlusIcon from '@/assets/icons/grayPlus.svg';
 import CheckIcon from '@/assets/icons/check.svg';
+import UserIcon from '@/assets/icons/user.svg';
 import Colors from "@/constants/Colors";
 import getSize from "@/scripts/getSize";
 import { CourseButton } from "../button/RunningButton";
 import Fonts from "@/constants/Fonts";
+import { CourseRunButton } from "../button/CourseButton";
 
 /*
 메인 코스 피드 박스
@@ -284,6 +286,29 @@ export const MainCourseDetailBox: React.FC<
             </View>
           </View>
         </View>
+
+        <View style={detailStyles.authorContainer}>
+          <UserIcon width={getSize(48)} height={getSize(48)} />
+          <View style={detailStyles.authorTextContainer}>
+            <Text style={detailStyles.authorName}>{name}</Text>
+            <View style={detailStyles.locationContainer}>
+              <LocationIcon width={getSize(10)} height={getSize(14)} />
+              <Text style={detailStyles.location}>{location}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={detailStyles.descriptionContainer}>
+          <Text
+            style={detailStyles.description}
+          >
+            {description}
+          </Text>
+        </View>
+
+        <View style={detailStyles.buttonContainer}>
+          <CourseRunButton onPress={onPressRun} />
+        </View>
       </View>
     );
   };
@@ -335,6 +360,48 @@ const detailStyles = StyleSheet.create({
     color: 'white',
     fontSize: getSize(14),
     fontFamily: Fonts.semiBold,
+  },
+  authorContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: getSize(20),
+    marginTop: getSize(16),
+    gap: getSize(8),
+    width: '100%',
+  },
+  authorTextContainer: {
+    height: getSize(42),
+  },
+  authorName: {
+    color: 'white',
+    fontSize: getSize(18),
+    fontFamily: Fonts.semiBold,
+    height: getSize(21),
+  },
+  locationContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: getSize(4),
+    gap: getSize(4),
+    height: getSize(17),
+  },
+  location: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.light,
+  },
+  descriptionContainer: {
+    marginTop: getSize(14),
+    paddingHorizontal: getSize(20),
+    width: '100%',
+    height: getSize(87),
+  },
+  description: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.light,
+  },
+  buttonContainer: {
+    marginTop: getSize(12),
   },
 });
 /*
