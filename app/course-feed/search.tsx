@@ -1,26 +1,124 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   Dimensions,
-  Keyboard
+  Keyboard,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  TouchableWithoutFeedback
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SearchIcon from '@/assets/icons/search.svg';
+import SearchItemIcon from '@/assets/icons/searchItem.svg';
+import DeleteIcon from '@/assets/icons/x.svg';
 import { MainGradient } from "@/components/Gradient";
 import { BackHeader } from "@/components/header/IconHeader";
 import Styles from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 import getSize from "@/scripts/getSize";
 import Sizes from "@/constants/Sizes";
-import { TextInput } from "react-native";
-import { TouchableOpacity } from "react-native";
-import { TouchableWithoutFeedback } from "react-native";
+import Fonts from "@/constants/Fonts";
 
 const { width } = Dimensions.get('window');
 
+const MAX_HISTORY = 20;
+const STORAGE_KEY = "@search_history";
+
+// 검색 리스트
+const formatCurrentTime = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
 const CourseFeedSearchScreen = () => {
   const [text, setText] = useState('');
+  const [searchHistory, setSearchHistory] = useState<{ text: string, time: string }[]>([]);
+  const [triggeredByIcon, setTriggeredByIcon] = useState(false);
+  const [userName, setUserName] = useState('홍여준');
+
+  useEffect(() => {
+    const loadSearchHistory = async () => {
+      try {
+        const storedHistory = await AsyncStorage.getItem(STORAGE_KEY);
+        if (storedHistory) {
+          setSearchHistory(JSON.parse(storedHistory));
+        }
+      } catch (error) {
+        console.error("검색 기록 로드 실패", error);
+      }
+    };
+
+    loadSearchHistory();
+  }, []);
+
+  useEffect(() => {
+    const saveSearchHistory = async () => {
+      try {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(searchHistory));
+      } catch (error) {
+        console.error("검색 기록 저장 실패", error);
+      }
+    };
+
+    if (searchHistory.length > 0) {
+      saveSearchHistory();
+    }
+  }, [searchHistory]);
+
+  const handleSearch = () => {
+    if (!text.trim()) return;
+
+    const currentTime = formatCurrentTime();
+
+    let updatedHistory = [{ text, time: currentTime }, ...searchHistory];
+
+    if (updatedHistory.length > MAX_HISTORY) {
+      updatedHistory = updatedHistory.slice(0, MAX_HISTORY);
+    }
+
+    setSearchHistory(updatedHistory);
+    setText('');
+    Keyboard.dismiss();
+  };
+
+  const handleDelete = (index: number) => {
+    const updatedHistory = searchHistory.filter((_, i) => i !== index);
+    setSearchHistory(updatedHistory);
+  };
+
+  const handleSearchIconPress = () => {
+    setTriggeredByIcon(true);
+    handleSearch();
+  };
+
+  const handleEndEditing = () => {
+    if (!triggeredByIcon) {
+      handleSearch();
+    }
+    setTriggeredByIcon(false);
+  };
+
+  const handleClearAll = async () => {
+    setSearchHistory([]);
+    try {
+      await AsyncStorage.removeItem(STORAGE_KEY);
+    } catch (error) {
+      console.error("검색 기록 삭제 실패", error);
+    }
+  };
+
+  const recentSearches = searchHistory.slice(0, 5);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -28,28 +126,62 @@ const CourseFeedSearchScreen = () => {
         <MainGradient />
         <BackHeader />
 
+        {/* 검색 바 */}
         <View style={styles.searchBar}>
-          <TouchableOpacity
-            onPress={() => { }}
-            activeOpacity={1}
-            style={{
-              justifyContent: 'center',
-              height: getSize(56),
-            }}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder={"코스 이름, 지역"}
-              placeholderTextColor={Colors.placeholder}
-              value={text}
-              onChangeText={setText}
-            />
-          </TouchableOpacity>
-
+          <TextInput
+            style={styles.searchInput}
+            placeholder={"코스 이름, 지역 검색"}
+            placeholderTextColor={Colors.placeholder}
+            value={text}
+            onChangeText={setText}
+            onEndEditing={handleEndEditing}
+          />
           <TouchableOpacity
             style={styles.searchIcon}
+            onPress={handleSearchIconPress}
           >
             <SearchIcon width={getSize(24)} height={getSize(24)} />
           </TouchableOpacity>
+        </View>
+
+        {/* 검색 리스트 */}
+        <View style={styles.recentSearchesContainer}>
+          <Text style={[styles.recentSearchesText, { marginLeft: getSize(24) }]}>최근 검색</Text>
+          <TouchableOpacity onPress={handleClearAll}>
+            <Text style={[styles.recentSearchesText, { marginRight: getSize(15) }]}>전체 삭제</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.searchItemContainer}>
+          <FlatList
+            data={recentSearches}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <View style={styles.searchItem}>
+                <View style={styles.searchTextContainer}>
+                  <SearchItemIcon width={getSize(24)} height={getSize(24)} />
+                  <Text style={styles.searchText}>{item.text}</Text>
+                </View>
+                <TouchableOpacity onPress={() => handleDelete(index)}>
+                  <DeleteIcon width={getSize(16)} height={getSize(16)} />
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
+
+        {/* 추천 리스트 */}
+        <View style={styles.recommendContainer}>
+          <Text style={styles.recommendTitle}>홍여준님 이런 코스는 어떠세요?</Text>
+          {recommendedCourses.map((course, index) => (
+            <View key={index} style={styles.recommendItem}>
+              <View style={styles.recommendTextContainer}>
+                <Text style={styles.recommendCourseTitle}>{course.title}</Text>
+                <Text style={styles.recommendByText}>by. {course.author}</Text>
+              </View>
+              <UserIcon width={getSize(24)} height={getSize(24)} />
+            </View>
+          ))}
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -63,20 +195,61 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: getSize(16),
-    marginTop: getSize(61),
+    marginTop: getSize(32),
     borderRadius: 10,
-    width: width - getSize(Sizes.formMargin),
+    width: width - getSize(Sizes.formMargin * 2),
     height: getSize(56),
   },
   searchInput: {
     color: 'white',
     fontSize: getSize(18),
     width: width - getSize(Sizes.formMargin) * 4,
-    // backgroundColor: 'white',
   },
   searchIcon: {
+    position: 'absolute',
     width: getSize(24),
     height: getSize(24),
+    right: getSize(Sizes.formMargin),
   },
-})
+  recentSearchesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: getSize(28),
+    width: width,
+    height: getSize(19),
+  },
+  recentSearchesText: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+    opacity: 0.6,
+  },
+  searchItemContainer: {
+    marginTop: getSize(16),
+    paddingLeft: getSize(24),
+    paddingRight: getSize(20),
+    width: width,
+    height: getSize(226),
+  },
+  searchItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: 10,
+    height: getSize(24),
+    marginBottom: getSize(14),
+  },
+  searchTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: getSize(24),
+    gap: getSize(14),
+  },
+  searchText: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+  },
+});
+
 export default CourseFeedSearchScreen;
