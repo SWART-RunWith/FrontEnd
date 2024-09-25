@@ -167,9 +167,13 @@ const CourseFeedSearchScreen = () => {
 
         {/* 검색 리스트 */}
         <View style={styles.recentSearchesContainer}>
-          <Text style={[styles.recentSearchesText, { marginLeft: getSize(24) }]}>최근 검색</Text>
+          <Text style={[styles.recentSearchesText, {
+            marginLeft: getSize(24),
+          }]}>최근 검색</Text>
           <TouchableOpacity onPress={handleClearAll}>
-            <Text style={[styles.recentSearchesText, { marginRight: getSize(15) }]}>전체 삭제</Text>
+            <Text style={[styles.recentSearchesText, {
+              marginRight: getSize(16),
+            }]}>전체 삭제</Text>
           </TouchableOpacity>
         </View>
 
@@ -224,7 +228,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: getSize(16),
     marginTop: getSize(32),
     borderRadius: 10,
-    width: width - getSize(Sizes.formMargin * 2),
+    width: width - getSize(Sizes.formMargin) * 2,
     height: getSize(56),
   },
   searchInput: {
@@ -286,7 +290,7 @@ const styles = StyleSheet.create({
   },
   recommendContainer: {
     width: width,
-    paddingHorizontal: getSize(24),
+    paddingHorizontal: getSize(16),
   },
   recommendTitleContainer: {
     flexDirection: 'row',
@@ -306,14 +310,15 @@ const styles = StyleSheet.create({
   },
   recommendItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: getSize(15),
+    gap: getSize(9),
   },
   recommendCourseTitle: {
     color: 'white',
     fontSize: getSize(16),
     fontFamily: Fonts.semiBold,
+    width: getSize(200),
   },
   recommendAuthorContainer: {
     flexDirection: 'row',
