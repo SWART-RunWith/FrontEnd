@@ -22,7 +22,7 @@ import Fonts from '@/constants/Fonts';
 const { width } = Dimensions.get('window');
 
 interface BackIconProps {
-  onPressBack: () => void;
+  onPressBack?: () => void;
 }
 
 interface SearchIconProps {
@@ -104,20 +104,23 @@ export const BackOptionHeader: React.FC<
   };
 
 const MyFolderHeader: React.FC<
-  BackIconProps & SearchIconProps
+  BackIconProps & SearchIconProps & OptionIconProps
 > = ({
   onPressBack,
   onPressSearch,
+  onPressOption,
 }) => {
     return (
       <CombinedHeader
         isLeftSearch={false}
+        hasSearchModal={false}
         isBlack={true}
         backProps={{ onPress: onPressBack }}
         textProps={{
           text: '내 폴더',
         }}
         searchProps={{ onPress: onPressSearch }}
+        optionProps={{ onPress: onPressOption }}
       />
     );
   };
