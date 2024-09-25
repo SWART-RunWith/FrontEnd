@@ -106,6 +106,7 @@ export const BackOptionHeader: React.FC<
 
 export const BackSearchHeader: React.FC<BackIconProps & SearchIconProps & TextProps> = ({
   onPressSearch,
+  onPressBack,
   text = '',
   fontFamily,
   fontSize,
@@ -114,7 +115,7 @@ export const BackSearchHeader: React.FC<BackIconProps & SearchIconProps & TextPr
   return (
     <CombinedHeader
       hasSearchModal={false}
-      backProps={{}}
+      backProps={{ onPress: onPressBack }}
       textProps={{
         text: text,
         fontFamily: fontFamily,
