@@ -13,6 +13,7 @@ import UploadIcon from '@/assets/icons/upload.svg';
 import LocationIcon from '@/assets/icons/location.svg';
 import NextIcon from '@/assets/icons/next.svg';
 import PlusIcon from '@/assets/icons/plus.svg';
+import GrayPlusIcon from '@/assets/icons/grayPlus.svg';
 import CheckIcon from '@/assets/icons/check.svg';
 import Colors from "@/constants/Colors";
 import getSize from "@/scripts/getSize";
@@ -27,13 +28,17 @@ interface CourseBoxProps {
   time: string;
   distance: string;
   img: string;
-  isSelected: boolean;
+  description?: string;
+  isSelected?: boolean;
+}
+
+interface CourseBoxPressProps {
   onPress: () => void;
   onPressSave: () => void;
   onPressButton: () => void;
 }
 
-export const CourseBox: React.FC<CourseBoxProps> = ({
+export const CourseBox: React.FC<CourseBoxProps & CourseBoxPressProps> = ({
   title,
   time = "00:00:00",
   distance = "0.0",
@@ -232,6 +237,106 @@ const MainCourseStyles = StyleSheet.create({
   },
 })
 
+interface MainCourseDetailPressProps {
+  onPressRun: () => void;
+  onPressPlus: () => void;
+}
+
+interface AuthorProps {
+  name: string;
+  location: string;
+}
+
+export const MainCourseDetailBox: React.FC<
+  CourseBoxProps & AuthorProps & MainCourseDetailPressProps> = ({
+    title = '',
+    time = '00:00:00',
+    distance = '00.00KM',
+    img = 'url',
+    isSelected = false,
+    location = '경기도 용인시',
+    name = '아무개',
+    description = '설명',
+    onPressRun,
+    onPressPlus,
+  }) => {
+    return (
+      <View style={detailStyles.container}>
+        <View style={detailStyles.courseContainer}>
+          <View style={detailStyles.titleContainer}>
+            <Text style={detailStyles.courseTitle}>{title}</Text>
+            <TouchableOpacity onPress={onPressPlus}>
+              <GrayPlusIcon width={getSize(34)} height={getSize(34)} />
+            </TouchableOpacity>
+          </View>
+
+          <Image
+            style={detailStyles.courseImage}
+            source={{ uri: img }}
+          />
+
+          <View style={detailStyles.courseDataContainer}>
+            <View style={{ height: getSize(24) }}>
+              <Text style={detailStyles.courseDistance}>{distance}</Text>
+            </View>
+            <View style={{ height: getSize(17) }}>
+              <Text style={detailStyles.courseTime}>{time}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+
+const detailStyles = StyleSheet.create({
+  container: {
+    backgroundColor: 'rgba(30, 30, 30, 0.9)',
+    alignItems: 'center',
+    borderRadius: 20,
+    width: getSize(312),
+    height: getSize(550),
+  },
+  courseContainer: {
+    backgroundColor: Colors.darkGrayBox,
+    borderRadius: 20,
+    marginTop: getSize(16),
+    width: getSize(284),
+    height: getSize(289),
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: getSize(18),
+    marginTop: getSize(18),
+    marginHorizontal: getSize(18),
+    width: getSize(248),
+    height: getSize(40),
+  },
+  courseTitle: {
+    color: 'white',
+    fontSize: getSize(18),
+  },
+  courseImage: {
+    backgroundColor: 'white',
+    marginTop: getSize(20),
+    height: getSize(154),
+    marginHorizontal: getSize(18),
+  },
+  courseDataContainer: {
+    paddingHorizontal: getSize(18),
+  },
+  courseDistance: {
+    color: Colors.main,
+    fontSize: getSize(20),
+    fontFamily: Fonts.semiBold,
+  },
+  courseTime: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.semiBold,
+  },
+});
 /*
 내 코스 피드 박스
 */
@@ -292,7 +397,6 @@ export const MyCourseBox: React.FC<MyCourseBoxProps> = ({
     </View>
   );
 };
-
 
 const myCourseStyles = StyleSheet.create({
   container: {
