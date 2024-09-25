@@ -3,9 +3,14 @@ import { StackNavigationProp } from "@react-navigation/stack";
 
 type RootStackParamList = {
   home: undefined;
+  onboarding: undefined;
+  login: undefined;
   "user/profile": undefined;
   "user/setting": undefined;
-  "running/countDown": undefined;
+  "running/running": undefined;
+  "running/save": undefined;
+  "course-feed/home": undefined;
+  "course-feed/my/home": undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
