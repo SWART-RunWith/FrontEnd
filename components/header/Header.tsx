@@ -236,7 +236,7 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
 }) => {
   const adjustedTextProps = {
     ...textProps,
-    fontColor: isBlack ? 'black' : textProps?.fontColor || 'white', // isBlack이 true이면 fontColor는 검정, 그렇지 않으면 textProps의 기본값 사용
+    fontColor: isBlack ? 'black' : textProps?.fontColor || 'white',
   };
 
   return (

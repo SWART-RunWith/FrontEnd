@@ -109,6 +109,7 @@ export const BackSearchHeader: React.FC<BackIconProps & SearchIconProps & TextPr
   text = '',
   fontFamily,
   fontSize,
+  fontColor,
 }) => {
   return (
     <CombinedHeader
@@ -118,6 +119,7 @@ export const BackSearchHeader: React.FC<BackIconProps & SearchIconProps & TextPr
         text: text,
         fontFamily: fontFamily,
         fontSize: fontSize,
+        fontColor: fontColor,
       }}
       searchProps={{ onPress: onPressSearch }}
     />
