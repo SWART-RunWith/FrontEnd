@@ -103,6 +103,17 @@ export const BackOptionHeader: React.FC<
     );
   };
 
+export const BackSearchHeader: React.FC<BackIconProps & SearchIconProps> = ({
+  onPressSearch,
+}) => {
+  return (
+    <CombinedHeader
+      backProps={{}}
+      searchProps={{ onPress: onPressSearch }}
+    />
+  );
+};
+
 const MyFolderHeader: React.FC<
   BackIconProps & SearchIconProps & OptionIconProps
 > = ({
