@@ -412,6 +412,151 @@ const detailStyles = StyleSheet.create({
   },
 });
 
+export const MainCoursePreviewBox: React.FC<
+  CourseBoxProps &
+  AuthorProps &
+  PlusButtonProps
+> = ({
+  title,
+  routeImg,
+  distance,
+  time,
+  description,
+  location,
+  name,
+  onPressPlus,
+}) => {
+    return (
+      <View style={pvStyles.container}>
+        <View style={{
+          flexDirection: 'row',
+          gap: getSize(10),
+        }}>
+          <View style={pvStyles.imgContainer}>
+            <View style={pvStyles.locationContainer}>
+              <LocationIcon width={getSize(17)} height={getSize(24)} />
+              <Text style={pvStyles.location} >{location}</Text>
+            </View>
+            <Image
+              style={pvStyles.routeImg}
+              source={{ uri: routeImg }}
+            />
+          </View>
+
+          <View>
+            <View style={pvStyles.authorContainer}>
+              <UserIcon width={getSize(26)} height={getSize(26)} />
+              <Text style={pvStyles.author}>{name}</Text>
+            </View>
+            <View style={pvStyles.runningDataContainer}>
+              <Text style={pvStyles.title}>{title}</Text>
+              <Text style={pvStyles.distance}>{distance}</Text>
+              <Text style={pvStyles.time}>{time}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={pvStyles.descriptionContainer}>
+          <Text
+            style={pvStyles.description}
+            numberOfLines={2}
+            ellipsizeMode="tail"
+          >
+            {description}
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          onPress={onPressPlus}
+          style={pvStyles.plusButton}
+        >
+          <PlusIcon width={getSize(34)} height={getSize(34)} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+const pvStyles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.grayBox,
+    padding: getSize(14),
+    borderRadius: 20,
+    width: '100%',
+    height: getSize(260),
+  },
+  imgContainer: {
+    backgroundColor: Colors.darkGrayBox,
+    borderRadius: 20,
+    paddingHorizontal: getSize(14),
+    width: getSize(164),
+    height: getSize(174),
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: getSize(6),
+    marginTop: getSize(14),
+  },
+  location: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.semiBold,
+  },
+  routeImg: {
+    backgroundColor: 'white',
+    width: '100%',
+    height: getSize(77),
+    marginTop: getSize(24),
+  },
+  authorContainer: {
+    marginTop: getSize(3),
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: getSize(6),
+  },
+  author: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.semiBold,
+  },
+  runningDataContainer: {
+    marginTop: getSize(38),
+    width: '100%',
+  },
+  title: {
+    color: 'white',
+    fontSize: getSize(20),
+    fontFamily: Fonts.semiBold,
+    height: getSize(48),
+  },
+  distance: {
+    color: Colors.main,
+    fontSize: getSize(20),
+    fontFamily: Fonts.semiBold,
+    marginTop: getSize(14),
+    height: getSize(24),
+  },
+  time: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.semiBold,
+    height: getSize(17),
+  },
+  descriptionContainer: {
+    marginTop: getSize(12),
+  },
+  description: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.light,
+  },
+  plusButton: {
+    position: 'absolute',
+    top: getSize(14),
+    right: getSize(14),
+  }
+});
+
 /*
 내 코스 피드 박스
 */
