@@ -340,7 +340,8 @@ const detailStyles = StyleSheet.create({
   },
   courseTitle: {
     color: 'white',
-    fontSize: getSize(18),
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
   },
   courseImage: {
     backgroundColor: 'white',
