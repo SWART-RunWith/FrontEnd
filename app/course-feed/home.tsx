@@ -29,6 +29,7 @@ import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import getSize from "@/scripts/getSize";
 import { CourseFeedMainScreenNavigationProp } from '@/scripts/navigation';
+import { BlurView } from 'expo-blur';
 
 const { width, height } = Dimensions.get('window');
 
@@ -117,6 +118,14 @@ const CourseFeedHomeScreen = () => {
     setStatusBarHeight(calculatedHeight);
   }, []);
 
+  useEffect(() => {
+    Animated.timing(translateY, {
+      toValue: getSize(720) + statusBarHeight,
+      duration: 0,
+      useNativeDriver: true,
+    }).start();
+  }, [statusBarHeight]);
+
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (evt, gestureState) => {
       return Math.abs(gestureState.dy) > 20;
@@ -182,6 +191,20 @@ const CourseFeedHomeScreen = () => {
         style={styles.backImg}
         blurRadius={5}
       />
+
+      {isCourseFeedScreenVisible && (
+        <BlurView
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+          intensity={60}
+          tint="dark"
+        />
+      )}
 
       <CourseFeedMainHeader />
       <View style={styles.textContainer}>
