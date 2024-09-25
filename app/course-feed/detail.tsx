@@ -74,6 +74,7 @@ const CourseFEedDetailScreen = () => {
             distance={courseData.distance}
             img={'img'}
             location={courseData.location}
+            description={courseData.description}
             name={courseData.author}
             onPressRun={() => { handleRunButton(courseData.id) }}
             onPressPlus={() => { handlePlusButton(courseData.id) }}
