@@ -71,7 +71,26 @@ export type RunningFinishScreenRouteProp = RouteProp<
   "running/finish"
 >;
 
-type CourseFeedStackParamList = {
+type CourseFeedMainStackParamList = {
+  "course-feed/home": undefined;
+  "course-feed/search": undefined;
+  "course-feed/detail": {
+    courseId: number;
+  };
+  "course-feed/my/home": undefined;
+};
+
+export type CourseFeedMainScreenNavigationProp = StackNavigationProp<
+  CourseFeedMainStackParamList,
+  "course-feed/home"
+>;
+
+export type CourseFeedMainScreenRouteProp = RouteProp<
+  CourseFeedMainStackParamList,
+  "course-feed/detail"
+>;
+
+type CourseFeedMineStackParamList = {
   home: undefined;
   "running/save": undefined;
   "course-feed/my/home": undefined;
