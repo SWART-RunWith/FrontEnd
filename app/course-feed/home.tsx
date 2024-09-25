@@ -18,9 +18,10 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 import NextIcon from '@/assets/icons/next.svg';
+import bestCourseList from '@/assets/dummy/bestCourseList.json';
 import getSize from "@/scripts/getSize";
 import { BackSearchHeader, CourseFeedMainHeader } from "@/components/header/IconHeader";
-import { MainCourseBox } from '@/components/box/CourseFeed';
+import { MainCourseBox, MainCoursePreviewBox } from '@/components/box/CourseFeed';
 import Styles from '@/constants/Styles';
 import Fonts from '@/constants/Fonts';
 import Colors from '@/constants/Colors';
@@ -28,37 +29,32 @@ import { CourseFeedMainScreenNavigationProp } from '@/scripts/navigation';
 
 const { width, height } = Dimensions.get('window');
 
+interface Course {
+  id: number;
+  title: string;
+  distance: string;
+  time: string;
+  author: string;
+  location: string;
+  description: string;
+  backgroundImg: string;
+}
+
 const CourseFeedHomeScreen = () => {
   const navigation = useNavigation<CourseFeedMainScreenNavigationProp>();
+
+  // 코스 데이터 가져오기
+  const [courseList, setCourseList] = useState<Course[]>([]);
+
+  useEffect(() => {
+    setCourseList(bestCourseList);
+  })
+
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
   const [activeIndex, setActiveIndex] = useState(1);
 
-  const [statusBarHeight, setStatusBarHeight] = useState(0);
-
-  useEffect(() => {
-    let calculatedHeight = 0;
-    if (Platform.OS === 'android') {
-      calculatedHeight = StatusBar.currentHeight ?? 20;
-    } else if (Platform.OS === 'ios') {
-      calculatedHeight = getStatusBarHeight(true);
-      if (isIphoneX()) {
-        calculatedHeight -= getBottomSpace();
-      }
-    }
-    setStatusBarHeight(calculatedHeight);
-  }, []);
-
-
-  const [isCourseFeedScreenVisible, setIsCourseFeedScreenVisible] = useState(false);
-  const translateY = useRef(new Animated.Value(getSize(720) + statusBarHeight)).current;
-
-  const bestCourseList = [
-    { id: 1, location: '광교 호수 공원', backgroundImg: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s' },
-    { id: 2, location: '한강', backgroundImg: 'https://i.namu.wiki/i/t2zvEe7ws93H0jrNgi_6co5wMkXToxQuGkmO7AhHbMrhPBSY9LZwNpthQZRkWYxYBB2ZPj8M08p5vw_yOJAz_g.webp' },
-    { id: 3, location: '남산 둘레길', backgroundImg: 'https://www.ktsketch.co.kr/news/photo/202006/5978_26907_50.jpg' },
-  ];
-
+  // best 코스 박스
   const CARD_WIDTH = getSize(309);
   const CARD_MARGIN = (width - CARD_WIDTH) / 2;
   const SNAP_INTERVAL = CARD_WIDTH + CARD_MARGIN * 0.05;
@@ -74,9 +70,9 @@ const CourseFeedHomeScreen = () => {
     navigation.navigate("course-feed/detail", {
       courseId: courseId,
       courseIdList: [
-        bestCourseList[0].id,
-        bestCourseList[1].id,
-        bestCourseList[2].id
+        courseList[0].id,
+        courseList[1].id,
+        courseList[2].id
       ]
     })
   };
@@ -93,6 +89,24 @@ const CourseFeedHomeScreen = () => {
     setTimeout(() => {
       scrollViewRef.current?.scrollTo({ x: SNAP_INTERVAL, animated: false });
     }, 0);
+  }, []);
+
+  // 하단 스와이프
+  const [statusBarHeight, setStatusBarHeight] = useState(0);
+  const [isCourseFeedScreenVisible, setIsCourseFeedScreenVisible] = useState(false);
+  const translateY = useRef(new Animated.Value(getSize(720) + statusBarHeight)).current;
+
+  useEffect(() => {
+    let calculatedHeight = 0;
+    if (Platform.OS === 'android') {
+      calculatedHeight = StatusBar.currentHeight ?? 20;
+    } else if (Platform.OS === 'ios') {
+      calculatedHeight = getStatusBarHeight(true);
+      if (isIphoneX()) {
+        calculatedHeight -= getBottomSpace();
+      }
+    }
+    setStatusBarHeight(calculatedHeight);
   }, []);
 
   const panResponder = PanResponder.create({
@@ -132,6 +146,17 @@ const CourseFeedHomeScreen = () => {
     });
   }
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const loadMoreCourses = () => {
+    setTimeout(() => {
+      setCourseList(prevList => [
+        ...prevList,
+        ...prevList.slice(0, 3)
+      ]);
+    }, 1500);
+  };
+
   return (
     <View style={Styles.container}>
       <ImageBackground
@@ -160,7 +185,7 @@ const CourseFeedHomeScreen = () => {
           )}
           scrollEventThrottle={16}
         >
-          {bestCourseList.map((course, index) => {
+          {courseList.map((course, index) => {
             const inputRange = [
               (index - 1) * SNAP_INTERVAL,
               index * SNAP_INTERVAL,
@@ -214,7 +239,7 @@ const CourseFeedHomeScreen = () => {
 
       {/* 하단의 페이지 인디케이터 */}
       <View style={styles.pagination}>
-        {bestCourseList.map((_, index) => (
+        {courseList.map((_, index) => (
           <TouchableOpacity
             key={index}
             style={[
