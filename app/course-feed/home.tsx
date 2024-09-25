@@ -138,15 +138,15 @@ const CourseFeedHomeScreen = () => {
     },
   });
 
-  const resetSwipe = () => {
-    Animated.timing(translateY, {
-      toValue: getSize(720) + statusBarHeight,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      setIsCourseFeedScreenVisible(false);
-    });
-  }
+  useEffect(() => {
+    if (!isCourseFeedScreenVisible) {
+      Animated.timing(translateY, {
+        toValue: getSize(720) + statusBarHeight,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isCourseFeedScreenVisible]);
 
   const [isEndReached, setIsEndReached] = useState(false);
 
@@ -287,7 +287,7 @@ const CourseFeedHomeScreen = () => {
       >
         {!isCourseFeedScreenVisible
           ? <Image source={require('@/assets/images/swipeUp.png')} />
-          : <TouchableOpacity onPress={resetSwipe}>
+          : <TouchableOpacity onPress={() => { setIsCourseFeedScreenVisible(false) }}>
             <Image source={require('@/assets/images/swipeDown.png')} />
           </TouchableOpacity>
         }
@@ -300,7 +300,7 @@ const CourseFeedHomeScreen = () => {
               text='RUNWITH'
               fontColor={Colors.main}
               fontFamily={Fonts.hanson}
-              onPressBack={resetSwipe}
+              onPressBack={() => { setIsCourseFeedScreenVisible(false) }}
               onPressSearch={() => {
                 navigation.navigate('course-feed/search');
                 setIsCourseFeedScreenVisible(false);
