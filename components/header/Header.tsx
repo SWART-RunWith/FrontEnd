@@ -19,6 +19,7 @@ import OptionSvgIcon from '@/assets/icons/option.svg';
 import SearchSvgIcon from '@/assets/icons/search.svg';
 import BacKBlackSvgIcon from '@/assets/icons/backBlack.svg';
 import OptionBlackSvgIcon from '@/assets/icons/optionBlack.svg';
+import SearchBlackSvgIcon from '@/assets/icons/searchBlack.svg';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
@@ -104,6 +105,12 @@ export const OptionBlackIcon: React.FC<IconProps> = ({ onPress }) => (
 export const SearchIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.iconButton}>
     <SearchSvgIcon width={getSize(24)} height={getSize(24)} />
+  </TouchableOpacity>
+);
+
+export const SearchBlackIcon: React.FC<IconProps> = ({ onPress }) => (
+  <TouchableOpacity onPress={onPress} style={styles.iconButton}>
+    <SearchBlackSvgIcon width={getSize(24)} height={getSize(24)} />
   </TouchableOpacity>
 );
 
@@ -283,7 +290,9 @@ const CombinedHeader: React.FC<CombinedHeaderProps> = ({
             {hasSearchModal ? (
               <SearchTextIcon query={query} />
             ) : (
-              <SearchIcon {...searchProps} />
+              isBlack
+                ? <SearchBlackIcon {...searchProps} />
+                : <SearchIcon {...searchProps} />
             )}
           </View>
         )}
