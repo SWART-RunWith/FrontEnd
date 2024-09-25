@@ -158,7 +158,7 @@ const MyCourseHomeScreen = () => {
           { zIndex: visibleLeft === 2 ? 3 : (visibleLeft === 1 ? 2 : 1) }
         ]}>
           <MyCourseBox
-            imgUrl={bestCourseList[0].imgUrl}
+            routeImg={bestCourseList[0].imgUrl}
             location={bestCourseList[0].location}
             status={visibleLeft}
             onPress={() => { }}
@@ -175,7 +175,7 @@ const MyCourseHomeScreen = () => {
           { zIndex: visibleMiddle === 2 ? 3 : (visibleMiddle === 1 ? 2 : 1) }
         ]}>
           <MyCourseBox
-            imgUrl={bestCourseList[1].imgUrl}
+            routeImg={bestCourseList[1].imgUrl}
             location={bestCourseList[1].location}
             status={visibleMiddle}
             onPress={() => { }}
@@ -192,7 +192,7 @@ const MyCourseHomeScreen = () => {
           { zIndex: visibleRight === 2 ? 3 : (visibleRight === 1 ? 2 : 1) }
         ]}>
           <MyCourseBox
-            imgUrl={bestCourseList[2].imgUrl}
+            routeImg={bestCourseList[2].imgUrl}
             location={bestCourseList[2].location}
             status={visibleRight}
             onPress={() => { }}

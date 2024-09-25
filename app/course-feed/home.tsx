@@ -54,9 +54,9 @@ const CourseFeedHomeScreen = () => {
   const translateY = useRef(new Animated.Value(getSize(720) + statusBarHeight)).current;
 
   const bestCourseList = [
-    { id: 1, location: '광교 호수 공원', imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s' },
-    { id: 2, location: '한강', imgUrl: 'https://i.namu.wiki/i/t2zvEe7ws93H0jrNgi_6co5wMkXToxQuGkmO7AhHbMrhPBSY9LZwNpthQZRkWYxYBB2ZPj8M08p5vw_yOJAz_g.webp' },
-    { id: 3, location: '남산 둘레길', imgUrl: 'https://www.ktsketch.co.kr/news/photo/202006/5978_26907_50.jpg' },
+    { id: 1, location: '광교 호수 공원', backgroundImg: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s' },
+    { id: 2, location: '한강', backgroundImg: 'https://i.namu.wiki/i/t2zvEe7ws93H0jrNgi_6co5wMkXToxQuGkmO7AhHbMrhPBSY9LZwNpthQZRkWYxYBB2ZPj8M08p5vw_yOJAz_g.webp' },
+    { id: 3, location: '남산 둘레길', backgroundImg: 'https://www.ktsketch.co.kr/news/photo/202006/5978_26907_50.jpg' },
   ];
 
   const CARD_WIDTH = getSize(309);
@@ -203,7 +203,7 @@ const CourseFeedHomeScreen = () => {
                   onPress={() => { handlePress(course.id) }}
                   onPressButton={() => { handlePress(course.id) }}
                   onPressPlus={() => plusCourse(course.id)}
-                  imgUrl={course.imgUrl}
+                  backgroundImg={course.backgroundImg}
                   location={course.location}
                 />
               </Animated.View>

@@ -116,7 +116,7 @@ export const MainCourseBox: React.FC<
   PlusButtonProps
 > = ({
   location = '장소',
-  routeImg = 'imaUrl',
+  backgroundImg = 'imaUrl',
   onPress,
   onPressButton,
   onPressPlus,
@@ -128,7 +128,7 @@ export const MainCourseBox: React.FC<
           onPress={onPress}
         >
           <ImageBackground
-            source={{ uri: routeImg }}
+            source={{ uri: backgroundImg }}
             style={MainCourseStyles.courseImage}
           />
 
@@ -419,7 +419,7 @@ const detailStyles = StyleSheet.create({
 */
 interface MyCourseBoxProps {
   location: string;
-  imgUrl: string;
+  routeImg: string;
   status: number;
   onPress: () => void;
   onPressLeft: () => void;
@@ -427,7 +427,7 @@ interface MyCourseBoxProps {
 }
 
 export const MyCourseBox: React.FC<MyCourseBoxProps> = ({
-  imgUrl,
+  routeImg,
   location,
   status,
   onPress,
@@ -459,7 +459,7 @@ export const MyCourseBox: React.FC<MyCourseBoxProps> = ({
 
       <View style={myCourseStyles.imageContainer}>
         <ImageBackground
-          source={{ uri: imgUrl }}
+          source={{ uri: routeImg }}
           style={myCourseStyles.image}
         />
       </View>

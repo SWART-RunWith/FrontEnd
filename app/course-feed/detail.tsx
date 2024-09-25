@@ -73,7 +73,7 @@ const CourseFEedDetailScreen = () => {
             title={courseData.title}
             time={courseData.time}
             distance={courseData.distance}
-            img={'img'}
+            routeImg={'img'}
             location={courseData.location}
             description={courseData.description}
             name={courseData.author}

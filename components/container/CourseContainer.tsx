@@ -37,7 +37,7 @@ export const CourseContainer: React.FC<CourseContainerProp> = ({
               title={course.title}
               time={course.time}
               distance={course.distance}
-              img={""}
+              backgroundImg={""}
               isSelected={selectedCourses.includes(course.id)}
               onPress={() => onFolderPress(course.id)}
               onPressSave={() => console.log("Save course:", course.title)}
