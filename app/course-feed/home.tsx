@@ -47,7 +47,14 @@ const CourseFeedHomeScreen = () => {
 
   const handlePress = (courseId: number) => {
     console.log(courseId, "로 이동");
-    navigation.navigate("course-feed/detail", { courseId: courseId })
+    navigation.navigate("course-feed/detail", {
+      courseId: courseId,
+      courseIdList: [
+        bestCourseList[0].id,
+        bestCourseList[1].id,
+        bestCourseList[2].id
+      ]
+    })
   };
 
   const plusCourse = (courseId: number) => {

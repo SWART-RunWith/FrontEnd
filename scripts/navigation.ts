@@ -76,6 +76,7 @@ type CourseFeedMainStackParamList = {
   "course-feed/search": undefined;
   "course-feed/detail": {
     courseId: number;
+    courseIdList: number[];
   };
   "course-feed/my/home": undefined;
 };
