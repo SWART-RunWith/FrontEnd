@@ -19,6 +19,9 @@ import getSize from "@/scripts/getSize";
 import { CourseButton } from "../button/RunningButton";
 import Fonts from "@/constants/Fonts";
 
+/*
+메인 코스 피드 박스
+*/
 interface CourseBoxProps {
   title: string;
   time: string;
@@ -229,6 +232,9 @@ const MainCourseStyles = StyleSheet.create({
   },
 })
 
+/*
+내 코스 피드 박스
+*/
 interface MyCourseBoxProps {
   location: string;
   imgUrl: string;
