@@ -12,6 +12,7 @@ import {
   PanResponder,
   StatusBar,
   Platform,
+  FlatList,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -19,12 +20,13 @@ import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 import NextIcon from '@/assets/icons/next.svg';
 import bestCourseList from '@/assets/dummy/bestCourseList.json';
-import getSize from "@/scripts/getSize";
 import { BackSearchHeader, CourseFeedMainHeader } from "@/components/header/IconHeader";
 import { MainCourseBox, MainCoursePreviewBox } from '@/components/box/CourseFeed';
 import Styles from '@/constants/Styles';
 import Fonts from '@/constants/Fonts';
 import Colors from '@/constants/Colors';
+import Sizes from '@/constants/Sizes';
+import getSize from "@/scripts/getSize";
 import { CourseFeedMainScreenNavigationProp } from '@/scripts/navigation';
 
 const { width, height } = Dimensions.get('window');
@@ -156,6 +158,10 @@ const CourseFeedHomeScreen = () => {
       ]);
     }, 1500);
   };
+
+  const handlePlus = (courseId: number) => {
+    // to do : 저장 api 연결
+  }
 
   return (
     <View style={Styles.container}>
@@ -290,6 +296,30 @@ const CourseFeedHomeScreen = () => {
               fontFamily={Fonts.hanson}
               onPressBack={resetSwipe}
               onPressSearch={() => { navigation.navigate('course-feed/search') }}
+            />
+
+            <FlatList
+              style={{
+                paddingHorizontal: getSize(Sizes.formMargin),
+              }}
+              data={courseList}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <View style={{ marginTop: getSize(24) }}>
+                  <MainCoursePreviewBox
+                    title={item.title}
+                    time={item.time}
+                    description={item.description}
+                    backgroundImg={item.backgroundImg}
+                    distance={item.distance}
+                    location={item.location}
+                    name={item.author}
+                    onPressPlus={() => { handlePlus(item.id) }}
+                  />
+                </View>
+              )}
+              onEndReached={loadMoreCourses} // 무한 스크롤을 위해 추가
+              onEndReachedThreshold={0.5} // 리스트 끝에서 50% 지점에 도달했을 때 무한 스크롤 트리거
             />
           </View>
         </View>
