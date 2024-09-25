@@ -148,15 +148,21 @@ const CourseFeedHomeScreen = () => {
     });
   }
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEndReached, setIsEndReached] = useState(false);
 
   const loadMoreCourses = () => {
-    setTimeout(() => {
-      setCourseList(prevList => [
-        ...prevList,
-        ...prevList.slice(0, 3)
-      ]);
-    }, 1500);
+    if (!isEndReached) {
+      setTimeout(() => {
+        if (courseList.length >= bestCourseList.length) {
+          setIsEndReached(true);
+        } else {
+          setCourseList(prevList => [
+            ...prevList,
+            ...bestCourseList.slice(prevList.length, prevList.length + 3),
+          ]);
+        }
+      }, 1500);
+    }
   };
 
   const handlePlus = (courseId: number) => {
@@ -295,8 +301,13 @@ const CourseFeedHomeScreen = () => {
               fontColor={Colors.main}
               fontFamily={Fonts.hanson}
               onPressBack={resetSwipe}
-              onPressSearch={() => { navigation.navigate('course-feed/search') }}
+              onPressSearch={() => {
+                navigation.navigate('course-feed/search');
+                setIsCourseFeedScreenVisible(false);
+              }}
             />
+
+            <View style={{ marginTop: getSize(24) }} />
 
             <FlatList
               style={{
@@ -305,7 +316,7 @@ const CourseFeedHomeScreen = () => {
               data={courseList}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <View style={{ marginTop: getSize(24) }}>
+                <View style={{ marginBottom: getSize(24) }}>
                   <MainCoursePreviewBox
                     title={item.title}
                     time={item.time}
@@ -318,8 +329,8 @@ const CourseFeedHomeScreen = () => {
                   />
                 </View>
               )}
-              onEndReached={loadMoreCourses} // 무한 스크롤을 위해 추가
-              onEndReachedThreshold={0.5} // 리스트 끝에서 50% 지점에 도달했을 때 무한 스크롤 트리거
+              onEndReached={loadMoreCourses}
+              onEndReachedThreshold={0.5}
             />
           </View>
         </View>
@@ -405,10 +416,12 @@ const styles = StyleSheet.create({
     left: 0,
   },
   courseFeedContainer: {
+    flex: 1,
     backgroundColor: Colors.darkGrayBox,
-    borderRadius: 20,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
     width: width,
-    height: '100%',
+    paddingBottom: getSize(110),
   },
 });
 
