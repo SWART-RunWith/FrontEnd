@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: getSize(Sizes.formMargin),
   },
-  navigationArrows: {
+  courseContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
