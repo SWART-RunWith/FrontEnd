@@ -1,14 +1,37 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import LocationIcon from '@/assets/icons/location.svg';
+import BottomArrowIcon from '@/assets/icons/bottomArrow.svg';
 import {
   CombinedHeader,
   CombinedHeaderProps,
+  SearchIcon,
+  TextProps,
 } from '@/components/header/Header';
+import getSize from '@/scripts/getSize';
+import { TouchableOpacity } from 'react-native';
+import Fonts from '@/constants/Fonts';
 
 const { width } = Dimensions.get('window');
 
 interface BackIconProps {
-  onPressBack: () => void;
+  onPressBack?: () => void;
+}
+
+interface SearchIconProps {
+  onPressSearch: () => void;
+}
+
+interface OptionIconProps {
+  onPressOption: () => void;
 }
 
 const BackHeader: React.FC<BackIconProps> = ({
@@ -48,20 +71,83 @@ const TermsAgreeHeader: React.FC<BackIconProps> = ({
   );
 };
 
-const MyFolderHeader: React.FC<BackIconProps> = ({
-  onPressBack
+export const CourseSaveHeader: React.FC<
+  BackIconProps & SearchIconProps
+> = ({
+  onPressBack,
+  onPressSearch,
+}) => {
+    return (
+      <CombinedHeader
+        isLeftSearch={false}
+        hasSearchModal={true}
+        query='folder search uri'
+        backProps={{ onPress: onPressBack }}
+        textProps={{ text: '' }}
+        searchProps={{ onPress: onPressSearch }}
+      />
+    );
+  };
+
+export const BackOptionHeader: React.FC<
+  BackIconProps & OptionIconProps
+> = ({
+  onPressBack,
+  onPressOption,
+}
+) => {
+    return (
+      <CombinedHeader
+        backProps={{ onPress: onPressBack }}
+        optionProps={{ onPress: onPressOption }}
+      />
+    );
+  };
+
+export const BackSearchHeader: React.FC<BackIconProps & SearchIconProps & TextProps> = ({
+  onPressSearch,
+  onPressBack,
+  text = '',
+  fontFamily,
+  fontSize,
+  fontColor,
 }) => {
   return (
     <CombinedHeader
+      hasSearchModal={false}
       backProps={{ onPress: onPressBack }}
       textProps={{
-        text: '내 폴더',
-        fontColor: 'white',
+        text: text,
+        fontFamily: fontFamily,
+        fontSize: fontSize,
+        fontColor: fontColor,
       }}
-      settingProps={{ onPress: () => console.log('설정 버튼 클릭') }}
+      searchProps={{ onPress: onPressSearch }}
     />
   );
 };
+
+const MyFolderHeader: React.FC<
+  BackIconProps & SearchIconProps & OptionIconProps
+> = ({
+  onPressBack,
+  onPressSearch,
+  onPressOption,
+}) => {
+    return (
+      <CombinedHeader
+        isLeftSearch={false}
+        hasSearchModal={false}
+        isBlack={true}
+        backProps={{ onPress: onPressBack }}
+        textProps={{
+          text: '내 폴더',
+        }}
+        searchProps={{ onPress: onPressSearch }}
+        optionProps={{ onPress: onPressOption }}
+      />
+    );
+  };
 
 const ProfileSettingHeader: React.FC<BackIconProps> = ({
   onPressBack
@@ -109,11 +195,87 @@ const SettingHeader: React.FC<CombinedHeaderProps> = ({
   );
 };
 
+export const CourseMyHomeHeader: React.FC<CombinedHeaderProps> = ({
+  backProps,
+  optionProps,
+}) => {
+  return (
+    <CombinedHeader
+      isBlack={true}
+      backProps={{}}
+      optionProps={{}}
+      textProps={{ text: '' }}
+    />
+  );
+};
+
+type SearchStackList = {
+  "course-feed/search": undefined;
+  "course-feed/home": undefined;
+};
+
+type SearchNavigationProps = StackNavigationProp<
+  SearchStackList,
+  "course-feed/home"
+>;
+
+const SearchNavIcon = () => {
+  const navigation = useNavigation<SearchNavigationProps>();
+
+  return (
+    <SearchIcon onPress={() => { navigation.navigate('course-feed/search') }} />
+  );
+};
+
+export const CourseFeedMainHeader: React.FC = ({ }) => {
+  const pressArrowIcon = () => {
+    // to do : 위치 모달창 열기
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.leftContainer}>
+        <LocationIcon width={getSize(16.36)} height={getSize(24)} />
+        <Text style={styles.leftText}>전체</Text>
+        <TouchableOpacity
+          style={styles.arrowIconContainer}
+          onPress={pressArrowIcon}
+        >
+          <BottomArrowIcon width={getSize(24)} height={getSize(13.85)} />
+        </TouchableOpacity>
+      </View>
+      <SearchNavIcon />
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     width: width,
+    height: getSize(29),
+    marginTop: getSize(58),
+    paddingHorizontal: getSize(16),
   },
+  leftContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: getSize(29),
+  },
+  leftText: {
+    color: 'white',
+    fontSize: getSize(24),
+    fontFamily: Fonts.regular,
+    marginLeft: getSize(8),
+  },
+  arrowIconContainer: {
+    justifyContent: 'center',
+    height: getSize(29),
+    width: getSize(24),
+    marginLeft: getSize(12),
+  }
 });
 
 export {

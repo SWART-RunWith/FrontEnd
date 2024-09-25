@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "광교 호수 공원\n업힐 훈련 코스",
+    "distance": "00.03KM",
+    "time": "01:58:02",
+    "author": "홍여준",
+    "location": "경기도 용인시",
+    "description": "약간의 업힐이 있는 광교호수공원 러닝 코스! 신대호수 방향으로 가면 직진하다가 힘들어도 빠지는 길이 있고, 원천천에서 한바퀴 구경을 계획해도 훈련해보고 싶다면 직진해서 주차장 방향으로.",
+    "backgroundImg": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s"
+  },
+  {
+    "id": 2,
+    "title": "한강 러닝 코스",
+    "distance": "05.30KM",
+    "time": "01:30:45",
+    "author": "김민수",
+    "location": "서울특별시",
+    "description": "한강을 따라 달리는 상쾌한 러닝 코스입니다. 바람이 시원하고 길이 평탄하여 장거리 러닝에도 적합합니다. 마포대교를 넘어 강남 방향으로 달려보세요.",
+    "backgroundImg": "https://i.namu.wiki/i/t2zvEe7ws93H0jrNgi_6co5wMkXToxQuGkmO7AhHbMrhPBSY9LZwNpthQZRkWYxYBB2ZPj8M08p5vw_yOJAz_g.webp"
+  },
+  {
+    "id": 3,
+    "title": "남산 둘레길 코스",
+    "distance": "03.75KM",
+    "time": "01:15:30",
+    "author": "이영희",
+    "location": "서울특별시",
+    "description": "남산의 아름다운 풍경을 감상하며 달리는 둘레길 코스입니다. 자연 속에서 러닝을 즐기며 남산 정상까지 올라가는 도전적인 코스입니다.",
+    "backgroundImg": "https://www.ktsketch.co.kr/news/photo/202006/5978_26907_50.jpg"
+  }
+]

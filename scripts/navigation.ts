@@ -58,7 +58,7 @@ type RunningStackParamList = {
     pace: string;
     heartRate: number;
   };
-  "course-feed/folder": undefined;
+  "running/save": undefined;
 };
 
 export type RunningScreenNavigationProp = StackNavigationProp<
@@ -71,11 +71,43 @@ export type RunningFinishScreenRouteProp = RouteProp<
   "running/finish"
 >;
 
-type CourseFeedStackParamList = {
-  "course-feed/folder": undefined;
+type CourseFeedMainStackParamList = {
+  "course-feed/home": undefined;
+  "course-feed/search": undefined;
+  "course-feed/detail": {
+    courseId: number;
+    courseIdList: number[];
+  };
+  "course-feed/my/home": undefined;
 };
 
-export type CourseFeedScreenNavigationProp = StackNavigationProp<
-  CourseFeedStackParamList,
-  "course-feed/folder"
+export type CourseFeedMainScreenNavigationProp = StackNavigationProp<
+  CourseFeedMainStackParamList,
+  "course-feed/home"
+>;
+
+export type CourseFeedMainScreenRouteProp = RouteProp<
+  CourseFeedMainStackParamList,
+  "course-feed/detail"
+>;
+
+type CourseFeedMineStackParamList = {
+  home: undefined;
+  "running/save": undefined;
+  "course-feed/my/home": undefined;
+  "course-feed/my/folder": undefined;
+  "course-feed/my/folderSearch": undefined;
+  "course-feed/my/course": {
+    folderId: number;
+  };
+};
+
+export type CourseFeedMineScreenNavigationProp = StackNavigationProp<
+  CourseFeedMineStackParamList,
+  "course-feed/my/home"
+>;
+
+export type CourseSaveScreenRouteProp = RouteProp<
+  CourseFeedMineStackParamList,
+  "course-feed/my/course"
 >;

@@ -52,7 +52,6 @@ export default function RootLayout() {
         <Stack.Screen name='running/countDown' />
         <Stack.Screen name='running/running' />
         <Stack.Screen name='running/finish' />
-        <Stack.Screen name='course-feed/folder' />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>

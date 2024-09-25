@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "title": "광교 호수 공원\n업힐 훈련 코스",
+    "distance": "00.03KM",
+    "time": "01:58:02",
+    "author": "홍여준",
+    "location": "경기도 용인시",
+    "description": "약간의 업힐이 있는 광교호수공원 러닝 코스! 신대호수 방향으로 가면 직진하다가 힘들어도 빠지는 길이 있고, 원천천에서 한바퀴 구경을 계획해도 훈련해보고 싶다면 직진해서 주차장 방향으로.",
+    "backgroundImg": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s"
+  },
+  {
+    "id": 2,
+    "title": "한강 러닝 코스",
+    "distance": "05.30KM",
+    "time": "01:30:45",
+    "author": "김민수",
+    "location": "서울특별시",
+    "description": "한강을 따라 달리는 상쾌한 러닝 코스입니다. 바람이 시원하고 길이 평탄하여 장거리 러닝에도 적합합니다. 마포대교를 넘어 강남 방향으로 달려보세요.",
+    "backgroundImg": "https://i.namu.wiki/i/t2zvEe7ws93H0jrNgi_6co5wMkXToxQuGkmO7AhHbMrhPBSY9LZwNpthQZRkWYxYBB2ZPj8M08p5vw_yOJAz_g.webp"
+  },
+  {
+    "id": 3,
+    "title": "남산 둘레길 코스",
+    "distance": "03.75KM",
+    "time": "01:15:30",
+    "author": "이영희",
+    "location": "서울특별시",
+    "description": "남산의 아름다운 풍경을 감상하며 달리는 둘레길 코스입니다. 자연 속에서 러닝을 즐기며 남산 정상까지 올라가는 도전적인 코스입니다.",
+    "backgroundImg": "https://www.ktsketch.co.kr/news/photo/202006/5978_26907_50.jpg"
+  },
+  {
+    "id": 4,
+    "title": "올림픽공원 러닝 코스",
+    "distance": "02.80KM",
+    "time": "00:45:10",
+    "author": "박지현",
+    "location": "서울특별시",
+    "description": "올림픽공원 내에서 달리는 코스로, 넓은 공원을 둘러싸고 달리는 코스입니다. 가벼운 산책부터 러닝까지 즐길 수 있어요.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2016/04/06/10/54/people-1303408_960_720.jpg"
+  },
+  {
+    "id": 5,
+    "title": "제주 해안도로 코스",
+    "distance": "10.00KM",
+    "time": "02:10:00",
+    "author": "최정훈",
+    "location": "제주특별자치도",
+    "description": "제주도의 해안을 따라 펼쳐진 러닝 코스입니다. 아름다운 해변 경치와 함께 해안선을 따라 달리는 멋진 경험을 즐겨보세요.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2017/03/27/13/22/beach-2177965_960_720.jpg"
+  },
+  {
+    "id": 6,
+    "title": "부산 광안리 코스",
+    "distance": "06.25KM",
+    "time": "01:40:00",
+    "author": "장서현",
+    "location": "부산광역시",
+    "description": "광안리 해변을 따라 달리며 바다와 하늘을 동시에 즐길 수 있는 코스입니다. 여유로운 러닝을 원하시는 분들에게 추천드립니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2017/01/20/00/30/beach-1990363_960_720.jpg"
+  },
+  {
+    "id": 7,
+    "title": "수원 화성 코스",
+    "distance": "04.00KM",
+    "time": "01:20:00",
+    "author": "이승현",
+    "location": "경기도 수원시",
+    "description": "역사적인 수원 화성을 둘러보며 달리는 코스입니다. 성곽을 따라 걸으며 수원의 전통과 자연을 느낄 수 있습니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2020/05/14/16/21/city-5169747_960_720.jpg"
+  },
+  {
+    "id": 8,
+    "title": "대구 두류공원 코스",
+    "distance": "03.50KM",
+    "time": "01:10:00",
+    "author": "문지호",
+    "location": "대구광역시",
+    "description": "대구의 대표 공원인 두류공원에서 달리는 코스입니다. 공원 내 산책로와 자연 경관을 즐기며 달릴 수 있어요.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg"
+  },
+  {
+    "id": 9,
+    "title": "인천 소래포구 코스",
+    "distance": "07.00KM",
+    "time": "01:50:00",
+    "author": "서은수",
+    "location": "인천광역시",
+    "description": "소래포구의 신선한 바람과 함께 해변을 따라 달리는 코스입니다. 바다의 소리를 들으며 달릴 수 있는 편안한 코스입니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2018/05/09/22/21/beach-3380570_960_720.jpg"
+  },
+  {
+    "id": 10,
+    "title": "강릉 경포대 코스",
+    "distance": "05.50KM",
+    "time": "01:30:00",
+    "author": "박민지",
+    "location": "강원도 강릉시",
+    "description": "경포대 해변을 따라 달리는 코스입니다. 바다와 하늘을 배경으로 한 시원한 러닝 코스로 강릉의 자연을 만끽할 수 있습니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2016/06/22/21/53/sunset-1473171_960_720.jpg"
+  },
+  {
+    "id": 11,
+    "title": "울산 태화강 코스",
+    "distance": "04.75KM",
+    "time": "01:15:45",
+    "author": "이서현",
+    "location": "울산광역시",
+    "description": "태화강을 따라 달리는 코스로, 강변의 아름다운 경치를 즐기며 달릴 수 있습니다. 물소리와 함께하는 러닝을 원하신다면 추천드립니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2020/01/10/11/04/river-4755991_960_720.jpg"
+  },
+  {
+    "id": 12,
+    "title": "포항 영일대 코스",
+    "distance": "03.25KM",
+    "time": "00:55:00",
+    "author": "정수현",
+    "location": "경상북도 포항시",
+    "description": "영일대 해수욕장을 따라 달리며 바다와 하늘을 배경으로 하는 멋진 러닝 코스입니다. 가볍게 달리며 경치를 즐길 수 있습니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2015/06/08/15/11/beach-801696_960_720.jpg"
+  },
+  {
+    "id": 13,
+    "title": "전주 한옥마을 코스",
+    "distance": "04.80KM",
+    "time": "01:20:30",
+    "author": "김지우",
+    "location": "전라북도 전주시",
+    "description": "전주의 한옥마을을 지나가는 러닝 코스로, 전통과 현대가 어우러진 특별한 분위기를 느끼며 달릴 수 있는 코스입니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2018/06/15/17/17/traditional-3477276_960_720.jpg"
+  },
+  {
+    "id": 14,
+    "title": "여수 오동도 코스",
+    "distance": "05.75KM",
+    "time": "01:40:00",
+    "author": "차민호",
+    "location": "전라남도 여수시",
+    "description": "오동도의 아름다운 자연 경관을 즐기며 달리는 코스입니다. 해변과 숲길을 함께 즐길 수 있는 완벽한 러닝 코스입니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2017/10/25/16/54/beach-2882365_960_720.jpg"
+  },
+  {
+    "id": 15,
+    "title": "청주 무심천 코스",
+    "distance": "03.90KM",
+    "time": "01:05:00",
+    "author": "김지민",
+    "location": "충청북도 청주시",
+    "description": "무심천을 따라 달리는 코스로, 천변의 상쾌한 바람을 맞으며 자연 속에서 러닝을 즐길 수 있습니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2019/04/05/15/22/river-4105343_960_720.jpg"
+  },
+  {
+    "id": 16,
+    "title": "대전 갑천 코스",
+    "distance": "06.00KM",
+    "time": "01:35:00",
+    "author": "오세훈",
+    "location": "대전광역시",
+    "description": "갑천을 따라 달리는 코스입니다. 자연과 도심이 조화를 이루는 경치를 감상하며 달릴 수 있는 코스입니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2019/06/10/17/46/running-4264265_960_720.jpg"
+  },
+  {
+    "id": 17,
+    "title": "강남 코엑스 러닝 코스",
+    "distance": "05.00KM",
+    "time": "01:10:30",
+    "author": "한준석",
+    "location": "서울특별시",
+    "description": "강남의 중심지 코엑스를 중심으로 한 도심 속 러닝 코스입니다. 도시의 에너지를 느끼며 빠르게 달려보세요.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2016/03/09/09/17/korea-1241019_960_720.jpg"
+  },
+  {
+    "id": 18,
+    "title": "속초 설악산 코스",
+    "distance": "07.50KM",
+    "time": "02:15:00",
+    "author": "이진우",
+    "location": "강원도 속초시",
+    "description": "설악산의 멋진 풍경을 감상하며 달리는 도전적인 러닝 코스입니다. 산속에서 자연의 경이로움을 느껴보세요.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2020/10/18/20/08/nature-5667490_960_720.jpg"
+  },
+  {
+    "id": 19,
+    "title": "경주 보문호 코스",
+    "distance": "06.50KM",
+    "time": "01:50:00",
+    "author": "이예지",
+    "location": "경상북도 경주시",
+    "description": "보문호 주변을 따라 달리는 코스로, 경주의 고즈넉한 분위기 속에서 자연을 만끽할 수 있는 러닝 코스입니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2016/12/23/09/24/lake-192990_960_720.jpg"
+  },
+  {
+    "id": 20,
+    "title": "광주 무등산 코스",
+    "distance": "04.50KM",
+    "time": "01:40:00",
+    "author": "김도현",
+    "location": "광주광역시",
+    "description": "무등산의 아름다운 산책로를 따라 달리는 코스입니다. 자연 속에서 힐링하며 러닝을 즐길 수 있습니다.",
+    "backgroundImg": "https://cdn.pixabay.com/photo/2015/12/07/12/34/nature-1081720_960_720.jpg"
+  }
+]

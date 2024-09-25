@@ -5,15 +5,22 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 
 import LocationIcon from '@/assets/icons/location.svg';
 import FolderIcon from '@/assets/icons/folder.svg';
+import CancelIcon from '@/assets/icons/cancel.svg';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import getSize from '@/scripts/getSize';
 import Sizes from '@/constants/Sizes';
+import Fonts from '@/constants/Fonts';
 
 interface ActionModalProps {
   visible: boolean;
@@ -27,7 +34,7 @@ interface ActionModalProps {
   onRightButtonPress: () => void;
 }
 
-const ActionModal: React.FC<ActionModalProps> = ({
+export const ActionModal: React.FC<ActionModalProps> = ({
   visible = false,
   type = '코스',
   description,
@@ -43,6 +50,7 @@ const ActionModal: React.FC<ActionModalProps> = ({
       visible={visible}
       transparent={true}
       animationType="fade"
+      statusBarTranslucent
     >
       <View style={styles.modalContainer}>
         <BlurView intensity={20} style={Styles.blurContainer}>
@@ -160,4 +168,137 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ActionModal;
+interface EditModalProps {
+  visible: boolean;
+  isLeftMain: boolean;
+  title: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  leftButtonText: string;
+  rightButtonText: string;
+  onLeftButtonPress: () => void;
+  onRightButtonPress: () => void;
+}
+
+export const EditModal: React.FC<EditModalProps> = ({
+  visible = false,
+  isLeftMain = true,
+  title = '',
+  value,
+  onChangeText,
+  leftButtonText,
+  rightButtonText,
+  onLeftButtonPress,
+  onRightButtonPress,
+}) => {
+  const resetText = () => {
+    onChangeText('');
+  }
+
+  return (
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={Keyboard.dismiss}
+      statusBarTranslucent
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={[{ flex: 1 }]}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.modalContainer}>
+            <BlurView intensity={20} style={Styles.blurContainer}>
+
+              <View style={[styles.modalContent, { paddingTop: 0 }]}>
+                {/* title */}
+                <View style={editStyles.titleContainer}>
+                  <Text style={editStyles.title}>{title}</Text>
+                </View>
+
+                {/* text bar */}
+                <View style={editStyles.textContainer}>
+                  <TextInput
+                    style={editStyles.textInput}
+                    value={value}
+                    onChangeText={onChangeText}
+                    placeholder='코스 이름을 적성해주세요'
+                    placeholderTextColor={Colors.placeholder}
+                  />
+                  <TouchableOpacity
+                    style={editStyles.cancelIcon}
+                    onPress={resetText}
+                  >
+                    <CancelIcon width={getSize(22.65)} height={getSize(24)} />
+                  </TouchableOpacity>
+                </View>
+
+                {/* button */}
+                <View style={[styles.buttonContainer, { marginTop: getSize(26) }]}>
+                  <TouchableOpacity onPress={onLeftButtonPress} style={[
+                    styles.button,
+                    isLeftMain && { backgroundColor: Colors.main }
+                  ]}
+                  >
+                    <Text style={[
+                      styles.buttonText,
+                      isLeftMain && { color: 'black' }
+                    ]}>
+                      {leftButtonText}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={onRightButtonPress} style={[
+                    styles.button,
+                    !isLeftMain && { backgroundColor: Colors.main }
+                  ]}>
+                    <Text style={[
+                      styles.buttonText,
+                      !isLeftMain && { color: 'black' }
+                    ]}>
+                      {rightButtonText}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </BlurView>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </Modal>
+  );
+};
+
+const editStyles = StyleSheet.create({
+  titleContainer: {
+    marginTop: getSize(37),
+    height: getSize(24),
+  },
+  title: {
+    color: Colors.main,
+    fontSize: getSize(20),
+    fontFamily: Fonts.semiBold,
+    textAlign: 'center',
+  },
+  textContainer: {
+    backgroundColor: Colors.grayBox,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: getSize(326),
+    height: getSize(56),
+    borderRadius: 10,
+    paddingHorizontal: getSize(14),
+    marginTop: getSize(15),
+  },
+  textInput: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+    width: '100%',
+  },
+  cancelIcon: {
+    position: 'absolute',
+    right: getSize(14),
+  },
+})
