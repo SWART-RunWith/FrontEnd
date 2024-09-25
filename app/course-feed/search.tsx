@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SearchIcon from '@/assets/icons/search.svg';
 import SearchItemIcon from '@/assets/icons/searchItem.svg';
 import DeleteIcon from '@/assets/icons/x.svg';
+import UserIcon from '@/assets/icons/user.svg';
 import { MainGradient } from "@/components/Gradient";
 import { BackHeader } from "@/components/header/IconHeader";
 import Styles from "@/constants/Styles";
@@ -120,6 +121,14 @@ const CourseFeedSearchScreen = () => {
 
   const recentSearches = searchHistory.slice(0, 5);
 
+  // 추천 리스트
+  // to do : 추천 api 연결
+  const recommendedCourses = [
+    { title: '고려런 코스', author: '강은채' },
+    { title: '반짝이는 시티뷰 뛰자', author: '신주은' },
+    { title: '댕댕런으로 기분 전환', author: '김근민' },
+  ];
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={Styles.container}>
@@ -172,14 +181,20 @@ const CourseFeedSearchScreen = () => {
 
         {/* 추천 리스트 */}
         <View style={styles.recommendContainer}>
-          <Text style={styles.recommendTitle}>홍여준님 이런 코스는 어떠세요?</Text>
+          <View style={styles.recommendTitleContainer}>
+            <Text style={styles.userName}>{userName}</Text>
+            <Text style={styles.recommendTitle}>님 이런 코스는 어떠세요?</Text>
+          </View>
           {recommendedCourses.map((course, index) => (
             <View key={index} style={styles.recommendItem}>
-              <View style={styles.recommendTextContainer}>
-                <Text style={styles.recommendCourseTitle}>{course.title}</Text>
-                <Text style={styles.recommendByText}>by. {course.author}</Text>
+              <Text style={styles.recommendCourseTitle}>{course.title}</Text>
+              <View style={styles.recommendAuthorContainer}>
+                <Text style={styles.recommendByText}>by. </Text>
+                <View style={{ marginLeft: getSize(12), marginRight: getSize(6) }}>
+                  <UserIcon width={getSize(24)} height={getSize(24)} />
+                </View>
+                <Text style={styles.recommendByText}>{course.author}</Text>
               </View>
-              <UserIcon width={getSize(24)} height={getSize(24)} />
             </View>
           ))}
         </View>
@@ -229,7 +244,7 @@ const styles = StyleSheet.create({
     paddingLeft: getSize(24),
     paddingRight: getSize(20),
     width: width,
-    height: getSize(226),
+    height: getSize(257),
   },
   searchItem: {
     flexDirection: 'row',
@@ -246,6 +261,46 @@ const styles = StyleSheet.create({
     gap: getSize(14),
   },
   searchText: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+  },
+  recommendContainer: {
+    width: width,
+    paddingHorizontal: getSize(24),
+  },
+  recommendTitleContainer: {
+    flexDirection: 'row',
+    marginBottom: getSize(36),
+    width: width,
+    height: getSize(24),
+  },
+  userName: {
+    color: Colors.main,
+    fontSize: getSize(20),
+    fontFamily: Fonts.semiBold,
+  },
+  recommendTitle: {
+    color: 'white',
+    fontSize: getSize(20),
+    fontFamily: Fonts.semiBold,
+  },
+  recommendItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: getSize(15),
+  },
+  recommendCourseTitle: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+  },
+  recommendAuthorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  recommendByText: {
     color: 'white',
     fontSize: getSize(16),
     fontFamily: Fonts.semiBold,
