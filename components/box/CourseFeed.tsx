@@ -376,10 +376,9 @@ const detailStyles = StyleSheet.create({
     color: 'white',
     fontSize: getSize(18),
     fontFamily: Fonts.semiBold,
-    height: getSize(21),
   },
   locationContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-end',
     flexDirection: 'row',
     marginTop: getSize(4),
     gap: getSize(4),
