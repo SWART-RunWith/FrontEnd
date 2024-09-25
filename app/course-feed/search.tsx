@@ -94,11 +94,6 @@ const CourseFeedSearchScreen = () => {
     Keyboard.dismiss();
   };
 
-  const handleDelete = (index: number) => {
-    const updatedHistory = searchHistory.filter((_, i) => i !== index);
-    setSearchHistory(updatedHistory);
-  };
-
   const handleSearchIconPress = () => {
     setTriggeredByIcon(true);
     handleSearch();
@@ -109,6 +104,16 @@ const CourseFeedSearchScreen = () => {
       handleSearch();
     }
     setTriggeredByIcon(false);
+  };
+
+  const handleDelete = async (index: number) => {
+    const updatedHistory = searchHistory.filter((_, i) => i !== index);
+    setSearchHistory(updatedHistory);
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedHistory));
+    } catch (error) {
+      console.error("검색 기록 삭제 실패", error);
+    }
   };
 
   const handleClearAll = async () => {
