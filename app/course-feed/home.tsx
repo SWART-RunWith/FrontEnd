@@ -45,7 +45,11 @@ const CourseFeedHomeScreen = () => {
     setActiveIndex(index);
   };
 
-  const handlePress = () => { };
+  const handlePress = (courseId: number) => {
+    console.log(courseId, "로 이동");
+    navigation.navigate("course-feed/detail", { courseId: courseId })
+  };
+
   const plusCourse = (courseId: number) => {
     // 코스 추가하는 API 적용
   };
@@ -128,8 +132,8 @@ const CourseFeedHomeScreen = () => {
                 ]}
               >
                 <MainCourseBox
-                  onPress={handlePress}
-                  onPressButton={handlePress}
+                  onPress={() => { handlePress(course.id) }}
+                  onPressButton={() => { handlePress(course.id) }}
                   onPressPlus={() => plusCourse(course.id)}
                   imgUrl={course.imgUrl}
                   location={course.location}
