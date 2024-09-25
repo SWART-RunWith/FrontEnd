@@ -9,8 +9,13 @@ import {
   Animated,
   TouchableOpacity,
   Image,
+  PanResponder,
+  StatusBar,
+  Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 import NextIcon from '@/assets/icons/next.svg';
 import getSize from "@/scripts/getSize";
@@ -21,13 +26,32 @@ import Fonts from '@/constants/Fonts';
 import Colors from '@/constants/Colors';
 import { CourseFeedMainScreenNavigationProp } from '@/scripts/navigation';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const CourseFeedHomeScreen = () => {
   const navigation = useNavigation<CourseFeedMainScreenNavigationProp>();
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
   const [activeIndex, setActiveIndex] = useState(1);
+
+  const [statusBarHeight, setStatusBarHeight] = useState(0);
+
+  useEffect(() => {
+    let calculatedHeight = 0;
+    if (Platform.OS === 'android') {
+      calculatedHeight = StatusBar.currentHeight ?? 20;
+    } else if (Platform.OS === 'ios') {
+      calculatedHeight = getStatusBarHeight(true);
+      if (isIphoneX()) {
+        calculatedHeight -= getBottomSpace();
+      }
+    }
+    setStatusBarHeight(calculatedHeight);
+  }, []);
+
+
+  const [isCourseFeedScreenVisible, setIsCourseFeedScreenVisible] = useState(false);
+  const translateY = useRef(new Animated.Value(getSize(754) + statusBarHeight)).current;
 
   const bestCourseList = [
     { id: 1, location: '광교 호수 공원', imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s' },
@@ -70,6 +94,33 @@ const CourseFeedHomeScreen = () => {
       scrollViewRef.current?.scrollTo({ x: SNAP_INTERVAL, animated: false });
     }, 0);
   }, []);
+
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: (evt, gestureState) => {
+      return Math.abs(gestureState.dy) > 20;
+    },
+    onPanResponderMove: (evt, gestureState) => {
+      if (gestureState.dy > 0) {
+        return;
+      }
+      translateY.setValue(height + gestureState.dy);
+    },
+    onPanResponderRelease: (evt, gestureState) => {
+      if (gestureState.dy < -100) {
+        Animated.timing(translateY, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }).start(() => setIsCourseFeedScreenVisible(true));
+      } else {
+        Animated.timing(translateY, {
+          toValue: getSize(754) + statusBarHeight,
+          duration: 300,
+          useNativeDriver: true,
+        }).start(() => setIsCourseFeedScreenVisible(false));
+      }
+    },
+  });
 
   return (
     <View style={Styles.container}>
@@ -179,6 +230,16 @@ const CourseFeedHomeScreen = () => {
           <NextIcon />
         </TouchableOpacity>
       </View>
+
+      <Animated.View
+        style={[
+          styles.courseFeedScreen,
+          { transform: [{ translateY }] }
+        ]}
+        {...panResponder.panHandlers}
+      >
+        <Text style={styles.bottomText}>코스 피드</Text>
+      </Animated.View>
     </View>
   );
 };
@@ -250,7 +311,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: getSize(21),
     bottom: getSize(16),
-  }
+  },
+  courseFeedScreen: {
+    backgroundColor: Colors.background,
+    height: height,
+    width: width,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 });
 
 export default CourseFeedHomeScreen;
