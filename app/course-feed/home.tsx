@@ -122,6 +122,16 @@ const CourseFeedHomeScreen = () => {
     },
   });
 
+  const resetSwipe = () => {
+    Animated.timing(translateY, {
+      toValue: getSize(720) + statusBarHeight,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsCourseFeedScreenVisible(false);
+    });
+  }
+
   return (
     <View style={Styles.container}>
       <ImageBackground
@@ -240,15 +250,7 @@ const CourseFeedHomeScreen = () => {
       >
         {!isCourseFeedScreenVisible
           ? <Image source={require('@/assets/images/swipeUp.png')} />
-          : <TouchableOpacity onPress={() => {
-            Animated.timing(translateY, {
-              toValue: getSize(720) + statusBarHeight,
-              duration: 300,
-              useNativeDriver: true,
-            }).start(() => {
-              setIsCourseFeedScreenVisible(false);
-            });
-          }}>
+          : <TouchableOpacity onPress={resetSwipe}>
             <Image source={require('@/assets/images/swipeDown.png')} />
           </TouchableOpacity>
         }
@@ -256,10 +258,15 @@ const CourseFeedHomeScreen = () => {
           styles.courseFeedContainer,
           { marginTop: getSize(-1) }
         ]}>
-          <Text style={styles.bottomText}>코스 피드</Text>
-          <BackSearchHeader
-            onPressSearch={() => { navigation.navigate('course-feed/search') }}
-          />
+          <View style={{ marginTop: -21 }}>
+            <BackSearchHeader
+              text='RUNWITH'
+              fontColor={Colors.main}
+              fontFamily={Fonts.hanson}
+              onPressBack={resetSwipe}
+              onPressSearch={() => { navigation.navigate('course-feed/search') }}
+            />
+          </View>
         </View>
       </Animated.View>
     </View>
@@ -344,6 +351,7 @@ const styles = StyleSheet.create({
   },
   courseFeedContainer: {
     backgroundColor: Colors.darkGrayBox,
+    borderRadius: 20,
     width: width,
     height: '100%',
   },
