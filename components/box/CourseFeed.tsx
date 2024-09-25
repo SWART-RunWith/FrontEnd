@@ -26,115 +26,130 @@ import { CourseRunButton } from "../button/CourseButton";
 메인 코스 피드 박스
 */
 interface CourseBoxProps {
-  title: string;
-  time: string;
-  distance: string;
-  img: string;
+  title?: string;
+  time?: string;
+  distance?: string;
+  backgroundImg?: string;
+  routeImg?: string;
   description?: string;
+  location?: string;
   isSelected?: boolean;
 }
 
+interface AuthorProps {
+  name: string;
+}
+
+// button props
 interface CourseBoxPressProps {
   onPress: () => void;
-  onPressSave: () => void;
   onPressButton: () => void;
 }
 
-export const CourseBox: React.FC<CourseBoxProps & CourseBoxPressProps> = ({
+interface PlusButtonProps {
+  onPressPlus: () => void;
+}
+
+interface SaveButtonProps {
+  onPressSave: () => void;
+}
+
+interface RunButtonProps {
+  onPressRun: () => void;
+}
+
+export const CourseBox: React.FC<
+  CourseBoxProps &
+  CourseBoxPressProps &
+  SaveButtonProps
+> = ({
   title,
   time = "00:00:00",
   distance = "0.0",
-  img = "",
+  backgroundImg = "",
   isSelected = false,
   onPress,
   onPressSave,
   onPressButton,
 }) => {
-  return (
-    <TouchableOpacity onPress={onPress} style={[styles.container]}>
-      {isSelected && (
-        <View style={styles.checkmarkOverlay}>
-          <CheckIcon width={getSize(84)} height={getSize(84)} />
+    return (
+      <TouchableOpacity onPress={onPress} style={[styles.container]}>
+        {isSelected && (
+          <View style={styles.checkmarkOverlay}>
+            <CheckIcon width={getSize(84)} height={getSize(84)} />
+          </View>
+        )}
+        <View style={styles.textContainer}>
+          <Text
+            style={styles.titleText}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {title}
+          </Text>
+          <Text style={styles.timeText}>{time}</Text>
+          <Text style={styles.distanceText}>{distance}</Text>
         </View>
-      )}
-      <View style={styles.textContainer}>
-        <Text
-          style={styles.titleText}
-          numberOfLines={1}
-          ellipsizeMode="tail"
+
+        <TouchableOpacity
+          style={styles.uploadIcon}
+          onPress={onPressSave}
         >
-          {title}
-        </Text>
-        <Text style={styles.timeText}>{time}</Text>
-        <Text style={styles.distanceText}>{distance}</Text>
-      </View>
+          <UploadIcon width={getSize(28)} height={getSize(28)} />
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.uploadIcon}
-        onPress={onPressSave}
-      >
-        <UploadIcon width={getSize(28)} height={getSize(28)} />
+        <View style={styles.imageContainer} />
+        <View style={styles.buttonContainer}>
+          <CourseButton
+            onPress={onPressButton}
+            width={100}
+            text="코스 뛰기"
+          />
+        </View>
       </TouchableOpacity>
+    );
+  };
 
-      <View style={styles.imageContainer} />
-      <View style={styles.buttonContainer}>
-        <CourseButton
-          onPress={onPressButton}
-          width={100}
-          text="코스 뛰기"
-        />
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-interface CourseProps {
-  location: string;
-  imgUrl: string;
-  onPress: () => void;
-}
-
-interface MainCourseProps extends CourseProps {
-  onPressButton: () => void;
-  onPressPlus: () => void;
-}
-
-export const MainCourseBox: React.FC<MainCourseProps> = ({
+export const MainCourseBox: React.FC<
+  CourseBoxProps &
+  CourseBoxPressProps &
+  PlusButtonProps
+> = ({
   location = '장소',
-  imgUrl = 'imaUrl',
+  routeImg = 'imaUrl',
   onPress,
   onPressButton,
   onPressPlus,
 }) => {
-  return (
-    <View style={MainCourseStyles.cardContainer}>
-      <TouchableOpacity
-        style={MainCourseStyles.ImageBack}
-        onPress={onPress}
-      >
-        <ImageBackground
-          source={{ uri: imgUrl }}
-          style={MainCourseStyles.courseImage}
-        />
+    return (
+      <View style={MainCourseStyles.cardContainer}>
+        <TouchableOpacity
+          style={MainCourseStyles.ImageBack}
+          onPress={onPress}
+        >
+          <ImageBackground
+            source={{ uri: routeImg }}
+            style={MainCourseStyles.courseImage}
+          />
 
-        <View style={MainCourseStyles.locationContainer}>
-          <LocationIcon width={getSize(11)} height={getSize(16)} />
-          <View style={{ height: getSize(17) }}>
-            <Text style={MainCourseStyles.location}>{location}</Text>
+          <View style={MainCourseStyles.locationContainer}>
+            <LocationIcon width={getSize(11)} height={getSize(16)} />
+            <View style={{ height: getSize(17) }}>
+              <Text style={MainCourseStyles.location}>{location}</Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={MainCourseStyles.plusButton} onPress={onPressPlus}>
-        <PlusIcon width={getSize(28)} height={getSize(28)} />
-      </TouchableOpacity>
+        <TouchableOpacity style={MainCourseStyles.plusButton} onPress={onPressPlus}>
+          <PlusIcon width={getSize(28)} height={getSize(28)} />
+        </TouchableOpacity>
 
-      <TouchableOpacity style={MainCourseStyles.nextButton} onPress={onPressButton}>
-        <NextIcon width={getSize(44)} height={getSize(44)} />
-      </TouchableOpacity>
-    </View>
-  );
-}
+        <TouchableOpacity style={MainCourseStyles.nextButton} onPress={onPressButton}>
+          <NextIcon width={getSize(44)} height={getSize(44)} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
 const styles = StyleSheet.create({
   container: {
@@ -239,29 +254,23 @@ const MainCourseStyles = StyleSheet.create({
   },
 })
 
-interface MainCourseDetailPressProps {
-  onPressRun: () => void;
-  onPressPlus: () => void;
-}
-
-interface AuthorProps {
-  name: string;
-  location: string;
-}
-
 export const MainCourseDetailBox: React.FC<
-  CourseBoxProps & AuthorProps & MainCourseDetailPressProps> = ({
-    title = '',
-    time = '00:00:00',
-    distance = '00.00KM',
-    img = 'url',
-    isSelected = false,
-    location = '경기도 용인시',
-    name = '아무개',
-    description = '설명',
-    onPressRun,
-    onPressPlus,
-  }) => {
+  CourseBoxProps &
+  AuthorProps &
+  PlusButtonProps &
+  RunButtonProps
+> = ({
+  title = '',
+  time = '00:00:00',
+  distance = '00.00KM',
+  backgroundImg: img = 'url',
+  isSelected = false,
+  location = '경기도 용인시',
+  name = '아무개',
+  description = '설명',
+  onPressRun,
+  onPressPlus,
+}) => {
     return (
       <View style={detailStyles.container}>
         <View style={detailStyles.courseContainer}>
@@ -404,6 +413,7 @@ const detailStyles = StyleSheet.create({
     marginTop: getSize(12),
   },
 });
+
 /*
 내 코스 피드 박스
 */
