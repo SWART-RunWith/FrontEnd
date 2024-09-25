@@ -19,7 +19,7 @@ import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 import NextIcon from '@/assets/icons/next.svg';
 import getSize from "@/scripts/getSize";
-import { CourseFeedMainHeader } from "@/components/header/IconHeader";
+import { BackSearchHeader, CourseFeedMainHeader } from "@/components/header/IconHeader";
 import { MainCourseBox } from '@/components/box/CourseFeed';
 import Styles from '@/constants/Styles';
 import Fonts from '@/constants/Fonts';
@@ -51,7 +51,7 @@ const CourseFeedHomeScreen = () => {
 
 
   const [isCourseFeedScreenVisible, setIsCourseFeedScreenVisible] = useState(false);
-  const translateY = useRef(new Animated.Value(getSize(754) + statusBarHeight)).current;
+  const translateY = useRef(new Animated.Value(getSize(720) + statusBarHeight)).current;
 
   const bestCourseList = [
     { id: 1, location: '광교 호수 공원', imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgQe0ifbh7K_27rscADoKrarCpBfO36WFk9A&s' },
@@ -114,7 +114,7 @@ const CourseFeedHomeScreen = () => {
         }).start(() => setIsCourseFeedScreenVisible(true));
       } else {
         Animated.timing(translateY, {
-          toValue: getSize(754) + statusBarHeight,
+          toValue: getSize(720) + statusBarHeight,
           duration: 300,
           useNativeDriver: true,
         }).start(() => setIsCourseFeedScreenVisible(false));
@@ -238,7 +238,18 @@ const CourseFeedHomeScreen = () => {
         ]}
         {...panResponder.panHandlers}
       >
-        <Text style={styles.bottomText}>코스 피드</Text>
+        <Image
+          source={require('@/assets/images/swipeUp.png')}
+        />
+        <View style={[
+          styles.courseFeedContainer,
+          { marginTop: getSize(-1) }
+        ]}>
+          <Text style={styles.bottomText}>코스 피드</Text>
+          <BackSearchHeader
+            onPressSearch={() => { navigation.navigate('course-feed/search') }}
+          />
+        </View>
       </Animated.View>
     </View>
   );
@@ -313,12 +324,17 @@ const styles = StyleSheet.create({
     bottom: getSize(16),
   },
   courseFeedScreen: {
-    backgroundColor: Colors.background,
+    position: 'absolute',
+    alignItems: 'center',
     height: height,
     width: width,
-    position: 'absolute',
     top: 0,
     left: 0,
+  },
+  courseFeedContainer: {
+    backgroundColor: Colors.darkGrayBox,
+    width: width,
+    height: '100%',
   },
 });
 
