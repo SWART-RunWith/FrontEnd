@@ -14,15 +14,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SearchIcon from '@/assets/icons/search.svg';
 import SearchItemIcon from '@/assets/icons/searchItem.svg';
+import CancelIcon from '@/assets/icons/cancel.svg';
 import DeleteIcon from '@/assets/icons/x.svg';
 import UserIcon from '@/assets/icons/user.svg';
 import { MainGradient } from "@/components/Gradient";
 import { BackHeader } from "@/components/header/IconHeader";
 import Styles from "@/constants/Styles";
 import Colors from "@/constants/Colors";
-import getSize from "@/scripts/getSize";
 import Sizes from "@/constants/Sizes";
 import Fonts from "@/constants/Fonts";
+import getSize from "@/scripts/getSize";
 
 const { width } = Dimensions.get('window');
 
@@ -145,6 +146,12 @@ const CourseFeedSearchScreen = () => {
             onChangeText={setText}
             onEndEditing={handleEndEditing}
           />
+          {text && <TouchableOpacity
+            style={styles.cancelIcon}
+            onPress={() => { setText('') }}
+          >
+            <CancelIcon width={getSize(20)} height={getSize(20)} />
+          </TouchableOpacity>}
           <TouchableOpacity
             style={styles.searchIcon}
             onPress={handleSearchIconPress}
@@ -219,6 +226,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: getSize(18),
     width: width - getSize(Sizes.formMargin) * 4,
+  },
+  cancelIcon: {
+    position: 'absolute',
+    justifyContent: 'center',
+    right: getSize(52),
+    width: getSize(20),
+    height: getSize(56),
   },
   searchIcon: {
     position: 'absolute',
