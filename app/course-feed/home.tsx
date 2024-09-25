@@ -292,15 +292,18 @@ const CourseFeedHomeScreen = () => {
         {...panResponder.panHandlers}
       >
         {!isCourseFeedScreenVisible
-          ? <Image source={require('@/assets/images/swipeUp.png')} />
-          : <TouchableOpacity onPress={() => { setIsCourseFeedScreenVisible(false) }}>
+          ? <Image
+            style={{ marginBottom: getSize(-1) }}
+            source={require('@/assets/images/swipeUp.png')}
+          />
+          : <TouchableOpacity
+            style={{ marginBottom: getSize(-1) }}
+            onPress={() => { setIsCourseFeedScreenVisible(false) }
+            }>
             <Image source={require('@/assets/images/swipeDown.png')} />
           </TouchableOpacity>
         }
-        <View style={[
-          styles.courseFeedContainer,
-          { marginTop: getSize(-1) }
-        ]}>
+        <View style={styles.courseFeedContainer}>
           <View style={{ marginTop: -21 }}>
             <BackSearchHeader
               text='RUNWITH'
