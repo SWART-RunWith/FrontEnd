@@ -52,19 +52,19 @@ const styles = StyleSheet.create({
   },
   image1: {
     width: width,
-    height: getSize(405),
+    height: getSize(405) * width / getSize(390),
     resizeMode: 'contain',
     marginTop: getSize(27),
   },
   image2: {
     width: width,
-    height: getSize(398),
+    height: getSize(398) * width / getSize(390),
     resizeMode: 'contain',
     marginTop: getSize(16),
   },
   image3: {
     width: width,
-    height: getSize(456),
+    height: getSize(456) * width / getSize(390),
     resizeMode: 'contain',
     marginTop: getSize(9),
   },
