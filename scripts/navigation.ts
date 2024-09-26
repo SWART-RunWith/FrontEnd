@@ -55,6 +55,7 @@ export type SignUpScreenNavigationProp = StackNavigationProp<
 >;
 
 type RunningStackParamList = {
+  home: undefined;
   "running/countDown": undefined;
   "running/running": undefined;
   "running/finish": {
