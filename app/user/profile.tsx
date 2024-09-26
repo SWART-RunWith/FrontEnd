@@ -135,27 +135,39 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           )}
         </View>
+      </ImageBackground>
 
-        {/* 프로필 정보 */}
-        <View style={styles.textContainer}>
-          <TouchableOpacity
-            onPress={() => isEditMode && setLocationModalVisible(true)}
-            style={styles.locationContainer}
-            disabled={!isEditMode}
-          >
-            <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
-            <Text style={styles.locationText}>
-              {location ? location : '나의 위치를 추가해보세요'}
-            </Text>
-          </TouchableOpacity>
+      {/* 프로필 정보 */}
+      <View style={styles.textContainer}>
+        <TouchableOpacity
+          onPress={() => isEditMode && setLocationModalVisible(true)}
+          style={styles.locationContainer}
+          disabled={!isEditMode}
+        >
+          <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
+          <Text style={styles.locationText}>
+            {location ? location : '나의 위치를 추가해보세요'}
+          </Text>
+        </TouchableOpacity>
 
+        <View style={{
+          width: '100%',
+          height: getSize(57),
+          marginTop: getSize(4)
+        }} >
           <TouchableOpacity
             onPress={() => isEditMode && setNameModalVisible(true)}
             disabled={!isEditMode}
           >
             <Text style={styles.nameInput}>{name}</Text>
           </TouchableOpacity>
+        </View>
 
+        <View style={{
+          width: '100%',
+          height: getSize(39),
+          marginTop: getSize(20)
+        }}>
           <TouchableOpacity
             onPress={() => isEditMode && setDescriptionModalVisible(true)}
             disabled={!isEditMode}
@@ -165,72 +177,71 @@ const ProfileScreen = () => {
             </Text>
           </TouchableOpacity>
         </View>
+      </View>
 
-        <View style={styles.bar} />
+      <View style={styles.bar} />
 
-        {/* 최고 기록 */}
-        <View style={styles.myBestContainer}>
-          <Text style={styles.myBestText}>MY BEST</Text>
-          <View style={styles.cardContainer}>
-            <DistanceBox
-              isEditMode={isEditMode}
-              value={distance}
-              shoes={distanceShoes}
-              memo={distanceMemo}
-              onConfirm={(newDistance, newShoes, newMemo) => {
-                setDistance(newDistance);
-                setDistanceShoes(newShoes);
-                setDistanceMemo(newMemo);
-              }}
-            />
-            <PaceBox
-              isEditMode={isEditMode}
-              value={pace}
-              shoes={paceShoes}
-              memo={paceMemo}
-              onConfirm={(newPace, newShoes, newMemo) => {
-                setPace(newPace);
-                setPaceShoes(newShoes);
-                setPaceMemo(newMemo);
-              }}
-            />
-            <TimeBox
-              isEditMode={isEditMode}
-              value={time}
-              shoes={timeShoes}
-              memo={timeMemo}
-              onConfirm={(newTime, newShoes, newMemo) => {
-                setTime(newTime);
-                setTimeShoes(newShoes);
-                setTimeMemo(newMemo);
-              }}
-            />
-          </View>
+      {/* 최고 기록 */}
+      <View style={styles.myBestContainer}>
+        <Text style={styles.myBestText}>MY BEST</Text>
+        <View style={styles.cardContainer}>
+          <DistanceBox
+            isEditMode={isEditMode}
+            value={distance}
+            shoes={distanceShoes}
+            memo={distanceMemo}
+            onConfirm={(newDistance, newShoes, newMemo) => {
+              setDistance(newDistance);
+              setDistanceShoes(newShoes);
+              setDistanceMemo(newMemo);
+            }}
+          />
+          <PaceBox
+            isEditMode={isEditMode}
+            value={pace}
+            shoes={paceShoes}
+            memo={paceMemo}
+            onConfirm={(newPace, newShoes, newMemo) => {
+              setPace(newPace);
+              setPaceShoes(newShoes);
+              setPaceMemo(newMemo);
+            }}
+          />
+          <TimeBox
+            isEditMode={isEditMode}
+            value={time}
+            shoes={timeShoes}
+            memo={timeMemo}
+            onConfirm={(newTime, newShoes, newMemo) => {
+              setTime(newTime);
+              setTimeShoes(newShoes);
+              setTimeMemo(newMemo);
+            }}
+          />
         </View>
+      </View>
 
-        <View style={styles.shoesContainer}>
-          <Text style={styles.shoesText}>러닝화</Text>
-          <View style={styles.shoesBoxContainer}>
-            {/* RunningShoesBox 컴포넌트 */}
-            <RunningShoesBox
-              isEditMode={isEditMode}
-              brand="Adidas"
-              model="Adizero Adios Pro 3"
-              edition="동아마라톤 2024 Edition"
-            />
-          </View>
+      <View style={styles.shoesContainer}>
+        <Text style={styles.shoesText}>러닝화</Text>
+        <View style={styles.shoesBoxContainer}>
+          {/* RunningShoesBox 컴포넌트 */}
+          <RunningShoesBox
+            isEditMode={isEditMode}
+            brand="Adidas"
+            model="Adizero Adios Pro 3"
+            edition="동아마라톤 2024 Edition"
+          />
         </View>
+      </View>
 
-        {isEditMode
-          ? <ProfileSaveButton
-            style={styles.buttonContainer}
-            onPress={() => { saveProfile() }} />
-          : <ProfileUpdateButton
-            style={styles.buttonContainer}
-            onPress={() => { updateProfile() }} />
-        }
-
-      </ImageBackground>
+      {isEditMode
+        ? <ProfileSaveButton
+          style={styles.buttonContainer}
+          onPress={() => { saveProfile() }} />
+        : <ProfileUpdateButton
+          style={styles.buttonContainer}
+          onPress={() => { updateProfile() }} />
+      }
 
       {/* 모달창 */}
       <CameraModal
@@ -302,11 +313,14 @@ const styles = StyleSheet.create({
   textContainer: {
     paddingHorizontal: getSize(Sizes.formMargin),
     width: width,
+    height: getSize(139),
+    marginTop: getSize(470),
     zIndex: 3,
   },
   locationContainer: {
     flexDirection: 'row',
     marginTop: getSize(20),
+    height: getSize(19),
   },
   locationText: {
     marginLeft: getSize(6),
@@ -317,17 +331,15 @@ const styles = StyleSheet.create({
     fontSize: getSize(48),
     color: 'white',
     fontFamily: 'Pretendard-SemiBold',
-    marginTop: getSize(10),
   },
   descriptionInput: {
     fontSize: getSize(16),
     color: 'white',
-    marginTop: getSize(28),
     height: getSize(39),
   },
   bar: {
     backgroundColor: Colors.main,
-    marginTop: getSize(12),
+    // marginTop: getSize(42),
     height: getSize(3),
     width: width - getSize(Sizes.formMargin) * 2,
     zIndex: 3,
