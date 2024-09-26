@@ -10,6 +10,7 @@ import getSize from '@/scripts/getSize';
 import { LoginScreenNavigationProp } from '@/scripts/navigation';
 import { LoginButton } from '@/components/button/Button';
 import { LoginHeader } from '@/components/header/TextOnlyHeader';
+import { resetNavigationStack } from '@/scripts/resetNavigationStack';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -38,7 +39,7 @@ const LoginScreen: React.FC = () => {
             <LoginButton
               onPress={() => {
                 console.log('로그인 버튼 클릭');
-                navigation.replace('home');
+                resetNavigationStack(navigation, 'home');
               }}
               text="로그인"
             />

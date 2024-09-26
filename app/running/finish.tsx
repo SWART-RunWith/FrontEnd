@@ -22,6 +22,7 @@ import {
 } from '@/scripts/navigation';
 import { formatDistance, formatTime } from '@/scripts/format';
 import getSize from '@/scripts/getSize';
+import { resetNavigationStack } from '@/scripts/resetNavigationStack';
 
 const { width } = Dimensions.get('window');
 
@@ -45,7 +46,7 @@ const FinishScreen = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigation.navigate('running/save');
+    resetNavigationStack(navigation, 'home');
   };
 
   return (
