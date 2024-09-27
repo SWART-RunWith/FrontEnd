@@ -22,6 +22,7 @@ import { StartButton } from '@/components/button/RunningButton';
 import { HomeHeader } from '@/components/header/TextOnlyHeader';
 import { HomeScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
+import BottomTab from '@/components/BottomTab';
 
 const { width } = Dimensions.get('window');
 
@@ -106,6 +107,7 @@ const HomeScreen: React.FC = () => {
         }}
         onPress={() => navigation.navigate('user/profile')}
       />
+      <BottomTab route='Running' />
     </View>
   );
 };

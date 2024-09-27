@@ -21,6 +21,7 @@ import {
 import { formatDistance, formatTime } from '@/scripts/format';
 import getSize from '@/scripts/getSize';
 import { resetNavigationStack } from '@/scripts/resetNavigationStack';
+import BottomTab from '@/components/BottomTab';
 
 const { width } = Dimensions.get('window');
 
@@ -104,6 +105,8 @@ const FinishScreen = () => {
         onLeftButtonPress={handleCloseModal}
         onRightButtonPress={() => { handleSaveCourse() }}
       />
+
+      <BottomTab route='Running' />
     </View>
   );
 };
