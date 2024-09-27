@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: getSize(92),
+    bottom: getSize(132),
     flexDirection: 'row',
     justifyContent: 'center',
     gap: getSize(36),
