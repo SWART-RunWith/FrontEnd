@@ -117,3 +117,16 @@ export type CourseSaveScreenRouteProp = RouteProp<
   CourseFeedMineStackParamList,
   "course-feed/my/course"
 >;
+
+type BottomBarStackParamList = {
+  home: undefined;
+  "course-feed/home": undefined;
+  "crew-feed/home": undefined;
+  "user/profile": undefined;
+  "user/record": undefined;
+};
+
+export type BottomBarNavigationProp = StackNavigationProp<
+  BottomBarStackParamList,
+  "home"
+>;
