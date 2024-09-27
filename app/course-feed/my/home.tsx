@@ -13,6 +13,7 @@ import { CourseMyHomeHeader } from '@/components/header/IconHeader';
 import { MyCourseBox } from '@/components/box/CourseFeed';
 import { FolderButton } from '@/components/button/FolderButton';
 import { MainGradient } from '@/components/Gradient';
+import BottomTab from '@/components/BottomTab';
 import Fonts from '@/constants/Fonts';
 import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
@@ -216,6 +217,8 @@ const MyCourseHomeScreen = () => {
           }}
         />
       </View>
+
+      <BottomTab route='CourseFeed' />
     </View>
   );
 };
