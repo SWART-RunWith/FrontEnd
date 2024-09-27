@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     position: 'absolute',
     width: width,
-    height: getSize(760),
+    height: getSize(738),
     alignItems: 'center',
     backgroundColor: Colors.grayBox,
     zIndex: 2,
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     backgroundColor: Colors.main,
-    // marginTop: getSize(42),
+    marginTop: getSize(63),
     height: getSize(3),
     width: width - getSize(Sizes.formMargin) * 2,
     zIndex: 3,

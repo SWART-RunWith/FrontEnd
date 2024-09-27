@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   textContainer: {
     width: width,
     height: getSize(24),
-    marginTop: getSize(52),
+    marginTop: getSize(23),
     paddingHorizontal: getSize(Sizes.formMargin),
   },
   notice: {

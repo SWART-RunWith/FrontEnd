@@ -393,6 +393,7 @@ const styles = StyleSheet.create({
   },
   courseListContainer: {
     width: width,
+    paddingBottom: getSize(80),
   },
   modalOverlay: {
     flex: 1,
@@ -452,7 +453,6 @@ const styles = StyleSheet.create({
     fontSize: getSize(18),
     fontFamily: Fonts.bold,
   }
-
 })
 
 export default MyCourseScreen;
