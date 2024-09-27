@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     width: width,
-    paddingBottom: getSize(110),
+    paddingBottom: getSize(200),
   },
 });
 
