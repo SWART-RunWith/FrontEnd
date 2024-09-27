@@ -35,9 +35,13 @@ const tabs = [
 
 interface BottomTabProps {
   route: 'CourseFeed' | 'CrewFeed' | 'Running' | 'Record' | 'Profile';
+  reload?: boolean;
 }
 
-const BottomTab: React.FC<BottomTabProps> = ({ route }) => {
+const BottomTab: React.FC<BottomTabProps> = ({
+  route,
+  reload = true
+}) => {
   const navigation = useNavigation<BottomBarNavigationProp>();
   const [selectedTab, setSelectedTab] = useState<string>(route);
 
@@ -46,7 +50,7 @@ const BottomTab: React.FC<BottomTabProps> = ({ route }) => {
   }, [route]);
 
   const handleTabPress = (tabName: string, route: string) => {
-    if (tabName !== selectedTab) {
+    if (reload) {
       setSelectedTab(tabName);
       resetNavigationStack(navigation, route);
     }
