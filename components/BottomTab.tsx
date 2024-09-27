@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Dimensions
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import RunningIcon from "@/assets/icons/bottom/running.svg";
 import RunningIcon_s from "@/assets/icons/bottom/running_s.svg";
@@ -17,28 +17,39 @@ import CrewFeedIcon from "@/assets/icons/bottom/crew.svg";
 import CrewFeedIcon_s from "@/assets/icons/bottom/crew_s.svg";
 import RecordIcon from "@/assets/icons/bottom/record.svg";
 import RecordIcon_s from "@/assets/icons/bottom/record_s.svg";
-import { useNavigation } from '@react-navigation/native';
+import Colors from '@/constants/Colors';
 import { BottomBarNavigationProp } from '@/scripts/navigation';
 import { resetNavigationStack } from '@/scripts/resetNavigationStack';
+import getSize from '@/scripts/getSize';
 
 const { width } = Dimensions.get('window');
 
+// Tab 정보 배열
 const tabs = [
-  { name: 'Running', icon: RunningIcon, selectedIcon: RunningIcon_s, route: 'home' },
   { name: 'CourseFeed', icon: CourseFeedIcon, selectedIcon: CourseFeedIcon_s, route: 'course-feed/home' },
   { name: 'CrewFeed', icon: CrewFeedIcon, selectedIcon: CrewFeedIcon_s, route: 'crew-feed/home' },
+  { name: 'Running', icon: RunningIcon, selectedIcon: RunningIcon_s, route: 'home' },
   { name: 'Record', icon: RecordIcon, selectedIcon: RecordIcon_s, route: 'user/record' },
   { name: 'Profile', icon: ProfileIcon, selectedIcon: ProfileIcon_s, route: 'user/profile' },
 ];
 
-const BottomTab = () => {
-  const navigation = useNavigation<BottomBarNavigationProp>();
+interface BottomTabProps {
+  route: 'CourseFeed' | 'CrewFeed' | 'Running' | 'Record' | 'Profile';
+}
 
-  const [selectedTab, setSelectedTab] = useState('Running');
+const BottomTab: React.FC<BottomTabProps> = ({ route }) => {
+  const navigation = useNavigation<BottomBarNavigationProp>();
+  const [selectedTab, setSelectedTab] = useState<string>(route);
+
+  useEffect(() => {
+    setSelectedTab(route);
+  }, [route]);
 
   const handleTabPress = (tabName: string, route: string) => {
-    setSelectedTab(tabName);
-    resetNavigationStack(navigation, route);
+    if (tabName !== selectedTab) {
+      setSelectedTab(tabName);
+      resetNavigationStack(navigation, route);
+    }
   };
 
   return (
@@ -51,10 +62,7 @@ const BottomTab = () => {
             style={styles.tabButton}
             onPress={() => handleTabPress(tab.name, tab.route)}
           >
-            <Icon width={24} height={24} />
-            <Text style={selectedTab === tab.name ? styles.selectedTabLabel : styles.tabLabel}>
-              {tab.name}
-            </Text>
+            <Icon width={getSize(26)} height={getSize(26)} />
           </TouchableOpacity>
         );
       })}
@@ -67,27 +75,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.navigator,
     width: width,
-    height: 60,
+    height: getSize(90),
     position: 'absolute',
     bottom: 0,
-    borderTopWidth: 1,
-    borderTopColor: '#e5e5e5',
   },
   tabButton: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  tabLabel: {
-    fontSize: 12,
-    color: '#333',
-    marginTop: 4,
-  },
-  selectedTabLabel: {
-    fontSize: 12,
-    color: '#007AFF',
-    marginTop: 4,
   },
 });
 
