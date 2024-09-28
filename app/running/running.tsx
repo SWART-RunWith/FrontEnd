@@ -310,8 +310,6 @@ const RunningScreen = () => {
           <PauseButton onPress={togglePause} />
         )}
       </View>
-
-      <BottomTab route='Running' />
     </View>
   );
 };
