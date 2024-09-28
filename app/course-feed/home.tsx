@@ -30,6 +30,7 @@ import Sizes from '@/constants/Sizes';
 import getSize from "@/scripts/getSize";
 import { CourseFeedMainScreenNavigationProp } from '@/scripts/navigation';
 import { BlurView } from 'expo-blur';
+import BottomTab from '@/components/BottomTab';
 
 const { width, height } = Dimensions.get('window');
 
@@ -367,6 +368,8 @@ const CourseFeedHomeScreen = () => {
           </View>
         </View>
       </Animated.View>
+
+      <BottomTab route='CourseFeed' reload={false} />
     </View>
   );
 };
@@ -453,7 +456,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     width: width,
-    paddingBottom: getSize(110),
+    paddingBottom: getSize(200),
   },
 });
 

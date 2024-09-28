@@ -19,6 +19,7 @@ import DeleteIcon from '@/assets/icons/x.svg';
 import UserIcon from '@/assets/icons/user.svg';
 import { MainGradient } from "@/components/Gradient";
 import { BackHeader } from "@/components/header/IconHeader";
+import BottomTab from "@/components/BottomTab";
 import Styles from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 import Sizes from "@/constants/Sizes";
@@ -214,6 +215,8 @@ const CourseFeedSearchScreen = () => {
             </View>
           ))}
         </View>
+
+        <BottomTab route='CourseFeed' />
       </View>
     </TouchableWithoutFeedback>
   );

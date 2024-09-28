@@ -26,6 +26,7 @@ import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
 import Styles from '@/constants/Styles';
 import { DefaultButton } from '@/components/button/Button';
+import { resetNavigationStack } from '@/scripts/resetNavigationStack';
 
 const DefaultImage = require('@/assets/images/default.png');
 const { width, height } = Dimensions.get('window');
@@ -126,7 +127,9 @@ const SignUpProfileScreen = () => {
         {/* 버튼 */}
         <View style={styles.buttonContainer}>
           <DefaultButton
-            onPress={() => navigation.replace('home')}
+            onPress={() => {
+              resetNavigationStack(navigation, 'home');
+            }}
             text='RUNWITH!'
             fontFamily='Hanson'
           />

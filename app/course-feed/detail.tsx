@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   ImageBackground,
   View,
@@ -10,6 +11,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import LeftArrowIcon from '@/assets/icons/back.svg';
 import RightArrowIcon from '@/assets/icons/rightArrow.svg';
 import bestCourseList from '@/assets/dummy/bestCourseList.json';
+import { MainCourseDetailBox } from "@/components/box/CourseFeed";
+import { BackSearchHeader } from "@/components/header/IconHeader";
+import BottomTab from "@/components/BottomTab";
 import Styles from "@/constants/Styles";
 import Sizes from "@/constants/Sizes";
 import getSize from "@/scripts/getSize";
@@ -17,9 +21,6 @@ import {
   CourseFeedMainScreenNavigationProp,
   CourseFeedMainScreenRouteProp
 } from "@/scripts/navigation";
-import { useEffect, useState } from "react";
-import { MainCourseDetailBox } from "@/components/box/CourseFeed";
-import { BackSearchHeader } from "@/components/header/IconHeader";
 
 const { width } = Dimensions.get('window');
 
@@ -86,6 +87,8 @@ const CourseFEedDetailScreen = () => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
+
+      <BottomTab route='CourseFeed' />
     </View>
   );
 };

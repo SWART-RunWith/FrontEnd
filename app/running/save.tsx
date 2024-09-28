@@ -14,6 +14,7 @@ import { CourseFeedMineScreenNavigationProp } from "@/scripts/navigation";
 import Sizes from "@/constants/Sizes";
 import { CourseSaveFolderButton } from "@/components/button/FolderButton";
 import { CourseAddModal } from "@/components/modal/pop-up/CourseModal";
+import BottomTab from "@/components/BottomTab";
 
 const { width } = Dimensions.get('window');
 
@@ -124,6 +125,8 @@ const CourseSaveScreen = () => {
         onLeftButtonPress={handleCloseModal}
         onRightButtonPress={saveCourse}
       />
+
+      <BottomTab route="CourseFeed" />
     </View>
   );
 };
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
   textContainer: {
     width: width,
     height: getSize(24),
-    marginTop: getSize(52),
+    marginTop: getSize(23),
     paddingHorizontal: getSize(Sizes.formMargin),
   },
   notice: {

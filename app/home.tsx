@@ -22,6 +22,7 @@ import { StartButton } from '@/components/button/RunningButton';
 import { HomeHeader } from '@/components/header/TextOnlyHeader';
 import { HomeScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
+import BottomTab from '@/components/BottomTab';
 
 const { width } = Dimensions.get('window');
 
@@ -99,13 +100,7 @@ const HomeScreen: React.FC = () => {
         style={styles.button}
         onPress={() => handleStartPress()}
       />
-      <View style={styles.box} />
-      <DefaultButton
-        style={{
-          marginTop: getSize(100),
-        }}
-        onPress={() => navigation.navigate('user/profile')}
-      />
+      <BottomTab route='Running' reload={false} />
     </View>
   );
 };
@@ -119,13 +114,6 @@ const styles = StyleSheet.create({
   button: {
     position: 'absolute',
     bottom: getSize(140),
-  },
-  box: {
-    backgroundColor: '#565656',
-    position: 'absolute',
-    height: getSize(90),
-    width: width,
-    bottom: 0,
   },
 });
 

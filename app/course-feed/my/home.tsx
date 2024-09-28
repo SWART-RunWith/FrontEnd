@@ -11,14 +11,14 @@ import { useNavigation } from '@react-navigation/native';
 
 import { CourseMyHomeHeader } from '@/components/header/IconHeader';
 import { MyCourseBox } from '@/components/box/CourseFeed';
-import { FolderButton } from '@/components/button/FolderButton';
+import { FolderContainer } from '@/components/container/FolderContainer';
 import { MainGradient } from '@/components/Gradient';
+import BottomTab from '@/components/BottomTab';
 import Fonts from '@/constants/Fonts';
 import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
 import { CourseFeedMineScreenNavigationProp } from '@/scripts/navigation';
-import { FolderContainer } from '@/components/container/FolderContainer';
 
 const { width } = Dimensions.get('window');
 
@@ -216,6 +216,8 @@ const MyCourseHomeScreen = () => {
           }}
         />
       </View>
+
+      <BottomTab route='CourseFeed' />
     </View>
   );
 };

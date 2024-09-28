@@ -3,8 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  Modal,
   Image,
   Dimensions,
 } from 'react-native';
@@ -22,6 +20,9 @@ import {
 } from '@/scripts/navigation';
 import { formatDistance, formatTime } from '@/scripts/format';
 import getSize from '@/scripts/getSize';
+import { resetNavigationStack } from '@/scripts/resetNavigationStack';
+import BottomTab from '@/components/BottomTab';
+import Fonts from '@/constants/Fonts';
 
 const { width } = Dimensions.get('window');
 
@@ -45,12 +46,16 @@ const FinishScreen = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigation.navigate('running/save');
+    resetNavigationStack(navigation, 'home');
   };
 
   return (
     <View style={styles.container}>
       <BackHeader onPressBack={() => { navigation.goBack() }} />
+
+      <Image
+        style={styles.imageStyle}
+        source={require('@/assets/images/trophy.png')} />
 
       {/* 러닝 완료 정보 */}
       <View style={styles.infoContainer}>
@@ -82,10 +87,6 @@ const FinishScreen = () => {
             </View>
           </View>
         </View>
-
-        <Image
-          style={styles.imageStyle}
-          source={require('@/assets/images/trophy.png')} />
       </View>
 
       <View style={styles.courseBox}>
@@ -105,6 +106,8 @@ const FinishScreen = () => {
         onLeftButtonPress={handleCloseModal}
         onRightButtonPress={() => { handleSaveCourse() }}
       />
+
+      <BottomTab route='Running' />
     </View>
   );
 };
@@ -122,21 +125,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: getSize(Sizes.formMargin),
   },
   textContainer: {
-    marginTop: getSize(60),
+    marginTop: getSize(32),
   },
   headerText: {
     fontSize: getSize(24),
-    fontFamily: 'Pretendard-Bold',
+    fontFamily: Fonts.bold,
     color: '#FFFFFF',
+    height: getSize(29),
   },
   timeText: {
     fontSize: getSize(20),
-    fontFamily: 'Pretendard-SemiBold',
+    fontFamily: Fonts.semiBold,
     color: '#FFFFFF',
+    height: getSize(24),
     marginTop: getSize(14),
   },
   distanceText: {
     fontSize: getSize(50),
+    height: getSize(60),
     color: Colors.main,
     fontFamily: 'Pretendard-Black',
   },
@@ -166,9 +172,11 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   imageStyle: {
+    position: 'absolute',
     width: getSize(77),
     height: getSize(144),
-    marginTop: getSize(67),
+    top: getSize(125),
+    right: getSize(16),
     resizeMode: 'contain',
   },
   courseBox: {
@@ -177,36 +185,11 @@ const styles = StyleSheet.create({
     width: width - getSize(Sizes.formMargin) * 2,
     height: getSize(402),
     borderRadius: 20,
-    marginTop: getSize(38),
+    marginTop: getSize(20.5),
   },
   buttonContainer: {
     top: getSize(344),
   },
 });
-
-const modalStyles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: '#FFF',
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  modalButtonContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  modalButton: {
-    marginHorizontal: 10,
-    padding: 10,
-    backgroundColor: '#B0FF3D',
-    borderRadius: 10,
-  },
-})
 
 export default FinishScreen;

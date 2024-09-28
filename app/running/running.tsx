@@ -34,6 +34,7 @@ import { calculatePace } from '@/scripts/calcuate/calculatePace';
 import getSize from '@/scripts/getSize';
 import useCountdown from '@/scripts/countDown';
 import { calculateKcal } from '@/scripts/calcuate/calculateKcal';
+import BottomTab from '@/components/BottomTab';
 
 const { width, height } = Dimensions.get('window');
 const LATITUDE_DELTA = 0.01;
@@ -386,7 +387,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: getSize(92),
+    bottom: getSize(132),
     flexDirection: 'row',
     justifyContent: 'center',
     gap: getSize(36),

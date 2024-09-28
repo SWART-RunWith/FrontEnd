@@ -33,6 +33,7 @@ import {
   CourseDeleteModal,
   CourseNameEditModal
 } from "@/components/modal/pop-up/CourseModal";
+import BottomTab from "@/components/BottomTab";
 
 type Mode = 'BASIC' | 'EDIT' | 'DELETE';
 
@@ -338,6 +339,8 @@ const MyCourseScreen = () => {
           setVisibleCourseDeleteModal(false);
         }}
       />
+
+      <BottomTab route='CourseFeed' />
     </View>
   );
 }
@@ -390,6 +393,7 @@ const styles = StyleSheet.create({
   },
   courseListContainer: {
     width: width,
+    paddingBottom: getSize(80),
   },
   modalOverlay: {
     flex: 1,
@@ -449,7 +453,6 @@ const styles = StyleSheet.create({
     fontSize: getSize(18),
     fontFamily: Fonts.bold,
   }
-
 })
 
 export default MyCourseScreen;

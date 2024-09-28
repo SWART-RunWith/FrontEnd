@@ -21,6 +21,7 @@ import { FolderContainer } from "@/components/container/FolderContainer";
 import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
 import { FolderDeleteModal, FolderNameEditModal } from "@/components/modal/pop-up/FolderModal";
+import BottomTab from "@/components/BottomTab";
 
 const { width } = Dimensions.get('window');
 
@@ -193,6 +194,8 @@ const CourseFeedFolderScreen = () => {
           setVisibleDeleteModal(false);
         }}
       />
+
+      <BottomTab route='CourseFeed' />
     </View>
   );
 }
