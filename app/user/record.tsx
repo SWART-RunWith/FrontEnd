@@ -75,26 +75,45 @@ const styles = StyleSheet.create({
     paddingHorizontal: getSize(16),
   },
   firstR: {
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowOffset: {
+      width: 0,
+      height: 6
+    },
+    shadowRadius: 5.5,
+    elevation: 5.5,
+    shadowOpacity: 1,
     position: 'absolute',
     backgroundColor: '#181818',
     height: getSize(475),
     width: width - getSize(58),
     top: getSize(95),
     left: getSize(29),
-    borderBottomEndRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
   secondR: {
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowOffset: {
+      width: 0,
+      height: 6
+    },
+    shadowRadius: 5.5,
+    elevation: 5.5,
+    shadowOpacity: 1,
     position: 'absolute',
     backgroundColor: '#181818',
     height: getSize(488),
     width: width - getSize(390 - 302),
     top: getSize(95),
     left: getSize(44),
-    borderBottomEndRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
   topContainer: {
     backgroundColor: '#1B1B1B',
-    borderBottomEndRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
     shadowColor: 'rgba(0, 0, 0, 0.25)',
     shadowOffset: {
       width: 0,
