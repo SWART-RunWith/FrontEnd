@@ -35,6 +35,7 @@ import CameraIcon from '@/assets/icons/camera.svg';
 import LocationIcon from '@/assets/icons/location.svg';
 import Colors from '@/constants/Colors';
 import Sizes from '@/constants/Sizes';
+import BottomTab from '@/components/BottomTab';
 
 
 const DefaultImage = require('@/assets/images/default.png');
@@ -101,188 +102,192 @@ const ProfileScreen = () => {
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.contentContainerStyle}
-      ref={scrollRef}
-    >
-      <ProfileHeader
-        showBackIcon={isEditMode}
-        backProps={{ onPress: () => saveProfile() }}
-        editProps={{ onPress: () => updateProfile() }}
-      />
-
-      <ImageBackground
-        source={profileImage ? { uri: profileImage } : DefaultImage}
-        style={styles.profileContainer}
-        imageStyle={styles.imageStyle}
+    <>
+      <ScrollView
+        contentContainerStyle={styles.contentContainerStyle}
+        ref={scrollRef}
       >
-        {/* 그라데이션 */}
-        <LinearGradient
-          colors={['transparent', 'black']}
-          style={styles.gradientOverlay}
+        <ProfileHeader
+          showBackIcon={isEditMode}
+          backProps={{ onPress: () => saveProfile() }}
+          editProps={{ onPress: () => updateProfile() }}
         />
 
-        {/* 카메라 아이콘 */}
-        <View style={styles.cameraContainer}>
-          {isEditMode && (
-            <TouchableOpacity
-              style={{
-                marginTop: getSize(348),
-              }}
-              onPress={() => setCameraModalVisible(true)}
-            >
-              <CameraIcon width={getSize(77.14)} height={getSize(57.19)} />
-            </TouchableOpacity>
-          )}
-        </View>
-      </ImageBackground>
-
-      {/* 프로필 정보 */}
-      <View style={styles.textContainer}>
-        <TouchableOpacity
-          onPress={() => isEditMode && setLocationModalVisible(true)}
-          style={styles.locationContainer}
-          disabled={!isEditMode}
+        <ImageBackground
+          source={profileImage ? { uri: profileImage } : DefaultImage}
+          style={styles.profileContainer}
+          imageStyle={styles.imageStyle}
         >
-          <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
-          <Text style={styles.locationText}>
-            {location ? location : '나의 위치를 추가해보세요'}
-          </Text>
-        </TouchableOpacity>
+          {/* 그라데이션 */}
+          <LinearGradient
+            colors={['transparent', 'black']}
+            style={styles.gradientOverlay}
+          />
 
-        <View style={{
-          width: '100%',
-          height: getSize(57),
-          marginTop: getSize(4)
-        }} >
+          {/* 카메라 아이콘 */}
+          <View style={styles.cameraContainer}>
+            {isEditMode && (
+              <TouchableOpacity
+                style={{
+                  marginTop: getSize(348),
+                }}
+                onPress={() => setCameraModalVisible(true)}
+              >
+                <CameraIcon width={getSize(77.14)} height={getSize(57.19)} />
+              </TouchableOpacity>
+            )}
+          </View>
+        </ImageBackground>
+
+        {/* 프로필 정보 */}
+        <View style={styles.textContainer}>
           <TouchableOpacity
-            onPress={() => isEditMode && setNameModalVisible(true)}
+            onPress={() => isEditMode && setLocationModalVisible(true)}
+            style={styles.locationContainer}
             disabled={!isEditMode}
           >
-            <Text style={styles.nameInput}>{name}</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{
-          width: '100%',
-          height: getSize(39),
-          marginTop: getSize(20)
-        }}>
-          <TouchableOpacity
-            onPress={() => isEditMode && setDescriptionModalVisible(true)}
-            disabled={!isEditMode}
-          >
-            <Text style={styles.descriptionInput}>
-              {description ? description : '소개를 입력해주세요'}
+            <LocationIcon width={getSize(13)} height={getSize(18)} fill={Colors.main} />
+            <Text style={styles.locationText}>
+              {location ? location : '나의 위치를 추가해보세요'}
             </Text>
           </TouchableOpacity>
+
+          <View style={{
+            width: '100%',
+            height: getSize(57),
+            marginTop: getSize(4)
+          }} >
+            <TouchableOpacity
+              onPress={() => isEditMode && setNameModalVisible(true)}
+              disabled={!isEditMode}
+            >
+              <Text style={styles.nameInput}>{name}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{
+            width: '100%',
+            height: getSize(39),
+            marginTop: getSize(20)
+          }}>
+            <TouchableOpacity
+              onPress={() => isEditMode && setDescriptionModalVisible(true)}
+              disabled={!isEditMode}
+            >
+              <Text style={styles.descriptionInput}>
+                {description ? description : '소개를 입력해주세요'}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.bar} />
+        <View style={styles.bar} />
 
-      {/* 최고 기록 */}
-      <View style={styles.myBestContainer}>
-        <Text style={styles.myBestText}>MY BEST</Text>
-        <View style={styles.cardContainer}>
-          <DistanceBox
-            isEditMode={isEditMode}
-            value={distance}
-            shoes={distanceShoes}
-            memo={distanceMemo}
-            onConfirm={(newDistance, newShoes, newMemo) => {
-              setDistance(newDistance);
-              setDistanceShoes(newShoes);
-              setDistanceMemo(newMemo);
-            }}
-          />
-          <PaceBox
-            isEditMode={isEditMode}
-            value={pace}
-            shoes={paceShoes}
-            memo={paceMemo}
-            onConfirm={(newPace, newShoes, newMemo) => {
-              setPace(newPace);
-              setPaceShoes(newShoes);
-              setPaceMemo(newMemo);
-            }}
-          />
-          <TimeBox
-            isEditMode={isEditMode}
-            value={time}
-            shoes={timeShoes}
-            memo={timeMemo}
-            onConfirm={(newTime, newShoes, newMemo) => {
-              setTime(newTime);
-              setTimeShoes(newShoes);
-              setTimeMemo(newMemo);
-            }}
-          />
+        {/* 최고 기록 */}
+        <View style={styles.myBestContainer}>
+          <Text style={styles.myBestText}>MY BEST</Text>
+          <View style={styles.cardContainer}>
+            <DistanceBox
+              isEditMode={isEditMode}
+              value={distance}
+              shoes={distanceShoes}
+              memo={distanceMemo}
+              onConfirm={(newDistance, newShoes, newMemo) => {
+                setDistance(newDistance);
+                setDistanceShoes(newShoes);
+                setDistanceMemo(newMemo);
+              }}
+            />
+            <PaceBox
+              isEditMode={isEditMode}
+              value={pace}
+              shoes={paceShoes}
+              memo={paceMemo}
+              onConfirm={(newPace, newShoes, newMemo) => {
+                setPace(newPace);
+                setPaceShoes(newShoes);
+                setPaceMemo(newMemo);
+              }}
+            />
+            <TimeBox
+              isEditMode={isEditMode}
+              value={time}
+              shoes={timeShoes}
+              memo={timeMemo}
+              onConfirm={(newTime, newShoes, newMemo) => {
+                setTime(newTime);
+                setTimeShoes(newShoes);
+                setTimeMemo(newMemo);
+              }}
+            />
+          </View>
         </View>
-      </View>
 
-      <View style={styles.shoesContainer}>
-        <Text style={styles.shoesText}>러닝화</Text>
-        <View style={styles.shoesBoxContainer}>
-          {/* RunningShoesBox 컴포넌트 */}
-          <RunningShoesBox
-            isEditMode={isEditMode}
-            brand="Adidas"
-            model="Adizero Adios Pro 3"
-            edition="동아마라톤 2024 Edition"
-          />
+        <View style={styles.shoesContainer}>
+          <Text style={styles.shoesText}>러닝화</Text>
+          <View style={styles.shoesBoxContainer}>
+            {/* RunningShoesBox 컴포넌트 */}
+            <RunningShoesBox
+              isEditMode={isEditMode}
+              brand="Adidas"
+              model="Adizero Adios Pro 3"
+              edition="동아마라톤 2024 Edition"
+            />
+          </View>
         </View>
-      </View>
 
-      {isEditMode
-        ? <ProfileSaveButton
-          style={styles.buttonContainer}
-          onPress={() => { saveProfile() }} />
-        : <ProfileUpdateButton
-          style={styles.buttonContainer}
-          onPress={() => { updateProfile() }} />
-      }
+        {isEditMode
+          ? <ProfileSaveButton
+            style={styles.buttonContainer}
+            onPress={() => { saveProfile() }} />
+          : <ProfileUpdateButton
+            style={styles.buttonContainer}
+            onPress={() => { updateProfile() }} />
+        }
 
-      {/* 모달창 */}
-      <CameraModal
-        isVisible={isCameraModalVisible}
-        onCancel={() => setCameraModalVisible(false)}
-        onImageSelect={handleImageSelect}
-      />
+        {/* 모달창 */}
+        <CameraModal
+          isVisible={isCameraModalVisible}
+          onCancel={() => setCameraModalVisible(false)}
+          onImageSelect={handleImageSelect}
+        />
 
-      <NameUpdateModal
-        isVisible={isNameModalVisible}
-        onCancel={() => setNameModalVisible(false)}
-        onConfirm={(newName) => {
-          setName(newName);
-          setNameModalVisible(false);
-        }}
-        value={name}
-        onChangeText={setName}
-      />
+        <NameUpdateModal
+          isVisible={isNameModalVisible}
+          onCancel={() => setNameModalVisible(false)}
+          onConfirm={(newName) => {
+            setName(newName);
+            setNameModalVisible(false);
+          }}
+          value={name}
+          onChangeText={setName}
+        />
 
-      <LocationUpdateModal
-        isVisible={isLocationModalVisible}
-        onCancel={() => setLocationModalVisible(false)}
-        onConfirm={(newLocation) => {
-          setLocation(newLocation);
-          setLocationModalVisible(false);
-        }}
-        value={location}
-        onChangeText={setLocation}
-      />
+        <LocationUpdateModal
+          isVisible={isLocationModalVisible}
+          onCancel={() => setLocationModalVisible(false)}
+          onConfirm={(newLocation) => {
+            setLocation(newLocation);
+            setLocationModalVisible(false);
+          }}
+          value={location}
+          onChangeText={setLocation}
+        />
 
-      <DescriptionUpdateModal
-        isVisible={isDescriptionModalVisible}
-        onCancel={() => setDescriptionModalVisible(false)}
-        onConfirm={(newDescription) => {
-          setDescription(newDescription);
-          setDescriptionModalVisible(false);
-        }}
-        value={description}
-        onChangeText={setDescription}
-      />
-    </ScrollView>
+        <DescriptionUpdateModal
+          isVisible={isDescriptionModalVisible}
+          onCancel={() => setDescriptionModalVisible(false)}
+          onConfirm={(newDescription) => {
+            setDescription(newDescription);
+            setDescriptionModalVisible(false);
+          }}
+          value={description}
+          onChangeText={setDescription}
+        />
+      </ScrollView>
+
+      <BottomTab route='Profile' reload={false} />
+    </>
   );
 };
 
