@@ -50,7 +50,7 @@ const BottomTab: React.FC<BottomTabProps> = ({
   }, [route]);
 
   const handleTabPress = (tabName: string, route: string) => {
-    if (reload) {
+    if (tabName !== selectedTab || reload) {
       setSelectedTab(tabName);
       resetNavigationStack(navigation, route);
     }
@@ -59,7 +59,9 @@ const BottomTab: React.FC<BottomTabProps> = ({
   return (
     <View style={styles.tabContainer}>
       {tabs.map((tab) => {
-        const Icon = selectedTab === tab.name ? tab.selectedIcon : tab.icon;
+        const Icon = selectedTab === tab.name
+          ? tab.selectedIcon
+          : tab.icon;
         return (
           <TouchableOpacity
             key={tab.name}
