@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  PanResponder
 } from 'react-native';
 import moment from 'moment';
 import getSize from '@/scripts/getSize';
 import Colors from '@/constants/Colors';
+import Fonts from '@/constants/Fonts';
 
 const { width } = Dimensions.get('window');
 
 const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
+
+const dummyRunningDates: Record<string, string[]> = {
+  '2024-10': ['2024-10-04', '2024-10-07', '2024-10-12'],
+  '2024-11': ['2024-11-05', '2024-11-10'],
+};
+
+const isToday = (year: number, month: number, day: number) => {
+  return moment([year, month - 1, day]).isSame(moment(), 'day');
+};
 
 const generateCalendar = (year: number, month: number) => {
   const startOfMonth = moment([year, month - 1]);
@@ -45,7 +56,7 @@ const generateCalendar = (year: number, month: number) => {
 
 export const CustomCalendar = () => {
   const [currentMonth, setCurrentMonth] = useState(moment());
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
 
   const year = currentMonth.year();
   const month = currentMonth.month() + 1;
@@ -53,17 +64,53 @@ export const CustomCalendar = () => {
   const calendar = generateCalendar(year, month);
 
   const handleDayPress = (day: number) => {
-    if (day) {
+    if (day !== null && day !== undefined) {
       const selected = moment([year, month - 1, day]).format('YYYY-MM-DD');
-      setSelectedDate(selected);
+      // setSelectedDates((prevDates) => [...prevDates, selected]);
     }
   };
 
+  const fetchRunningDates = async (newMonth: number, newYear: number) => {
+    const formattedMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`;
+    const apiDates = dummyRunningDates[formattedMonth] || [];
+    setSelectedDates((prevDates) => [...prevDates, ...apiDates]); // 기존 selectedDates에 API로 가져온 날짜 추가
+  };
+
+  const handleSwipe = (dy: number) => {
+    let newMonth = currentMonth.month() + 1;
+    let newYear = currentMonth.year();
+
+    if (dy > 0) {
+      setCurrentMonth(moment(currentMonth).subtract(1, 'month'));
+      newMonth = currentMonth.month(); // 이전 달
+      newYear = currentMonth.year();
+    } else {
+      setCurrentMonth(moment(currentMonth).add(1, 'month'));
+      newMonth = currentMonth.month() + 2; // 다음 달
+      newYear = currentMonth.year();
+    }
+
+    fetchRunningDates(newMonth, newYear);
+  };
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        return Math.abs(gestureState.dy) > 10;
+      },
+      onPanResponderRelease: (_, gestureState) => {
+        handleSwipe(gestureState.dy);
+      },
+    })
+  ).current;
+
   return (
     <View style={styles.calendarContainer}>
-      <Text style={styles.title}>{year}년 {month}월</Text>
+      <View style={styles.title}>
+        <Text style={styles.year}>{year}</Text>
+        <Text style={styles.month}>{month}월</Text>
+      </View>
 
-      {/* 요일 헤더 */}
       <View style={styles.weekdayContainer}>
         {daysOfWeek.map((day, index) => (
           <Text key={index} style={styles.weekdayText}>
@@ -72,27 +119,35 @@ export const CustomCalendar = () => {
         ))}
       </View>
 
-      {/* 날짜 셀 */}
       <View style={styles.calendarGrid}>
         {calendar.map((week, index) => (
           <View key={index} style={styles.weekContainer}>
             {week.map((day, dayIndex) => (
               <TouchableOpacity
                 key={dayIndex}
-                style={[
-                  styles.dayCell,
-                  day && moment([year, month - 1, day]).isSame(moment(), 'day') ? styles.todayCell : null,
-                  day && moment([year, month - 1, day]).format('YYYY-MM-DD') === selectedDate ? styles.selectedDayCell : null
-                ]}
-                onPress={() => handleDayPress(day ?? 0)}
-                disabled={!day}
+                style={styles.dayCell}
+                onPress={() => day !== null && handleDayPress(day)}
+                disabled={day === null}
               >
-                <Text style={day ? styles.dayText : styles.emptyDayText}>
+                {day && isToday(year, month, day) && (
+                  <View style={styles.todayCell} />
+                )}
+
+                {day &&
+                  selectedDates.includes(
+                    moment([year, month - 1, day]).format('YYYY-MM-DD')
+                  ) && <View style={styles.selectedDayCell} />}
+
+                <Text
+                  style={[
+                    styles.dayText,
+                    day !== null && isToday(year, month, day) && {
+                      color: 'black',
+                    },
+                  ]}
+                >
                   {day || ''}
                 </Text>
-                {day && moment([year, month - 1, day]).isSame(moment('2024-10-04'), 'day') && (
-                  <View style={styles.dot} />
-                )}
               </TouchableOpacity>
             ))}
           </View>
@@ -104,27 +159,39 @@ export const CustomCalendar = () => {
 
 const styles = StyleSheet.create({
   calendarContainer: {
-    backgroundColor: '#1C1C1E',
-    borderRadius: getSize(10),
-    paddingVertical: getSize(20),
-    width: width - getSize(32),
+    backgroundColor: '#1B1B1B',
+    width: width,
+    paddingHorizontal: getSize(7.8),
     alignSelf: 'center',
   },
   title: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  year: {
     color: Colors.main,
-    fontSize: getSize(36),
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: getSize(16),
+    fontSize: getSize(16),
+    fontFamily: Fonts.bold,
+    height: getSize(19),
+  },
+  month: {
+    color: Colors.main,
+    fontSize: getSize(50),
+    fontFamily: Fonts.extraBold,
+    height: getSize(60),
   },
   weekdayContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: getSize(16),
+    marginTop: getSize(20.8),
   },
   weekdayText: {
-    fontSize: getSize(16),
-    color: '#A3A3A3',
+    textAlign: 'center',
+    height: getSize(46.8),
+    width: getSize(46.8),
+    fontSize: getSize(14),
+    fontFamily: Fonts.medium,
+    color: '#B3B3B3',
   },
   calendarGrid: {
     flexDirection: 'column',
@@ -132,25 +199,33 @@ const styles = StyleSheet.create({
   weekContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: getSize(10),
   },
   dayCell: {
-    width: getSize(40),
-    height: getSize(40),
+    width: getSize(46.8),
+    height: getSize(46.8),
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: getSize(20),
   },
   todayCell: {
+    position: 'absolute',
     backgroundColor: Colors.main,
+    borderRadius: 100,
+    height: getSize(30),
+    width: getSize(30),
   },
   selectedDayCell: {
+    position: 'absolute',
     backgroundColor: Colors.main,
-    borderRadius: getSize(20),
+    borderRadius: getSize(100),
+    bottom: 0,
+    width: getSize(6),
+    height: getSize(6),
   },
   dayText: {
-    fontSize: getSize(16),
     color: '#FFFFFF',
+    fontSize: getSize(21.45),
+    fontFamily: Fonts.medium,
+    height: getSize(26),
   },
   emptyDayText: {
     fontSize: getSize(16),
