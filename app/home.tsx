@@ -100,7 +100,7 @@ const HomeScreen: React.FC = () => {
         style={styles.button}
         onPress={() => handleStartPress()}
       />
-      <BottomTab route='Running' />
+      <BottomTab route='Running' reload={false} />
     </View>
   );
 };
