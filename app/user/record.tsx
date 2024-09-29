@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   PanResponder,
+  Animated,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
@@ -49,6 +50,7 @@ const RecordScreen = () => {
   const handleDaySelect = (date: moment.Moment) => {
     setSelectedDate(date);
     setIsWeekMode(true);
+    triggerAnimation(true);
     console.log(selectedDate);
   };
 
@@ -88,12 +90,44 @@ const RecordScreen = () => {
     })
   ).current;
 
+  const firstRHeight = useRef(new Animated.Value(getSize(475))).current;
+  const secondRHeight = useRef(new Animated.Value(getSize(488))).current;
+  const topContainerHeight = useRef(new Animated.Value(getSize(552))).current;
+
+  const triggerAnimation = (toWeekMode: boolean) => {
+    Animated.parallel([
+      Animated.timing(firstRHeight, {
+        toValue: toWeekMode ? 0 : getSize(475),
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(secondRHeight, {
+        toValue: toWeekMode ? 0 : getSize(488),
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(topContainerHeight, {
+        toValue: toWeekMode ? 348 : getSize(552),
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
+
+  const handleToggleMode = () => {
+    setIsWeekMode(!isWeekMode);
+    triggerAnimation(!isWeekMode);
+  };
+
   return (
     <View style={Styles.container}>
-      <View style={styles.firstR} />
-      <View style={styles.secondR} />
+      <Animated.View style={[styles.firstR, { height: firstRHeight }]} />
+      <Animated.View style={[styles.secondR, { height: secondRHeight }]} />
 
-      <View style={styles.topContainer} {...(!isWeekMode ? panResponder.panHandlers : {})}>
+      <Animated.View style={[
+        styles.topContainer,
+        { height: topContainerHeight },
+      ]} {...(!isWeekMode ? panResponder.panHandlers : {})}>
         <View style={styles.header}>
           <TouchableOpacity
             style={[styles.iconContainer, { justifyContent: 'flex-start' }]}
@@ -103,7 +137,7 @@ const RecordScreen = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.iconContainer, { justifyContent: 'flex-end' }]}
-            onPress={() => setIsWeekMode(!isWeekMode)}
+            onPress={() => handleToggleMode()}
           >
             <CalendarIcon width={getSize(24)} height={getSize(26)} />
           </TouchableOpacity>
@@ -122,7 +156,7 @@ const RecordScreen = () => {
             onDaySelect={handleDaySelect}
           />
         )}
-      </View>
+      </Animated.View>
 
       <View style={styles.textBox}>
         <View style={styles.textRow}>
