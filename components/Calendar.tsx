@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  PanResponder
 } from 'react-native';
 import moment from 'moment';
 
@@ -170,44 +171,67 @@ const styles = StyleSheet.create({
   },
 });
 
-const generateWeekDays = (currentMonth: moment.Moment) => {
-  const startOfWeek = moment(currentMonth).startOf('week').add(1, 'day'); // 주 시작일 월요일 기준
-  const weekDays = Array.from({ length: 7 }).map((_, index) =>
+const generateWeekDays = (currentDate: moment.Moment) => {
+  const startOfWeek = moment(currentDate).subtract(3, 'days');
+  return Array.from({ length: 7 }).map((_, index) =>
     moment(startOfWeek).add(index, 'days')
   );
-  return weekDays;
+};
+
+const isTodayW = (day: moment.Moment) => {
+  return moment().isSame(day, 'day');
 };
 
 export const CustomCalendarW = ({ selectedDates, currentMonth }: any) => {
-  const year = currentMonth.year();
-  const month = currentMonth.month() + 1;
-  const weekDays = generateWeekDays(currentMonth);
+  const [currentDate, setCurrentDate] = useState(moment());
+  const [weekDays, setWeekDays] = useState(generateWeekDays(currentDate));
+
+  const handleSwipe = (dx: number) => {
+    const newDate = dx > 0 ? moment(currentDate).subtract(1, 'days') : moment(currentDate).add(1, 'days');
+    setCurrentDate(newDate);
+    setWeekDays(generateWeekDays(newDate));
+  };
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        return Math.abs(gestureState.dx) > 20;
+      },
+      onPanResponderRelease: (_, gestureState) => {
+        if (gestureState.dx > 0) {
+          handleSwipe(-1);
+        } else {
+          handleSwipe(1);
+        }
+      },
+    })
+  ).current;
 
   return (
-    <View style={styles.calendarContainer}>
+    <View style={styles.calendarContainer} {...panResponder.panHandlers}>
       <View style={styles.title}>
-        <Text style={styles.year}>{year}</Text>
-        <Text style={styles.month}>{month}월</Text>
+        <Text style={styles.year}>{currentMonth.year()}</Text>
+        <Text style={styles.month}>{currentMonth.month() + 1}월</Text>
       </View>
 
       <View style={styles.calendarGrid}>
         <View style={styles.weekdayContainer}>
-          {daysOfWeek.map((day, index) => (
+          {weekDays.map((day, index) => (
             <Text key={index} style={styles.weekdayText}>
-              {day}
+              {daysOfWeek[day.day() === 0 ? 6 : day.day() - 1]}
             </Text>
           ))}
         </View>
 
         <View style={styles.weekContainer}>
           {weekDays.map((day, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.dayCell}
-            >
-              <Text style={styles.dayText}>
-                {day.date()}
-              </Text>
+            <TouchableOpacity key={index} style={styles.dayCell}>
+              <View style={isTodayW(day) && styles.today} >
+                <Text style={[
+                  styles.dayText,
+                  isTodayW(day) && { color: 'black' }
+                ]}>{day.date()}</Text>
+              </View>
               {selectedDates.includes(day.format('YYYY-MM-DD')) && (
                 <View style={styles.selectedDayCell} />
               )}
