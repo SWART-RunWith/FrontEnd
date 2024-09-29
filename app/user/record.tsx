@@ -16,8 +16,9 @@ import BackIcon from '@/assets/icons/back.svg';
 import CalendarIcon from '@/assets/icons/calendar_m.svg';
 import RunningBarIcon from '@/assets/icons/runningBar.svg';
 import BottomCircleArrowIcon from '@/assets/icons/bottomCircleArrow.svg';
-import UpdateIcon from '@/assets/icons/update.svg';
-import ShareIcon from '@/assets/icons/share.svg';
+import EditIcon from '@/assets/icons/edit.svg';
+import UploadIcon from '@/assets/icons/upload_w.svg';
+import TopArrowIcon from '@/assets/icons/topArrow.svg';
 import Styles from '@/constants/Styles';
 import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
@@ -39,7 +40,7 @@ const runningRecords = [
     time: '01:03:23',
     distance: '00.00KM',
     createdAt: '09:32',
-    expanded: false, // expanded state for each record
+    expanded: false,
   },
   {
     time: '01:02:15',
@@ -58,9 +59,8 @@ const RecordScreen = () => {
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [currentMonth, setCurrentMonth] = useState(moment());
   const [selectedDate, setSelectedDate] = useState<moment.Moment | null>(null);
-  const [expandedRecords, setExpandedRecords] = useState(
-    runningRecords.map((record) => false)
-  );
+  const [expandedRecords, setExpandedRecords] = useState<boolean[]>([]);
+  const animationRefs = useRef<Animated.Value[]>([]).current;
 
   const [isSwiping, setIsSwiping] = useState(false);
 
@@ -143,10 +143,25 @@ const RecordScreen = () => {
     triggerAnimation(!isWeekMode);
   };
 
-  const handleToggleRecordExpansion = (index: number) => {
-    setExpandedRecords((prev) =>
-      prev.map((expanded, i) => (i === index ? !expanded : expanded))
+  useEffect(() => {
+    animationRefs.splice(
+      0,
+      animationRefs.length,
+      ...runningRecords.map(() => new Animated.Value(getSize(96)))
     );
+  }, [runningRecords]);
+
+  const handleToggleRecordExpansion = (index: number) => {
+    const isExpanded = expandedRecords[index];
+    const newExpandedRecords = [...expandedRecords];
+    newExpandedRecords[index] = !isExpanded;
+    setExpandedRecords(newExpandedRecords);
+
+    Animated.timing(animationRefs[index], {
+      toValue: isExpanded ? getSize(96) : getSize(240),
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
   };
 
   return (
@@ -190,66 +205,94 @@ const RecordScreen = () => {
         )}
       </Animated.View>
 
-      {!isWeekMode && <View style={styles.textBox}>
-        <View style={styles.textRow}>
-          <Text style={styles.text}>{user}님, 이번 달 총 </Text>
-          <Text style={[styles.text, { color: Colors.main }]}>{count}번</Text>
-          <Text style={styles.text}> 뛰셨어요.</Text>
+      {!isWeekMode &&
+        <View style={styles.textBox}>
+          <View style={styles.textRow}>
+            <Text style={styles.text}>{user}님, 이번 달 총 </Text>
+            <Text style={[styles.text, { color: Colors.main }]}>{count}번</Text>
+            <Text style={styles.text}> 뛰셨어요.</Text>
+          </View>
+          <View style={styles.textRow}>
+            <Text style={styles.runwith}>RUNWITH</Text>
+            <Text style={styles.text}>과 더 힘차게 달려볼까요?</Text>
+          </View>
         </View>
-        <View style={styles.textRow}>
-          <Text style={styles.runwith}>RUNWITH</Text>
-          <Text style={styles.text}>과 더 힘차게 달려볼까요?</Text>
-        </View>
-      </View>}
+      }
 
       {isWeekMode &&
-        <ScrollView style={styles.runningRecordsContainer}>
+        <View style={{
+          width: width,
+          marginTop: getSize(61),
+          paddingHorizontal: getSize(Sizes.formMargin),
+        }}>
           <Text style={{
             color: 'white',
             fontSize: getSize(16),
             fontFamily: Fonts.semiBold,
             height: getSize(19),
           }}>러닝 기록</Text>
-          {runningRecords.map((record, index) => {
-            const expandedHeight = expandedRecords[index]
-              ? getSize(240) // expanded height
-              : getSize(96); // collapsed height
-            return (
-              <View key={index} style={styles.runningRecordContainer}>
-                <RunningBarIcon width={getSize(20)} height={getSize(96)} />
-                <Animated.View
-                  style={[
-                    styles.runningRecord,
-                    { height: expandedHeight },
-                  ]}
-                >
-                  <View style={{ paddingLeft: getSize(18.2) }}>
-                    <Text style={styles.createdAt}>{record.createdAt}</Text>
-                    <Text style={styles.time}>{record.time}</Text>
-                    <Text style={styles.distance}>{record.distance}</Text>
-                  </View>
-                  <TouchableOpacity
-                    style={styles.bottomCircleArrowIcon}
-                    onPress={() => handleToggleRecordExpansion(index)}
+
+          <ScrollView contentContainerStyle={styles.runningRecordsContainer}>
+            {runningRecords.map((record, index) => {
+              const expandedHeight = expandedRecords[index]
+                ? getSize(240)
+                : getSize(96);
+
+              return (
+                <View key={index} style={styles.runningRecordContainer}>
+                  <RunningBarIcon width={getSize(20)} height={getSize(96)} />
+                  <Animated.View
+                    style={[
+                      styles.runningRecord,
+                      { height: expandedHeight },
+                    ]}
                   >
-                    <BottomCircleArrowIcon
-                      width={getSize(28)}
-                      height={getSize(28)}
-                    />
-                  </TouchableOpacity>
-                  {expandedRecords[index] && (
-                    <View style={styles.expandedContent}>
-                      <Text style={styles.additionalInfo}>코스 정보</Text>
-                      <Text style={styles.additionalInfo}>
-                        페이스: 6'04", 평균 심박수: 111
-                      </Text>
+                    {!expandedRecords
+                      ? <TouchableOpacity
+                        style={styles.bottomCircleArrowIcon}
+                        onPress={() => handleToggleRecordExpansion(index)}
+                      >
+                        <BottomCircleArrowIcon
+                          width={getSize(28)}
+                          height={getSize(28)}
+                        />
+                      </TouchableOpacity>
+                      : <View>
+                        <TouchableOpacity style={styles.editIcon}>
+                          <EditIcon width={getSize(20)} height={getSize(20.32)} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.uploadIcon}>
+                          <UploadIcon width={getSize(16)} height={getSize(20)} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.topArrowIcon}>
+                          <TopArrowIcon width={getSize(22)} height={getSize(12)} />
+                        </TouchableOpacity>
+                      </View>
+                    }
+
+                    <View style={{
+                      marginTop: getSize(12),
+                      paddingLeft: getSize(18.2)
+                    }}>
+                      <Text style={styles.createdAt}>{record.createdAt}</Text>
+                      <Text style={styles.time}>{record.time}</Text>
+                      <Text style={styles.distance}>{record.distance}</Text>
                     </View>
-                  )}
-                </Animated.View>
-              </View>
-            );
-          })}
-        </ScrollView>
+
+                    {expandedRecords[index] && (
+                      <View style={styles.expandedContent}>
+                        <Text style={styles.additionalInfo}>코스 정보</Text>
+                        <Text style={styles.additionalInfo}>
+                          페이스: 6'04", 평균 심박수: 111
+                        </Text>
+                      </View>
+                    )}
+                  </Animated.View>
+                </View>
+              );
+            })}
+          </ScrollView>
+        </View>
       }
       <BottomTab route="Record" reload={false} />
     </View>
@@ -344,10 +387,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.hanson,
   },
   runningRecordsContainer: {
-    paddingHorizontal: getSize(Sizes.formMargin),
     width: width,
-    marginTop: getSize(61),
+    marginTop: getSize(12),
     gap: getSize(12),
+    flexGrow: 1,
+    paddingBottom: getSize(20),
   },
   runningRecordContainer: {
     flexDirection: 'row',
@@ -391,6 +435,21 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: getSize(14),
     fontFamily: Fonts.medium,
+  },
+  editIcon: {
+    position: 'absolute',
+    top: getSize(23),
+    right: getSize(52),
+  },
+  uploadIcon: {
+    position: 'absolute',
+    top: getSize(23),
+    right: getSize(20),
+  },
+  topArrowIcon: {
+    position: 'absolute',
+    top: getSize(476),
+    right: getSize(158),
   },
 });
 
