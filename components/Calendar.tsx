@@ -44,6 +44,10 @@ const generateCalendar = (year: number, month: number) => {
   return calendar;
 };
 
+const isToday = (year: number, month: number, day: number) => {
+  return moment([year, month - 1, day]).isSame(moment(), 'day');
+};
+
 export const CustomCalendarM = ({ selectedDates, currentMonth }: any) => {
   const year = currentMonth.year();
   const month = currentMonth.month() + 1;
@@ -73,8 +77,15 @@ export const CustomCalendarM = ({ selectedDates, currentMonth }: any) => {
                 style={styles.dayCell}
                 disabled={day === null}
               >
-                <Text style={styles.dayText}>{day || ''}</Text>
-                {selectedDates.includes(moment([year, month - 1, day]).format('YYYY-MM-DD')) && (
+                {day &&
+                  <View style={isToday(year, month, day) && styles.today} >
+                    <Text style={[
+                      styles.dayText,
+                      isToday(year, month, day) && { color: 'black' }
+                    ]}>{day || ''}</Text>
+                  </View>
+                }
+                {day && selectedDates.includes(moment([year, month - 1, day]).format('YYYY-MM-DD')) && (
                   <View style={styles.selectedDayCell} />
                 )}
               </TouchableOpacity>
@@ -148,6 +159,14 @@ const styles = StyleSheet.create({
     fontSize: getSize(21.45),
     fontFamily: Fonts.medium,
     height: getSize(26),
+  },
+  today: {
+    backgroundColor: Colors.main,
+    height: getSize(30),
+    width: getSize(30),
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
