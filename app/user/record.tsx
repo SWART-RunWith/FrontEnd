@@ -7,18 +7,24 @@ import {
   Dimensions,
   PanResponder,
   Animated,
+  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 
 import BackIcon from '@/assets/icons/back.svg';
 import CalendarIcon from '@/assets/icons/calendar_m.svg';
+import RunningBarIcon from '@/assets/icons/runningBar.svg';
+import BottomCircleArrowIcon from '@/assets/icons/bottomCircleArrow.svg';
+import UpdateIcon from '@/assets/icons/update.svg';
+import ShareIcon from '@/assets/icons/share.svg';
 import Styles from '@/constants/Styles';
 import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
 import BottomTab from '@/components/BottomTab';
 import { CustomCalendarM, CustomCalendarW } from '@/components/Calendar';
 import getSize from '@/scripts/getSize';
+import Sizes from '@/constants/Sizes';
 
 const { width } = Dimensions.get('window');
 
@@ -27,6 +33,21 @@ const dummyRunningDates: Record<string, string[]> = {
   '2024-08': ['2024-08-04', '2024-08-07', '2024-08-12'],
   '2024-09': ['2024-09-04', '2024-09-07', '2024-09-12', '2024-09-29'],
 };
+
+const runningRecords = [
+  {
+    time: '01:03:23',
+    distance: '00.00KM',
+    createdAt: '09:32',
+    expanded: false, // expanded state for each record
+  },
+  {
+    time: '01:02:15',
+    distance: '05.50KM',
+    createdAt: '13:02',
+    expanded: false,
+  },
+];
 
 const RecordScreen = () => {
   const navigation = useNavigation();
@@ -37,6 +58,9 @@ const RecordScreen = () => {
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [currentMonth, setCurrentMonth] = useState(moment());
   const [selectedDate, setSelectedDate] = useState<moment.Moment | null>(null);
+  const [expandedRecords, setExpandedRecords] = useState(
+    runningRecords.map((record) => false)
+  );
 
   const [isSwiping, setIsSwiping] = useState(false);
 
@@ -119,6 +143,12 @@ const RecordScreen = () => {
     triggerAnimation(!isWeekMode);
   };
 
+  const handleToggleRecordExpansion = (index: number) => {
+    setExpandedRecords((prev) =>
+      prev.map((expanded, i) => (i === index ? !expanded : expanded))
+    );
+  };
+
   return (
     <View style={Styles.container}>
       <Animated.View style={[styles.firstR, { height: firstRHeight }]} />
@@ -127,7 +157,9 @@ const RecordScreen = () => {
       <Animated.View style={[
         styles.topContainer,
         { height: topContainerHeight },
-      ]} {...(!isWeekMode ? panResponder.panHandlers : {})}>
+      ]}
+        {...(!isWeekMode ? panResponder.panHandlers : {})}
+      >
         <View style={styles.header}>
           <TouchableOpacity
             style={[styles.iconContainer, { justifyContent: 'flex-start' }]}
@@ -158,7 +190,7 @@ const RecordScreen = () => {
         )}
       </Animated.View>
 
-      <View style={styles.textBox}>
+      {!isWeekMode && <View style={styles.textBox}>
         <View style={styles.textRow}>
           <Text style={styles.text}>{user}님, 이번 달 총 </Text>
           <Text style={[styles.text, { color: Colors.main }]}>{count}번</Text>
@@ -168,8 +200,57 @@ const RecordScreen = () => {
           <Text style={styles.runwith}>RUNWITH</Text>
           <Text style={styles.text}>과 더 힘차게 달려볼까요?</Text>
         </View>
-      </View>
+      </View>}
 
+      {isWeekMode &&
+        <ScrollView style={styles.runningRecordsContainer}>
+          <Text style={{
+            color: 'white',
+            fontSize: getSize(16),
+            fontFamily: Fonts.semiBold,
+            height: getSize(19),
+          }}>러닝 기록</Text>
+          {runningRecords.map((record, index) => {
+            const expandedHeight = expandedRecords[index]
+              ? getSize(240) // expanded height
+              : getSize(96); // collapsed height
+            return (
+              <View key={index} style={styles.runningRecordContainer}>
+                <RunningBarIcon width={getSize(20)} height={getSize(96)} />
+                <Animated.View
+                  style={[
+                    styles.runningRecord,
+                    { height: expandedHeight },
+                  ]}
+                >
+                  <View style={{ paddingLeft: getSize(18.2) }}>
+                    <Text style={styles.createdAt}>{record.createdAt}</Text>
+                    <Text style={styles.time}>{record.time}</Text>
+                    <Text style={styles.distance}>{record.distance}</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.bottomCircleArrowIcon}
+                    onPress={() => handleToggleRecordExpansion(index)}
+                  >
+                    <BottomCircleArrowIcon
+                      width={getSize(28)}
+                      height={getSize(28)}
+                    />
+                  </TouchableOpacity>
+                  {expandedRecords[index] && (
+                    <View style={styles.expandedContent}>
+                      <Text style={styles.additionalInfo}>코스 정보</Text>
+                      <Text style={styles.additionalInfo}>
+                        페이스: 6'04", 평균 심박수: 111
+                      </Text>
+                    </View>
+                  )}
+                </Animated.View>
+              </View>
+            );
+          })}
+        </ScrollView>
+      }
       <BottomTab route="Record" reload={false} />
     </View>
   );
@@ -261,6 +342,55 @@ const styles = StyleSheet.create({
     color: Colors.main,
     fontSize: getSize(16),
     fontFamily: Fonts.hanson,
+  },
+  runningRecordsContainer: {
+    paddingHorizontal: getSize(Sizes.formMargin),
+    width: width,
+    marginTop: getSize(61),
+    gap: getSize(12),
+  },
+  runningRecordContainer: {
+    flexDirection: 'row',
+    gap: getSize(14),
+    overflow: 'hidden',
+  },
+  runningRecord: {
+    backgroundColor: Colors.grayBox,
+    width: width - getSize(Sizes.formMargin * 2 + 34),
+    height: getSize(96),
+    borderRadius: 20,
+    position: 'relative',
+  },
+  createdAt: {
+    color: 'rgba(255, 255, 255, 0.6)',
+    fontSize: getSize(10),
+    fontFamily: Fonts.medium,
+    height: getSize(12),
+  },
+  time: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.bold,
+    height: getSize(19),
+  },
+  distance: {
+    color: Colors.main,
+    fontSize: getSize(32),
+    fontFamily: Fonts.bold,
+    height: getSize(38),
+  },
+  bottomCircleArrowIcon: {
+    position: 'absolute',
+    bottom: getSize(18),
+    right: getSize(18),
+  },
+  expandedContent: {
+    marginTop: getSize(10),
+  },
+  additionalInfo: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.medium,
   },
 });
 
