@@ -221,10 +221,8 @@ const RecordScreen = () => {
       )}
 
       {isWeekMode && (
-        <View style={{ width: width, marginTop: getSize(61), paddingHorizontal: getSize(Sizes.formMargin) }}>
-          <Text style={{ color: 'white', fontSize: getSize(16), fontFamily: Fonts.semiBold, height: getSize(19) }}>
-            러닝 기록
-          </Text>
+        <View style={styles.scrollContainer}>
+          <Text style={styles.recordTitle}>러닝 기록</Text>
 
           <ScrollView contentContainerStyle={styles.runningRecordsContainer}>
             {runningRecords.map((record, index) => {
@@ -374,9 +372,21 @@ const styles = StyleSheet.create({
     fontSize: getSize(16),
     fontFamily: Fonts.hanson,
   },
+  scrollContainer: {
+    width: width,
+    marginTop: getSize(61),
+    paddingHorizontal: getSize(Sizes.formMargin),
+    flex: 1,
+  },
+  recordTitle: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+    height: getSize(19),
+    marginBottom: getSize(12),
+  },
   runningRecordsContainer: {
     width: width,
-    marginTop: getSize(12),
     gap: getSize(12),
     flexGrow: 1,
     paddingBottom: getSize(20),
