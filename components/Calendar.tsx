@@ -1,34 +1,24 @@
-import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
+  Dimensions
 } from 'react-native';
 import moment from 'moment';
-import getSize from '@/scripts/getSize';
+
 import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
+import getSize from '@/scripts/getSize';
 
 const { width } = Dimensions.get('window');
 
 const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
 
-const dummyRunningDates: Record<string, string[]> = {
-  '2024-07': ['2024-07-05', '2024-07-10'],
-  '2024-08': ['2024-08-04', '2024-08-07', '2024-08-12'],
-  '2024-09': ['2024-09-04', '2024-09-07', '2024-09-12', '2024-09-29'],
-};
-
-const isToday = (year: number, month: number, day: number) => {
-  return moment([year, month - 1, day]).isSame(moment(), 'day');
-};
-
 const generateCalendar = (year: number, month: number) => {
   const startOfMonth = moment([year, month - 1]);
   const endOfMonth = moment(startOfMonth).endOf('month');
-
   const calendar = [];
   let week = [];
 
@@ -54,43 +44,10 @@ const generateCalendar = (year: number, month: number) => {
   return calendar;
 };
 
-export const CustomCalendar = forwardRef((props: any, ref) => {
-  const [currentMonth, setCurrentMonth] = useState(moment());
-  const [selectedDates, setSelectedDates] = useState<string[]>([]);
-
+export const CustomCalendarM = ({ selectedDates, currentMonth }: any) => {
   const year = currentMonth.year();
   const month = currentMonth.month() + 1;
-
   const calendar = generateCalendar(year, month);
-
-  useImperativeHandle(ref, () => ({
-    handleSwipe: (dy: number) => {
-      let newMonth = currentMonth.month() + 1;
-      let newYear = currentMonth.year();
-
-      if (dy > 0) {
-        setCurrentMonth(moment(currentMonth).subtract(1, 'month'));
-        newMonth = currentMonth.month();
-        newYear = currentMonth.year();
-      } else {
-        setCurrentMonth(moment(currentMonth).add(1, 'month'));
-        newMonth = currentMonth.month() + 2;
-        newYear = currentMonth.year();
-      }
-
-      fetchRunningDates(newMonth, newYear);
-    },
-  }));
-
-  const fetchRunningDates = async (newMonth: number, newYear: number) => {
-    const formattedMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`;
-    const apiDates = dummyRunningDates[formattedMonth] || [];
-    setSelectedDates(apiDates);
-    props.onUpdateRunningCount(apiDates);
-  };
-
-  const handleDayPress = (day: number) => {
-  };
 
   return (
     <View style={styles.calendarContainer}>
@@ -107,32 +64,19 @@ export const CustomCalendar = forwardRef((props: any, ref) => {
             </Text>
           ))}
         </View>
-      </View>
 
-      <View style={styles.calendarGrid}>
         {calendar.map((week, index) => (
           <View key={index} style={styles.weekContainer}>
             {week.map((day, dayIndex) => (
               <TouchableOpacity
                 key={dayIndex}
                 style={styles.dayCell}
-                onPress={() => day !== null && handleDayPress(day)}
                 disabled={day === null}
               >
-                {day && isToday(year, month, day) && <View style={styles.todayCell} />}
-
-                {day && selectedDates.includes(moment([year, month - 1, day]).format('YYYY-MM-DD')) && (
+                <Text style={styles.dayText}>{day || ''}</Text>
+                {selectedDates.includes(moment([year, month - 1, day]).format('YYYY-MM-DD')) && (
                   <View style={styles.selectedDayCell} />
                 )}
-
-                <Text
-                  style={[
-                    styles.dayText,
-                    day !== null && isToday(year, month, day) && { color: 'black' },
-                  ]}
-                >
-                  {day || ''}
-                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -140,7 +84,7 @@ export const CustomCalendar = forwardRef((props: any, ref) => {
       </View>
     </View>
   );
-});
+};
 
 const styles = StyleSheet.create({
   calendarContainer: {
@@ -191,13 +135,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  todayCell: {
-    position: 'absolute',
-    backgroundColor: Colors.main,
-    borderRadius: 100,
-    height: getSize(30),
-    width: getSize(30),
-  },
   selectedDayCell: {
     position: 'absolute',
     backgroundColor: Colors.main,
@@ -213,3 +150,52 @@ const styles = StyleSheet.create({
     height: getSize(26),
   },
 });
+
+const generateWeekDays = (currentMonth: moment.Moment) => {
+  const startOfWeek = moment(currentMonth).startOf('week').add(1, 'day'); // 주 시작일 월요일 기준
+  const weekDays = Array.from({ length: 7 }).map((_, index) =>
+    moment(startOfWeek).add(index, 'days')
+  );
+  return weekDays;
+};
+
+export const CustomCalendarW = ({ selectedDates, currentMonth }: any) => {
+  const year = currentMonth.year();
+  const month = currentMonth.month() + 1;
+  const weekDays = generateWeekDays(currentMonth);
+
+  return (
+    <View style={styles.calendarContainer}>
+      <View style={styles.title}>
+        <Text style={styles.year}>{year}</Text>
+        <Text style={styles.month}>{month}월</Text>
+      </View>
+
+      <View style={styles.calendarGrid}>
+        <View style={styles.weekdayContainer}>
+          {daysOfWeek.map((day, index) => (
+            <Text key={index} style={styles.weekdayText}>
+              {day}
+            </Text>
+          ))}
+        </View>
+
+        <View style={styles.weekContainer}>
+          {weekDays.map((day, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.dayCell}
+            >
+              <Text style={styles.dayText}>
+                {day.date()}
+              </Text>
+              {selectedDates.includes(day.format('YYYY-MM-DD')) && (
+                <View style={styles.selectedDayCell} />
+              )}
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+};

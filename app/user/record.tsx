@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,45 +8,75 @@ import {
   PanResponder,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
+
 import BackIcon from '@/assets/icons/back.svg';
 import CalendarIcon from '@/assets/icons/calendar_m.svg';
 import Styles from '@/constants/Styles';
 import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
 import BottomTab from '@/components/BottomTab';
-import { CustomCalendar } from '@/components/Calendar';
+import { CustomCalendarM, CustomCalendarW } from '@/components/Calendar';
 import getSize from '@/scripts/getSize';
 
 const { width } = Dimensions.get('window');
 
-interface CustomCalendarRef {
-  handleSwipe: (dy: number) => void;
-}
+const dummyRunningDates: Record<string, string[]> = {
+  '2024-07': ['2024-07-05', '2024-07-10'],
+  '2024-08': ['2024-08-04', '2024-08-07', '2024-08-12'],
+  '2024-09': ['2024-09-04', '2024-09-07', '2024-09-12', '2024-09-29'],
+};
 
 const RecordScreen = () => {
   const navigation = useNavigation();
 
   const [user, setUser] = useState('홍여준');
   const [count, setCount] = useState(0);
+  const [isWeekMode, setIsWeekMode] = useState(false);
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [currentMonth, setCurrentMonth] = useState(moment());
 
-  const calendarRef = useRef<CustomCalendarRef>(null);
+  const [isSwiping, setIsSwiping] = useState(false);
+
+  const fetchRunningDates = async (newMonth: number, newYear: number) => {
+    const formattedMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`;
+    const apiDates = dummyRunningDates[formattedMonth] || [];
+    setSelectedDates(apiDates);
+    setCount(apiDates.length);
+  };
+
+  useEffect(() => {
+    fetchRunningDates(currentMonth.month() + 1, currentMonth.year());
+  }, [currentMonth]);
+
+  const handleSwipe = (dy: number) => {
+    if (!isSwiping) {
+      setIsSwiping(true);
+
+      if (dy > 0) {
+        setCurrentMonth((prev) => moment(prev).subtract(1, 'month'));
+      } else {
+        setCurrentMonth((prev) => moment(prev).add(1, 'month'));
+      }
+
+      setTimeout(() => {
+        setIsSwiping(false);
+      }, 500);
+    }
+  };
 
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (_, gestureState) => {
-        return Math.abs(gestureState.dy) > 10;
+        return Math.abs(gestureState.dy) > 20;  // 스와이프가 충분히 일어나도록 설정
       },
       onPanResponderRelease: (_, gestureState) => {
-        if (calendarRef.current) {
-          calendarRef.current.handleSwipe(gestureState.dy);
+        if (!isSwiping) {
+          handleSwipe(gestureState.dy);
         }
       },
     })
   ).current;
-
-  const updateRunningCount = (runningDates: string[]) => {
-    setCount(runningDates.length);
-  };
 
   return (
     <View style={Styles.container}>
@@ -63,16 +93,24 @@ const RecordScreen = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.iconContainer, { justifyContent: 'flex-end' }]}
+            onPress={() => setIsWeekMode(!isWeekMode)}
           >
             <CalendarIcon width={getSize(24)} height={getSize(26)} />
           </TouchableOpacity>
         </View>
 
         <View style={{ marginTop: getSize(21) }} />
-        <CustomCalendar
-          ref={calendarRef}
-          onUpdateRunningCount={updateRunningCount}
-        />
+        {isWeekMode ? (
+          <CustomCalendarW
+            selectedDates={selectedDates}
+            currentMonth={currentMonth}
+          />
+        ) : (
+          <CustomCalendarM
+            selectedDates={selectedDates}
+            currentMonth={currentMonth}
+          />
+        )}
       </View>
 
       <View style={styles.textBox}>
