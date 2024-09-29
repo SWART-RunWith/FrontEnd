@@ -1,11 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  PanResponder
 } from 'react-native';
 import moment from 'moment';
 import getSize from '@/scripts/getSize';
@@ -54,7 +53,8 @@ const generateCalendar = (year: number, month: number) => {
   return calendar;
 };
 
-export const CustomCalendar = () => {
+// CustomCalendar 컴포넌트를 forwardRef로 감싸서 ref를 통해 handleSwipe 접근 가능하게 함
+export const CustomCalendar = forwardRef((props, ref) => {
   const [currentMonth, setCurrentMonth] = useState(moment());
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
 
@@ -63,46 +63,37 @@ export const CustomCalendar = () => {
 
   const calendar = generateCalendar(year, month);
 
-  const handleDayPress = (day: number) => {
-    if (day !== null && day !== undefined) {
-      const selected = moment([year, month - 1, day]).format('YYYY-MM-DD');
-      // setSelectedDates((prevDates) => [...prevDates, selected]);
-    }
-  };
+  useImperativeHandle(ref, () => ({
+    handleSwipe: (dy: number) => {
+      let newMonth = currentMonth.month() + 1;
+      let newYear = currentMonth.year();
+
+      if (dy > 0) {
+        setCurrentMonth(moment(currentMonth).subtract(1, 'month'));
+        newMonth = currentMonth.month();
+        newYear = currentMonth.year();
+      } else {
+        setCurrentMonth(moment(currentMonth).add(1, 'month'));
+        newMonth = currentMonth.month() + 2;
+        newYear = currentMonth.year();
+      }
+
+      fetchRunningDates(newMonth, newYear);
+    },
+  }));
 
   const fetchRunningDates = async (newMonth: number, newYear: number) => {
     const formattedMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`;
     const apiDates = dummyRunningDates[formattedMonth] || [];
-    setSelectedDates((prevDates) => [...prevDates, ...apiDates]); // 기존 selectedDates에 API로 가져온 날짜 추가
+    setSelectedDates((prevDates) => [...prevDates, ...apiDates]);
   };
 
-  const handleSwipe = (dy: number) => {
-    let newMonth = currentMonth.month() + 1;
-    let newYear = currentMonth.year();
-
-    if (dy > 0) {
-      setCurrentMonth(moment(currentMonth).subtract(1, 'month'));
-      newMonth = currentMonth.month(); // 이전 달
-      newYear = currentMonth.year();
-    } else {
-      setCurrentMonth(moment(currentMonth).add(1, 'month'));
-      newMonth = currentMonth.month() + 2; // 다음 달
-      newYear = currentMonth.year();
+  const handleDayPress = (day: number) => {
+    if (day !== null && day !== undefined) {
+      const selected = moment([year, month - 1, day]).format('YYYY-MM-DD');
+      setSelectedDates((prevDates) => [...prevDates, selected]);
     }
-
-    fetchRunningDates(newMonth, newYear);
   };
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gestureState) => {
-        return Math.abs(gestureState.dy) > 10;
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        handleSwipe(gestureState.dy);
-      },
-    })
-  ).current;
 
   return (
     <View style={styles.calendarContainer}>
@@ -129,21 +120,16 @@ export const CustomCalendar = () => {
                 onPress={() => day !== null && handleDayPress(day)}
                 disabled={day === null}
               >
-                {day && isToday(year, month, day) && (
-                  <View style={styles.todayCell} />
-                )}
+                {day && isToday(year, month, day) && <View style={styles.todayCell} />}
 
-                {day &&
-                  selectedDates.includes(
-                    moment([year, month - 1, day]).format('YYYY-MM-DD')
-                  ) && <View style={styles.selectedDayCell} />}
+                {day && selectedDates.includes(moment([year, month - 1, day]).format('YYYY-MM-DD')) && (
+                  <View style={styles.selectedDayCell} />
+                )}
 
                 <Text
                   style={[
                     styles.dayText,
-                    day !== null && isToday(year, month, day) && {
-                      color: 'black',
-                    },
+                    day !== null && isToday(year, month, day) && { color: 'black' },
                   ]}
                 >
                   {day || ''}
@@ -155,7 +141,7 @@ export const CustomCalendar = () => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   calendarContainer: {
@@ -226,16 +212,5 @@ const styles = StyleSheet.create({
     fontSize: getSize(21.45),
     fontFamily: Fonts.medium,
     height: getSize(26),
-  },
-  emptyDayText: {
-    fontSize: getSize(16),
-    color: '#666666',
-  },
-  dot: {
-    width: getSize(4),
-    height: getSize(4),
-    backgroundColor: Colors.main,
-    borderRadius: getSize(2),
-    marginTop: getSize(4),
   },
 });
