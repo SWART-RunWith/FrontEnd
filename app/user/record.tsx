@@ -8,6 +8,7 @@ import {
   PanResponder,
   Animated,
   ScrollView,
+  Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
@@ -266,6 +267,10 @@ const RecordScreen = () => {
 
                     {expandedRecords[index] && (
                       <View style={styles.expandedContent}>
+                        <Image
+                          style={styles.courseImg}
+                          source={{ uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fditoday.com%2F%25EC%25B4%2588%25EB%25B3%25B4%25EC%259E%2590%25EB%258F%2584-%25EB%25A7%2588%25EC%259D%258C-%25ED%258E%25B8%25ED%259E%2588-%25EB%258B%25AC%25EB%25A6%25B4-%25EC%2588%2598-%25EC%259E%2588%25EB%258A%2594-%25EB%259F%25AC%25EB%258B%259D-%25EC%25B6%2594%25EC%25B2%259C-%25EC%25BD%2594%25EC%258A%25A4-5%2F&psig=AOvVaw0EN7FQ4ORayWtksNJrQiK5&ust=1727715037992000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIidzZvO6IgDFQAAAAAdAAAAABAJ' }}
+                        />
                         <Text style={styles.additionalInfo}>코스 정보</Text>
                         <Text style={styles.additionalInfo}>페이스: 6'04", 평균 심박수: 111</Text>
                       </View>
@@ -413,7 +418,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   expandedContent: {
-    marginTop: getSize(10),
+    marginTop: getSize(17),
+  },
+  courseImg: {
+    backgroundColor: 'black',
+    marginHorizontal: getSize(11),
+    width: width - getSize(Sizes.formMargin * 2 + 56),
+    height: getSize(290),
   },
   additionalInfo: {
     color: 'white',
