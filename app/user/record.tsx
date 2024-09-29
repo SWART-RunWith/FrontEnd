@@ -59,7 +59,10 @@ const RecordScreen = () => {
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [currentMonth, setCurrentMonth] = useState(moment());
   const [selectedDate, setSelectedDate] = useState<moment.Moment | null>(null);
-  const [expandedRecords, setExpandedRecords] = useState<boolean[]>([]);
+  const [expandedRecords, setExpandedRecords] = useState<boolean[]>(() =>
+    runningRecords.map(() => false)
+  );
+
   const animationRefs = useRef<Animated.Value[]>([]).current;
 
   const [isSwiping, setIsSwiping] = useState(false);
@@ -152,13 +155,14 @@ const RecordScreen = () => {
   }, [runningRecords]);
 
   const handleToggleRecordExpansion = (index: number) => {
-    const isExpanded = expandedRecords[index];
     const newExpandedRecords = [...expandedRecords];
-    newExpandedRecords[index] = !isExpanded;
+    const isCurrentlyExpanded = newExpandedRecords[index];
+
+    newExpandedRecords[index] = !isCurrentlyExpanded;
     setExpandedRecords(newExpandedRecords);
 
     Animated.timing(animationRefs[index], {
-      toValue: isExpanded ? getSize(96) : getSize(240),
+      toValue: newExpandedRecords[index] ? getSize(500) : getSize(96),
       duration: 300,
       useNativeDriver: false,
     }).start();
@@ -247,7 +251,7 @@ const RecordScreen = () => {
                       { height: expandedHeight },
                     ]}
                   >
-                    {!expandedRecords
+                    {!expandedRecords[index]
                       ? <TouchableOpacity
                         style={styles.bottomCircleArrowIcon}
                         onPress={() => handleToggleRecordExpansion(index)}
@@ -257,14 +261,17 @@ const RecordScreen = () => {
                           height={getSize(28)}
                         />
                       </TouchableOpacity>
-                      : <View>
+                      : <View style={{ zIndex: 1, }}>
                         <TouchableOpacity style={styles.editIcon}>
                           <EditIcon width={getSize(20)} height={getSize(20.32)} />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.uploadIcon}>
                           <UploadIcon width={getSize(16)} height={getSize(20)} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.topArrowIcon}>
+                        <TouchableOpacity
+                          style={styles.topArrowIcon}
+                          onPress={() => handleToggleRecordExpansion(index)}
+                        >
                           <TopArrowIcon width={getSize(22)} height={getSize(12)} />
                         </TouchableOpacity>
                       </View>
@@ -427,6 +434,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: getSize(18),
     right: getSize(18),
+    zIndex: 1,
   },
   expandedContent: {
     marginTop: getSize(10),
