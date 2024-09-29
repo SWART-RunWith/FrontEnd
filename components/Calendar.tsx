@@ -98,12 +98,14 @@ export const CustomCalendar = forwardRef((props: any, ref) => {
         <Text style={styles.month}>{month}월</Text>
       </View>
 
-      <View style={styles.weekdayContainer}>
-        {daysOfWeek.map((day, index) => (
-          <Text key={index} style={styles.weekdayText}>
-            {day}
-          </Text>
-        ))}
+      <View style={styles.calendarGrid}>
+        <View style={styles.weekdayContainer}>
+          {daysOfWeek.map((day, index) => (
+            <Text key={index} style={styles.weekdayText}>
+              {day}
+            </Text>
+          ))}
+        </View>
       </View>
 
       <View style={styles.calendarGrid}>
@@ -164,7 +166,6 @@ const styles = StyleSheet.create({
   },
   weekdayContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
     marginTop: getSize(20.8),
   },
   weekdayText: {
@@ -174,13 +175,14 @@ const styles = StyleSheet.create({
     fontSize: getSize(14),
     fontFamily: Fonts.medium,
     color: '#B3B3B3',
+    paddingVertical: getSize(14.9),
   },
   calendarGrid: {
     flexDirection: 'column',
+    alignItems: 'center',
   },
   weekContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
   },
   dayCell: {
     width: getSize(46.8),
