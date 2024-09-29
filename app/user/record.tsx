@@ -68,10 +68,13 @@ const RecordScreen = () => {
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (_, gestureState) => {
-        return Math.abs(gestureState.dy) > 20;  // 스와이프가 충분히 일어나도록 설정
+        if (isWeekMode) {
+          return false
+        };
+        return Math.abs(gestureState.dy) > 20;
       },
       onPanResponderRelease: (_, gestureState) => {
-        if (!isSwiping) {
+        if (!isSwiping && !isWeekMode) {
           handleSwipe(gestureState.dy);
         }
       },
@@ -83,7 +86,7 @@ const RecordScreen = () => {
       <View style={styles.firstR} />
       <View style={styles.secondR} />
 
-      <View style={styles.topContainer} {...panResponder.panHandlers}>
+      <View style={styles.topContainer} {...(!isWeekMode ? panResponder.panHandlers : {})}>
         <View style={styles.header}>
           <TouchableOpacity
             style={[styles.iconContainer, { justifyContent: 'flex-start' }]}
