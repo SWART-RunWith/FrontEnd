@@ -35,6 +35,7 @@ const RecordScreen = () => {
   const [isWeekMode, setIsWeekMode] = useState(false);
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [currentMonth, setCurrentMonth] = useState(moment());
+  const [selectedDate, setSelectedDate] = useState<moment.Moment | null>(null);
 
   const [isSwiping, setIsSwiping] = useState(false);
 
@@ -43,6 +44,12 @@ const RecordScreen = () => {
     const apiDates = dummyRunningDates[formattedMonth] || [];
     setSelectedDates(apiDates);
     setCount(apiDates.length);
+  };
+
+  const handleDaySelect = (date: moment.Moment) => {
+    setSelectedDate(date);
+    setIsWeekMode(true);
+    console.log(selectedDate);
   };
 
   useEffect(() => {
@@ -106,12 +113,13 @@ const RecordScreen = () => {
         {isWeekMode ? (
           <CustomCalendarW
             selectedDates={selectedDates}
-            currentMonth={currentMonth}
+            selectedDate={selectedDate}
           />
         ) : (
           <CustomCalendarM
             selectedDates={selectedDates}
             currentMonth={currentMonth}
+            onDaySelect={handleDaySelect}
           />
         )}
       </View>

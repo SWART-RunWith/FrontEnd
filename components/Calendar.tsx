@@ -49,7 +49,11 @@ const isToday = (year: number, month: number, day: number) => {
   return moment([year, month - 1, day]).isSame(moment(), 'day');
 };
 
-export const CustomCalendarM = ({ selectedDates, currentMonth }: any) => {
+export const CustomCalendarM = ({
+  selectedDates,
+  currentMonth,
+  onDaySelect
+}: any) => {
   const year = currentMonth.year();
   const month = currentMonth.month() + 1;
   const calendar = generateCalendar(year, month);
@@ -77,6 +81,7 @@ export const CustomCalendarM = ({ selectedDates, currentMonth }: any) => {
                 key={dayIndex}
                 style={styles.dayCell}
                 disabled={day === null}
+                onPress={() => { day && onDaySelect(moment([year, month - 1, day])) }}
               >
                 {day &&
                   <View style={isToday(year, month, day) && styles.today} >
@@ -182,12 +187,17 @@ const isTodayW = (day: moment.Moment) => {
   return moment().isSame(day, 'day');
 };
 
-export const CustomCalendarW = ({ selectedDates, currentMonth }: any) => {
-  const [currentDate, setCurrentDate] = useState(moment());
+export const CustomCalendarW = ({
+  selectedDates,
+  selectedDate,
+}: any) => {
+  const [currentDate, setCurrentDate] = useState(selectedDate || moment());
   const [weekDays, setWeekDays] = useState(generateWeekDays(currentDate));
 
   const handleSwipe = (dx: number) => {
-    const newDate = dx > 0 ? moment(currentDate).subtract(1, 'days') : moment(currentDate).add(1, 'days');
+    const newDate = dx > 0
+      ? moment(currentDate).subtract(1, 'days')
+      : moment(currentDate).add(1, 'days');
     setCurrentDate(newDate);
     setWeekDays(generateWeekDays(newDate));
   };
@@ -210,8 +220,8 @@ export const CustomCalendarW = ({ selectedDates, currentMonth }: any) => {
   return (
     <View style={styles.calendarContainer} {...panResponder.panHandlers}>
       <View style={styles.title}>
-        <Text style={styles.year}>{currentMonth.year()}</Text>
-        <Text style={styles.month}>{currentMonth.month() + 1}월</Text>
+        <Text style={styles.year}>{currentDate.year()}</Text>
+        <Text style={styles.month}>{currentDate.month() + 1}월</Text>
       </View>
 
       <View style={styles.calendarGrid}>
