@@ -81,7 +81,7 @@ const RecordScreen = () => {
         </View>
       </View>
 
-      <BottomTab route='Record' reload={false} />
+      <BottomTab route="Record" reload={false} />
     </View>
   );
 };
@@ -97,10 +97,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: getSize(16),
   },
   firstR: {
-    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowColor: 'rgba(0, 0, 0, 0.25)',
     shadowOffset: {
       width: 0,
-      height: 6
+      height: getSize(6),
     },
     shadowRadius: 5.5,
     elevation: 5.5,
@@ -115,10 +115,10 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
   },
   secondR: {
-    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowColor: 'rgba(0, 0, 0, 0.25)',
     shadowOffset: {
       width: 0,
-      height: 6
+      height: getSize(6),
     },
     shadowRadius: 5.5,
     elevation: 5.5,
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0, 0, 0, 0.25)',
     shadowOffset: {
       width: 0,
-      height: 6
+      height: getSize(6),
     },
     shadowRadius: 5.5,
     elevation: 5.5,
@@ -149,11 +149,6 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     width: getSize(24),
-  },
-  title: {
-    color: Colors.main,
-    fontSize: getSize(24),
-    fontWeight: 'bold',
   },
   textBox: {
     backgroundColor: Colors.grayBox,
