@@ -78,7 +78,6 @@ const RecordScreen = () => {
     setSelectedDate(date);
     setIsWeekMode(true);
     triggerAnimation(true);
-    console.log(selectedDate);
   };
 
   useEffect(() => {
@@ -105,8 +104,8 @@ const RecordScreen = () => {
     PanResponder.create({
       onMoveShouldSetPanResponder: (_, gestureState) => {
         if (isWeekMode) {
-          return false
-        };
+          return false;
+        }
         return Math.abs(gestureState.dy) > 20;
       },
       onPanResponderRelease: (_, gestureState) => {
@@ -173,10 +172,7 @@ const RecordScreen = () => {
       <Animated.View style={[styles.firstR, { height: firstRHeight }]} />
       <Animated.View style={[styles.secondR, { height: secondRHeight }]} />
 
-      <Animated.View style={[
-        styles.topContainer,
-        { height: topContainerHeight },
-      ]}
+      <Animated.View style={[styles.topContainer, { height: topContainerHeight }]}
         {...(!isWeekMode ? panResponder.panHandlers : {})}
       >
         <View style={styles.header}>
@@ -209,7 +205,7 @@ const RecordScreen = () => {
         )}
       </Animated.View>
 
-      {!isWeekMode &&
+      {!isWeekMode && (
         <View style={styles.textBox}>
           <View style={styles.textRow}>
             <Text style={styles.text}>{user}님, 이번 달 총 </Text>
@@ -221,66 +217,48 @@ const RecordScreen = () => {
             <Text style={styles.text}>과 더 힘차게 달려볼까요?</Text>
           </View>
         </View>
-      }
+      )}
 
-      {isWeekMode &&
-        <View style={{
-          width: width,
-          marginTop: getSize(61),
-          paddingHorizontal: getSize(Sizes.formMargin),
-        }}>
-          <Text style={{
-            color: 'white',
-            fontSize: getSize(16),
-            fontFamily: Fonts.semiBold,
-            height: getSize(19),
-          }}>러닝 기록</Text>
+      {isWeekMode && (
+        <View style={{ width: width, marginTop: getSize(61), paddingHorizontal: getSize(Sizes.formMargin) }}>
+          <Text style={{ color: 'white', fontSize: getSize(16), fontFamily: Fonts.semiBold, height: getSize(19) }}>
+            러닝 기록
+          </Text>
 
           <ScrollView contentContainerStyle={styles.runningRecordsContainer}>
             {runningRecords.map((record, index) => {
-              const expandedHeight = expandedRecords[index]
-                ? getSize(240)
-                : getSize(96);
+              const expandedHeight = expandedRecords[index] ? getSize(500) : getSize(96);
 
               return (
-                <View key={index} style={styles.runningRecordContainer}>
+                <View
+                  key={index}
+                  style={styles.runningRecordContainer}
+                >
                   <RunningBarIcon width={getSize(20)} height={getSize(96)} />
-                  <Animated.View
-                    style={[
-                      styles.runningRecord,
-                      { height: expandedHeight },
-                    ]}
-                  >
-                    {!expandedRecords[index]
-                      ? <TouchableOpacity
-                        style={styles.bottomCircleArrowIcon}
-                        onPress={() => handleToggleRecordExpansion(index)}
-                      >
-                        <BottomCircleArrowIcon
-                          width={getSize(28)}
-                          height={getSize(28)}
-                        />
+
+                  <Animated.View style={[
+                    styles.runningRecord,
+                    { height: expandedHeight }
+                  ]}>
+                    {!expandedRecords[index] ? (
+                      <TouchableOpacity style={styles.bottomCircleArrowIcon} onPress={() => handleToggleRecordExpansion(index)}>
+                        <BottomCircleArrowIcon width={getSize(28)} height={getSize(28)} />
                       </TouchableOpacity>
-                      : <View style={{ zIndex: 1, }}>
+                    ) : (
+                      <View style={{ zIndex: 1 }}>
                         <TouchableOpacity style={styles.editIcon}>
                           <EditIcon width={getSize(20)} height={getSize(20.32)} />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.uploadIcon}>
                           <UploadIcon width={getSize(16)} height={getSize(20)} />
                         </TouchableOpacity>
-                        <TouchableOpacity
-                          style={styles.topArrowIcon}
-                          onPress={() => handleToggleRecordExpansion(index)}
-                        >
+                        <TouchableOpacity style={styles.topArrowIcon} onPress={() => handleToggleRecordExpansion(index)}>
                           <TopArrowIcon width={getSize(22)} height={getSize(12)} />
                         </TouchableOpacity>
                       </View>
-                    }
+                    )}
 
-                    <View style={{
-                      marginTop: getSize(12),
-                      paddingLeft: getSize(18.2)
-                    }}>
+                    <View style={{ marginTop: getSize(12), paddingLeft: getSize(18.2) }}>
                       <Text style={styles.createdAt}>{record.createdAt}</Text>
                       <Text style={styles.time}>{record.time}</Text>
                       <Text style={styles.distance}>{record.distance}</Text>
@@ -289,9 +267,7 @@ const RecordScreen = () => {
                     {expandedRecords[index] && (
                       <View style={styles.expandedContent}>
                         <Text style={styles.additionalInfo}>코스 정보</Text>
-                        <Text style={styles.additionalInfo}>
-                          페이스: 6'04", 평균 심박수: 111
-                        </Text>
+                        <Text style={styles.additionalInfo}>페이스: 6'04", 평균 심박수: 111</Text>
                       </View>
                     )}
                   </Animated.View>
@@ -300,7 +276,7 @@ const RecordScreen = () => {
             })}
           </ScrollView>
         </View>
-      }
+      )}
       <BottomTab route="Record" reload={false} />
     </View>
   );
