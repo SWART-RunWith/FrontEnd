@@ -27,9 +27,9 @@ const RecordScreen = () => {
   const navigation = useNavigation();
 
   const [user, setUser] = useState('홍여준');
-  const [count, setCount] = useState(3);
+  const [count, setCount] = useState(0);
 
-  const calendarRef = useRef<CustomCalendarRef>(null); // CustomCalendar를 참조하기 위한 ref
+  const calendarRef = useRef<CustomCalendarRef>(null);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -37,13 +37,16 @@ const RecordScreen = () => {
         return Math.abs(gestureState.dy) > 10;
       },
       onPanResponderRelease: (_, gestureState) => {
-        // 스와이프 동작을 CustomCalendar로 전달
         if (calendarRef.current) {
           calendarRef.current.handleSwipe(gestureState.dy);
         }
       },
     })
   ).current;
+
+  const updateRunningCount = (runningDates: string[]) => {
+    setCount(runningDates.length);
+  };
 
   return (
     <View style={Styles.container}>
@@ -66,7 +69,10 @@ const RecordScreen = () => {
         </View>
 
         <View style={{ marginTop: getSize(21) }} />
-        <CustomCalendar ref={calendarRef} />
+        <CustomCalendar
+          ref={calendarRef}
+          onUpdateRunningCount={updateRunningCount}
+        />
       </View>
 
       <View style={styles.textBox}>

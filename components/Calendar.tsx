@@ -53,8 +53,7 @@ const generateCalendar = (year: number, month: number) => {
   return calendar;
 };
 
-// CustomCalendar 컴포넌트를 forwardRef로 감싸서 ref를 통해 handleSwipe 접근 가능하게 함
-export const CustomCalendar = forwardRef((props, ref) => {
+export const CustomCalendar = forwardRef((props: any, ref) => {
   const [currentMonth, setCurrentMonth] = useState(moment());
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
 
@@ -85,14 +84,11 @@ export const CustomCalendar = forwardRef((props, ref) => {
   const fetchRunningDates = async (newMonth: number, newYear: number) => {
     const formattedMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`;
     const apiDates = dummyRunningDates[formattedMonth] || [];
-    setSelectedDates((prevDates) => [...prevDates, ...apiDates]);
+    setSelectedDates(apiDates);
+    props.onUpdateRunningCount(apiDates);
   };
 
   const handleDayPress = (day: number) => {
-    if (day !== null && day !== undefined) {
-      const selected = moment([year, month - 1, day]).format('YYYY-MM-DD');
-      setSelectedDates((prevDates) => [...prevDates, selected]);
-    }
   };
 
   return (
