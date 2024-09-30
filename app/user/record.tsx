@@ -25,7 +25,8 @@ import Styles from '@/constants/Styles';
 import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
 import BottomTab from '@/components/BottomTab';
-import { CustomCalendarM, CustomCalendarW } from '@/components/Calendar';
+import { CustomCalendarM } from '@/components/calendar/CalendarM';
+import { CustomCalendarW } from '@/components/calendar/CalendarW';
 import getSize from '@/scripts/getSize';
 import Sizes from '@/constants/Sizes';
 
