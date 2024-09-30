@@ -16,6 +16,7 @@ import moment from 'moment';
 import BackIcon from '@/assets/icons/back.svg';
 import CalendarIcon from '@/assets/icons/calendar_m.svg';
 import RunningBarIcon from '@/assets/icons/runningBar.svg';
+import RunningBarLongIcon from '@/assets/icons/runningBar_l.svg';
 import BottomCircleArrowIcon from '@/assets/icons/bottomCircleArrow.svg';
 import EditIcon from '@/assets/icons/edit.svg';
 import UploadIcon from '@/assets/icons/upload_w.svg';
@@ -233,7 +234,10 @@ const RecordScreen = () => {
                   key={index}
                   style={styles.runningRecordContainer}
                 >
-                  <RunningBarIcon width={getSize(20)} height={getSize(96)} />
+                  {!expandedRecords[index]
+                    ? <RunningBarIcon width={getSize(20)} height={getSize(96)} />
+                    : <RunningBarLongIcon width={getSize(20)} height={getSize(500)} />
+                  }
 
                   <Animated.View style={[
                     styles.runningRecord,
@@ -269,8 +273,20 @@ const RecordScreen = () => {
                           style={styles.courseImg}
                           source={{ uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fditoday.com%2F%25EC%25B4%2588%25EB%25B3%25B4%25EC%259E%2590%25EB%258F%2584-%25EB%25A7%2588%25EC%259D%258C-%25ED%258E%25B8%25ED%259E%2588-%25EB%258B%25AC%25EB%25A6%25B4-%25EC%2588%2598-%25EC%259E%2588%25EB%258A%2594-%25EB%259F%25AC%25EB%258B%259D-%25EC%25B6%2594%25EC%25B2%259C-%25EC%25BD%2594%25EC%258A%25A4-5%2F&psig=AOvVaw0EN7FQ4ORayWtksNJrQiK5&ust=1727715037992000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIidzZvO6IgDFQAAAAAdAAAAABAJ' }}
                         />
-                        <Text style={styles.additionalInfo}>코스 정보</Text>
-                        <Text style={styles.additionalInfo}>페이스: 6'04", 평균 심박수: 111</Text>
+
+                        <View style={{ marginTop: getSize(15) }} />
+
+                        <View style={styles.additionalInfoRow}>
+                          <Text style={styles.additionalInfo}>페이스: 6'04"</Text>
+                          <Text style={styles.additionalInfo}>평균 심박수: 111</Text>
+                        </View>
+
+                        <View style={{ marginTop: getSize(10) }} />
+
+                        <View style={styles.additionalInfoRow}>
+                          <Text style={styles.additionalInfo}>코도 상승: 6'04"</Text>
+                          <Text style={styles.additionalInfo}>칼로리: 111</Text>
+                        </View>
                       </View>
                     )}
                   </Animated.View>
@@ -375,6 +391,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     width: width,
     marginTop: getSize(61),
+    marginBottom: getSize(90),
     paddingHorizontal: getSize(Sizes.formMargin),
     flex: 1,
   },
@@ -429,17 +446,25 @@ const styles = StyleSheet.create({
   },
   expandedContent: {
     marginTop: getSize(17),
+    width: width - getSize(Sizes.formMargin * 2 + 56),
+    marginHorizontal: getSize(11),
   },
   courseImg: {
     backgroundColor: 'black',
-    marginHorizontal: getSize(11),
     width: width - getSize(Sizes.formMargin * 2 + 56),
     height: getSize(290),
   },
+  additionalInfoRow: {
+    flexDirection: 'row',
+    // backgroundColor: 'white',
+    justifyContent: 'space-between',
+  },
   additionalInfo: {
     color: 'white',
-    fontSize: getSize(14),
+    fontSize: getSize(16),
     fontFamily: Fonts.medium,
+    width: getSize(165),
+    height: getSize(19),
   },
   editIcon: {
     position: 'absolute',
@@ -454,7 +479,7 @@ const styles = StyleSheet.create({
   topArrowIcon: {
     position: 'absolute',
     top: getSize(476),
-    right: getSize(158),
+    right: (width - getSize(Sizes.formMargin * 2 + 56)) / 2,
   },
 });
 
