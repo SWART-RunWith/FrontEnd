@@ -40,12 +40,14 @@ const runningRecords = [
     time: '01:03:23',
     distance: '00.00KM',
     createdAt: '09:32',
+    pace: '5\'04\"',
     expanded: false,
   },
   {
     time: '01:02:15',
     distance: '05.50KM',
     createdAt: '13:02',
+    pace: '6\'04\"',
     expanded: false,
   },
 ];
@@ -56,9 +58,11 @@ const RecordScreen = () => {
   const [user, setUser] = useState('홍여준');
   const [count, setCount] = useState(0);
   const [isWeekMode, setIsWeekMode] = useState(false);
-  const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [currentMonth, setCurrentMonth] = useState(moment());
+
   const [selectedDate, setSelectedDate] = useState<moment.Moment | null>(null);
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+
   const [expandedRecords, setExpandedRecords] = useState<boolean[]>(() =>
     runningRecords.map(() => false)
   );
@@ -67,6 +71,7 @@ const RecordScreen = () => {
 
   const [isSwiping, setIsSwiping] = useState(false);
 
+  // 러닝 데이터 횟수 (월별)
   const fetchRunningDates = async (newMonth: number, newYear: number) => {
     const formattedMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`;
     const apiDates = dummyRunningDates[formattedMonth] || [];
@@ -74,16 +79,24 @@ const RecordScreen = () => {
     setCount(apiDates.length);
   };
 
+  useEffect(() => {
+    fetchRunningDates(currentMonth.month() + 1, currentMonth.year());
+  }, [currentMonth]);
+
+  // 날짜 선택
   const handleDaySelect = (date: moment.Moment) => {
     setSelectedDate(date);
     setIsWeekMode(true);
     triggerAnimation(true);
   };
 
-  useEffect(() => {
-    fetchRunningDates(currentMonth.month() + 1, currentMonth.year());
-  }, [currentMonth]);
+  // 모드 변경
+  const handleToggleMode = () => {
+    setIsWeekMode(!isWeekMode);
+    triggerAnimation(!isWeekMode);
+  };
 
+  // 월간 모드 - 달력 넘기기
   const handleSwipe = (dy: number) => {
     if (!isSwiping) {
       setIsSwiping(true);
@@ -140,11 +153,7 @@ const RecordScreen = () => {
     ]).start();
   };
 
-  const handleToggleMode = () => {
-    setIsWeekMode(!isWeekMode);
-    triggerAnimation(!isWeekMode);
-  };
-
+  // 주간 모드 - 러닝 레코드 애니메이션
   useEffect(() => {
     animationRefs.splice(
       0,
@@ -152,8 +161,6 @@ const RecordScreen = () => {
       ...runningRecords.map(() => new Animated.Value(getSize(96)))
     );
   }, [runningRecords]);
-
-  const expandedHeightAnim = useRef(new Animated.Value(getSize(26))).current;
 
   const handleToggleRecordExpansion = (index: number) => {
     const newExpandedRecords = [...expandedRecords];
