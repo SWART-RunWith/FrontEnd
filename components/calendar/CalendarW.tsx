@@ -179,8 +179,8 @@ const styles = StyleSheet.create({
   calendarContainer: {
     backgroundColor: '#1B1B1B',
     width: width,
+    height: getSize(214),
     paddingHorizontal: getSize(7.8),
-    alignSelf: 'center',
   },
   title: {
     alignItems: 'center',
@@ -198,9 +198,15 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.extraBold,
     height: getSize(60),
   },
-  weekdayContainer: {
+  scrollViewContent: {
     flexDirection: 'row',
-    marginTop: getSize(20.8),
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: getSize(-10),
+  },
+  dayWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   weekdayText: {
     textAlign: 'center',
