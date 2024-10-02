@@ -6,8 +6,10 @@ import {
 import MapView, { MapMarker } from "react-native-maps";
 import * as Location from 'expo-location';
 
+import LocationIcon from '@/assets/icons/location.svg';
 import Styles from "@/constants/Styles";
 import MapStyles from '@/constants/mapStyles.json';
+import getSize from "@/scripts/getSize";
 
 const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = 0.01;
@@ -15,7 +17,6 @@ const LONGITUDE_DELTA = 0.01;
 const CrewMapScreen = () => {
   const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
   const mapRef = useRef<MapView>(null);
-  const markerRef = useRef<MapMarker>(null);
 
   useEffect(() => {
     (async () => {
@@ -62,9 +63,9 @@ const CrewMapScreen = () => {
           followsUserLocation={true}
         >
           <MapMarker
-            ref={markerRef}
             coordinate={coordinates}
           >
+            <LocationIcon width={getSize(27.28)} height={getSize(38)} />
           </MapMarker>
         </MapView>
       }
@@ -74,7 +75,9 @@ const CrewMapScreen = () => {
 
 const styles = StyleSheet.create({
   map: {
-
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
   },
 })
 
