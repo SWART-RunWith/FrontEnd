@@ -172,8 +172,8 @@ const RecordScreen = () => {
 
   return (
     <View style={Styles.container}>
-      <Animated.View style={[styles.firstR, { height: firstRHeight }]} />
       <Animated.View style={[styles.secondR, { height: secondRHeight }]} />
+      <Animated.View style={[styles.firstR, { height: firstRHeight }]} />
 
       <Animated.View style={[styles.topContainer, { height: topContainerHeight }]}
         {...(!isWeekMode ? panResponder.panHandlers : {})}
