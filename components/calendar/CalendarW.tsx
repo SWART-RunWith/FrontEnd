@@ -55,11 +55,7 @@ export const CustomCalendarW = ({
     }
   };
 
-  const scrollToIndex = (index: number, animated = true) => {
-    const offset = index * dayWidth - paddingHorizontal;
-    scrollViewRef.current?.scrollTo({ x: offset, animated });
-  };
-
+  // 스크롤 
   useEffect(() => {
     if (scrollViewRef.current) {
       const selectedIndex = weekDays.findIndex((day) => day.isSame(selectedDate, 'day'));
@@ -69,6 +65,11 @@ export const CustomCalendarW = ({
       }, 0);
     }
   }, [selectedDate]);
+
+  const scrollToIndex = (index: number, animated = true) => {
+    const offset = index * dayWidth - paddingHorizontal;
+    scrollViewRef.current?.scrollTo({ x: offset, animated });
+  };
 
   const handleScrollEnd = (event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x + paddingHorizontal;
@@ -89,6 +90,7 @@ export const CustomCalendarW = ({
     scrollToIndex(centerIndex);
   };
 
+  // 날짜 선택
   const handleDaySelect = (day: moment.Moment) => {
     setSelectedDate(day);
     console.log(day);

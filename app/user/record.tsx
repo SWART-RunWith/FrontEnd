@@ -166,6 +166,7 @@ const RecordScreen = () => {
       ...allRecords.map(() => new Animated.Value(getSize(96)))
     );
   }, [runningRecordList]);
+
   const handleToggleRecordExpansion = (index: number) => {
     const newExpandedRecords = [...expandedRecords];
     const isCurrentlyExpanded = newExpandedRecords[index];
