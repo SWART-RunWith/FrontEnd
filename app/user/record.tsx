@@ -158,14 +158,6 @@ const RecordScreen = () => {
 
   const expandedHeightAnim = useRef(new Animated.Value(getSize(26))).current;
 
-  useEffect(() => {
-    Animated.timing(expandedHeightAnim, {
-      toValue: expandedRecords ? getSize(500) : getSize(26),
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  });
-
   const handleToggleRecordExpansion = (index: number) => {
     const newExpandedRecords = [...expandedRecords];
     const isCurrentlyExpanded = newExpandedRecords[index];
@@ -260,7 +252,7 @@ const RecordScreen = () => {
 
                   <Animated.View style={[
                     styles.runningRecord,
-                    { height: expandedHeightAnim }
+                    { height: animationRefs[index] }
                   ]}>
                     {!expandedRecords[index] ? (
                       <TouchableOpacity style={styles.bottomCircleArrowIcon} onPress={() => handleToggleRecordExpansion(index)}>
