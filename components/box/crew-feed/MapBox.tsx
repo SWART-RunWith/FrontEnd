@@ -1,11 +1,20 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native"
 
 import LocationIcon from '@/assets/icons/location.svg';
 import OptionIcon from '@/assets/icons/option.svg';
 import Colors from "@/constants/Colors";
 import Fonts from "@/constants/Fonts";
+import Sizes from "@/constants/Sizes";
 import getSize from "@/scripts/getSize";
+
+const { width } = Dimensions.get('window');
 
 interface CrewFeedMapBoxProp {
   crewId: number;
@@ -54,7 +63,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.darkGrayBox,
     borderRadius: 20,
-    width: getSize(358),
+    width: width - getSize(Sizes.formMargin * 2),
     height: getSize(187),
   },
   locationContainer: {
