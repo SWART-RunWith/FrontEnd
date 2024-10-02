@@ -23,7 +23,7 @@ import CrossHairIcon from '@/assets/icons/crosshair.svg';
 import RunningIcon from '@/assets/icons/running.svg';
 import OptionIcon from '@/assets/icons/option.svg';
 import BottomTab from "@/components/BottomTab";
-import { CrewBox, CrewFeedBox } from "@/components/box/CrewFeed";
+import { CrewBox, CrewFeedBox } from "@/components/box/crew-feed/CrewFeed";
 import { BackSearchHeader } from "@/components/header/IconHeader";
 import Styles from "@/constants/Styles";
 import Colors from "@/constants/Colors";
