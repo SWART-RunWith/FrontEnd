@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
     backgroundColor: Colors.navigator,
     width: width,
     height: getSize(90),
@@ -90,6 +89,8 @@ const styles = StyleSheet.create({
   tabButton: {
     alignItems: 'center',
     justifyContent: 'center',
+    width: width / 5,
+    height: getSize(56),
   },
 });
 
