@@ -66,13 +66,17 @@ const CrewMapScreen = () => {
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}
-          showsUserLocation={true}
           followsUserLocation={true}
         >
           <MapMarker
             coordinate={coordinates}
           >
             <LocationIcon width={getSize(27.28)} height={getSize(38)} />
+            <View style={styles.crewImageContainer}>
+              <Image
+                style={styles.crewImage}
+              />
+            </View>
           </MapMarker>
         </MapView>
       }
@@ -101,6 +105,21 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     width: '100%',
     height: getSize(104),
+  },
+  crewImageContainer: {
+    position: 'absolute',
+    backgroundColor: 'black',
+    width: getSize(18.5),
+    height: getSize(18.5),
+    borderRadius: 100,
+    overflow: 'hidden',
+    top: getSize(3.9),
+    left: getSize(4.38),
+  },
+  crewImage: {
+    width: getSize(18.5),
+    height: getSize(18.5),
+    resizeMode: 'cover',
   },
 })
 
