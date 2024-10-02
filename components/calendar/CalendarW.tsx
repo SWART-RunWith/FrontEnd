@@ -179,7 +179,6 @@ const styles = StyleSheet.create({
   calendarContainer: {
     backgroundColor: '#1B1B1B',
     width: width,
-    height: getSize(214),
     paddingHorizontal: getSize(7.8),
   },
   title: {
@@ -197,6 +196,7 @@ const styles = StyleSheet.create({
     fontSize: getSize(50),
     fontFamily: Fonts.extraBold,
     height: getSize(60),
+    marginBottom: getSize(20.8),
   },
   scrollViewContent: {
     flexDirection: 'row',

@@ -25,7 +25,7 @@ const generateCalendar = (year: number, month: number) => {
   const calendar = [];
   let week = [];
 
-  for (let i = 0; i < startOfMonth.day() - 1; i++) {
+  for (let i = 0; i < startOfMonth.isoWeekday() - 1; i++) {
     week.push(null);
   }
 
@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#1B1B1B',
     width: width,
     paddingHorizontal: getSize(7.8),
-    alignSelf: 'center',
   },
   title: {
     alignItems: 'center',
