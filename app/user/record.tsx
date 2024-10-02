@@ -35,22 +35,6 @@ const dummyRunningDates: Record<string, string[]> = {
   '2024-09': ['2024-09-04', '2024-09-07', '2024-09-12', '2024-09-29'],
 };
 
-const runningRecords = [
-  {
-    time: '01:03:23',
-    distance: '00.00KM',
-    createdAt: '09:32',
-    pace: '5\'04\"',
-    expanded: false,
-  },
-  {
-    time: '01:02:15',
-    distance: '05.50KM',
-    createdAt: '13:02',
-    pace: '6\'04\"',
-    expanded: false,
-  },
-];
 
 const RecordScreen = () => {
   const navigation = useNavigation();
@@ -78,6 +62,7 @@ const RecordScreen = () => {
     setSelectedDates(apiDates);
     setCount(apiDates.length);
   };
+  const runningRecordList: RunningRecordList = require('@/assets/dummy/runningRecordList.json');
 
   useEffect(() => {
     fetchRunningDates(currentMonth.month() + 1, currentMonth.year());
