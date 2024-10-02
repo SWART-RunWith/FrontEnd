@@ -3,7 +3,8 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  Keyboard
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,7 +23,7 @@ import { BottomBarNavigationProp } from '@/scripts/navigation';
 import { resetNavigationStack } from '@/scripts/resetNavigationStack';
 import getSize from '@/scripts/getSize';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 // Tab 정보 배열
 const tabs = [
@@ -40,10 +41,11 @@ interface BottomTabProps {
 
 const BottomTab: React.FC<BottomTabProps> = ({
   route,
-  reload = true
+  reload = true,
 }) => {
   const navigation = useNavigation<BottomBarNavigationProp>();
   const [selectedTab, setSelectedTab] = useState<string>(route);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
     setSelectedTab(route);
@@ -56,23 +58,47 @@ const BottomTab: React.FC<BottomTabProps> = ({
     }
   };
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
-    <View style={styles.tabContainer}>
-      {tabs.map((tab) => {
-        const Icon = selectedTab === tab.name
-          ? tab.selectedIcon
-          : tab.icon;
-        return (
-          <TouchableOpacity
-            key={tab.name}
-            style={styles.tabButton}
-            onPress={() => handleTabPress(tab.name, tab.route)}
-          >
-            <Icon width={getSize(26)} height={getSize(26)} />
-          </TouchableOpacity>
-        );
-      })}
-    </View>
+    <>
+      {!isKeyboardVisible && <View style={styles.tabContainer}>
+        {tabs.map((tab) => {
+          const Icon = selectedTab === tab.name
+            ? tab.selectedIcon
+            : tab.icon;
+          return (
+            <TouchableOpacity
+              key={tab.name}
+              style={styles.tabButton}
+              onPress={() => handleTabPress(tab.name, tab.route)}
+            >
+              {typeof Icon === 'function' &&
+                <Icon width={getSize(26)} height={getSize(26)} />
+              }
+            </TouchableOpacity>
+          );
+        })}
+      </View>}
+    </>
   );
 };
 
@@ -80,7 +106,6 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
     backgroundColor: Colors.navigator,
     width: width,
     height: getSize(90),
@@ -90,6 +115,8 @@ const styles = StyleSheet.create({
   tabButton: {
     alignItems: 'center',
     justifyContent: 'center',
+    width: width / 5,
+    height: getSize(56),
   },
 });
 

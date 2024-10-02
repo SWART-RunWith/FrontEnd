@@ -4,6 +4,14 @@
  */
 
 export default {
+  light: {
+    main: "#000000",
+    background: "#FFFFFF",
+  },
+  dark: {
+    main: "#FFFFFF",
+    background: "#000000",
+  },
   main: "#B0FF4C",
   lightestGray: "#BBBBBB",
   gray: "#6B6B6B",
