@@ -15,11 +15,8 @@ import moment from 'moment';
 
 import BackIcon from '@/assets/icons/back.svg';
 import CalendarIcon from '@/assets/icons/calendar_m.svg';
-import RunningBarIcon from '@/assets/icons/runningBar.svg';
-import RunningBarLongIcon from '@/assets/icons/runningBar_l.svg';
 import BottomCircleArrowIcon from '@/assets/icons/bottomCircleArrow.svg';
 import EditIcon from '@/assets/icons/edit.svg';
-import UploadIcon from '@/assets/icons/upload_w.svg';
 import TopArrowIcon from '@/assets/icons/topArrow.svg';
 import Styles from '@/constants/Styles';
 import Colors from '@/constants/Colors';
@@ -267,9 +264,6 @@ const RecordScreen = () => {
                         <TouchableOpacity style={styles.editIcon}>
                           <EditIcon width={getSize(20)} height={getSize(20.32)} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.uploadIcon}>
-                          <UploadIcon width={getSize(16)} height={getSize(20)} />
-                        </TouchableOpacity>
                         <TouchableOpacity style={styles.topArrowIcon} onPress={() => handleToggleRecordExpansion(index)}>
                           <TopArrowIcon width={getSize(22)} height={getSize(12)} />
                         </TouchableOpacity>
@@ -500,7 +494,6 @@ const styles = StyleSheet.create({
   },
   additionalInfoRow: {
     flexDirection: 'row',
-    // backgroundColor: 'white',
     justifyContent: 'space-between',
   },
   additionalInfo: {
@@ -511,11 +504,6 @@ const styles = StyleSheet.create({
     height: getSize(19),
   },
   editIcon: {
-    position: 'absolute',
-    top: getSize(23),
-    right: getSize(52),
-  },
-  uploadIcon: {
     position: 'absolute',
     top: getSize(23),
     right: getSize(20),
