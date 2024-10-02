@@ -35,6 +35,16 @@ const dummyRunningDates: Record<string, string[]> = {
   '2024-09': ['2024-09-04', '2024-09-07', '2024-09-12', '2024-09-29'],
 };
 
+interface RunningRecord {
+  createdAt: string;
+  time: string;
+  distance: string;
+  pace: string;
+}
+
+interface RunningRecordList {
+  [date: string]: RunningRecord[];
+}
 
 const RecordScreen = () => {
   const navigation = useNavigation();
@@ -47,24 +57,26 @@ const RecordScreen = () => {
   const [selectedDate, setSelectedDate] = useState<moment.Moment | null>(null);
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
 
-  const [expandedRecords, setExpandedRecords] = useState<boolean[]>(() =>
-    runningRecords.map(() => false)
-  );
+  const [filteredRecords, setFilteredRecords] = useState<RunningRecord[]>([]);
+  const [expandedRecords, setExpandedRecords] = useState<boolean[]>([]);
 
   const animationRefs = useRef<Animated.Value[]>([]).current;
 
   const [isSwiping, setIsSwiping] = useState(false);
 
-  // 러닝 데이터 횟수 (월별)
-  const fetchRunningDates = async (newMonth: number, newYear: number) => {
-    const formattedMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`;
-    const apiDates = dummyRunningDates[formattedMonth] || [];
-    setSelectedDates(apiDates);
-    setCount(apiDates.length);
-  };
   const runningRecordList: RunningRecordList = require('@/assets/dummy/runningRecordList.json');
 
+  // 러닝 데이터 횟수 (월별)
   useEffect(() => {
+    const fetchRunningDates = async (newMonth: number, newYear: number) => {
+      const formattedMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`;
+      const apiDates = Object.keys(runningRecordList).filter(date =>
+        moment(date, 'YYYY-MM-DD').format('YYYY-MM') === formattedMonth
+      );
+      setSelectedDates(apiDates);
+      setCount(apiDates.length);
+    };
+
     fetchRunningDates(currentMonth.month() + 1, currentMonth.year());
   }, [currentMonth]);
 
@@ -74,6 +86,13 @@ const RecordScreen = () => {
     setIsWeekMode(true);
     triggerAnimation(true);
   };
+
+  useEffect(() => {
+    if (selectedDate) {
+      const formattedDate = selectedDate.format('YYYY-MM-DD');
+      setFilteredRecords(runningRecordList[formattedDate] || []);
+    }
+  }, [selectedDate]);
 
   // 모드 변경
   const handleToggleMode = () => {
@@ -140,13 +159,13 @@ const RecordScreen = () => {
 
   // 주간 모드 - 러닝 레코드 애니메이션
   useEffect(() => {
+    const allRecords = Object.values(runningRecordList).flat();
     animationRefs.splice(
       0,
       animationRefs.length,
-      ...runningRecords.map(() => new Animated.Value(getSize(96)))
+      ...allRecords.map(() => new Animated.Value(getSize(96)))
     );
-  }, [runningRecords]);
-
+  }, [runningRecordList]);
   const handleToggleRecordExpansion = (index: number) => {
     const newExpandedRecords = [...expandedRecords];
     const isCurrentlyExpanded = newExpandedRecords[index];
@@ -196,6 +215,7 @@ const RecordScreen = () => {
           <CustomCalendarW
             selectedDates={selectedDates}
             selectedDate={selectedDate || undefined}
+            setSelectedDate={setSelectedDate}
           />
         ) : (
           <CustomCalendarM
@@ -228,13 +248,9 @@ const RecordScreen = () => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.runningRecordsContainer}
           >
-            {runningRecords.map((record, index) => {
-              return (
-                <View
-                  key={index}
-                  style={styles.runningRecordContainer}
-                >
-
+            {filteredRecords.length > 0 && (
+              filteredRecords.map((record, index) => (
+                <View key={index} style={styles.runningRecordContainer}>
                   <View style={styles.runningBarIcon}>
                     <View style={styles.circle} />
                     <View style={[
@@ -243,23 +259,40 @@ const RecordScreen = () => {
                     ]} />
                   </View>
 
-                  <Animated.View style={[
-                    styles.runningRecord,
-                    { height: animationRefs[index] }
-                  ]}>
+                  <Animated.View
+                    style={[
+                      styles.runningRecord,
+                      { height: animationRefs[index] },
+                    ]}
+                  >
+
                     {!expandedRecords[index] ? (
-                      <TouchableOpacity style={styles.bottomCircleArrowIcon} onPress={() => handleToggleRecordExpansion(index)}>
-                        <BottomCircleArrowIcon width={getSize(28)} height={getSize(28)} />
+                      <TouchableOpacity
+                        style={styles.bottomCircleArrowIcon}
+                        onPress={() => handleToggleRecordExpansion(index)}
+                      >
+                        <BottomCircleArrowIcon
+                          width={getSize(28)}
+                          height={getSize(28)}
+                        />
                       </TouchableOpacity>
                     ) : (
-                      <View style={{ zIndex: 1 }}>
-                        <TouchableOpacity style={styles.editIcon}>
-                          <EditIcon width={getSize(20)} height={getSize(20.32)} />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.topArrowIcon} onPress={() => handleToggleRecordExpansion(index)}>
+                      <>
+                        <View style={{ zIndex: 1 }}>
+                          <TouchableOpacity style={styles.editIcon}>
+                            <EditIcon width={getSize(20)} height={getSize(20.32)} />
+                          </TouchableOpacity>
+                          <TouchableOpacity style={styles.topArrowIcon} onPress={() => handleToggleRecordExpansion(index)}>
+                            <TopArrowIcon width={getSize(22)} height={getSize(12)} />
+                          </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.topArrowIcon}
+                          onPress={() => handleToggleRecordExpansion(index)}
+                        >
                           <TopArrowIcon width={getSize(22)} height={getSize(12)} />
                         </TouchableOpacity>
-                      </View>
+                      </>
                     )}
 
                     <View style={{ marginTop: getSize(12), paddingLeft: getSize(18.2) }}>
@@ -278,22 +311,22 @@ const RecordScreen = () => {
                         <View style={{ marginTop: getSize(15) }} />
 
                         <View style={styles.additionalInfoRow}>
-                          <Text style={styles.additionalInfo}>페이스: 6'04"</Text>
-                          <Text style={styles.additionalInfo}>평균 심박수: 111</Text>
+                          <Text style={styles.additionalInfo}>페이스: {record.pace}</Text>
+                          <Text style={styles.additionalInfo}>평균 심박수: {record.pace}</Text>
                         </View>
 
                         <View style={{ marginTop: getSize(10) }} />
 
                         <View style={styles.additionalInfoRow}>
-                          <Text style={styles.additionalInfo}>코도 상승: 6'04"</Text>
-                          <Text style={styles.additionalInfo}>칼로리: 111</Text>
+                          <Text style={styles.additionalInfo}>코도 상승: {record.pace}</Text>
+                          <Text style={styles.additionalInfo}>칼로리: {record.pace}</Text>
                         </View>
                       </View>
                     )}
                   </Animated.View>
                 </View>
-              );
-            })}
+              ))
+            )}
           </ScrollView>
         </View>
       )
