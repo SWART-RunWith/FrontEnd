@@ -41,11 +41,11 @@ const CrewMapScreen = () => {
   const navigation = useNavigation<CrewFeedScreenNavigationProp>();
 
   const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [crewData, setCrewData] = useState<CrewLocation[][]>([]);
+  const [crewData, setCrewData] = useState<CrewLocation[]>([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const mapRef = useRef<MapView>(null);
 
-  const numPages = Math.ceil(crewData.length / 3);
+  const numPages = crewData.length;
 
   useEffect(() => {
     (async () => {
@@ -73,17 +73,13 @@ const CrewMapScreen = () => {
         }
       );
 
-      const paginatedCrewData: CrewLocation[][] = [];
-      for (let i = 0; i < CrewLocationList.length; i += 3) {
-        paginatedCrewData.push(CrewLocationList.slice(i, i + 3));
-      }
-      setCrewData(paginatedCrewData);
+      setCrewData(CrewLocationList.slice(0, 3));
     })();
   }, []);
 
   const handleScroll = (event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const pageIndex = Math.floor(contentOffsetX / width);
+    const pageIndex = Math.round(contentOffsetX / width);
     setScrollPosition(pageIndex);
   };
 
@@ -102,7 +98,7 @@ const CrewMapScreen = () => {
           }}
           followsUserLocation={true}
         >
-          {crewData.flat().map((crew) => (
+          {crewData.map((crew) => (
             <MapMarker
               key={crew.crewId}
               coordinate={{
@@ -141,20 +137,16 @@ const CrewMapScreen = () => {
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
       >
-        {crewData.map((page, pageIndex) => (
-          <View key={pageIndex} style={styles.pageContainer}>
-            {page.map((crew) => (
-              <CrewFeedMapBox
-                key={crew.crewId}
-                content={crew.content}
-                crewId={crew.crewId}
-                location={crew.location}
-                name={crew.name}
-                onPressButton={() => { }}
-                onPressOption={() => { }}
-              />
-            ))}
-          </View>
+        {crewData.map((crew, pageIndex) => (
+          <CrewFeedMapBox
+            key={crew.crewId}
+            content={crew.content}
+            crewId={crew.crewId}
+            location={crew.location}
+            name={crew.name}
+            onPressButton={() => { }}
+            onPressOption={() => { }}
+          />
         ))}
       </ScrollView>
 
@@ -164,7 +156,7 @@ const CrewMapScreen = () => {
             key={index}
             style={[
               styles.dot,
-              { opacity: scrollPosition === index ? 1 : 0.3 }
+              scrollPosition === index && { backgroundColor: '#D9D9D9' }
             ]}
           />
         ))}
@@ -201,12 +193,13 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     position: 'absolute',
-    backgroundColor: 'white',
     height: getSize(240),
     width: width,
     bottom: 0,
   },
   scrollContentView: {
+    paddingHorizontal: getSize(Sizes.formMargin),
+    gap: getSize(Sizes.formMargin * 2),
     width: width * 3,
   },
   pageContainer: {
@@ -214,23 +207,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: getSize(Sizes.formMargin),
-    gap: getSize(Sizes.formMargin * 2),
   },
   dotContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: getSize(20),
+    gap: getSize(14),
+    bottom: getSize(34),
     left: 0,
     right: 0,
   },
   dot: {
-    height: 8,
-    width: 8,
-    borderRadius: 4,
-    backgroundColor: Colors.main,
-    marginHorizontal: 4,
+    height: getSize(7),
+    width: getSize(7),
+    borderRadius: 100,
+    backgroundColor: '#4A4A4A',
   },
 })
 
