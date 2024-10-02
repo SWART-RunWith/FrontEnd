@@ -77,7 +77,7 @@ export const SettingIcon: React.FC<IconProps> = ({ onPress }) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('user/setting')}
-      style={styles.iconButton}
+      style={[styles.iconButton, { marginLeft: getSize(24) }]}
     >
       <SettingSvgIcon width={getSize(24)} height={getSize(23)} />
     </TouchableOpacity>
@@ -87,18 +87,16 @@ export const SettingIcon: React.FC<IconProps> = ({ onPress }) => {
 export const OptionIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity
     onPress={onPress}
-    style={[styles.iconButton]}
+    style={[styles.iconButton, { alignItems: 'flex-end' }]}
   >
-    <View style={{ paddingLeft: getSize(24 - 5.33) }}>
-      <OptionSvgIcon width={getSize(5.33)} height={getSize(24)} />
-    </View>
+    <OptionSvgIcon width={getSize(5.33)} height={getSize(24)} />
   </TouchableOpacity >
 );
 
 export const OptionBlackIcon: React.FC<IconProps> = ({ onPress }) => (
   <TouchableOpacity
     onPress={onPress}
-    style={styles.iconButton}
+    style={[styles.iconButton, { alignItems: 'flex-end' }]}
   >
     <OptionBlackSvgIcon width={getSize(5.33)} height={getSize(24)} />
   </TouchableOpacity>
@@ -335,12 +333,12 @@ const styles = StyleSheet.create({
   rightIconContainer: {
     position: 'absolute',
     flexDirection: 'row',
-    gap: getSize(24),
     right: getSize(Sizes.formMargin),
   },
   rightIcons: {},
   iconButton: {
     width: getSize(24),
+    // backgroundColor: 'white',
   },
   centerText: {
     justifyContent: 'center',
