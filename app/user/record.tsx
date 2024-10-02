@@ -156,6 +156,16 @@ const RecordScreen = () => {
     );
   }, [runningRecords]);
 
+  const expandedHeightAnim = useRef(new Animated.Value(getSize(26))).current;
+
+  useEffect(() => {
+    Animated.timing(expandedHeightAnim, {
+      toValue: expandedRecords ? getSize(500) : getSize(26),
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  });
+
   const handleToggleRecordExpansion = (index: number) => {
     const newExpandedRecords = [...expandedRecords];
     const isCurrentlyExpanded = newExpandedRecords[index];
@@ -198,11 +208,13 @@ const RecordScreen = () => {
         {!isWeekMode && <Image style={styles.leftGif} resizeMode='cover' source={{ uri: 'https://s3-alpha-sig.figma.com/img/77df/ebad/60125be4b2a5c55c9384140e360f0af6?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gk5puXi2jw5f66mg6Uvqb0rvcshDvH4A3ZLhBCQ5ktkB5KqGAnq3izjW5bwxB~lEDTmYzs3y8-7Q8iKGAfjd2gkQFz4YgBrNPJXUV8h~2ExlhENghvdBKMhoxbK2Oxn7s8fMaEhR8HyghH9wp5mD~vKpz27qC2Rs3O5ekdM~Jn~gpOCpqUmhx1ygEFXos3~DjKJL7N10Kb1Kb2RkyScIiNQwbYhht9MLHoTr~iCdJr5R63N~AEWyJniYgDB6HGz6agFWUmfy~nW~V48fTU~V9YgK0w9EvgSXsaIGg9VJXZB4DZRcmsf6wgusGKNCeT4klDjLn5hK3GWBo-6O3T9Y~A__' }} />}
         {!isWeekMode && <Image style={styles.rightGif} resizeMode='cover' source={{ uri: 'https://s3-alpha-sig.figma.com/img/77df/ebad/60125be4b2a5c55c9384140e360f0af6?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gk5puXi2jw5f66mg6Uvqb0rvcshDvH4A3ZLhBCQ5ktkB5KqGAnq3izjW5bwxB~lEDTmYzs3y8-7Q8iKGAfjd2gkQFz4YgBrNPJXUV8h~2ExlhENghvdBKMhoxbK2Oxn7s8fMaEhR8HyghH9wp5mD~vKpz27qC2Rs3O5ekdM~Jn~gpOCpqUmhx1ygEFXos3~DjKJL7N10Kb1Kb2RkyScIiNQwbYhht9MLHoTr~iCdJr5R63N~AEWyJniYgDB6HGz6agFWUmfy~nW~V48fTU~V9YgK0w9EvgSXsaIGg9VJXZB4DZRcmsf6wgusGKNCeT4klDjLn5hK3GWBo-6O3T9Y~A__' }} />}
 
-        <View style={{ marginTop: getSize(21) }} />
+        <View style={{
+          marginTop: isWeekMode ? getSize(21) : getSize(108)
+        }} />
         {isWeekMode ? (
           <CustomCalendarW
             selectedDates={selectedDates}
-            selectedDate={selectedDate}
+            selectedDate={selectedDate || undefined}
           />
         ) : (
           <CustomCalendarM
@@ -231,10 +243,11 @@ const RecordScreen = () => {
         <View style={styles.scrollContainer}>
           <Text style={styles.recordTitle}>러닝 기록</Text>
 
-          <ScrollView contentContainerStyle={styles.runningRecordsContainer}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.runningRecordsContainer}
+          >
             {runningRecords.map((record, index) => {
-              const expandedHeight = expandedRecords[index] ? getSize(500) : getSize(96);
-
               return (
                 <View
                   key={index}
@@ -247,7 +260,7 @@ const RecordScreen = () => {
 
                   <Animated.View style={[
                     styles.runningRecord,
-                    { height: expandedHeight }
+                    { height: expandedHeightAnim }
                   ]}>
                     {!expandedRecords[index] ? (
                       <TouchableOpacity style={styles.bottomCircleArrowIcon} onPress={() => handleToggleRecordExpansion(index)}>
@@ -301,9 +314,10 @@ const RecordScreen = () => {
             })}
           </ScrollView>
         </View>
-      )}
+      )
+      }
       <BottomTab route="Record" reload={false} />
-    </View>
+    </View >
   );
 };
 
@@ -316,6 +330,20 @@ const styles = StyleSheet.create({
     height: getSize(29),
     marginTop: getSize(58),
     paddingHorizontal: getSize(16),
+  },
+  leftGif: {
+    top: getSize(477),
+    left: getSize(-70),
+    width: getSize(252),
+    height: getSize(252),
+    position: "absolute"
+  },
+  rightGif: {
+    top: getSize(563),
+    right: getSize(-70),
+    width: getSize(270),
+    height: getSize(270),
+    position: "absolute"
   },
   firstR: {
     shadowColor: 'rgba(0, 0, 0, 0.25)',
