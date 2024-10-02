@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import {
   Image,
   ImageBackground,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -130,6 +131,7 @@ export const CrewFeedBox: React.FC<
   event = '',
   onPressOption,
 }) => {
+    const intensity = Platform.OS === "android" ? 50 : 10;
     return (
       <View style={crewFeedStyles.container}>
         <ImageBackground
@@ -148,7 +150,7 @@ export const CrewFeedBox: React.FC<
             <Text style={crewFeedStyles.crewName}>{name}</Text>
           </View>
           <BlurView
-            intensity={10}
+            intensity={intensity}
             style={crewFeedStyles.bottomBlurContainer}
           >
             <RunningIcon />
