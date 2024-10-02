@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { BlurView } from "expo-blur";
 
 import NextIcon from '@/assets/icons/next.svg';
 import OptionIcon from '@/assets/icons/option.svg';
@@ -139,12 +140,6 @@ export const CrewFeedBox: React.FC<
           <TouchableOpacity style={crewFeedStyles.optionIcon}>
             <OptionIcon width={getSize(5.33)} height={getSize(24)} />
           </TouchableOpacity>
-          <View style={crewFeedStyles.userIcon}>
-            <UserIcon width={getSize(38)} height={getSize(38)} />
-            <View style={crewFeedStyles.countContainer}>
-              <Text style={crewFeedStyles.count}>{count}</Text>
-            </View>
-          </View>
           <View style={crewFeedStyles.topContainer}>
             <View style={crewFeedStyles.locationContainer}>
               <LocationIcon width={getSize(17)} height={getSize(24)} />
@@ -152,15 +147,23 @@ export const CrewFeedBox: React.FC<
             </View>
             <Text style={crewFeedStyles.crewName}>{name}</Text>
           </View>
-
-          <View style={crewFeedStyles.bottomBlurContainer}>
+          <BlurView
+            intensity={10}
+            style={crewFeedStyles.bottomBlurContainer}
+          >
             <RunningIcon />
             <View>
               <Text style={crewFeedStyles.runningDate}>{date}</Text>
               <Text style={crewFeedStyles.runningEvent}>{event}</Text>
             </View>
-          </View>
+          </BlurView>
         </ImageBackground>
+        <View style={crewFeedStyles.userIcon}>
+          <UserIcon width={getSize(38)} height={getSize(38)} />
+        </View>
+        <View style={crewFeedStyles.countContainer}>
+          <Text style={crewFeedStyles.count}>{count}</Text>
+        </View>
       </View >
     );
   };
@@ -235,17 +238,19 @@ const crewFeedStyles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     right: getSize(15),
-    bottom: getSize(9),
+    bottom: getSize(15),
   },
   countContainer: {
+    position: 'absolute',
     backgroundColor: Colors.main,
-    top: getSize(-10),
     height: getSize(16),
     width: getSize(30),
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
+    right: getSize(19),
+    bottom: getSize(9),
   },
   count: {
     fontSize: getSize(12),
