@@ -4,17 +4,24 @@ import {
   View
 } from "react-native"
 import MapView, { MapMarker } from "react-native-maps";
+import { useNavigation } from "@react-navigation/native";
 import * as Location from 'expo-location';
 
 import LocationIcon from '@/assets/icons/location.svg';
+import { BackSearchHeader } from "@/components/header/IconHeader";
 import Styles from "@/constants/Styles";
 import MapStyles from '@/constants/mapStyles.json';
+import Colors from "@/constants/Colors";
+import Fonts from "@/constants/Fonts";
 import getSize from "@/scripts/getSize";
+import { CrewFeedScreenNavigationProp } from "@/scripts/navigation";
 
 const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = 0.01;
 
 const CrewMapScreen = () => {
+  const navigation = useNavigation<CrewFeedScreenNavigationProp>();
+
   const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
   const mapRef = useRef<MapView>(null);
 
@@ -69,6 +76,17 @@ const CrewMapScreen = () => {
           </MapMarker>
         </MapView>
       }
+
+      <View style={styles.headerBox}>
+        <BackSearchHeader
+          text='RUNWITH'
+          fontColor={Colors.main}
+          fontFamily={Fonts.hanson}
+          onPressSearch={() => {
+            navigation.navigate('crew-feed/search');
+          }}
+        />
+      </View>
     </View>
   )
 }
@@ -78,6 +96,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
+  },
+  headerBox: {
+    backgroundColor: Colors.background,
+    width: '100%',
+    height: getSize(104),
   },
 })
 
