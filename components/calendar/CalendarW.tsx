@@ -1,10 +1,21 @@
+import { useEffect, useRef, useState } from "react";
+import {
+  Animated,
+  Dimensions,
+  PanResponder,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
+import moment from "moment";
 import apiClient from "@/axois";
+
 import Colors from "@/constants/Colors";
 import Fonts from "@/constants/Fonts";
 import getSize from "@/scripts/getSize";
-import moment from "moment";
-import { useRef, useState } from "react";
-import { Animated, Dimensions, PanResponder, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const { width } = Dimensions.get('window');
 
