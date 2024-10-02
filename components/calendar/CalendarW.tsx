@@ -110,6 +110,22 @@ export const CustomCalendarW = ({
 
   return (
     <View style={styles.calendarContainer} {...panResponder.panHandlers}>
+      <LinearGradient
+        colors={['rgba(27, 27, 27, 1)', 'transparent']}
+        start={[0, 0]}
+        end={[1, 0]}
+        style={styles.leftGradient}
+        pointerEvents="none"
+      />
+
+      <LinearGradient
+        colors={['transparent', 'rgba(27, 27, 27, 1)']}
+        start={[0, 0]}
+        end={[1, 0]}
+        style={styles.rightGradient}
+        pointerEvents="none"
+      />
+
       <View style={styles.title}>
         <Text style={styles.year}>{currentDate.year()}</Text>
         <Text style={styles.month}>{currentDate.month() + 1}월</Text>
@@ -218,5 +234,23 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  leftGradient: {
+    position: 'absolute',
+    left: 0,
+    top: getSize(82),
+    bottom: 0,
+    width: getSize(80),
+    height: getSize(110),
+    zIndex: 10,
+  },
+  rightGradient: {
+    position: 'absolute',
+    right: 0,
+    top: getSize(82),
+    bottom: 0,
+    width: getSize(80),
+    height: getSize(110),
+    zIndex: 10,
   },
 });
