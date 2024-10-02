@@ -245,10 +245,14 @@ const RecordScreen = () => {
                   key={index}
                   style={styles.runningRecordContainer}
                 >
-                  {!expandedRecords[index]
-                    ? <RunningBarIcon width={getSize(20)} height={getSize(96)} />
-                    : <RunningBarLongIcon width={getSize(20)} height={getSize(500)} />
-                  }
+
+                  <View style={styles.runningBarIcon}>
+                    <View style={styles.circle} />
+                    <View style={[
+                      styles.bar,
+                      { height: getSize(expandedRecords[index] ? 480 : 76) }
+                    ]} />
+                  </View>
 
                   <Animated.View style={[
                     styles.runningRecord,
@@ -438,6 +442,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: getSize(14),
     overflow: 'hidden',
+  },
+  runningBarIcon: {
+    width: getSize(20),
+    alignItems: 'center',
+  },
+  circle: {
+    backgroundColor: Colors.main,
+    borderRadius: 100,
+    width: getSize(20),
+    height: getSize(20),
+  },
+  bar: {
+    backgroundColor: Colors.main,
+    width: getSize(1),
   },
   runningRecord: {
     backgroundColor: Colors.grayBox,
