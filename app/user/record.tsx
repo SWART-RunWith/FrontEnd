@@ -178,20 +178,25 @@ const RecordScreen = () => {
       <Animated.View style={[styles.topContainer, { height: topContainerHeight }]}
         {...(!isWeekMode ? panResponder.panHandlers : {})}
       >
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={[styles.iconContainer, { justifyContent: 'flex-start' }]}
-            onPress={() => navigation.goBack()}
-          >
-            <BackIcon width={getSize(13.85)} height={getSize(26)} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.iconContainer, { justifyContent: 'flex-end' }]}
-            onPress={() => handleToggleMode()}
-          >
-            <CalendarIcon width={getSize(24)} height={getSize(26)} />
-          </TouchableOpacity>
-        </View>
+        {isWeekMode &&
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={[styles.iconContainer, { justifyContent: 'flex-start' }]}
+              onPress={() => handleToggleMode()}
+            >
+              <BackIcon width={getSize(13.85)} height={getSize(26)} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.iconContainer, { justifyContent: 'flex-end' }]}
+              onPress={() => handleToggleMode()}
+            >
+              <CalendarIcon width={getSize(24)} height={getSize(26)} />
+            </TouchableOpacity>
+          </View>
+        }
+
+        {!isWeekMode && <Image style={styles.leftGif} resizeMode='cover' source={{ uri: 'https://s3-alpha-sig.figma.com/img/77df/ebad/60125be4b2a5c55c9384140e360f0af6?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gk5puXi2jw5f66mg6Uvqb0rvcshDvH4A3ZLhBCQ5ktkB5KqGAnq3izjW5bwxB~lEDTmYzs3y8-7Q8iKGAfjd2gkQFz4YgBrNPJXUV8h~2ExlhENghvdBKMhoxbK2Oxn7s8fMaEhR8HyghH9wp5mD~vKpz27qC2Rs3O5ekdM~Jn~gpOCpqUmhx1ygEFXos3~DjKJL7N10Kb1Kb2RkyScIiNQwbYhht9MLHoTr~iCdJr5R63N~AEWyJniYgDB6HGz6agFWUmfy~nW~V48fTU~V9YgK0w9EvgSXsaIGg9VJXZB4DZRcmsf6wgusGKNCeT4klDjLn5hK3GWBo-6O3T9Y~A__' }} />}
+        {!isWeekMode && <Image style={styles.rightGif} resizeMode='cover' source={{ uri: 'https://s3-alpha-sig.figma.com/img/77df/ebad/60125be4b2a5c55c9384140e360f0af6?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gk5puXi2jw5f66mg6Uvqb0rvcshDvH4A3ZLhBCQ5ktkB5KqGAnq3izjW5bwxB~lEDTmYzs3y8-7Q8iKGAfjd2gkQFz4YgBrNPJXUV8h~2ExlhENghvdBKMhoxbK2Oxn7s8fMaEhR8HyghH9wp5mD~vKpz27qC2Rs3O5ekdM~Jn~gpOCpqUmhx1ygEFXos3~DjKJL7N10Kb1Kb2RkyScIiNQwbYhht9MLHoTr~iCdJr5R63N~AEWyJniYgDB6HGz6agFWUmfy~nW~V48fTU~V9YgK0w9EvgSXsaIGg9VJXZB4DZRcmsf6wgusGKNCeT4klDjLn5hK3GWBo-6O3T9Y~A__' }} />}
 
         <View style={{ marginTop: getSize(21) }} />
         {isWeekMode ? (
