@@ -21,10 +21,10 @@ const { width } = Dimensions.get('window');
 
 const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
 
-const generateWeekDays = (currentDate: moment.Moment) => {
-  const startOfWeek = moment(currentDate).subtract(3, 'days');
-  return Array.from({ length: 7 }).map((_, index) =>
-    moment(startOfWeek).add(index, 'days')
+const generateExtraDays = (currentDate: moment.Moment, days = 30) => {
+  const startDate = moment(currentDate).subtract(days, 'days');
+  return Array.from({ length: days * 2 + 1 }).map((_, index) =>
+    moment(startDate).add(index, 'days')
   );
 };
 
@@ -36,91 +36,81 @@ export const CustomCalendarW = ({
   selectedDates,
   selectedDate,
 }: any) => {
+  const scrollViewRef = useRef<ScrollView>(null);
   const [currentDate, setCurrentDate] = useState(selectedDate || moment());
-  const [weekDays, setWeekDays] = useState(generateWeekDays(currentDate));
-  const translateX = useRef(new Animated.Value(0)).current;
+  const [weekDays, setWeekDays] = useState(generateExtraDays(currentDate));
+  const dayWidth = getSize(46.8);
+  const bufferDays = 30;
+  const paddingHorizontal = (width - dayWidth) / 2;
+  const threshold = 5;
+
+  const expandDays = (direction: 'left' | 'right') => {
+    if (direction === 'left') {
+      const newDays = generateExtraDays(weekDays[0], bufferDays);
+      setWeekDays((prev) => [...newDays, ...prev]);
+    } else if (direction === 'right') {
+      const lastDate = weekDays[weekDays.length - 1];
+      const newDays = generateExtraDays(lastDate.add(1, 'days'), bufferDays);
+      setWeekDays((prev) => [...prev, ...newDays]);
+    }
+  };
 
   const fetchDateData = async (date: moment.Moment) => {
-    apiClient.get(`/${date.format('YYYY-MM-DD')}`)
-      .then(response => {
-        console.log('API 응답:', response.data);
-      })
-      .catch(error => {
-        console.error('API 요청 실패:', error);
-      });
+    try {
+      const response = await apiClient.get(`/${date.format('YYYY-MM-DD')}`);
+      console.log('API 응답:', response.data);
+    } catch (error) {
+      console.log(date);
+      console.error('API 요청 실패:', error);
+    }
   };
 
-  let swipeInterval: NodeJS.Timeout | null = null;
+  const scrollToIndex = (index: number, animated = true) => {
+    const offset = index * dayWidth - paddingHorizontal;
+    scrollViewRef.current?.scrollTo({ x: offset, animated });
+  };
 
-  const handleSwipe = (dx: number) => {
-    const newDate = dx > 0
-      ? moment(currentDate).add(1, 'days')
-      : moment(currentDate).subtract(1, 'days');
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      const selectedIndex = weekDays.findIndex((day) => day.isSame(currentDate, 'day'));
+      const centerIndex = selectedIndex !== -1 ? selectedIndex : bufferDays;
+      setTimeout(() => {
+        scrollToIndex(centerIndex, false);
+      }, 0);
+    }
+  }, [currentDate]);
+
+  const handleScrollEnd = (event: any) => {
+    const contentOffsetX = event.nativeEvent.contentOffset.x + paddingHorizontal;
+    const centerIndex = Math.round(contentOffsetX / dayWidth);
+
+    if (centerIndex <= threshold) {
+      expandDays('left');
+    } else if (centerIndex >= weekDays.length - threshold) {
+      expandDays('right');
+    }
+
+    const newDate = weekDays[centerIndex];
+
+    console.log(newDate);
+
     setCurrentDate(newDate);
-    setWeekDays(generateWeekDays(newDate));
+
+    scrollToIndex(centerIndex);
   };
 
-  const stopSwipeAndFetch = () => {
-    const middleDate = weekDays[3];
-    fetchDateData(middleDate);
-  };
-
-  const handleDayPress = (day: moment.Moment) => {
+  const handleDaySelect = (day: moment.Moment) => {
     setCurrentDate(day);
-    setWeekDays(generateWeekDays(day));
+    console.log(day);
 
-    Animated.timing(translateX, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      stopSwipeAndFetch();
-    });
+    const index = weekDays.findIndex(d => d.isSame(day, 'day'));
+    if (index !== -1) {
+      scrollToIndex(index);
+    }
   };
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gestureState) => {
-        return Math.abs(gestureState.dx) > 20;
-      },
-      onPanResponderMove: (_, gestureState) => {
-        translateX.setValue(gestureState.dx);
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        const threshold = width / 3;
-        if (gestureState.dx < -threshold) {
-          Animated.timing(translateX, {
-            toValue: -width,
-            duration: 300,
-            useNativeDriver: true,
-          }).start(() => {
-            handleSwipe(1);
-            translateX.setValue(0);
-          });
-        } else if (gestureState.dx > threshold) {
-          Animated.timing(translateX, {
-            toValue: width,
-            duration: 300,
-            useNativeDriver: true,
-          }).start(() => {
-            handleSwipe(-1);
-            translateX.setValue(0);
-          });
-        } else {
-          Animated.timing(translateX, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-          }).start();
-        }
-
-        stopSwipeAndFetch();
-      },
-    })
-  ).current;
 
   return (
-    <View style={styles.calendarContainer} {...panResponder.panHandlers}>
+    <View style={styles.calendarContainer}>
       <LinearGradient
         colors={['rgba(27, 27, 27, 1)', 'transparent']}
         start={[0, 0]}
@@ -143,33 +133,43 @@ export const CustomCalendarW = ({
       </View>
 
       <View style={styles.calendarGrid}>
-        <View style={styles.weekdayContainer}>
-          {weekDays.map((day, index) => (
-            <Text key={index} style={styles.weekdayText}>
-              {daysOfWeek[day.day() === 0 ? 6 : day.day() - 1]}
-            </Text>
-          ))}
-        </View>
 
-        <View style={styles.weekContainer}>
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          pagingEnabled
+          snapToInterval={getSize(46.8)}
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={handleScrollEnd}
+          contentContainerStyle={styles.scrollViewContent}
+        >
           {weekDays.map((day, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.dayCell}
-              onPress={() => { handleDayPress(day) }}
-            >
-              <View style={isTodayW(day) && styles.today} >
-                <Text style={[
-                  styles.dayText,
-                  isTodayW(day) && { color: 'black' }
-                ]}>{day.date()}</Text>
-              </View>
-              {selectedDates.includes(day.format('YYYY-MM-DD')) && (
-                <View style={styles.selectedDayCell} />
-              )}
-            </TouchableOpacity>
+            <View key={index} style={styles.dayWrapper}>
+              {/* 요일 */}
+              <Text style={styles.weekdayText}>
+                {daysOfWeek[day.day() === 0 ? 6 : day.day() - 1]}
+              </Text>
+
+              {/* 날짜 */}
+              <TouchableOpacity
+                style={styles.dayCell}
+                onPress={() => handleDaySelect(day)}
+              >
+                <View style={isTodayW(day) && styles.today} >
+                  <Text style={[
+                    styles.dayText,
+                    isTodayW(day) && { color: 'black' }
+                  ]}>
+                    {day.date()}
+                  </Text>
+                </View>
+                {selectedDates.includes(day.format('YYYY-MM-DD')) && (
+                  <View style={styles.selectedDayCell} />
+                )}
+              </TouchableOpacity>
+            </View>
           ))}
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
