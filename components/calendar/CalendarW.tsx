@@ -35,10 +35,10 @@ const isTodayW = (day: moment.Moment) => {
 export const CustomCalendarW = ({
   selectedDates,
   selectedDate,
+  setSelectedDate,
 }: any) => {
   const scrollViewRef = useRef<ScrollView>(null);
-  const [currentDate, setCurrentDate] = useState(selectedDate || moment());
-  const [weekDays, setWeekDays] = useState(generateExtraDays(currentDate));
+  const [weekDays, setWeekDays] = useState(generateExtraDays(selectedDate));
   const dayWidth = getSize(46.8);
   const bufferDays = 30;
   const paddingHorizontal = (width - dayWidth) / 2;
@@ -55,16 +55,6 @@ export const CustomCalendarW = ({
     }
   };
 
-  const fetchDateData = async (date: moment.Moment) => {
-    try {
-      const response = await apiClient.get(`/${date.format('YYYY-MM-DD')}`);
-      console.log('API 응답:', response.data);
-    } catch (error) {
-      console.log(date);
-      console.error('API 요청 실패:', error);
-    }
-  };
-
   const scrollToIndex = (index: number, animated = true) => {
     const offset = index * dayWidth - paddingHorizontal;
     scrollViewRef.current?.scrollTo({ x: offset, animated });
@@ -72,13 +62,13 @@ export const CustomCalendarW = ({
 
   useEffect(() => {
     if (scrollViewRef.current) {
-      const selectedIndex = weekDays.findIndex((day) => day.isSame(currentDate, 'day'));
+      const selectedIndex = weekDays.findIndex((day) => day.isSame(selectedDate, 'day'));
       const centerIndex = selectedIndex !== -1 ? selectedIndex : bufferDays;
       setTimeout(() => {
         scrollToIndex(centerIndex, false);
       }, 0);
     }
-  }, [currentDate]);
+  }, [selectedDate]);
 
   const handleScrollEnd = (event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x + paddingHorizontal;
@@ -94,13 +84,13 @@ export const CustomCalendarW = ({
 
     console.log(newDate);
 
-    setCurrentDate(newDate);
+    setSelectedDate(newDate);
 
     scrollToIndex(centerIndex);
   };
 
   const handleDaySelect = (day: moment.Moment) => {
-    setCurrentDate(day);
+    setSelectedDate(day);
     console.log(day);
 
     const index = weekDays.findIndex(d => d.isSame(day, 'day'));
@@ -128,8 +118,8 @@ export const CustomCalendarW = ({
       />
 
       <View style={styles.title}>
-        <Text style={styles.year}>{currentDate.year()}</Text>
-        <Text style={styles.month}>{currentDate.month() + 1}월</Text>
+        <Text style={styles.year}>{selectedDate.year()}</Text>
+        <Text style={styles.month}>{selectedDate.month() + 1}월</Text>
       </View>
 
       <View style={styles.calendarGrid}>
