@@ -207,7 +207,10 @@ const CrewFeedHomeScreen = () => {
           <SearchIcon width={getSize(24)} height={getSize(24)} />
         </TouchableOpacity>
         <Text style={styles.title}>RUNWITH</Text>
-        <TouchableOpacity style={styles.iconContainer}>
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => { navigation.navigate('crew-feed/map') }}
+        >
           <CrossHairIcon width={getSize(26)} height={getSize(26)} />
         </TouchableOpacity>
       </View>
