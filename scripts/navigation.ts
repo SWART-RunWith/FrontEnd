@@ -118,6 +118,17 @@ export type CourseSaveScreenRouteProp = RouteProp<
   "course-feed/my/course"
 >;
 
+type CrewFeedStackParamList = {
+  "crew-feed/home": undefined;
+  "crew-feed/search": undefined;
+  "crew-feed/map": undefined;
+};
+
+export type CrewFeedScreenNavigationProp = StackNavigationProp<
+  CrewFeedStackParamList,
+  "crew-feed/home"
+>;
+
 type BottomBarStackParamList = {
   home: undefined;
   "course-feed/home": undefined;
