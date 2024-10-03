@@ -228,21 +228,11 @@ const SearchNavIcon = () => {
 };
 
 export const CourseFeedMainHeader: React.FC = ({ }) => {
-  const pressArrowIcon = () => {
-    // to do : 위치 모달창 열기
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
         <LocationIcon width={getSize(16.36)} height={getSize(24)} />
         <Text style={styles.leftText}>전체</Text>
-        <TouchableOpacity
-          style={styles.arrowIconContainer}
-          onPress={pressArrowIcon}
-        >
-          <BottomArrowIcon width={getSize(24)} height={getSize(13.85)} />
-        </TouchableOpacity>
       </View>
       <SearchNavIcon />
     </View>
