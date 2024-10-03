@@ -25,6 +25,7 @@ import RunningIcon from '@/assets/icons/running.svg';
 import OptionIcon from '@/assets/icons/option.svg';
 import BackIcon from '@/assets/icons/back.svg';
 import LocationIcon from '@/assets/icons/location.svg';
+import NoticeIcon from '@/assets/icons/notice.svg';
 import BottomTab from "@/components/BottomTab";
 import { CrewBox, CrewFeedBox } from "@/components/box/crew-feed/CrewFeed";
 import { BackSearchHeader } from "@/components/header/IconHeader";
@@ -175,8 +176,6 @@ const CrewFeedHomeScreen = () => {
       }
     }
     setStatusBarHeight(calculatedHeight);
-    console.log(statusBarHeight);
-
   }, []);
 
   useEffect(() => {
@@ -439,13 +438,28 @@ const CrewFeedHomeScreen = () => {
                 onEndReachedThreshold={0.5}
               /> :
               <View>
+                {/* 크루 위치 & 이름 */}
                 <View style={styles.introContainer}>
                   <View style={styles.locationContainer}>
                     <LocationIcon width={getSize(17)} height={getSize(24)} />
                     <Text style={styles.location}>{crewInfo.location}</Text>
-                    <UserCountIcon count={crewInfo.count} />
+                    <View style={styles.userIcon}>
+                      <UserCountIcon count={crewInfo.count} />
+                    </View>
                   </View>
                   <Text style={styles.crewInfoName}>{crewInfo.name}</Text>
+                </View>
+
+                <View style={styles.ruleContainer}>
+                  <View style={styles.ruleTitleContainer}>
+                    <NoticeIcon width={getSize(22.94)} height={getSize(24)} />
+                    <Text
+                      style={styles.ruleTitle}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >{crewInfo.ruleTitle}</Text>
+                  </View>
+                  <Text style={styles.ruleContent}>{crewInfo.ruleContent}</Text>
                 </View>
               </View>
             }
@@ -627,6 +641,38 @@ const styles = StyleSheet.create({
     fontSize: getSize(36),
     fontFamily: Fonts.bold,
     height: getSize(43),
+  },
+  userIcon: {
+    position: 'absolute',
+    right: getSize(16),
+    top: getSize(10.5),
+  },
+  ruleContainer: {
+    backgroundColor: Colors.grayBox,
+    borderRadius: 22,
+    paddingHorizontal: getSize(10),
+    paddingVertical: getSize(8),
+    marginHorizontal: getSize(Sizes.formMargin),
+    marginTop: getSize(24),
+    width: width - getSize(Sizes.formMargin * 2),
+    height: getSize(80),
+  },
+  ruleTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: getSize(8),
+  },
+  ruleTitle: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.semiBold,
+    height: getSize(19),
+  },
+  ruleContent: {
+    color: Colors.gray,
+    fontSize: getSize(14),
+    fontFamily: Fonts.medium,
+    marginTop: getSize(10),
   },
   modalOverlay: {
     flex: 1,
