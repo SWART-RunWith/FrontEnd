@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dimensions,
   Modal,
@@ -22,24 +22,21 @@ import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
 import { FolderDeleteModal, FolderNameEditModal } from "@/components/modal/pop-up/FolderModal";
 import BottomTab from "@/components/BottomTab";
+import axios from "axios";
 
 const { width } = Dimensions.get('window');
 
 type Mode = 'BASIC' | 'EDIT' | 'DELETE';
 
+interface Folder {
+  name: string;
+  id: number;
+}
+
 const CourseFeedFolderScreen = () => {
   const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
 
-  const folderList = [
-    { name: '서천동', id: 1 },
-    { name: '봉천동', id: 2 },
-    { name: '대학로', id: 3 },
-    { name: '홍대입구', id: 4 },
-    { name: '망포동', id: 5 },
-    { name: '예술동', id: 6 },
-    { name: '최애 코스', id: 7 },
-    { name: '화이팅', id: 8 },
-  ];
+  const [folderList, setFolderList] = useState<Folder[]>([]);
 
   const [mode, setMode] = useState<Mode>('BASIC');
   const [visibleModal, setVisibleModal] = useState(false);
@@ -84,9 +81,19 @@ const CourseFeedFolderScreen = () => {
     }
   };
 
-  const handleGet = () => {
+  const handleGetAll = async () => {
     // to do : folder list get api 연결
+    try {
+      const response = await axios.get('http://localhost:8080/folders');
+      setFolderList(response.data); // API로 받은 데이터로 folderList 업데이트
+    } catch (error) {
+      console.error('폴더 리스트를 불러오는 중 오류 발생:', error);
+    }
   }
+
+  useEffect(() => {
+    handleGetAll();
+  }, []);
 
   const handleDelete = () => {
     console.log('Deleting folders:', selectedFolders);
