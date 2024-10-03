@@ -90,13 +90,6 @@ export const CourseBox: React.FC<
           <Text style={styles.distanceText}>{distance}</Text>
         </View>
 
-        <TouchableOpacity
-          style={styles.uploadIcon}
-          onPress={onPressSave}
-        >
-          <UploadIcon width={getSize(28)} height={getSize(28)} />
-        </TouchableOpacity>
-
         <View style={styles.imageContainer} />
         <View style={styles.buttonContainer}>
           <CourseButton
