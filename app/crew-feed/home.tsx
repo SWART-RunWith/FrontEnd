@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
   FlatList,
   Image,
   ImageBackground,
+  Modal,
   PanResponder,
   Platform,
   ScrollView,
@@ -22,6 +23,7 @@ import SearchIcon from '@/assets/icons/search.svg';
 import CrossHairIcon from '@/assets/icons/crosshair.svg';
 import RunningIcon from '@/assets/icons/running.svg';
 import OptionIcon from '@/assets/icons/option.svg';
+import BackIcon from '@/assets/icons/back.svg';
 import BottomTab from "@/components/BottomTab";
 import { CrewBox, CrewFeedBox } from "@/components/box/crew-feed/CrewFeed";
 import { BackSearchHeader } from "@/components/header/IconHeader";
@@ -31,10 +33,11 @@ import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
 import getSize from "@/scripts/getSize";
 import { CrewFeedScreenNavigationProp } from "@/scripts/navigation";
+import apiClient from "@/axois";
 
 const { width, height } = Dimensions.get('window');
 
-const crewList = [
+const crewBestList = [
   { id: 1, name: '경달', backgroundImg: require('@/assets/images/crew_l.png'), location: '서울시 동대문구 회기동' },
   { id: 2, name: 'KHUMA', backgroundImg: require('@/assets/images/crew2.png'), location: '서울시 광진구 자양동' },
   { id: 3, name: 'RUNWITH', backgroundImg: require('@/assets/images/crew3.png'), location: '서울시 마포구 상암동' },
@@ -47,10 +50,23 @@ const crewContentList = [
   { id: 3, title: '한강공원 런', time: '2024.08.18', description: '한강공원을 따라 펼쳐지는 시원한 코스', backgroundImg: require('@/assets/images/crew3.png'), distance: '10KM', location: '서울 영등포구', author: '경달', count: 5 },
 ];
 
+interface CrewFeed {
+
+}
+
+interface Crew {
+  id: number;
+  name: string;
+}
+
 const CrewFeedHomeScreen = () => {
   const navigation = useNavigation<CrewFeedScreenNavigationProp>();
 
+  const [crewList, setCrewList] = useState<Crew[]>([]);
+  const [crewFeedList, setCrewFeedList] = useState<CrewFeed[]>([]);
+
   const [isPanResponderActive, setIsPanResponderActive] = useState(true);
+  const [visibleCrewSelectModal, setVisibleCrewSelectModal] = useState(false);
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
@@ -66,6 +82,33 @@ const CrewFeedHomeScreen = () => {
     const index = Math.round(contentOffsetX / SNAP_INTERVAL);
     setActiveIndex(index);
   };
+
+  useEffect(() => {
+    fetchMyCrewIdList();
+  }, []);
+
+  // api
+  const fetchMyCrewIdList = async () => {
+    try {
+      const response = await apiClient.get(`/crews/my`);
+      setCrewList(response.data);
+    } catch (error) {
+      console.error('내 크루 아이디 불러오는 중 오류 발생:', error);
+    }
+  }
+
+  const fetchAllCrewFeed = async () => {
+
+  }
+
+  const fetchCrewFeed = async (crewId: number) => {
+    try {
+      const response = await apiClient.get(`/crews/${crewId}`);
+      setCrewFeedList(response.data);
+    } catch (error) {
+      console.error('크루 피드 불러오는 중 오류 발생:', error);
+    }
+  }
 
   const handlePress = (crewId: number) => {
     console.log(crewId, "로 이동");
@@ -184,6 +227,21 @@ const CrewFeedHomeScreen = () => {
     // to do : 저장 api 연결
   }
 
+  // 모달 설정
+  const toggleModal = () => {
+    setVisibleCrewSelectModal(!visibleCrewSelectModal);
+  }
+
+  const handleCrewFeed = (crewId: number) => {
+    if (crewId !== 0) {
+      fetchCrewFeed(crewId);
+    }
+    else {
+      fetchAllCrewFeed();
+    }
+
+  }
+
   return (
     <View style={Styles.container}>
       <ImageBackground
@@ -224,6 +282,7 @@ const CrewFeedHomeScreen = () => {
 
       <View style={{ marginTop: getSize(36) }} />
 
+      {/* 크루 좌우 스크롤 */}
       <Animated.ScrollView
         ref={scrollViewRef}
         horizontal
@@ -243,14 +302,14 @@ const CrewFeedHomeScreen = () => {
         )}
         scrollEventThrottle={16}
       >
-        {crewList.map((course, index) => (
+        {crewBestList.map((crew, index) => (
           <Animated.View key={index} style={styles.cardContainer}>
             <CrewBox
-              name={course.name}
-              onPress={() => handlePress(course.id)}
-              onPressButton={() => handlePress(course.id)}
-              onPressNext={() => handlePress(course.id)}
-              backgroundImg={course.backgroundImg}
+              name={crew.name}
+              onPress={() => handlePress(crew.id)}
+              onPressButton={() => handlePress(crew.id)}
+              onPressNext={() => handlePress(crew.id)}
+              backgroundImg={crew.backgroundImg}
             />
           </Animated.View>
         ))}
@@ -280,6 +339,7 @@ const CrewFeedHomeScreen = () => {
         </TouchableOpacity>
       </View>
 
+      {/* 하단 팝업 */}
       <Animated.View
         style={[
           styles.crewFeedScreen,
@@ -302,16 +362,33 @@ const CrewFeedHomeScreen = () => {
 
         <View style={styles.crewFeedContainer}>
           <View style={{ marginTop: -21 }}>
-            <BackSearchHeader
-              text='RUNWITH'
-              fontColor={Colors.main}
-              fontFamily={Fonts.hanson}
-              onPressBack={() => { setIsCourseFeedScreenVisible(false) }}
-              onPressSearch={() => {
-                setIsCourseFeedScreenVisible(false);
-                navigation.navigate('crew-feed/search');
-              }}
-            />
+            <View style={styles.header}>
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={() => { setIsCourseFeedScreenVisible(false) }}
+              >
+                <BackIcon />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ height: getSize(29) }}
+                onPress={toggleModal}
+              >
+                <Text style={{
+                  color: Colors.main,
+                  fontFamily: Fonts.hanson,
+                  fontSize: getSize(20),
+                  height: getSize(21),
+                }}>RUNWITH</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsCourseFeedScreenVisible(false);
+                  navigation.navigate('crew-feed/search');
+                }}
+              >
+                <SearchIcon width={getSize(24)} height={getSize(24)} />
+              </TouchableOpacity>
+            </View>
 
             <View style={{ marginTop: getSize(24) }} />
 
@@ -342,6 +419,49 @@ const CrewFeedHomeScreen = () => {
       </Animated.View>
 
       <BottomTab route="CrewFeed" reload={false} />
+
+      <Modal
+        transparent={true}
+        visible={visibleCrewSelectModal}
+        animationType="fade"
+        onRequestClose={toggleModal}
+        statusBarTranslucent
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          onPress={toggleModal}
+        >
+          <View style={styles.menuContainer}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={fetchAllCrewFeed}
+            >
+              <Text style={styles.menuText}>전체</Text>
+            </TouchableOpacity>
+
+            {crewList.map((crew, index) => (
+              <React.Fragment key={crew.id}>
+                <View style={styles.bar} />
+                <TouchableOpacity
+                  key={index}
+                  style={styles.menuItem}
+                  onPress={() => {
+                    {
+                      fetchCrewFeed(crew.id)
+                      toggleModal();
+                    }
+                  }}
+                >
+                  <Text style={[
+                    styles.menuText,
+                    { color: Colors.main }
+                  ]}>{crew.name}</Text>
+                </TouchableOpacity>
+              </React.Fragment>
+            ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
@@ -452,6 +572,37 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     width: width,
     paddingBottom: getSize(200),
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)'
+  },
+  menuContainer: {
+    position: 'absolute',
+    backgroundColor: Colors.grayBox,
+    borderRadius: 10,
+    width: getSize(155),
+    top: getSize(129),
+    left: (width - getSize(155)) / 2,
+  },
+  menuItem: {
+    paddingHorizontal: getSize(14),
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: getSize(56),
+    width: '100%',
+  },
+  menuText: {
+    color: 'white',
+    fontSize: getSize(16),
+    fontFamily: Fonts.medium,
+    textAlign: 'center',
+    height: getSize(19),
+  },
+  bar: {
+    backgroundColor: Colors.lightestGray,
+    height: getSize(1),
+    width: '100%',
   },
 });
 
