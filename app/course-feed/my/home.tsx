@@ -19,8 +19,14 @@ import Styles from '@/constants/Styles';
 import Sizes from '@/constants/Sizes';
 import getSize from '@/scripts/getSize';
 import { CourseFeedMineScreenNavigationProp } from '@/scripts/navigation';
+import apiClient from '@/axois';
 
 const { width } = Dimensions.get('window');
+
+interface Folder {
+  name: string;
+  id: number;
+}
 
 const MyCourseHomeScreen = () => {
   const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
@@ -119,16 +125,25 @@ const MyCourseHomeScreen = () => {
     { id: 3, location: '한강', imgUrl: 'https://i.namu.wiki/i/t2zvEe7ws93H0jrNgi_6co5wMkXToxQuGkmO7AhHbMrhPBSY9LZwNpthQZRkWYxYBB2ZPj8M08p5vw_yOJAz_g.webp' },
   ];
 
-  const folderList = [
-    { name: '서천동', id: 1 },
-    { name: '봉천동', id: 2 },
-    { name: '대학로', id: 3 },
-    { name: '홍대입구', id: 4 },
-  ]
+  const [folderList, setFolderList] = useState<Folder[]>([]);
 
   const goHome = () => {
     navigation.navigate('home');
   };
+
+  const handleGetAll = async () => {
+    // to do : folder list get api 연결
+    try {
+      const response = await apiClient.get('/folders');
+      setFolderList(response.data);
+    } catch (error) {
+      console.error('폴더 리스트를 불러오는 중 오류 발생:', error);
+    }
+  }
+
+  useEffect(() => {
+    handleGetAll();
+  }, []);
 
   return (
     <View style={Styles.container}>
