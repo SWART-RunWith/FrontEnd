@@ -264,6 +264,26 @@ const CrewFeedHomeScreen = () => {
 
   }
 
+  // 등수
+  const rankScrollX = useRef(new Animated.Value(0)).current;
+  const rankScrollViewRef = useRef<ScrollView>(null);
+
+  const data = [
+    { id: '1', value: '첫 번째 박스' },
+    { id: '2', value: '두 번째 박스' },
+    { id: '3', value: '세 번째 박스' },
+  ];
+
+  useEffect(() => {
+    let position = 0;
+    const interval = setInterval(() => {
+      position = (position + 1) % data.length;
+      rankScrollViewRef.current?.scrollTo({ x: position * width, animated: true });
+    }, 3000); // 3초마다 이동
+
+    return () => clearInterval(interval); // 컴포넌트 unmount 시 interval 제거
+  }, [data.length]);
+
   return (
     <View style={Styles.container}>
       <ImageBackground
@@ -460,6 +480,23 @@ const CrewFeedHomeScreen = () => {
                     >{crewInfo.ruleTitle}</Text>
                   </View>
                   <Text style={styles.ruleContent}>{crewInfo.ruleContent}</Text>
+                </View>
+
+                <View>
+                  <ScrollView
+                    style={styles.rankScrollContainer}
+                    ref={rankScrollViewRef}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    scrollEventThrottle={16}
+                  >
+                    {data.map((item, index) => (
+                      <View key={index} style={styles.rankBox}>
+                        <Animated.Text>{item.value}</Animated.Text>
+                      </View>
+                    ))}
+                  </ScrollView>
                 </View>
               </View>
             }
@@ -673,6 +710,8 @@ const styles = StyleSheet.create({
     fontSize: getSize(14),
     fontFamily: Fonts.medium,
     marginTop: getSize(10),
+    width: '100%',
+    height: getSize(17),
   },
   modalOverlay: {
     flex: 1,
@@ -704,6 +743,20 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightestGray,
     height: getSize(1),
     width: '100%',
+  },
+  rankScrollContainer: {
+    marginTop: getSize(348),
+    height: getSize(58),
+    width: width * 3,
+  },
+  rankBox: {
+    backgroundColor: Colors.grayBox,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginHorizontal: getSize(Sizes.formMargin),
+    width: width - getSize(Sizes.formMargin * 2),
+    height: getSize(58),
   },
 });
 
