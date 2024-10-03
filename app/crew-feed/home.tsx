@@ -559,9 +559,6 @@ const CrewFeedHomeScreen = () => {
                   }}
                   contentContainerStyle={{
                     flexGrow: 1,
-                    minHeight: getSize(720),
-                    marginBottom: getSize(90),
-                    paddingBottom: getSize(100),
                   }}
                 >
                   <ScrollView
