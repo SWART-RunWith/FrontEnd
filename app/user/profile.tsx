@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     backgroundColor: 'black',
     width: width,
-    height: getSize(2086),
+    height: getSize(2176),
     alignItems: 'center',
   },
   profileContainer: {
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     backgroundColor: Colors.main,
-    marginTop: getSize(63),
+    marginTop: getSize(25),
     height: getSize(3),
     width: width - getSize(Sizes.formMargin) * 2,
     zIndex: 3,
