@@ -217,10 +217,13 @@ const MyCourseHomeScreen = () => {
         </Animated.View>
       </View>
 
-      <View style={{ marginTop: getSize(24) }}>
+      <View style={{
+        marginTop: getSize(24),
+        width: width,
+      }}>
         <TouchableOpacity
           style={{ height: getSize(24) }}
-          onPress={() => { navigation.navigate('course-feed/my/folder'); }}
+          onPress={() => { navigation.navigate('course-feed/my/folder', { folderList }); }}
         >
           <Text style={styles.folderTitle}>내 폴더</Text>
         </TouchableOpacity>

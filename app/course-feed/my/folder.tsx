@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import FolderEditIcon from '@/assets/icons/folderEdit.svg';
 import FolderDeleteIcon from '@/assets/icons/folderDelete.svg';
@@ -16,7 +16,7 @@ import Styles from "@/constants/Styles";
 import { MainGradient } from "@/components/Gradient";
 import { MyFolderHeader } from "@/components/header/IconHeader";
 import getSize from "@/scripts/getSize";
-import { CourseFeedMineScreenNavigationProp } from "@/scripts/navigation";
+import { CourseFeedMineScreenNavigationProp, CourseFolderScreenRouteProp } from "@/scripts/navigation";
 import { FolderContainer } from "@/components/container/FolderContainer";
 import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
@@ -34,9 +34,10 @@ interface Folder {
 }
 
 const CourseFeedFolderScreen = () => {
+  const route = useRoute<CourseFolderScreenRouteProp>();
   const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
 
-  const [folderList, setFolderList] = useState<Folder[]>([]);
+  const [folderList, setFolderList] = useState<Folder[]>(route.params?.folderList || []);
 
   const [mode, setMode] = useState<Mode>('BASIC');
   const [visibleModal, setVisibleModal] = useState(false);
