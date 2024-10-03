@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { CourseMyHomeHeader } from '@/components/header/IconHeader';
+import { CourseMyHomeHeader, MyFolderHeader } from '@/components/header/IconHeader';
 import { MyCourseBox } from '@/components/box/CourseFeed';
 import { FolderContainer } from '@/components/container/FolderContainer';
 import { MainGradient } from '@/components/Gradient';
@@ -134,10 +134,10 @@ const MyCourseHomeScreen = () => {
     <View style={Styles.container}>
       <MainGradient />
 
-      <CourseMyHomeHeader
-        backProps={{
-          onPress: () => { goHome(); }
-        }}
+      <MyFolderHeader
+        onPressBack={() => { goHome() }}
+        onPressSearch={() => { navigation.navigate('course-feed/my/folderSearch') }}
+        onPressOption={() => { }}
       />
 
       <View style={styles.textContainer}>
