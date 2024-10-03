@@ -50,6 +50,29 @@ const CourseFeedSearchScreen = () => {
   const [triggeredByIcon, setTriggeredByIcon] = useState(false);
   const [userName, setUserName] = useState('홍여준');
 
+  // 검색
+  const handleSearchIconPress = () => {
+    setTriggeredByIcon(true);
+    handleSearch();
+  };
+
+  const handleSearch = () => {
+    if (!text.trim()) return;
+
+    const currentTime = formatCurrentTime();
+
+    let updatedHistory = [{ text, time: currentTime }, ...searchHistory];
+
+    if (updatedHistory.length > MAX_HISTORY) {
+      updatedHistory = updatedHistory.slice(0, MAX_HISTORY);
+    }
+
+    setSearchHistory(updatedHistory);
+    setText('');
+    Keyboard.dismiss();
+  };
+
+  // 검색 기록 관리
   useEffect(() => {
     const loadSearchHistory = async () => {
       try {
@@ -78,27 +101,6 @@ const CourseFeedSearchScreen = () => {
       saveSearchHistory();
     }
   }, [searchHistory]);
-
-  const handleSearch = () => {
-    if (!text.trim()) return;
-
-    const currentTime = formatCurrentTime();
-
-    let updatedHistory = [{ text, time: currentTime }, ...searchHistory];
-
-    if (updatedHistory.length > MAX_HISTORY) {
-      updatedHistory = updatedHistory.slice(0, MAX_HISTORY);
-    }
-
-    setSearchHistory(updatedHistory);
-    setText('');
-    Keyboard.dismiss();
-  };
-
-  const handleSearchIconPress = () => {
-    setTriggeredByIcon(true);
-    handleSearch();
-  };
 
   const handleEndEditing = () => {
     if (!triggeredByIcon) {
