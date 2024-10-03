@@ -98,6 +98,7 @@ const CrewFeedHomeScreen = () => {
 
   const [isPanResponderActive, setIsPanResponderActive] = useState(true);
   const [visibleCrewSelectModal, setVisibleCrewSelectModal] = useState(false);
+  const [isExpandedNotice, setIsExpandedNotice] = useState(false);
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
@@ -288,6 +289,10 @@ const CrewFeedHomeScreen = () => {
   // 모달 설정
   const toggleModal = () => {
     setVisibleCrewSelectModal(!visibleCrewSelectModal);
+  }
+
+  const handleExpandedNotice = () => {
+    setIsExpandedNotice(!isExpandedNotice);
   }
 
   // 등수
@@ -490,7 +495,11 @@ const CrewFeedHomeScreen = () => {
                   <Text style={styles.crewInfoName}>{crewInfo.name}</Text>
                 </View>
 
-                <View style={styles.ruleContainer}>
+                <TouchableOpacity onPress={handleExpandedNotice} style={[
+                  styles.ruleContainer,
+                  isExpandedNotice && { height: getSize(150) }
+                ]}
+                >
                   <View style={styles.ruleTitleContainer}>
                     <NoticeIcon width={getSize(22.94)} height={getSize(24)} />
                     <Text
@@ -499,8 +508,12 @@ const CrewFeedHomeScreen = () => {
                       ellipsizeMode="tail"
                     >{crewInfo.ruleTitle}</Text>
                   </View>
-                  <Text style={styles.ruleContent}>{crewInfo.ruleContent}</Text>
-                </View>
+                  <Text style={[
+                    styles.ruleContent,
+                    isExpandedNotice && { height: getSize(109) }
+                  ]}>{crewInfo.ruleContent}</Text>
+                </TouchableOpacity>
+
 
                 <View style={styles.rankScrollContainer}>
                   <ScrollView
@@ -712,8 +725,8 @@ const styles = StyleSheet.create({
   ruleContainer: {
     backgroundColor: Colors.grayBox,
     borderRadius: 22,
-    paddingHorizontal: getSize(10),
-    paddingVertical: getSize(8),
+    paddingHorizontal: getSize(14),
+    paddingVertical: getSize(10),
     marginHorizontal: getSize(Sizes.formMargin),
     marginTop: getSize(24),
     width: width - getSize(Sizes.formMargin * 2),
@@ -723,6 +736,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     gap: getSize(8),
+    height: getSize(29),
   },
   ruleTitle: {
     color: 'white',
