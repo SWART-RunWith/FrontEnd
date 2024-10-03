@@ -18,6 +18,7 @@ import {
 import { getBottomSpace, getStatusBarHeight, isIphoneX } from "react-native-iphone-x-helper";
 import { useNavigation } from "@react-navigation/native";
 import { BlurView } from "expo-blur";
+import apiClient from "@/axois";
 
 import SearchIcon from '@/assets/icons/search.svg';
 import CrossHairIcon from '@/assets/icons/crosshair.svg';
@@ -26,6 +27,7 @@ import OptionIcon from '@/assets/icons/option.svg';
 import BackIcon from '@/assets/icons/back.svg';
 import LocationIcon from '@/assets/icons/location.svg';
 import NoticeIcon from '@/assets/icons/notice.svg';
+import UserIcon from '@/assets/icons/user.svg';
 import BottomTab from "@/components/BottomTab";
 import { CrewBox, CrewFeedBox } from "@/components/box/crew-feed/CrewFeed";
 import { BackSearchHeader } from "@/components/header/IconHeader";
@@ -36,7 +38,7 @@ import Fonts from "@/constants/Fonts";
 import Sizes from "@/constants/Sizes";
 import getSize from "@/scripts/getSize";
 import { CrewFeedScreenNavigationProp } from "@/scripts/navigation";
-import apiClient from "@/axois";
+import { formatDistance } from "@/scripts/format";
 
 const { width, height } = Dimensions.get('window');
 
@@ -71,6 +73,12 @@ interface MyCrew {
   name: string;
 }
 
+interface Rank {
+  id: number;
+  name: string;
+  distance: number;
+}
+
 const CrewFeedHomeScreen = () => {
   const navigation = useNavigation<CrewFeedScreenNavigationProp>();
 
@@ -85,6 +93,11 @@ const CrewFeedHomeScreen = () => {
     ruleTitle: '',
     ruleContent: '',
   });
+  const [rankList, setRankList] = useState<Rank[]>([
+    { id: 1, name: '', distance: 0 },
+    { id: 2, name: '', distance: 0 },
+    { id: 3, name: '', distance: 0 },
+  ]);
   const [crewFeedList, setCrewFeedList] = useState<CrewFeed[]>([]);
 
   const [isPanResponderActive, setIsPanResponderActive] = useState(true);
@@ -129,6 +142,22 @@ const CrewFeedHomeScreen = () => {
     try {
       const response = await apiClient.get(`/crews/${crewId}`);
       setCrewInfo(response.data);
+    } catch (error) {
+      console.error('크루 피드 불러오는 중 오류 발생:', error);
+    }
+  }
+
+  const fetchRank = async (crewId: number) => {
+    try {
+      const response = await apiClient.get(`/crews/${crewId}/rank`);
+      const updatedRankList = response.data;
+
+      const newRankList = rankList.map((rank, index) => ({
+        ...rank,
+        name: updatedRankList[index]?.name || '',
+        distance: updatedRankList[index]?.distance || 0
+      }));
+      setRankList(newRankList);
     } catch (error) {
       console.error('크루 피드 불러오는 중 오류 발생:', error);
     }
@@ -268,21 +297,15 @@ const CrewFeedHomeScreen = () => {
   const rankScrollX = useRef(new Animated.Value(0)).current;
   const rankScrollViewRef = useRef<ScrollView>(null);
 
-  const data = [
-    { id: '1', value: '첫 번째 박스' },
-    { id: '2', value: '두 번째 박스' },
-    { id: '3', value: '세 번째 박스' },
-  ];
-
   useEffect(() => {
     let position = 0;
     const interval = setInterval(() => {
-      position = (position + 1) % data.length;
-      rankScrollViewRef.current?.scrollTo({ x: position * width, animated: true });
-    }, 3000); // 3초마다 이동
+      position = (position + 1) % rankList.length;
+      rankScrollViewRef.current?.scrollTo({ x: position * (width - getSize(Sizes.formMargin * 2)), animated: true });
+    }, 3000);
 
-    return () => clearInterval(interval); // 컴포넌트 unmount 시 interval 제거
-  }, [data.length]);
+    return () => clearInterval(interval);
+  }, [rankList.length]);
 
   return (
     <View style={Styles.container}>
@@ -482,18 +505,23 @@ const CrewFeedHomeScreen = () => {
                   <Text style={styles.ruleContent}>{crewInfo.ruleContent}</Text>
                 </View>
 
-                <View>
+                <View style={styles.rankScrollContainer}>
                   <ScrollView
-                    style={styles.rankScrollContainer}
                     ref={rankScrollViewRef}
                     horizontal
                     pagingEnabled
                     showsHorizontalScrollIndicator={false}
                     scrollEventThrottle={16}
+                    style={{ flexDirection: 'row' }}
                   >
-                    {data.map((item, index) => (
-                      <View key={index} style={styles.rankBox}>
-                        <Animated.Text>{item.value}</Animated.Text>
+                    {rankList.map((rank, index) => (
+                      <View key={rank.id} style={styles.rankBox}>
+                        <Text style={styles.rankNumber}>{index + 1}</Text>
+                        <View style={{ marginLeft: getSize(13.7) }}>
+                          <UserIcon width={getSize(34)} height={getSize(34)} />
+                        </View>
+                        <Text style={styles.rankDistance}>{rank.name}</Text>
+                        <Text style={styles.rankDistance}>{formatDistance(rank.distance)} KM</Text>
                       </View>
                     ))}
                   </ScrollView>
@@ -747,16 +775,32 @@ const styles = StyleSheet.create({
   rankScrollContainer: {
     marginTop: getSize(348),
     height: getSize(58),
-    width: width * 3,
+    width: width,
+    paddingHorizontal: getSize(Sizes.formMargin),
   },
   rankBox: {
     backgroundColor: Colors.grayBox,
-    justifyContent: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 20,
-    marginHorizontal: getSize(Sizes.formMargin),
     width: width - getSize(Sizes.formMargin * 2),
     height: getSize(58),
+  },
+  rankNumber: {
+    color: Colors.main,
+    fontSize: getSize(40),
+    fontFamily: Fonts.hanson,
+    marginLeft: getSize(18),
+    height: getSize(42),
+    width: getSize(40),
+  },
+  rankDistance: {
+    position: 'absolute',
+    color: Colors.main,
+    fontSize: getSize(20),
+    fontFamily: Fonts.medium,
+    height: getSize(24),
+    right: getSize(23),
   },
 });
 
