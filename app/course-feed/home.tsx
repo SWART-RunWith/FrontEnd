@@ -140,7 +140,7 @@ const CourseFeedHomeScreen = () => {
     onPanResponderRelease: (evt, gestureState) => {
       if (gestureState.dy < -100) {
         Animated.timing(translateY, {
-          toValue: statusBarHeight,
+          toValue: statusBarHeight + getSize(54),
           duration: 300,
           useNativeDriver: true,
         }).start(() => setIsCourseFeedScreenVisible(true));
