@@ -293,20 +293,20 @@ const CourseFeedHomeScreen = () => {
         ))}
       </View>
 
-      <View style={styles.bottomContainer}>
+
+      <TouchableOpacity
+        style={styles.bottomContainer}
+        onPress={() => { navigation.navigate('course-feed/my/home') }}
+      >
         <Text style={styles.bottomText}>나의 러닝 코스</Text>
         <Image
-
           style={styles.bottomImg}
           source={require('@/assets/images/goCourse.png')}
         />
-        <TouchableOpacity
-          style={styles.arrowIcon}
-          onPress={() => { navigation.navigate('course-feed/my/home') }}
-        >
+        <View style={styles.arrowIcon}>
           <NextIcon />
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
 
       <Animated.View
         style={[
