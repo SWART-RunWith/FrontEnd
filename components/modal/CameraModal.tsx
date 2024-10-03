@@ -82,6 +82,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
         visible={isVisible}
         animationType='slide'
         onRequestClose={onCancel}
+        statusBarTranslucent
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>

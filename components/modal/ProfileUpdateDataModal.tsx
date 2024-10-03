@@ -35,6 +35,7 @@ const ProfileUpdateModal: React.FC<ModalProps & { title: string }> = ({
     onBackdropPress={onCancel}
     style={styles.bottomModal}
     avoidKeyboard={false}
+    statusBarTranslucent
   >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.modalContainer}>

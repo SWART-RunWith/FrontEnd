@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: getSize(92),
+    top: getSize(620),
     zIndex: 3,
   },
   gradientOverlay: {

@@ -54,8 +54,15 @@ const FinishScreen = () => {
       <BackHeader onPressBack={() => { navigation.goBack() }} />
 
       <Image
+        style={styles.gif}
+        resizeMode='cover'
+        source={{ uri: 'https://s3-alpha-sig.figma.com/img/77df/ebad/60125be4b2a5c55c9384140e360f0af6?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gk5puXi2jw5f66mg6Uvqb0rvcshDvH4A3ZLhBCQ5ktkB5KqGAnq3izjW5bwxB~lEDTmYzs3y8-7Q8iKGAfjd2gkQFz4YgBrNPJXUV8h~2ExlhENghvdBKMhoxbK2Oxn7s8fMaEhR8HyghH9wp5mD~vKpz27qC2Rs3O5ekdM~Jn~gpOCpqUmhx1ygEFXos3~DjKJL7N10Kb1Kb2RkyScIiNQwbYhht9MLHoTr~iCdJr5R63N~AEWyJniYgDB6HGz6agFWUmfy~nW~V48fTU~V9YgK0w9EvgSXsaIGg9VJXZB4DZRcmsf6wgusGKNCeT4klDjLn5hK3GWBo-6O3T9Y~A__' }}
+      />
+
+      <Image
         style={styles.imageStyle}
-        source={require('@/assets/images/trophy.png')} />
+        source={require('@/assets/images/trophy.png')}
+      />
 
       {/* 러닝 완료 정보 */}
       <View style={styles.infoContainer}>
@@ -189,6 +196,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     top: getSize(344),
+  },
+  gif: {
+    top: getSize(118),
+    right: getSize(-9),
+    width: getSize(127),
+    height: getSize(127),
+    position: "absolute"
   },
 });
 
