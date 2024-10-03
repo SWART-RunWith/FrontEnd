@@ -11,6 +11,8 @@ npm-debug.*
 web-build/
 android/
 awsS3.js
+env.ts
+assets/dummy/
 
 # macOS
 .DS_Store
