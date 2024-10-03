@@ -93,11 +93,7 @@ const CrewFeedHomeScreen = () => {
     ruleTitle: '',
     ruleContent: '',
   });
-  const [rankList, setRankList] = useState<Rank[]>([
-    { id: 1, name: '', distance: 0 },
-    { id: 2, name: '', distance: 0 },
-    { id: 3, name: '', distance: 0 },
-  ]);
+  const [rankList, setRankList] = useState<Rank[]>([]);
   const [crewFeedList, setCrewFeedList] = useState<CrewFeed[]>([]);
 
   const [isPanResponderActive, setIsPanResponderActive] = useState(true);
@@ -152,15 +148,26 @@ const CrewFeedHomeScreen = () => {
       const response = await apiClient.get(`/crews/${crewId}/rank`);
       const updatedRankList = response.data;
 
-      const newRankList = rankList.map((rank, index) => ({
-        ...rank,
-        name: updatedRankList[index]?.name || '',
-        distance: updatedRankList[index]?.distance || 0
+      const newRankList = updatedRankList.map((rank: Rank) => ({
+        id: rank.id || 0,
+        name: rank.name || '뛰기만 하면 당신 차례!',
+        distance: rank.distance || 0,
       }));
+
+      while (newRankList.length < 3) {
+        newRankList.push({ id: newRankList.length + 1, name: '뛰기만 하면 당신 차례!', distance: 0 });
+      }
+
       setRankList(newRankList);
     } catch (error) {
       console.error('크루 피드 불러오는 중 오류 발생:', error);
     }
+  }
+
+  // 크루 선택
+  const handleSelectCrew = (crewId: number) => {
+    fetchCrewInfo(crewId);
+    fetchRank(crewId);
   }
 
   const handlePress = (crewId: number) => {
@@ -281,16 +288,6 @@ const CrewFeedHomeScreen = () => {
   // 모달 설정
   const toggleModal = () => {
     setVisibleCrewSelectModal(!visibleCrewSelectModal);
-  }
-
-  const handleCrewFeed = (crewId: number) => {
-    if (crewId !== 0) {
-      fetchCrewInfo(crewId);
-    }
-    else {
-      fetchAllCrewFeed();
-    }
-
   }
 
   // 등수
@@ -520,7 +517,7 @@ const CrewFeedHomeScreen = () => {
                         <View style={{ marginLeft: getSize(13.7) }}>
                           <UserIcon width={getSize(34)} height={getSize(34)} />
                         </View>
-                        <Text style={styles.rankDistance}>{rank.name}</Text>
+                        <Text style={styles.rankName}>{rank.name}</Text>
                         <Text style={styles.rankDistance}>{formatDistance(rank.distance)} KM</Text>
                       </View>
                     ))}
@@ -561,7 +558,7 @@ const CrewFeedHomeScreen = () => {
                   style={styles.menuItem}
                   onPress={() => {
                     {
-                      fetchCrewInfo(crew.id)
+                      handleSelectCrew(crew.id)
                       toggleModal();
                     }
                   }}
@@ -793,6 +790,13 @@ const styles = StyleSheet.create({
     marginLeft: getSize(18),
     height: getSize(42),
     width: getSize(40),
+  },
+  rankName: {
+    color: Colors.main,
+    fontSize: getSize(20),
+    fontFamily: Fonts.semiBold,
+    height: getSize(24),
+    marginLeft: getSize(13.5),
   },
   rankDistance: {
     position: 'absolute',
