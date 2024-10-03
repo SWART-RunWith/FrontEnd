@@ -56,7 +56,15 @@ const crewContentList = [
 ];
 
 interface CrewFeed {
-
+  id: number;
+  event: string;
+  time: string;
+  description: string;
+  backgroundImg: string;
+  distance: number;
+  location: string;
+  author: string;
+  count: number;
 }
 
 interface CrewInfo {
@@ -99,6 +107,8 @@ const CrewFeedHomeScreen = () => {
   const [isPanResponderActive, setIsPanResponderActive] = useState(true);
   const [visibleCrewSelectModal, setVisibleCrewSelectModal] = useState(false);
   const [isExpandedNotice, setIsExpandedNotice] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const numPages = crewFeedList.length;
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
@@ -285,6 +295,13 @@ const CrewFeedHomeScreen = () => {
   const handlePlus = (courseId: number) => {
     // to do : 저장 api 연결
   }
+
+  // 수평 크루 피드 스크롤
+  const handleCrewFeedScroll = (event: any) => {
+    const contentOffsetX = event.nativeEvent.contentOffset.x;
+    const pageIndex = Math.round(contentOffsetX / width);
+    setScrollPosition(pageIndex);
+  };
 
   // 모달 설정
   const toggleModal = () => {
@@ -497,7 +514,7 @@ const CrewFeedHomeScreen = () => {
 
                 <TouchableOpacity onPress={handleExpandedNotice} style={[
                   styles.ruleContainer,
-                  isExpandedNotice && { height: getSize(150) }
+                  isExpandedNotice && { height: getSize(180) }
                 ]}
                 >
                   <View style={styles.ruleTitleContainer}>
@@ -514,33 +531,76 @@ const CrewFeedHomeScreen = () => {
                   ]}>{crewInfo.ruleContent}</Text>
                 </TouchableOpacity>
 
-
-                <View style={styles.rankScrollContainer}>
+                {/* 코스 내용 */}
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  style={{
+                    height: getSize(640),
+                    marginBottom: getSize(90)
+                  }}
+                >
                   <ScrollView
-                    ref={rankScrollViewRef}
+                    style={styles.scrollView}
+                    contentContainerStyle={styles.scrollContentView}
                     horizontal
                     pagingEnabled
-                    showsHorizontalScrollIndicator={false}
+                    onScroll={handleScroll}
                     scrollEventThrottle={16}
-                    style={{ flexDirection: 'row' }}
+                    showsHorizontalScrollIndicator={false}
                   >
-                    {rankList.map((rank, index) => (
-                      <View key={rank.id} style={styles.rankBox}>
-                        <Text style={styles.rankNumber}>{index + 1}</Text>
-                        <View style={{ marginLeft: getSize(13.7) }}>
-                          <UserIcon width={getSize(34)} height={getSize(34)} />
-                        </View>
-                        <Text style={styles.rankName}>{rank.name}</Text>
-                        <Text style={styles.rankDistance}>{formatDistance(rank.distance)} KM</Text>
-                      </View>
+                    {crewFeedList.map((item, pageIndex) => (
+                      <CrewFeedBox
+                        key={item.id}
+                        date={item.time}
+                        event={item.event}
+                        count={item.count}
+                        backgroundImg={item.backgroundImg}
+                        location={item.location}
+                        name={item.author}
+                        onPressOption={() => { handlePlus(item.id) }}
+                      />
                     ))}
                   </ScrollView>
-                </View>
+
+                  <View style={styles.dotContainer}>
+                    {Array.from({ length: numPages }).map((_, index) => (
+                      <View
+                        key={index}
+                        style={[
+                          styles.dot,
+                          scrollPosition === index && { backgroundColor: '#D9D9D9' }
+                        ]}
+                      />
+                    ))}
+                  </View>
+
+                  <View style={styles.rankScrollContainer}>
+                    <ScrollView
+                      ref={rankScrollViewRef}
+                      horizontal
+                      pagingEnabled
+                      showsHorizontalScrollIndicator={false}
+                      scrollEventThrottle={16}
+                      style={{ flexDirection: 'row' }}
+                    >
+                      {rankList.map((rank, index) => (
+                        <View key={rank.id} style={styles.rankBox}>
+                          <Text style={styles.rankNumber}>{index + 1}</Text>
+                          <View style={{ marginLeft: getSize(13.7) }}>
+                            <UserIcon width={getSize(34)} height={getSize(34)} />
+                          </View>
+                          <Text style={styles.rankName}>{rank.name}</Text>
+                          <Text style={styles.rankDistance}>{formatDistance(rank.distance)} KM</Text>
+                        </View>
+                      ))}
+                    </ScrollView>
+                  </View>
+                </ScrollView>
               </View>
             }
           </View>
         </View>
-      </Animated.View>
+      </Animated.View >
 
       <BottomTab route="CrewFeed" reload={false} />
 
@@ -586,7 +646,7 @@ const CrewFeedHomeScreen = () => {
           </View>
         </TouchableOpacity>
       </Modal>
-    </View>
+    </View >
   );
 };
 
@@ -819,6 +879,38 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.medium,
     height: getSize(24),
     right: getSize(23),
+  },
+  scrollView: {
+    height: getSize(240),
+    width: width,
+    bottom: 0,
+  },
+  scrollContentView: {
+    paddingHorizontal: getSize(Sizes.formMargin),
+    gap: getSize(Sizes.formMargin * 2),
+    width: width * 3,
+  },
+  pageContainer: {
+    width: width,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: getSize(Sizes.formMargin),
+  },
+  dotContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    gap: getSize(14),
+    bottom: getSize(34),
+    left: 0,
+    right: 0,
+  },
+  dot: {
+    height: getSize(7),
+    width: getSize(7),
+    borderRadius: 100,
+    backgroundColor: '#4A4A4A',
   },
 });
 
