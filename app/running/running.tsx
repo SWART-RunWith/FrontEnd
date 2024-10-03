@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { G, Svg, Polyline as SvgPolyline } from 'react-native-svg';
 import MapView, {
   AnimatedRegion,
   Marker,
@@ -191,6 +192,39 @@ const RunningScreen = () => {
     });
   };
 
+  // 경로 표시
+  const convertCoordinatesToSvg = (
+    coordinates: { latitude: number; longitude: number }[],
+    svgWidth: number,
+    svgHeight: number,
+    padding: number = 10 // 여유 공간 추가
+  ) => {
+    if (coordinates.length === 0) return "";
+
+    // 좌표의 최소, 최대값을 찾습니다.
+    const minLat = Math.min(...coordinates.map(coord => coord.latitude));
+    const maxLat = Math.max(...coordinates.map(coord => coord.latitude));
+    const minLon = Math.min(...coordinates.map(coord => coord.longitude));
+    const maxLon = Math.max(...coordinates.map(coord => coord.longitude));
+
+    // 위도와 경도의 범위를 계산합니다.
+    const latRange = maxLat - minLat;
+    const lonRange = maxLon - minLon;
+
+    // 여유 공간을 추가합니다.
+    const paddedLatRange = latRange * (1 + padding / 100);
+    const paddedLonRange = lonRange * (1 + padding / 100);
+
+    // 각 좌표를 SVG 공간에 맞게 변환합니다.
+    return coordinates
+      .map(coord => {
+        const x = ((coord.longitude - minLon) / paddedLonRange) * (svgWidth - padding) + padding / 2;
+        const y = ((maxLat - coord.latitude) / paddedLatRange) * (svgHeight - padding) + padding / 2;
+        return `${x},${y}`;
+      })
+      .join(" ");
+  };
+
   return (
     <View style={Styles.container}>
       {/* 카운트다운 모달 */}
@@ -295,7 +329,18 @@ const RunningScreen = () => {
             styles.mapContainer,
             { height: mapHeightAnim }
           ]}
-        />
+        >
+          <Svg height="100%" width="100%" style={{ padding: 10 }}>
+            <G>
+              <SvgPolyline
+                points={convertCoordinatesToSvg(routeCoordinates, width - 20, getSize(166))}
+                fill="none"
+                stroke={Colors.main}
+                strokeWidth={getSize(3)}
+              />
+            </G>
+          </Svg>
+        </Animated.View>
 
       </Animated.View>
 
@@ -334,6 +379,7 @@ const styles = StyleSheet.create({
     height: getSize(166),
     borderRadius: 20,
     marginTop: getSize(26),
+    overflow: 'hidden',
   },
   textContainer: {
     marginTop: getSize(48),
