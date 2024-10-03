@@ -97,11 +97,18 @@ export type CourseFeedMainScreenRouteProp = RouteProp<
   "course-feed/detail"
 >;
 
+interface Folder {
+  name: string;
+  id: number;
+}
+
 type CourseFeedMineStackParamList = {
   home: undefined;
   "running/save": undefined;
   "course-feed/my/home": undefined;
-  "course-feed/my/folder": undefined;
+  "course-feed/my/folder": {
+    folderList: Folder[];
+  };
   "course-feed/my/folderSearch": undefined;
   "course-feed/my/course": {
     folderId: number;
@@ -116,6 +123,11 @@ export type CourseFeedMineScreenNavigationProp = StackNavigationProp<
 export type CourseSaveScreenRouteProp = RouteProp<
   CourseFeedMineStackParamList,
   "course-feed/my/course"
+>;
+
+export type CourseFolderScreenRouteProp = RouteProp<
+  CourseFeedMineStackParamList,
+  "course-feed/my/folder"
 >;
 
 type CrewFeedStackParamList = {
