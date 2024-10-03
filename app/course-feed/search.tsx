@@ -8,7 +8,8 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ScrollView
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -25,6 +26,9 @@ import Colors from "@/constants/Colors";
 import Sizes from "@/constants/Sizes";
 import Fonts from "@/constants/Fonts";
 import getSize from "@/scripts/getSize";
+import apiClient from "@/axois";
+import { MainCoursePreviewBox } from "@/components/box/CourseFeed";
+import { formatDistance, formatTime } from "@/scripts/format";
 
 const { width } = Dimensions.get('window');
 
@@ -44,15 +48,42 @@ const formatCurrentTime = () => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
+interface CoursePreviewList {
+  id: number;
+  title: string;
+  distance: number;
+  time: number;
+  content: string;
+  location: string;
+  name: string;
+  routeImage: string;
+}
+
 const CourseFeedSearchScreen = () => {
   const [text, setText] = useState('');
   const [searchHistory, setSearchHistory] = useState<{ text: string, time: string }[]>([]);
   const [triggeredByIcon, setTriggeredByIcon] = useState(false);
   const [userName, setUserName] = useState('홍여준');
 
+  const [coursePreviewList, setCoursePreviewList] = useState<CoursePreviewList[]>([]);
+  const [showCourse, setShowCourse] = useState(false);
+
+  // api
+  const fetchCourseList = async () => {
+    try {
+      const response = await apiClient.get(`/courses/search?title=${text}`);
+      setCoursePreviewList(response.data);
+    } catch (error) {
+      console.error('코스 프리뷰 불러오는 중 오류 발생:', error);
+    }
+  }
+
   // 검색
   const handleSearchIconPress = () => {
     setTriggeredByIcon(true);
+    fetchCourseList();
+    setShowCourse(true);
+    setText('');
     handleSearch();
   };
 
@@ -107,6 +138,10 @@ const CourseFeedSearchScreen = () => {
       handleSearch();
     }
     setTriggeredByIcon(false);
+    fetchCourseList();
+    setShowCourse(true);
+    setText('');
+    handleSearch();
   };
 
   const handleDelete = async (index: number) => {
@@ -133,7 +168,7 @@ const CourseFeedSearchScreen = () => {
   // 추천 리스트
   // to do : 추천 api 연결
   const recommendedCourses = [
-    { title: '고려런 코스', author: '강은채' },
+    { title: '고래런 코스', author: '강은채' },
     { title: '반짝이는 시티뷰 뛰자', author: '신주은' },
     { title: '댕댕런으로 기분 전환', author: '김근민' },
   ];
@@ -168,59 +203,84 @@ const CourseFeedSearchScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {/* 검색 리스트 */}
-        <View style={styles.recentSearchesContainer}>
-          <Text style={[styles.recentSearchesText, {
-            marginLeft: getSize(24),
-          }]}>최근 검색</Text>
-          <TouchableOpacity onPress={handleClearAll}>
-            <Text style={[styles.recentSearchesText, {
-              marginRight: getSize(16),
-            }]}>전체 삭제</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.searchItemContainer}>
+        {showCourse ? (
           <FlatList
-            data={recentSearches}
-            keyExtractor={(item, index) => index.toString()}
+            style={styles.courseList}
+            contentContainerStyle={{ gap: getSize(18) }}
+            data={coursePreviewList}
             renderItem={({ item, index }) => (
-              <View style={styles.searchItem}>
-                <View style={styles.searchTextContainer}>
-                  <SearchItemIcon width={getSize(24)} height={getSize(24)} />
-                  <Text style={styles.searchText}>{item.text}</Text>
-                </View>
-                <TouchableOpacity onPress={() => handleDelete(index)}>
-                  <DeleteIcon width={getSize(16)} height={getSize(16)} />
-                </TouchableOpacity>
-              </View>
+              <MainCoursePreviewBox
+                name={item.name}
+                description={item.content}
+                distance={formatDistance(item.distance) + 'KM'}
+                location={item.location}
+                routeImg={item.routeImage}
+                title={item.title}
+                time={formatTime(item.time)}
+                onPressPlus={() => { }}
+              />
             )}
           />
-        </View>
-
-        {/* 추천 리스트 */}
-        <View style={styles.recommendContainer}>
-          <View style={styles.recommendTitleContainer}>
-            <Text style={styles.userName}>{userName}</Text>
-            <Text style={styles.recommendTitle}>님 이런 코스는 어떠세요?</Text>
-          </View>
-          {recommendedCourses.map((course, index) => (
-            <View key={index} style={styles.recommendItem}>
-              <Text style={styles.recommendCourseTitle}>{course.title}</Text>
-              <View style={styles.recommendAuthorContainer}>
-                <Text style={styles.recommendByText}>by. </Text>
-                <View style={{ marginLeft: getSize(12), marginRight: getSize(6) }}>
-                  <UserIcon width={getSize(24)} height={getSize(24)} />
-                </View>
-                <Text style={styles.recommendByText}>{course.author}</Text>
-              </View>
+        ) : (
+          <>
+            <View style={styles.recentSearchesContainer}>
+              <Text style={[styles.recentSearchesText, {
+                marginLeft: getSize(24),
+              }]}>최근 검색</Text>
+              <TouchableOpacity onPress={handleClearAll}>
+                <Text style={[styles.recentSearchesText, {
+                  marginRight: getSize(16),
+                }]}>전체 삭제</Text>
+              </TouchableOpacity>
             </View>
-          ))}
-        </View>
+
+            <View style={styles.searchItemContainer}>
+              <FlatList
+                data={recentSearches}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => (
+                  <TouchableOpacity onPress={() => {
+                    setText(item.text)
+                    handleSearchIconPress();
+                  }}>
+                    <View style={styles.searchItem}>
+                      <View style={styles.searchTextContainer}>
+                        <SearchItemIcon width={getSize(24)} height={getSize(24)} />
+                        <Text style={styles.searchText}>{item.text}</Text>
+                      </View>
+                      <TouchableOpacity onPress={() => handleDelete(index)}>
+                        <DeleteIcon width={getSize(16)} height={getSize(16)} />
+                      </TouchableOpacity>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+
+            <View style={styles.recommendContainer}>
+              <View style={styles.recommendTitleContainer}>
+                <Text style={styles.userName}>{userName}</Text>
+                <Text style={styles.recommendTitle}>님 이런 코스는 어떠세요?</Text>
+              </View>
+              {recommendedCourses.map((course, index) => (
+                <View key={index} style={styles.recommendItem}>
+                  <Text style={styles.recommendCourseTitle}>{course.title}</Text>
+                  <View style={styles.recommendAuthorContainer}>
+                    <Text style={styles.recommendByText}>by. </Text>
+                    <View style={{ marginLeft: getSize(12), marginRight: getSize(6) }}>
+                      <UserIcon width={getSize(24)} height={getSize(24)} />
+                    </View>
+                    <Text style={styles.recommendByText}>{course.author}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </>
+        )}
 
         <BottomTab route='CourseFeed' />
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback >
   );
 };
 
@@ -334,6 +394,12 @@ const styles = StyleSheet.create({
     fontSize: getSize(16),
     fontFamily: Fonts.semiBold,
   },
+  courseList: {
+    width: width,
+    paddingHorizontal: getSize(Sizes.formMargin),
+    marginTop: getSize(28),
+    marginBottom: getSize(100),
+  }
 });
 
 export default CourseFeedSearchScreen;
