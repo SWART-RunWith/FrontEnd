@@ -58,7 +58,7 @@ const RunningScreen = () => {
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(0);
   const [pace, setPace] = useState("0'00\"");
-  const [heartRate, setHeartRate] = useState(120);
+  const [heartRate, setHeartRate] = useState(0);
 
   const calcDistance = (newLatLng: {
     latitude: number;
@@ -80,7 +80,7 @@ const RunningScreen = () => {
     setSeconds(0);
     setMeters(0);
     setPace("0'00\"");
-    setHeartRate(120);
+    setHeartRate(0);
   };
 
   const startTracking = () => {
@@ -141,7 +141,7 @@ const RunningScreen = () => {
         startTracking();
         const newPace = calculatePace(seconds + 1, meters);
         setPace(newPace);
-        updateHeartRate();
+        // updateHeartRate();
       }, 1000);
     } else if (isPaused && seconds !== 0) {
       return () => clearInterval(timer);
