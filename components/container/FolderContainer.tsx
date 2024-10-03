@@ -43,6 +43,7 @@ export const FolderContainer: React.FC<FolderContainerProp> = ({
 const styles = StyleSheet.create({
   folderContainer: {
     paddingHorizontal: getSize(16),
+    width: width,
   },
   folderList: {
     flexDirection: 'row',
