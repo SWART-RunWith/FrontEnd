@@ -24,9 +24,11 @@ import CrossHairIcon from '@/assets/icons/crosshair.svg';
 import RunningIcon from '@/assets/icons/running.svg';
 import OptionIcon from '@/assets/icons/option.svg';
 import BackIcon from '@/assets/icons/back.svg';
+import LocationIcon from '@/assets/icons/location.svg';
 import BottomTab from "@/components/BottomTab";
 import { CrewBox, CrewFeedBox } from "@/components/box/crew-feed/CrewFeed";
 import { BackSearchHeader } from "@/components/header/IconHeader";
+import { UserCountIcon } from "@/components/Icon";
 import Styles from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 import Fonts from "@/constants/Fonts";
@@ -54,7 +56,16 @@ interface CrewFeed {
 
 }
 
-interface Crew {
+interface CrewInfo {
+  id: number;
+  name: string;
+  location: string;
+  count: number;
+  ruleTitle: string;
+  ruleContent: string;
+}
+
+interface MyCrew {
   id: number;
   name: string;
 }
@@ -62,7 +73,17 @@ interface Crew {
 const CrewFeedHomeScreen = () => {
   const navigation = useNavigation<CrewFeedScreenNavigationProp>();
 
-  const [crewList, setCrewList] = useState<Crew[]>([]);
+  const [isAll, setIsAll] = useState(true);
+
+  const [crewList, setCrewList] = useState<MyCrew[]>([]);
+  const [crewInfo, setCrewInfo] = useState<CrewInfo>({
+    id: 0,
+    name: '',
+    location: '',
+    count: 0,
+    ruleTitle: '',
+    ruleContent: '',
+  });
   const [crewFeedList, setCrewFeedList] = useState<CrewFeed[]>([]);
 
   const [isPanResponderActive, setIsPanResponderActive] = useState(true);
@@ -98,13 +119,15 @@ const CrewFeedHomeScreen = () => {
   }
 
   const fetchAllCrewFeed = async () => {
+    setIsAll(true);
 
   }
 
-  const fetchCrewFeed = async (crewId: number) => {
+  const fetchCrewInfo = async (crewId: number) => {
+    setIsAll(false);
     try {
       const response = await apiClient.get(`/crews/${crewId}`);
-      setCrewFeedList(response.data);
+      setCrewInfo(response.data);
     } catch (error) {
       console.error('크루 피드 불러오는 중 오류 발생:', error);
     }
@@ -234,7 +257,7 @@ const CrewFeedHomeScreen = () => {
 
   const handleCrewFeed = (crewId: number) => {
     if (crewId !== 0) {
-      fetchCrewFeed(crewId);
+      fetchCrewInfo(crewId);
     }
     else {
       fetchAllCrewFeed();
@@ -392,28 +415,40 @@ const CrewFeedHomeScreen = () => {
 
             <View style={{ marginTop: getSize(24) }} />
 
-            <FlatList
-              style={{
-                paddingHorizontal: getSize(Sizes.formMargin),
-              }}
-              data={crewContentList}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <View style={{ marginBottom: getSize(24) }}>
-                  <CrewFeedBox
-                    date={item.time}
-                    event={item.event}
-                    count={item.count}
-                    backgroundImg={item.backgroundImg}
-                    location={item.location}
-                    name={item.author}
-                    onPressOption={() => { handlePlus(item.id) }}
-                  />
+            {isAll ?
+              <FlatList
+                style={{
+                  paddingHorizontal: getSize(Sizes.formMargin),
+                }}
+                data={crewContentList}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <View style={{ marginBottom: getSize(24) }}>
+                    <CrewFeedBox
+                      date={item.time}
+                      event={item.event}
+                      count={item.count}
+                      backgroundImg={item.backgroundImg}
+                      location={item.location}
+                      name={item.author}
+                      onPressOption={() => { handlePlus(item.id) }}
+                    />
+                  </View>
+                )}
+                onEndReached={loadMoreCourses}
+                onEndReachedThreshold={0.5}
+              /> :
+              <View>
+                <View style={styles.introContainer}>
+                  <View style={styles.locationContainer}>
+                    <LocationIcon width={getSize(17)} height={getSize(24)} />
+                    <Text style={styles.location}>{crewInfo.location}</Text>
+                    <UserCountIcon count={crewInfo.count} />
+                  </View>
+                  <Text style={styles.crewInfoName}>{crewInfo.name}</Text>
                 </View>
-              )}
-              onEndReached={loadMoreCourses}
-              onEndReachedThreshold={0.5}
-            />
+              </View>
+            }
           </View>
         </View>
       </Animated.View>
@@ -447,7 +482,7 @@ const CrewFeedHomeScreen = () => {
                   style={styles.menuItem}
                   onPress={() => {
                     {
-                      fetchCrewFeed(crew.id)
+                      fetchCrewInfo(crew.id)
                       toggleModal();
                     }
                   }}
@@ -572,6 +607,26 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     width: width,
     paddingBottom: getSize(200),
+  },
+  introContainer: {
+    marginLeft: getSize(26),
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    gap: getSize(6),
+    alignItems: 'center',
+  },
+  location: {
+    color: 'white',
+    fontSize: getSize(14),
+    fontFamily: Fonts.semiBold,
+    height: getSize(17),
+  },
+  crewInfoName: {
+    color: Colors.main,
+    fontSize: getSize(36),
+    fontFamily: Fonts.bold,
+    height: getSize(43),
   },
   modalOverlay: {
     flex: 1,
