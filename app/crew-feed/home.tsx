@@ -50,6 +50,8 @@ const crewContentList = [
 const CrewFeedHomeScreen = () => {
   const navigation = useNavigation<CrewFeedScreenNavigationProp>();
 
+  const [isPanResponderActive, setIsPanResponderActive] = useState(true);
+
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
   const [activeIndex, setActiveIndex] = useState(1);
@@ -132,10 +134,13 @@ const CrewFeedHomeScreen = () => {
     onPanResponderRelease: (evt, gestureState) => {
       if (gestureState.dy < -100) {
         Animated.timing(translateY, {
-          toValue: statusBarHeight + getSize(54),
+          toValue: statusBarHeight,
           duration: 300,
           useNativeDriver: true,
-        }).start(() => setIsCourseFeedScreenVisible(true));
+        }).start(() => {
+          setIsCourseFeedScreenVisible(true);
+          setIsPanResponderActive(false);
+        });
       } else {
         Animated.timing(translateY, {
           toValue: getSize(720) + statusBarHeight,
@@ -152,7 +157,9 @@ const CrewFeedHomeScreen = () => {
         toValue: getSize(720) + statusBarHeight,
         duration: 300,
         useNativeDriver: true,
-      }).start();
+      }).start(() => {
+        setIsPanResponderActive(true);
+      });
     }
   }, [isCourseFeedScreenVisible]);
 
@@ -278,7 +285,7 @@ const CrewFeedHomeScreen = () => {
           styles.crewFeedScreen,
           { transform: [{ translateY }] }
         ]}
-        {...panResponder.panHandlers}
+        {...(isPanResponderActive && panResponder.panHandlers)}
       >
         {!isCourseFeedScreenVisible
           ? <Image

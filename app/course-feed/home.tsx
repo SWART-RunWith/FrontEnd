@@ -13,6 +13,7 @@ import {
   StatusBar,
   Platform,
   FlatList,
+  SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -47,6 +48,8 @@ interface Course {
 
 const CourseFeedHomeScreen = () => {
   const navigation = useNavigation<CourseFeedMainScreenNavigationProp>();
+
+  const [isPanResponderActive, setIsPanResponderActive] = useState(true);
 
   // 코스 데이터 가져오기
   const [courseList, setCourseList] = useState<Course[]>(courseDummyList);
@@ -140,10 +143,13 @@ const CourseFeedHomeScreen = () => {
     onPanResponderRelease: (evt, gestureState) => {
       if (gestureState.dy < -100) {
         Animated.timing(translateY, {
-          toValue: statusBarHeight + getSize(54),
+          toValue: statusBarHeight,
           duration: 300,
           useNativeDriver: true,
-        }).start(() => setIsCourseFeedScreenVisible(true));
+        }).start(() => {
+          setIsCourseFeedScreenVisible(true);
+          setIsPanResponderActive(false);
+        });
       } else {
         Animated.timing(translateY, {
           toValue: getSize(720) + statusBarHeight,
@@ -160,7 +166,9 @@ const CourseFeedHomeScreen = () => {
         toValue: getSize(720) + statusBarHeight,
         duration: 300,
         useNativeDriver: true,
-      }).start();
+      }).start(() => {
+        setIsPanResponderActive(true);
+      });
     }
   }, [isCourseFeedScreenVisible]);
 
@@ -313,7 +321,7 @@ const CourseFeedHomeScreen = () => {
           styles.courseFeedScreen,
           { transform: [{ translateY }] }
         ]}
-        {...panResponder.panHandlers}
+        {...(isPanResponderActive && panResponder.panHandlers)}
       >
         {!isCourseFeedScreenVisible
           ? <Image
