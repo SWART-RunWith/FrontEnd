@@ -161,7 +161,9 @@ export const CrewFeedBox: React.FC<
             </View>
           </BlurView>
         </ImageBackground>
-        <UserCountIcon count={count} />
+        <View style={crewFeedStyles.countContainer}>
+          <UserCountIcon count={count} />
+        </View>
       </View >
     );
   };
@@ -232,26 +234,9 @@ const crewFeedStyles = StyleSheet.create({
     right: getSize(13),
     zIndex: 1,
   },
-  userIcon: {
-    position: 'absolute',
-    alignItems: 'center',
-    right: getSize(15),
-    bottom: getSize(15),
-  },
   countContainer: {
     position: 'absolute',
-    backgroundColor: Colors.main,
-    height: getSize(16),
-    width: getSize(30),
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    right: getSize(19),
+    right: getSize(15),
     bottom: getSize(9),
-  },
-  count: {
-    fontSize: getSize(12),
-    fontFamily: Fonts.bold,
   },
 })

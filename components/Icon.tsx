@@ -12,24 +12,19 @@ export const UserCountIcon: React.FC<{
   count,
 }) => {
     return (
-      <>
-        <View style={userCountStyles.userIcon}>
-          <UserIcon width={getSize(38)} height={getSize(38)} />
-        </View>
+      <View style={{
+        height: getSize(44),
+        width: getSize(38),
+      }} >
+        <UserIcon width={getSize(38)} height={getSize(38)} />
         <View style={userCountStyles.countContainer}>
           <Text style={userCountStyles.count}>{count}</Text>
         </View>
-      </>
+      </View>
     )
   }
 
 const userCountStyles = StyleSheet.create({
-  userIcon: {
-    position: 'absolute',
-    alignItems: 'center',
-    right: getSize(15),
-    bottom: getSize(15),
-  },
   countContainer: {
     position: 'absolute',
     backgroundColor: Colors.main,
@@ -39,8 +34,8 @@ const userCountStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    right: getSize(19),
-    bottom: getSize(9),
+    left: getSize(3),
+    top: getSize(27),
   },
   count: {
     fontSize: getSize(12),
