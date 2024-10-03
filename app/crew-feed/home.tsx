@@ -51,8 +51,8 @@ const crewBestList = [
 // Example Course Data for Feed
 const crewContentList = [
   { id: 1, event: '용산대교 저녁 러닝', time: '2024.08.21', description: '서울 용산대교에서 즐기는 저녁 러닝', backgroundImg: require('@/assets/images/crew1.png'), distance: '5.5KM', location: '서울 용산구', author: 'KHUMA', count: 51, },
-  { id: 2, title: '남산 러닝 코스', time: '2024.09.05', description: '남산 둘레길을 따라 달리는 힐링 코스', backgroundImg: require('@/assets/images/crew2.png'), distance: '7.2KM', location: '서울 중구', author: '런윗', count: 36 },
-  { id: 3, title: '한강공원 런', time: '2024.08.18', description: '한강공원을 따라 펼쳐지는 시원한 코스', backgroundImg: require('@/assets/images/crew3.png'), distance: '10KM', location: '서울 영등포구', author: '경달', count: 5 },
+  { id: 2, event: '남산 러닝 코스', time: '2024.09.05', description: '남산 둘레길을 따라 달리는 힐링 코스', backgroundImg: require('@/assets/images/crew2.png'), distance: '7.2KM', location: '서울 중구', author: '런윗', count: 36 },
+  { id: 3, event: '한강공원 런', time: '2024.08.18', description: '한강공원을 따라 펼쳐지는 시원한 코스', backgroundImg: require('@/assets/images/crew3.png'), distance: '10KM', location: '서울 영등포구', author: '경달', count: 5 },
 ];
 
 interface CrewFeed {
@@ -175,9 +175,20 @@ const CrewFeedHomeScreen = () => {
     }
   }
 
+  const fetchCrewFeed = async (crewId: number) => {
+    const updatedCrewFeedList = crewContentList.slice(0, 3).map(feed => ({
+      ...feed,
+      distance: parseFloat(feed.distance) // distance 값을 number로 변환
+    }));
+
+    console.log(updatedCrewFeedList);
+    setCrewFeedList(updatedCrewFeedList);
+  }
+
   // 크루 선택
   const handleSelectCrew = (crewId: number) => {
     fetchCrewInfo(crewId);
+    fetchCrewFeed(crewId);
     fetchRank(crewId);
   }
 
@@ -541,24 +552,25 @@ const CrewFeedHomeScreen = () => {
                 >
                   <ScrollView
                     style={styles.scrollView}
-                    contentContainerStyle={styles.scrollContentView}
                     horizontal
                     pagingEnabled
-                    onScroll={handleScroll}
-                    scrollEventThrottle={16}
                     showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.scrollContentView}
+                    onScroll={handleCrewFeedScroll} // 스크롤 핸들러
+                    scrollEventThrottle={16}
                   >
                     {crewFeedList.map((item, pageIndex) => (
-                      <CrewFeedBox
-                        key={item.id}
-                        date={item.time}
-                        event={item.event}
-                        count={item.count}
-                        backgroundImg={item.backgroundImg}
-                        location={item.location}
-                        name={item.author}
-                        onPressOption={() => { handlePlus(item.id) }}
-                      />
+                      <View key={item.id} style={styles.slideBox}>
+                        <CrewFeedBox
+                          date={item.time}
+                          event={item.event}
+                          count={item.count}
+                          backgroundImg={item.backgroundImg}
+                          location={item.location}
+                          name={item.author}
+                          onPressOption={() => { handlePlus(item.id) }}
+                        />
+                      </View>
                     ))}
                   </ScrollView>
 
@@ -789,6 +801,7 @@ const styles = StyleSheet.create({
     paddingVertical: getSize(10),
     marginHorizontal: getSize(Sizes.formMargin),
     marginTop: getSize(24),
+    marginBottom: getSize(28),
     width: width - getSize(Sizes.formMargin * 2),
     height: getSize(80),
   },
@@ -844,7 +857,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   rankScrollContainer: {
-    marginTop: getSize(348),
+    marginTop: getSize(11),
     height: getSize(58),
     width: width,
     paddingHorizontal: getSize(Sizes.formMargin),
@@ -881,30 +894,25 @@ const styles = StyleSheet.create({
     right: getSize(23),
   },
   scrollView: {
-    height: getSize(240),
     width: width,
     bottom: 0,
   },
   scrollContentView: {
-    paddingHorizontal: getSize(Sizes.formMargin),
-    gap: getSize(Sizes.formMargin * 2),
     width: width * 3,
   },
-  pageContainer: {
-    width: width,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  slideBox: {
     paddingHorizontal: getSize(Sizes.formMargin),
+    width: width,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dotContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
     gap: getSize(14),
-    bottom: getSize(34),
-    left: 0,
-    right: 0,
+    marginTop: getSize(12),
+    marginBottom: getSize(11),
   },
   dot: {
     height: getSize(7),
