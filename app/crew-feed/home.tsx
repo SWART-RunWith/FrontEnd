@@ -50,9 +50,9 @@ const crewBestList = [
 
 // Example Course Data for Feed
 const crewContentList = [
-  { id: 1, event: '용산대교 저녁 러닝', time: '2024.08.21', description: '서울 용산대교에서 즐기는 저녁 러닝', backgroundImg: require('@/assets/images/crew1.png'), distance: '5.5KM', location: '서울 용산구', author: 'KHUMA', count: 51, },
-  { id: 2, event: '남산 러닝 코스', time: '2024.09.05', description: '남산 둘레길을 따라 달리는 힐링 코스', backgroundImg: require('@/assets/images/crew2.png'), distance: '7.2KM', location: '서울 중구', author: '런윗', count: 36 },
-  { id: 3, event: '한강공원 런', time: '2024.08.18', description: '한강공원을 따라 펼쳐지는 시원한 코스', backgroundImg: require('@/assets/images/crew3.png'), distance: '10KM', location: '서울 영등포구', author: '경달', count: 5 },
+  { id: 1, event: '용산대교 저녁 러닝', time: '2024.08.21', description: '서울 용산대교에서 즐기는 저녁 러닝', backgroundImg: require('@/assets/images/crew1.png'), distance: '5.5KM', location: '서울 용산구', author: 'KHUMA', count: 51, content: "어쩌구" },
+  { id: 2, event: '남산 러닝 코스', time: '2024.09.05', description: '남산 둘레길을 따라 달리는 힐링 코스', backgroundImg: require('@/assets/images/crew2.png'), distance: '7.2KM', location: '서울 중구', author: '런윗', count: 36, content: '어쩌구' },
+  { id: 3, event: '한강공원 런', time: '2024.08.18', description: '한강공원을 따라 펼쳐지는 시원한 코스', backgroundImg: require('@/assets/images/crew3.png'), distance: '10KM', location: '서울 영등포구', author: '경달', count: 5, content: 'ㅈ저쩌구' },
 ];
 
 interface CrewFeed {
@@ -62,6 +62,7 @@ interface CrewFeed {
   description: string;
   backgroundImg: string;
   distance: number;
+  content: string;
   location: string;
   author: string;
   count: number;
@@ -107,10 +108,12 @@ const CrewFeedHomeScreen = () => {
   const [isPanResponderActive, setIsPanResponderActive] = useState(true);
   const [visibleCrewSelectModal, setVisibleCrewSelectModal] = useState(false);
   const [isExpandedNotice, setIsExpandedNotice] = useState(false);
+  const [visibleContent, setVisibleContent] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const numPages = crewFeedList.length;
 
   const scrollX = useRef(new Animated.Value(0)).current;
+  const scrollY = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
   const [activeIndex, setActiveIndex] = useState(1);
 
@@ -119,7 +122,7 @@ const CrewFeedHomeScreen = () => {
   const CARD_MARGIN = (width - CARD_WIDTH) / 2;
   const SNAP_INTERVAL = CARD_WIDTH + CARD_MARGIN * 0.05;
 
-  const handleScroll = (event: any) => {
+  const handleScrollX = (event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(contentOffsetX / SNAP_INTERVAL);
     setActiveIndex(index);
@@ -311,6 +314,7 @@ const CrewFeedHomeScreen = () => {
   const handleCrewFeedScroll = (event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const pageIndex = Math.round(contentOffsetX / width);
+    setVisibleContent(false);
     setScrollPosition(pageIndex);
   };
 
@@ -319,8 +323,12 @@ const CrewFeedHomeScreen = () => {
     setVisibleCrewSelectModal(!visibleCrewSelectModal);
   }
 
-  const handleExpandedNotice = () => {
+  const toggleExpandedNotice = () => {
     setIsExpandedNotice(!isExpandedNotice);
+  }
+
+  const toggleContentVisible = () => {
+    setVisibleContent(!visibleContent);
   }
 
   // 등수
@@ -393,7 +401,7 @@ const CrewFeedHomeScreen = () => {
         decelerationRate="fast"
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: true, listener: handleScroll }
+          { useNativeDriver: true, listener: handleScrollX }
         )}
         scrollEventThrottle={16}
       >
@@ -523,7 +531,7 @@ const CrewFeedHomeScreen = () => {
                   <Text style={styles.crewInfoName}>{crewInfo.name}</Text>
                 </View>
 
-                <TouchableOpacity onPress={handleExpandedNotice} style={[
+                <TouchableOpacity onPress={toggleExpandedNotice} style={[
                   styles.ruleContainer,
                   isExpandedNotice && { height: getSize(180) }
                 ]}
@@ -534,7 +542,9 @@ const CrewFeedHomeScreen = () => {
                       style={styles.ruleTitle}
                       numberOfLines={1}
                       ellipsizeMode="tail"
-                    >{crewInfo.ruleTitle}</Text>
+                    >
+                      {crewInfo.ruleTitle}
+                    </Text>
                   </View>
                   <Text style={[
                     styles.ruleContent,
@@ -546,8 +556,12 @@ const CrewFeedHomeScreen = () => {
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   style={{
-                    height: getSize(640),
-                    marginBottom: getSize(90)
+                  }}
+                  contentContainerStyle={{
+                    flexGrow: 1,
+                    minHeight: getSize(720),
+                    marginBottom: getSize(90),
+                    paddingBottom: getSize(100),
                   }}
                 >
                   <ScrollView
@@ -560,16 +574,29 @@ const CrewFeedHomeScreen = () => {
                     scrollEventThrottle={16}
                   >
                     {crewFeedList.map((item, pageIndex) => (
-                      <View key={item.id} style={styles.slideBox}>
-                        <CrewFeedBox
-                          date={item.time}
-                          event={item.event}
-                          count={item.count}
-                          backgroundImg={item.backgroundImg}
-                          location={item.location}
-                          name={item.author}
-                          onPressOption={() => { handlePlus(item.id) }}
-                        />
+                      <View key={item.id} style={styles.vertical}>
+                        <TouchableOpacity
+                          style={styles.slideBox}
+                          onPress={toggleContentVisible}
+                        >
+                          <CrewFeedBox
+                            date={item.time}
+                            event={item.event}
+                            count={item.count}
+                            backgroundImg={item.backgroundImg}
+                            location={item.location}
+                            name={item.author}
+                            onPressOption={() => { handlePlus(item.id) }}
+                          />
+                        </TouchableOpacity>
+
+                        {visibleContent &&
+                          <View style={styles.contentContainer}>
+                            <View>
+                              <Text>{item.content}</Text>
+                            </View>
+                          </View>
+                        }
                       </View>
                     ))}
                   </ScrollView>
@@ -861,6 +888,7 @@ const styles = StyleSheet.create({
     height: getSize(58),
     width: width,
     paddingHorizontal: getSize(Sizes.formMargin),
+    marginBottom: getSize(90),
   },
   rankBox: {
     backgroundColor: Colors.grayBox,
@@ -919,6 +947,17 @@ const styles = StyleSheet.create({
     width: getSize(7),
     borderRadius: 100,
     backgroundColor: '#4A4A4A',
+  },
+  vertical: {
+
+  },
+  contentContainer: {
+    backgroundColor: Colors.grayBox,
+    height: getSize(168),
+    width: width - getSize(Sizes.formMargin * 2),
+    marginTop: getSize(12),
+    marginHorizontal: getSize(Sizes.formMargin),
+    padding: getSize(Sizes.formMargin),
   },
 });
 
