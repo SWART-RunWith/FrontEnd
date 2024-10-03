@@ -1,30 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  Dimensions,
-  Platform
 } from 'react-native';
 import MapView, {
   MapMarker,
-  Polyline
 } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
-import haversine from 'haversine';
 
 import LocationIcon from '@/assets/icons/location.svg';
 import Styles from '@/constants/Styles';
 import MapStyles from '@/constants/mapStyles.json';
-import { DefaultButton } from '@/components/button/Button';
 import { StartButton } from '@/components/button/RunningButton';
 import { HomeHeader } from '@/components/header/TextOnlyHeader';
 import { HomeScreenNavigationProp } from '@/scripts/navigation';
 import getSize from '@/scripts/getSize';
 import BottomTab from '@/components/BottomTab';
-
-const { width } = Dimensions.get('window');
 
 const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = 0.01;
