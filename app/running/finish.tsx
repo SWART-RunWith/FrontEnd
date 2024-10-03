@@ -7,6 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import apiClient from '@/axois';
 
 import EmptyHeartIcon from '@/assets/icons/emptyHeart.svg';
 import { CourseButton } from '@/components/button/RunningButton';
@@ -33,11 +34,30 @@ const FinishScreen = () => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const handleSaveCourse = () => {
-    // to do : 코스 저장 api 연결
-    console.log('코스 저장');
-    setShowModal(false);
-    navigation.navigate('running/save');
+  const handleSaveCourse = async () => {
+    try {
+      const newData = {
+        runningShoesId: 1,
+        distance: meters,
+        time: seconds,
+        averagePace: pace,
+        courseUrl: 'some_url',
+      };
+
+      // API 요청 보내기
+      const response = await apiClient.post('/runs', newData);
+
+      if (response.status === 200 || response.status === 201) {
+        console.log('러닝 데이터 저장 및 전송 성공');
+      } else {
+        console.error('데이터 전송 실패:', response.status);
+      }
+
+      setShowModal(false);
+      resetNavigationStack(navigation, 'home');
+    } catch (error) {
+      console.error('러닝 데이터 전송 중 오류 발생:', error);
+    }
   };
 
   const handleShowModal = () => {
