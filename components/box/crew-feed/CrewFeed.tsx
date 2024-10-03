@@ -18,6 +18,7 @@ import RunningIcon from '@/assets/icons/running.svg';
 import Colors from "@/constants/Colors";
 import getSize from "@/scripts/getSize";
 import Fonts from "@/constants/Fonts";
+import { UserCountIcon } from "@/components/Icon";
 
 /*
 메인 코스 피드 박스
@@ -160,12 +161,7 @@ export const CrewFeedBox: React.FC<
             </View>
           </BlurView>
         </ImageBackground>
-        <View style={crewFeedStyles.userIcon}>
-          <UserIcon width={getSize(38)} height={getSize(38)} />
-        </View>
-        <View style={crewFeedStyles.countContainer}>
-          <Text style={crewFeedStyles.count}>{count}</Text>
-        </View>
+        <UserCountIcon count={count} />
       </View >
     );
   };
