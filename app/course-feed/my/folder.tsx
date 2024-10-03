@@ -82,20 +82,6 @@ const CourseFeedFolderScreen = () => {
     }
   };
 
-  const handleGetAll = async () => {
-    // to do : folder list get api 연결
-    try {
-      const response = await axios.get('http://localhost:8080/folders');
-      setFolderList(response.data); // API로 받은 데이터로 folderList 업데이트
-    } catch (error) {
-      console.error('폴더 리스트를 불러오는 중 오류 발생:', error);
-    }
-  }
-
-  useEffect(() => {
-    handleGetAll();
-  }, []);
-
   const handleDelete = () => {
     console.log('Deleting folders:', selectedFolders);
     // to do : delete api 연결
