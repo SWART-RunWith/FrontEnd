@@ -12,7 +12,7 @@ const { width } = Dimensions.get('window');
 interface FolderContainerProp {
   folderList: { name: string, id: number }[];
   selectedFolders?: number[];
-  onFolderPress: (folderId: number) => void;
+  onFolderPress: (folderId: number, folderName: string) => void;
 }
 
 export const FolderContainer: React.FC<FolderContainerProp> = ({
@@ -31,7 +31,7 @@ export const FolderContainer: React.FC<FolderContainerProp> = ({
               isSelected={selectedFolders.includes(folder.id)}
               name={folder.name}
               count={0}
-              onPress={() => onFolderPress(folder.id)}
+              onPress={() => onFolderPress(folder.id, folder.name)}
             />
           </View>
         ))}

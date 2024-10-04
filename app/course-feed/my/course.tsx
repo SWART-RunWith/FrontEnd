@@ -39,15 +39,21 @@ type Mode = 'BASIC' | 'EDIT' | 'DELETE';
 
 const { width } = Dimensions.get('window');
 
+interface Course {
+  id: number;
+  title: string;
+  time: number;
+  distance: number;
+}
+
 const MyCourseScreen = () => {
   const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
   const route = useRoute<CourseSaveScreenRouteProp>();
-  const { folderId } = route.params;
+  const { folderId, folderName } = route.params;
 
   const scrollRef = useRef<ScrollView>(null);
 
   // dummy data
-  const folderName = '서천동';
   const courseList = [
     { id: 1, title: '경희대 - 서천 최애 달립니다 야호', time: '00:40:28', distance: '03.66KM' },
     { id: 2, title: '업힐 훈련', time: '01:20:14', distance: '04.30KM' },

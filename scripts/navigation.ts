@@ -112,6 +112,7 @@ type CourseFeedMineStackParamList = {
   "course-feed/my/folderSearch": undefined;
   "course-feed/my/course": {
     folderId: number;
+    folderName: string;
   };
 };
 

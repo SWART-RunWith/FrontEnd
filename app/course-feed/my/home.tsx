@@ -229,8 +229,8 @@ const MyCourseHomeScreen = () => {
         </TouchableOpacity>
         <FolderContainer
           folderList={folderList}
-          onFolderPress={(folderId: number) => {
-            navigation.navigate('course-feed/my/course', { folderId });
+          onFolderPress={(folderId: number, folderName: string) => {
+            navigation.navigate('course-feed/my/course', { folderId, folderName });
           }}
         />
       </View>

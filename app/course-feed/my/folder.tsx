@@ -48,10 +48,10 @@ const CourseFeedFolderScreen = () => {
 
   const toggleModal = () => setVisibleModal(!visibleModal);
 
-  const handleFolderPress = (folderId: number) => {
+  const handleFolderPress = (folderId: number, folderName: string) => {
     switch (mode) {
       case 'BASIC':
-        navigation.navigate('course-feed/my/course', { folderId });
+        navigation.navigate('course-feed/my/course', { folderId, folderName });
         break;
 
       case 'EDIT':
