@@ -151,7 +151,7 @@ const MyCourseHomeScreen = () => {
 
       <MyFolderHeader
         onPressBack={() => { goHome() }}
-        onPressSearch={() => { navigation.navigate('course-feed/my/folderSearch') }}
+        onPressSearch={() => { navigation.navigate('course-feed/my/folderSearch', { folderList }) }}
         onPressOption={() => { }}
       />
 

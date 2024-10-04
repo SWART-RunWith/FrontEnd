@@ -25,6 +25,9 @@ import Colors from "@/constants/Colors";
 import Sizes from "@/constants/Sizes";
 import Fonts from "@/constants/Fonts";
 import getSize from "@/scripts/getSize";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { CourseFeedMineScreenNavigationProp, FolderSearchScreenRouteProp } from "@/scripts/navigation";
+import { FolderContainer } from "@/components/container/FolderContainer";
 
 const { width } = Dimensions.get('window');
 
@@ -45,10 +48,18 @@ const formatCurrentTime = () => {
 };
 
 const CourseFeedSearchScreen = () => {
-  const [text, setText] = useState('');
-  const [searchHistory, setSearchHistory] = useState<{ text: string, time: string }[]>([]);
-  const [triggeredByIcon, setTriggeredByIcon] = useState(false);
+  const navigation = useNavigation<CourseFeedMineScreenNavigationProp>();
+  const route = useRoute<FolderSearchScreenRouteProp>();
+  const { folderList } = route.params;
+
   const [userName, setUserName] = useState('홍여준');
+
+  const [text, setText] = useState('');
+  const [filteredFolderList, setFilteredFolderList] = useState(folderList);
+  const [showFolder, setShowFolder] = useState(false);
+
+  const [triggeredByIcon, setTriggeredByIcon] = useState(false);
+  const [searchHistory, setSearchHistory] = useState<{ text: string, time: string }[]>([]);
 
   useEffect(() => {
     const loadSearchHistory = async () => {
@@ -91,7 +102,14 @@ const CourseFeedSearchScreen = () => {
     }
 
     setSearchHistory(updatedHistory);
+
+    const filtered = folderList.filter(folder =>
+      folder.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredFolderList(filtered);
+
     setText('');
+    setShowFolder(true);
     Keyboard.dismiss();
   };
 
@@ -125,6 +143,10 @@ const CourseFeedSearchScreen = () => {
       console.error("검색 기록 삭제 실패", error);
     }
   };
+
+  const handleFolderPress = (folderId: number, folderName: string) => {
+    navigation.navigate('course-feed/my/course', { folderId, folderName });
+  }
 
   const recentSearches = searchHistory.slice(0, 5);
 
@@ -166,56 +188,66 @@ const CourseFeedSearchScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {/* 검색 리스트 */}
-        <View style={styles.recentSearchesContainer}>
-          <Text style={[styles.recentSearchesText, {
-            marginLeft: getSize(24),
-          }]}>최근 검색</Text>
-          <TouchableOpacity onPress={handleClearAll}>
-            <Text style={[styles.recentSearchesText, {
-              marginRight: getSize(16),
-            }]}>전체 삭제</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.searchItemContainer}>
-          <FlatList
-            data={recentSearches}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => (
-              <View style={styles.searchItem}>
-                <View style={styles.searchTextContainer}>
-                  <SearchItemIcon width={getSize(24)} height={getSize(24)} />
-                  <Text style={styles.searchText}>{item.text}</Text>
-                </View>
-                <TouchableOpacity onPress={() => handleDelete(index)}>
-                  <DeleteIcon width={getSize(16)} height={getSize(16)} />
-                </TouchableOpacity>
-              </View>
-            )}
+        {showFolder ? (
+          <FolderContainer
+            folderList={filteredFolderList}
+            onFolderPress={(folderId: number, folderName: string) => {
+              handleFolderPress(folderId, folderName);
+            }}
           />
-        </View>
-
-        {/* 추천 리스트 */}
-        <View style={styles.recommendContainer}>
-          <View style={styles.recommendTitleContainer}>
-            <Text style={styles.userName}>{userName}</Text>
-            <Text style={styles.recommendTitle}>님 이런 코스는 어떠세요?</Text>
-          </View>
-          {recommendedCourses.map((course, index) => (
-            <View key={index} style={styles.recommendItem}>
-              <Text style={styles.recommendCourseTitle}>{course.title}</Text>
-              <View style={styles.recommendAuthorContainer}>
-                <Text style={styles.recommendByText}>by. </Text>
-                <View style={{ marginLeft: getSize(12), marginRight: getSize(6) }}>
-                  <UserIcon width={getSize(24)} height={getSize(24)} />
-                </View>
-                <Text style={styles.recommendByText}>{course.author}</Text>
-              </View>
+        ) : (
+          <>
+            {/* 검색 리스트 */}
+            <View style={styles.recentSearchesContainer}>
+              <Text style={[styles.recentSearchesText, {
+                marginLeft: getSize(24),
+              }]}>최근 검색</Text>
+              <TouchableOpacity onPress={handleClearAll}>
+                <Text style={[styles.recentSearchesText, {
+                  marginRight: getSize(16),
+                }]}>전체 삭제</Text>
+              </TouchableOpacity>
             </View>
-          ))}
-        </View>
 
+            <View style={styles.searchItemContainer}>
+              <FlatList
+                data={recentSearches}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => (
+                  <View style={styles.searchItem}>
+                    <View style={styles.searchTextContainer}>
+                      <SearchItemIcon width={getSize(24)} height={getSize(24)} />
+                      <Text style={styles.searchText}>{item.text}</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => handleDelete(index)}>
+                      <DeleteIcon width={getSize(16)} height={getSize(16)} />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+            </View>
+
+            {/* 추천 리스트 */}
+            <View style={styles.recommendContainer}>
+              <View style={styles.recommendTitleContainer}>
+                <Text style={styles.userName}>{userName}</Text>
+                <Text style={styles.recommendTitle}>님 이런 코스는 어떠세요?</Text>
+              </View>
+              {recommendedCourses.map((course, index) => (
+                <View key={index} style={styles.recommendItem}>
+                  <Text style={styles.recommendCourseTitle}>{course.title}</Text>
+                  <View style={styles.recommendAuthorContainer}>
+                    <Text style={styles.recommendByText}>by. </Text>
+                    <View style={{ marginLeft: getSize(12), marginRight: getSize(6) }}>
+                      <UserIcon width={getSize(24)} height={getSize(24)} />
+                    </View>
+                    <Text style={styles.recommendByText}>{course.author}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </>
+        )}
         <BottomTab route='CourseFeed' />
       </View>
     </TouchableWithoutFeedback>

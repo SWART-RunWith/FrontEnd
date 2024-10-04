@@ -97,7 +97,7 @@ const CourseFeedFolderScreen = () => {
       <MainGradient />
       <MyFolderHeader
         onPressBack={() => { navigation.goBack() }}
-        onPressSearch={() => { navigation.navigate('course-feed/my/folderSearch'); }}
+        onPressSearch={() => { navigation.navigate('course-feed/my/folderSearch', { folderList }); }}
         onPressOption={() => { setVisibleModal(true) }}
       />
 
