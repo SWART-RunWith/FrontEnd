@@ -263,6 +263,7 @@ export const MainCourseDetailBox: React.FC<
   title = '',
   time = '00:00:00',
   distance = '00.00KM',
+  routeImg = 'url',
   backgroundImg: img = 'url',
   location = '경기도 용인시',
   name = '아무개',
@@ -282,7 +283,7 @@ export const MainCourseDetailBox: React.FC<
 
           <Image
             style={detailStyles.courseImage}
-            source={{ uri: img }}
+            source={{ uri: routeImg }}
           />
 
           <View style={detailStyles.courseDataContainer}>

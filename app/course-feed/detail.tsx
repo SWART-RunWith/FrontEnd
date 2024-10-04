@@ -75,7 +75,7 @@ const CourseFEedDetailScreen = () => {
             title={courseData.title}
             time={courseData.time}
             distance={courseData.distance}
-            routeImg={'img'}
+            routeImg={courseData.routeImage}
             location={courseData.location}
             description={courseData.description}
             name={courseData.author}
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
   courseContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: getSize(Sizes.formMargin),
     marginTop: getSize(60),
     alignItems: 'center',
     width: width,

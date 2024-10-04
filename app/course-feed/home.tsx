@@ -362,7 +362,7 @@ const CourseFeedHomeScreen = () => {
                     title={item.title}
                     time={item.time}
                     description={item.description}
-                    backgroundImg={item.backgroundImg}
+                    routeImg={item.backgroundImg}
                     distance={item.distance}
                     location={item.location}
                     name={item.author}

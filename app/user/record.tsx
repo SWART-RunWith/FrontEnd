@@ -306,7 +306,7 @@ const RecordScreen = () => {
                       <View style={styles.expandedContent}>
                         <Image
                           style={styles.courseImg}
-                          source={{ uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fditoday.com%2F%25EC%25B4%2588%25EB%25B3%25B4%25EC%259E%2590%25EB%258F%2584-%25EB%25A7%2588%25EC%259D%258C-%25ED%258E%25B8%25ED%259E%2588-%25EB%258B%25AC%25EB%25A6%25B4-%25EC%2588%2598-%25EC%259E%2588%25EB%258A%2594-%25EB%259F%25AC%25EB%258B%259D-%25EC%25B6%2594%25EC%25B2%259C-%25EC%25BD%2594%25EC%258A%25A4-5%2F&psig=AOvVaw0EN7FQ4ORayWtksNJrQiK5&ust=1727715037992000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIidzZvO6IgDFQAAAAAdAAAAABAJ' }}
+                          source={{ uri: "https://runwith.s3.ap-northeast-2.amazonaws.com/course/route.png" }}
                         />
 
                         <View style={{ marginTop: getSize(15) }} />
@@ -514,9 +514,10 @@ const styles = StyleSheet.create({
     marginHorizontal: getSize(11),
   },
   courseImg: {
-    backgroundColor: 'black',
+    backgroundColor: Colors.darkGrayBox,
     width: width - getSize(Sizes.formMargin * 2 + 56),
     height: getSize(290),
+    resizeMode: 'contain',
   },
   additionalInfoRow: {
     flexDirection: 'row',
