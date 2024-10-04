@@ -74,7 +74,7 @@ const MyCourseScreen = () => {
 
   useEffect(() => {
     fetchCourseList();
-  }), [];
+  }, []);
 
   const handleInputFocus = () => {
     Animated.timing(searchIconAnim, {
