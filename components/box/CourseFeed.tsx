@@ -167,14 +167,22 @@ const styles = StyleSheet.create({
     width: getSize(99),
     color: 'white',
     fontSize: getSize(12),
+    fontFamily: Fonts.semiBold,
+    height: getSize(14),
   },
   timeText: {
     color: 'white',
     fontSize: getSize(10),
+    fontFamily: Fonts.medium,
+    marginTop: getSize(10),
+    height: getSize(12),
   },
   distanceText: {
     color: Colors.main,
     fontSize: getSize(12),
+    fontFamily: Fonts.semiBold,
+    marginTop: getSize(6),
+    height: getSize(14),
   },
   imageContainer: {
     backgroundColor: '#d9d9d9',

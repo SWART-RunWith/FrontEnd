@@ -34,6 +34,7 @@ import {
   CourseNameEditModal
 } from "@/components/modal/pop-up/CourseModal";
 import BottomTab from "@/components/BottomTab";
+import apiClient from "@/axois";
 
 type Mode = 'BASIC' | 'EDIT' | 'DELETE';
 
@@ -53,26 +54,27 @@ const MyCourseScreen = () => {
 
   const scrollRef = useRef<ScrollView>(null);
 
-  // dummy data
-  const courseList = [
-    { id: 1, title: '경희대 - 서천 최애 달립니다 야호', time: '00:40:28', distance: '03.66KM' },
-    { id: 2, title: '업힐 훈련', time: '01:20:14', distance: '04.30KM' },
-    { id: 3, title: '반달런', time: '00:31:25', distance: '02.58KM' },
-    { id: 4, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { id: 5, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { id: 6, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { id: 7, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { id: 8, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { id: 9, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { id: 10, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-    { id: 11, title: '사색러닝', time: '00:20:50', distance: '01.08KM' },
-  ];
-
   // search
   const [courseName, setCourseName] = useState('');
   const searchIconAnim = useRef(new Animated.Value(0)).current;
   const cancelIconOpacity = useRef(new Animated.Value(0)).current;
   const [showCancelIcon, setShowCancelIcon] = useState(false);
+
+  const [courseList, setCourseList] = useState<Course[]>([]);
+
+  // api
+  const fetchCourseList = async () => {
+    try {
+      const response = await apiClient.get(`/folders/${folderId}`);
+      setCourseList(response.data);
+    } catch (error) {
+      console.error('코스 리스트를 불러오는 중 오류 발생:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCourseList();
+  }), [];
 
   const handleInputFocus = () => {
     Animated.timing(searchIconAnim, {
@@ -275,7 +277,7 @@ const MyCourseScreen = () => {
         contentContainerStyle={styles.courseListContainer}
       >
         <CourseContainer
-          courseList={courseList}
+          Course={courseList}
           selectedCourses={selectedCourses}
           onFolderPress={handleCoursePress}
         />

@@ -7,22 +7,23 @@ import getSize from "@/scripts/getSize";
 import { useNavigation } from "@react-navigation/native";
 import { CourseFeedMineScreenNavigationProp } from "@/scripts/navigation";
 import { CourseBox } from "../box/CourseFeed";
+import { formatDistance, formatTime } from "@/scripts/format";
 
 const { width } = Dimensions.get('window');
 
 interface CourseContainerProp {
-  courseList: {
-    id: number,
-    title: string,
-    time: string,
-    distance: string,
+  Course: {
+    id: number;
+    title: string;
+    time: number;
+    distance: number;
   }[];
   selectedCourses?: number[];
   onFolderPress: (courseId: number) => void;
 }
 
 export const CourseContainer: React.FC<CourseContainerProp> = ({
-  courseList,
+  Course,
   selectedCourses = [],
   onFolderPress,
 }) => {
@@ -31,12 +32,12 @@ export const CourseContainer: React.FC<CourseContainerProp> = ({
   return (
     <View style={styles.courseContainer}>
       <View style={styles.courseList}>
-        {courseList.map((course) => (
+        {Course.map((course) => (
           <View key={course.id} style={styles.courseWrapper}>
             <CourseBox
               title={course.title}
-              time={course.time}
-              distance={course.distance}
+              time={formatTime(course.time)}
+              distance={formatDistance(course.distance) + 'KM'}
               backgroundImg={""}
               isSelected={selectedCourses.includes(course.id)}
               onPress={() => onFolderPress(course.id)}
